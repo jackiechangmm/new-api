@@ -173,3 +173,17 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 - 文档、注释、issue 内容始终使用中文。
 - 子代理优先采用阻塞式，例如前台调用，或后台并发后立即等待。
 - 任务过程中适当输出信息以供观察。
+
+## Agent skills
+
+### Issue tracker
+
+Issues 和规格通过 GitHub Issues 管理。参见 `docs/agents/issue-tracker.md`。
+
+### Triage labels
+
+使用默认的五个 triage 标签。参见 `docs/agents/triage-labels.md`。
+
+### Domain docs
+
+使用单上下文的领域文档布局。参见 `docs/agents/domain.md`。
