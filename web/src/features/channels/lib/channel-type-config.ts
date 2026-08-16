@@ -134,6 +134,17 @@ export const CHANNEL_TYPE_CONFIGS: Record<number, ChannelTypeConfig> = {
       baseUrl: 'Default: https://api.replicate.com',
     },
   },
+  61: {
+    id: 61,
+    name: CHANNEL_TYPES[61],
+    icon: 'openai',
+    defaultBaseUrl: 'https://api.apimart.ai',
+    hints: {
+      key: 'APIMart API Key',
+      models: 'gpt-image-2-official',
+      baseUrl: 'Default: https://api.apimart.ai',
+    },
+  },
   58: {
     id: 58,
     name: CHANNEL_TYPES[58],

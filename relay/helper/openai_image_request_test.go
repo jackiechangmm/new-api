@@ -72,7 +72,26 @@ func TestGetAndValidOpenAIImageRequestMultipartStream(t *testing.T) {
 	})
 }
 
-// TestGetAndValidOpenAIImageRequestNBounds guards the billing invariant that
+func TestGetAndValidOpenAIImageRequestAPIMartMultipartOutputCompression(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var body bytes.Buffer
+	writer := multipart.NewWriter(&body)
+	require.NoError(t, writer.WriteField("model", dto.APIMartImageModel))
+	require.NoError(t, writer.WriteField("prompt", "edit this image"))
+	require.NoError(t, writer.WriteField("output_format", "webp"))
+	require.NoError(t, writer.WriteField("output_compression", "80"))
+	require.NoError(t, writer.Close())
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request = httptest.NewRequest(http.MethodPost, "/v1/images/edits", &body)
+	c.Request.Header.Set("Content-Type", writer.FormDataContentType())
+
+	request, err := GetAndValidOpenAIImageRequest(c, relayconstant.RelayModeImagesEdits)
+	require.NoError(t, err)
+	var compression int
+	require.NoError(t, common.Unmarshal(request.OutputCompression, &compression))
+	require.Equal(t, 80, compression)
+}
+
 // the image generation count can never reach quota calculation with a value
 // large enough to overflow int64 into a negative charge.
 func TestGetAndValidOpenAIImageRequestNBounds(t *testing.T) {
