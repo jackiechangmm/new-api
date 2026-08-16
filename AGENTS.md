@@ -156,6 +156,9 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 
 ## Bululu
 
+### 常用文档
+- `docs/RESOURCES.md` 账务、模型转发、图片与异步任务相关代码的索引。
+
 ### 常用命令
 
 - 后端测试：`make go-test`；完整后端验证：`make go-test-full`。
