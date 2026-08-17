@@ -165,6 +165,8 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 - 前端构建与预览：`make build-web`；在 `web/` 执行 `bun run preview`。
 - 开发服务：`make dev-api-rebuild`、`make dev-web`。
 - 端到端验证不要使用 `make dev-web` 因为 HMR 将重复重载页面。
+- 手工/E2E 测试：`docker build -t new-api-manual-test:local .`；以 `docker-compose.dev.yml` 的 `postgres`、`redis` 加生产镜像（`new-api_dev-network`，`:3000`）启动。
+- 清空开发数据库和 Redis：`docker compose -f docker-compose.dev.yml down -v --remove-orphans`。
 
 ### Bululu Rules
 - 本节是本 fork 的最高优先级规则；与继承的环境兼容性要求冲突时，以本节为准。
