@@ -213,8 +213,10 @@ func fetchTask(c *gin.Context, info *relaycommon.RelayInfo, taskID string) (*tas
 func writeImageResponse(c *gin.Context, info *relaycommon.RelayInfo, task *taskData) (any, *types.NewAPIError) {
 	urls := make([]string, 0, len(task.Result.Images))
 	for _, image := range task.Result.Images {
-		if len(image.URL) > 0 && strings.TrimSpace(image.URL[0]) != "" {
-			urls = append(urls, image.URL[0])
+		for _, url := range image.URL {
+			if strings.TrimSpace(url) != "" {
+				urls = append(urls, url)
+			}
 		}
 	}
 	if len(urls) == 0 {

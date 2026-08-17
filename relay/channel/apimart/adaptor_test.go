@@ -49,7 +49,7 @@ func TestWriteImageResponseUsesActualImageCountAndFallbackUsage(t *testing.T) {
 	task := &taskData{}
 	task.Result.Images = []struct {
 		URL []string `json:"url"`
-	}{{URL: []string{"https://example.test/one.png", "https://example.test/ignored.png"}}, {URL: []string{"https://example.test/two.png"}}}
+	}{{URL: []string{"https://example.test/one.png", "https://example.test/two.png"}}}
 	task.Usage.TotalTokens = -1
 
 	usage, apiErr := writeImageResponse(c, info, task)

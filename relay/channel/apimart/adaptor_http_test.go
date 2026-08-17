@@ -156,6 +156,35 @@ func TestWriteImageResponsePreservesSampledUsageDetails(t *testing.T) {
 	assert.Equal(t, 196, result.CompletionTokens)
 	assert.Equal(t, 196, result.CompletionTokenDetails.ImageTokens)
 }
+func TestWriteImageResponseFlattensSampledMultiImageURLs(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	recorder := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(recorder)
+	c.Request = httptest.NewRequest(http.MethodPost, "/v1/images/generations", nil)
+	request := &dto.ImageRequest{Model: dto.APIMartImageModel, ResponseFormat: "url"}
+	info := newAPIMartRelayInfo("https://example.test", request)
+	info.PriceData.UsePrice = true
+	task := &taskData{}
+	task.Result.Images = []struct {
+		URL []string `json:"url"`
+	}{{URL: []string{"https://example.test/apimart-n2-1.png", "https://example.test/apimart-n2-2.png"}}}
+	task.Usage.InputTokens = 38
+	task.Usage.OutputTokens = 391
+	task.Usage.TotalTokens = 429
+	task.Usage.InputTokensDetails.TextTokens = 38
+	task.Usage.OutputTokensDetails.ImageTokens = 391
+
+	usage, apiErr := writeImageResponse(c, info, task)
+	require.Nil(t, apiErr)
+	result := usage.(*dto.Usage)
+	assert.Equal(t, 391, result.CompletionTokens)
+	assert.Equal(t, 391, result.CompletionTokenDetails.ImageTokens)
+	assert.Equal(t, 2.0, info.PriceData.OtherRatios()["n"])
+	var response dto.ImageResponse
+	require.NoError(t, common.Unmarshal(recorder.Body.Bytes(), &response))
+	require.Len(t, response.Data, 2)
+}
+
 func TestWriteImageResponseDownloadsBase64Image(t *testing.T) {
 	service.InitHttpClient()
 	gin.SetMode(gin.TestMode)

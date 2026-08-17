@@ -18,6 +18,7 @@ func TestAPIMartImageOptions(t *testing.T) {
 	}{
 		{"defaults", "", "", 1, "1:1", "1k", 196},
 		{"auto 4k", "auto 4k", "auto", 2, "auto", "4k", 1318},
+		{"sampled 1:3 2k low", "1:3 2k", "low", 1, "1:3", "2k", 103},
 		{"ratio quality", "16:9 2k", "high", 3, "16:9", "2k", 16950},
 		{"pixel reverse lookup", "3840x2160", "medium", 1, "16:9", "4k", 3336},
 	}
