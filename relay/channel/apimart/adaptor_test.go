@@ -70,7 +70,7 @@ func TestDoResponseHonorsCancelledRequestContext(t *testing.T) {
 	cancel()
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())
 	c.Request = httptest.NewRequest(http.MethodPost, "/v1/images/generations", nil).WithContext(ctx)
-	response := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(`{"code":200,"data":{"task_id":"task_1"}}`))}
+	response := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(`{"code":200,"data":[{"task_id":"task_1"}]}`))}
 
 	_, apiErr := (&Adaptor{}).DoResponse(c, response, &relaycommon.RelayInfo{})
 	require.NotNil(t, apiErr)

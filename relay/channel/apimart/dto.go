@@ -17,7 +17,7 @@ type imageRequest struct {
 
 type submitResponse struct {
 	Code int `json:"code"`
-	Data struct {
+	Data []struct {
 		TaskID string `json:"task_id"`
 	} `json:"data"`
 	Error *apiError `json:"error"`

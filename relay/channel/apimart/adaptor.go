@@ -134,9 +134,10 @@ func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycom
 	if err := common.DecodeJson(resp.Body, &submitted); err != nil {
 		return nil, types.NewError(err, types.ErrorCodeBadResponseBody)
 	}
-	if submitted.Error != nil || submitted.Data.TaskID == "" {
+	if submitted.Error != nil || len(submitted.Data) == 0 || submitted.Data[0].TaskID == "" {
 		return nil, upstreamError("APIMart task submission failed", submitted.Error)
 	}
+	taskID := submitted.Data[0].TaskID
 
 	deadline := time.NewTimer(pollTimeout)
 	defer deadline.Stop()
@@ -144,7 +145,7 @@ func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycom
 		return nil, pollError(err)
 	}
 	for {
-		task, err := fetchTask(c, info, submitted.Data.TaskID)
+		task, err := fetchTask(c, info, taskID)
 		if err != nil {
 			return nil, err
 		}
