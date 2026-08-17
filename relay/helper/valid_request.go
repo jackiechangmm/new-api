@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -203,6 +204,23 @@ func GetAndValidOpenAIImageRequest(c *gin.Context, relayMode int) (*dto.ImageReq
 			}
 			imageRequest.Quality = formData.Get("quality")
 			imageRequest.Size = formData.Get("size")
+			imageRequest.ResponseFormat = formData.Get("response_format")
+			for field, target := range map[string]*json.RawMessage{
+				"background":    &imageRequest.Background,
+				"moderation":    &imageRequest.Moderation,
+				"output_format": &imageRequest.OutputFormat,
+			} {
+				if value := formData.Get(field); value != "" {
+					*target, _ = common.Marshal(value)
+				}
+			}
+			if value := formData.Get("output_compression"); value != "" {
+				compression, err := strconv.Atoi(value)
+				if err != nil {
+					return nil, errors.New("output_compression must be an integer")
+				}
+				imageRequest.OutputCompression, _ = common.Marshal(compression)
+			}
 			if streamValue := strings.TrimSpace(formData.Get("stream")); streamValue != "" {
 				stream, err := strconv.ParseBool(streamValue)
 				if err != nil {
@@ -280,6 +298,15 @@ func GetAndValidOpenAIImageRequest(c *gin.Context, relayMode int) (*dto.ImageReq
 
 		if imageRequest.N == nil || *imageRequest.N == 0 {
 			imageRequest.N = common.GetPointer(uint(1))
+		}
+	}
+
+	if imageRequest.Model == dto.APIMartImageModel {
+		if relayMode == relayconstant.RelayModeImagesEdits && !strings.Contains(c.GetHeader("Content-Type"), "multipart/form-data") {
+			return nil, errors.New("APIMart image edits require multipart/form-data")
+		}
+		if err := imageRequest.ValidateAPIMartImageRequest(); err != nil {
+			return nil, err
 		}
 	}
 

@@ -1,0 +1,12 @@
+{
+  "code": 200,
+  "data": {
+    "cost": 0.00488,
+    "created": 1786953645,
+    "credits_cost": 0.048799999999999996,
+    "estimated_time": 60,
+    "id": "task-sample-edit",
+    "progress": 0,
+    "status": "pending"
+  }
+}

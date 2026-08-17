@@ -1,0 +1,38 @@
+{
+  "code": 200,
+  "data": {
+    "actual_time": 23,
+    "completed": 1786953668,
+    "cost": 0.01133,
+    "created": 1786953645,
+    "credits_cost": 0.1133,
+    "estimated_time": 60,
+    "id": "task-sample-edit",
+    "progress": 100,
+    "result": {
+      "images": [
+        {
+          "expires_at": 1787040068,
+          "url": [
+            "https://example.test/apimart-edit.png"
+          ]
+        }
+      ]
+    },
+    "status": "completed",
+    "usage": {
+      "input_tokens": 1042,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "image_tokens": 1024,
+        "text_tokens": 18
+      },
+      "output_tokens": 196,
+      "output_tokens_details": {
+        "image_tokens": 196,
+        "text_tokens": 0
+      },
+      "total_tokens": 1238
+    }
+  }
+}

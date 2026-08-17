@@ -6,12 +6,18 @@ DO NOT send optional commentary
 
 This is an AI API gateway/proxy built with Go. It aggregates 40+ upstream AI providers (OpenAI, Claude, Gemini, Azure, AWS Bedrock, etc.) behind a unified API, with user management, billing, rate limiting, and an admin dashboard.
 
+## Fork 环境适用范围
+
+本 fork 仅对受控 Linux 运行环境中共享 PostgreSQL 和 Redis 的部署负责；PostgreSQL 同时承担业务与日志存储。目标环境之外的数据库、缓存、日志后端、操作系统、CPU 架构和部署拓扑不构成兼容性、测试、迁移或修复义务。历史实现可继续保留，但不代表得到支持。
+
+本节优先于本文档中继承的环境兼容性要求；`Bululu` 对本 fork 的规则优先级最高。
+
 ## Tech Stack
 
 - **Backend**: Go 1.22+, Gin web framework, GORM v2 ORM
 - **Frontend**: React 19, TypeScript, Rsbuild, Base UI, Tailwind CSS
-- **Databases**: SQLite, MySQL, PostgreSQL (all three must be supported)
-- **Cache**: Redis (go-redis) + in-memory cache
+- **Databases**: PostgreSQL (唯一业务与日志数据库)
+- **Cache**: Redis (唯一共享缓存与限流后端)
 - **Auth**: JWT, WebAuthn/Passkeys, OAuth (GitHub, Discord, OIDC, etc.)
 - **Frontend package manager**: Bun (preferred over npm/yarn/pnpm)
 
@@ -79,19 +85,12 @@ web/           — Frontend (React 19, Rsbuild, Base UI, Tailwind)
 
 Do NOT directly import or call `encoding/json` in business code. `json.RawMessage`, `json.Number`, and other type definitions from `encoding/json` may still be referenced as types, but actual marshal/unmarshal calls must go through `common.*`.
 
-**Database compatibility:** All database code MUST work with SQLite, MySQL >= 5.7.8, and PostgreSQL >= 9.6 simultaneously.
+**Database:** 本 fork 的数据库代码仅需符合 PostgreSQL 语义。
 
-- Prefer GORM methods (`Create`, `Find`, `Where`, `Updates`, etc.) over raw SQL.
-- Let GORM handle primary key generation; do not use `AUTO_INCREMENT` or `SERIAL` directly.
-- Standard `SELECT ... FOR UPDATE` row locks built with GORM query methods in `model/` MUST use `lockForUpdate(tx)`. Do not use the legacy GORM v1 pattern `tx.Set("gorm:query_option", "FOR UPDATE")`, because GORM v2 silently ignores it and no lock is acquired. Do not duplicate `clause.Locking{Strength: "UPDATE"}` at call sites; the shared helper emits `FOR UPDATE` for MySQL/PostgreSQL and skips it for SQLite, where the syntax is unsupported. Dialect-specific locking with different semantics (for example, a MySQL next-key/gap lock) may use raw SQL only behind explicit database-type branches with valid fallbacks for every supported database.
-- When raw SQL is unavoidable, account for dialect differences:
-  - PostgreSQL uses `"column"` quoting, while MySQL/SQLite use `` `column` ``.
-  - Use `commonGroupCol`, `commonKeyCol` from `model/main.go` for reserved-word columns like `group` and `key`.
-  - Use `commonTrueVal`/`commonFalseVal` for boolean values.
-  - Use `common.UsingMainDatabase(...)` for primary database branches and `common.UsingLogDatabase(...)` for log database branches.
-- Do not use database-specific features without cross-DB fallback, including MySQL-only functions, PostgreSQL-only operators, SQLite-unsupported `ALTER COLUMN`, or database-specific JSON column types without a `TEXT` fallback.
-- Migrations must work on all three databases. For SQLite, use `ALTER TABLE ... ADD COLUMN` instead of `ALTER COLUMN` (see `model/main.go` for patterns).
-- Avoid GORM boolean default tags such as `gorm:"default:true"` when the default is a business rule already enforced by code. MySQL and PostgreSQL can normalize boolean defaults differently, causing GORM `AutoMigrate` to repeatedly issue `ALTER TABLE` on restart. Prefer setting these defaults in request/model normalization, hooks, constructors, or service logic; do not replace `default:true` with `default:1` unless the behavior is verified across SQLite, MySQL, and PostgreSQL.
+- 优先使用 GORM 方法（`Create`、`Find`、`Where`、`Updates` 等）；原生 SQL 仅在必要时使用 PostgreSQL 语法。
+- 让 GORM 处理主键生成。
+- 涉及迁移、事务和行锁的变更，必须在目标 PostgreSQL 环境验证；标准行锁继续使用 `lockForUpdate(tx)`。
+- 主库和日志库均使用 PostgreSQL；账务、日志和其他一致性关键路径以该语义设计与测试。
 
 **Relay and provider behavior:**
 
@@ -155,19 +154,39 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 - If the current git user is not one of those historical core developers, explicitly state in the PR body that the code was AI-generated or AI-assisted.
 - Always use the repository PR template at `.github/PULL_REQUEST_TEMPLATE.md` when drafting the PR title/body. Preserve the template structure and fill in the relevant sections instead of replacing it with an ad hoc format.
 
+## Bululu
+
+### 常用文档
+- `docs/RESOURCES.md` 账务、模型转发、图片与异步任务相关代码的索引。
+
+### 常用命令
+
+- 后端测试：`make test`。
+- 前端构建与预览：`make build-web`；在 `web/` 执行 `bun run preview`。
+- 开发服务：`make dev-api-rebuild`、`make dev-web`。
+- 端到端验证不要使用 `make dev-web` 因为 HMR 将重复重载页面。
+- 手工/E2E 测试：`docker build -t new-api-manual-test:local .`；以 `docker-compose.dev.yml` 的 `postgres`、`redis` 加生产镜像（`new-api_dev-network`，`:3000`）启动。
+- 清空开发数据库和 Redis：`docker compose -f docker-compose.dev.yml down -v --remove-orphans`。
+
+### Bululu Rules
+- 本节是本 fork 的最高优先级规则；与继承的环境兼容性要求冲突时，以本节为准。
+- fork 基点在 ccd535e，ccd535e 是原始项目。
+- 本 fork 只对受控 Linux、PostgreSQL 和 Redis 环境负责。目标环境之外的兼容性、测试、迁移和修复不属于后续变更义务；历史实现不移除、不支持。
+- 文档、注释、issue 内容始终使用中文。
+- 派发子代理时默认只传 agent 和 task，其他参数均有缺省值，除非真的需要他们
+- 子代理优先采用阻塞式，例如前台调用，或后台并发后立即等待。
+- 任务过程中适当输出信息以供观察。
+
 ## Agent skills
 
 ### Issue tracker
 
-Issues are tracked in this repository's GitHub Issues. See `docs/agents/issue-tracker.md`.
+Issues 和规格通过 GitHub Issues 管理。参见 `docs/agents/issue-tracker.md`。
 
 ### Triage labels
 
-The canonical five triage roles use their default label strings. See `docs/agents/triage-labels.md`.
+使用默认的五个 triage 标签。参见 `docs/agents/triage-labels.md`。
 
 ### Domain docs
 
-This repository uses a single-context domain documentation layout. See `docs/agents/domain.md`.
-
-## Bululu Rules
-- 文档、注释、issue内容，始终使用中文。`AGENTS.md` 中只有 `Bululu Rules` 使用中文。
+使用单上下文的领域文档布局。参见 `docs/agents/domain.md`。

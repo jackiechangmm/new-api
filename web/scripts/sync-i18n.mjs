@@ -35,6 +35,7 @@ const BRAND_AND_LITERAL_KEYS = new Set([
   'Alipay',
   'Anthropic',
   'API URL',
+  'APIMart',
   'API2GPT',
   'AccessKey / SecretAccessKey',
   'AZURE_OPENAI_ENDPOINT *',

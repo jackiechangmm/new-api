@@ -1,0 +1,12 @@
+{
+  "code": 200,
+  "data": {
+    "cost": 0.00336,
+    "created": 1786953614,
+    "credits_cost": 0.033600000000000005,
+    "estimated_time": 60,
+    "id": "task-sample-generation",
+    "progress": 0,
+    "status": "pending"
+  }
+}
