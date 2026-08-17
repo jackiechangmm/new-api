@@ -245,6 +245,11 @@ func writeImageResponse(c *gin.Context, info *relaycommon.RelayInfo, task *taskD
 		usage.PromptTokens = task.Usage.InputTokens
 		usage.CompletionTokens = task.Usage.OutputTokens
 		usage.TotalTokens = task.Usage.TotalTokens
+		usage.PromptTokensDetails.CachedTokens = task.Usage.InputTokensDetails.CachedTokens
+		usage.PromptTokensDetails.TextTokens = task.Usage.InputTokensDetails.TextTokens
+		usage.PromptTokensDetails.ImageTokens = task.Usage.InputTokensDetails.ImageTokens
+		usage.CompletionTokenDetails.TextTokens = task.Usage.OutputTokensDetails.TextTokens
+		usage.CompletionTokenDetails.ImageTokens = task.Usage.OutputTokensDetails.ImageTokens
 	} else if request != nil {
 		usage.CompletionTokens = request.GetTokenCountMeta().MaxTokens
 		usage.TotalTokens = usage.CompletionTokens

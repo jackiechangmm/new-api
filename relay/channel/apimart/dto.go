@@ -38,9 +38,18 @@ type taskData struct {
 		} `json:"images"`
 	} `json:"result"`
 	Usage struct {
-		InputTokens  int `json:"input_tokens"`
-		OutputTokens int `json:"output_tokens"`
-		TotalTokens  int `json:"total_tokens"`
+		InputTokens        int `json:"input_tokens"`
+		OutputTokens       int `json:"output_tokens"`
+		TotalTokens        int `json:"total_tokens"`
+		InputTokensDetails struct {
+			CachedTokens int `json:"cached_tokens"`
+			TextTokens   int `json:"text_tokens"`
+			ImageTokens  int `json:"image_tokens"`
+		} `json:"input_tokens_details"`
+		OutputTokensDetails struct {
+			TextTokens  int `json:"text_tokens"`
+			ImageTokens int `json:"image_tokens"`
+		} `json:"output_tokens_details"`
 	} `json:"usage"`
 	Error *apiError `json:"error"`
 }

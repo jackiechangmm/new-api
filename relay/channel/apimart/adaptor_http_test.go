@@ -74,7 +74,9 @@ func TestDoResponsePollsSampledTaskUntilCompleted(t *testing.T) {
 	result, ok := usage.(*dto.Usage)
 	require.True(t, ok)
 	assert.Equal(t, 19, result.PromptTokens)
+	assert.Equal(t, 19, result.PromptTokensDetails.TextTokens)
 	assert.Equal(t, 134, result.CompletionTokens)
+	assert.Equal(t, 134, result.CompletionTokenDetails.ImageTokens)
 	assert.Equal(t, 153, result.TotalTokens)
 	assert.EqualValues(t, 2, taskRequests.Load())
 	var imageResponse dto.ImageResponse
@@ -137,6 +139,23 @@ func TestConvertImageRequestUploadsSampledImageAndMask(t *testing.T) {
 	assert.EqualValues(t, 2, uploads.Load())
 }
 
+func TestWriteImageResponsePreservesSampledUsageDetails(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	var sampled taskResponse
+	require.NoError(t, common.Unmarshal(readAPIMartFixture(t, "edit-completed.json"), &sampled))
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request = httptest.NewRequest(http.MethodPost, "/v1/images/edits", nil)
+	request := &dto.ImageRequest{Model: dto.APIMartImageModel, ResponseFormat: "url"}
+
+	usage, apiErr := writeImageResponse(c, newAPIMartRelayInfo("https://example.test", request), &sampled.Data)
+	require.Nil(t, apiErr)
+	result := usage.(*dto.Usage)
+	assert.Equal(t, 1042, result.PromptTokens)
+	assert.Equal(t, 18, result.PromptTokensDetails.TextTokens)
+	assert.Equal(t, 1024, result.PromptTokensDetails.ImageTokens)
+	assert.Equal(t, 196, result.CompletionTokens)
+	assert.Equal(t, 196, result.CompletionTokenDetails.ImageTokens)
+}
 func TestWriteImageResponseDownloadsBase64Image(t *testing.T) {
 	service.InitHttpClient()
 	gin.SetMode(gin.TestMode)
