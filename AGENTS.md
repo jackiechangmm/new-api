@@ -161,16 +161,17 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 
 ### 常用命令
 
-- 后端测试：`make go-test`；完整后端验证：`make go-test-full`。
-- 后端格式化：`make gofmt`。Go 通过固定 Docker 工具链执行，无需查找宿主机 `go`。
-- 前端端到端验证使用 `make web-build` + `bun run preview`；陷阱：`make dev-web` 的 HMR 将重复重载页面并放大请求，干扰认证、限流和时序相关结果。
-- 开发服务：`make dev-api`、`make dev-web`。
+- 后端测试：`make test`。
+- 前端构建与预览：`make build-web`；在 `web/` 执行 `bun run preview`。
+- 开发服务：`make dev-api-rebuild`、`make dev-web`。
+- 端到端验证不要使用 `make dev-web` 因为 HMR 将重复重载页面。
 
 ### Bululu Rules
 - 本节是本 fork 的最高优先级规则；与继承的环境兼容性要求冲突时，以本节为准。
 - fork 基点在 ccd535e，ccd535e 是原始项目。
 - 本 fork 只对受控 Linux、PostgreSQL 和 Redis 环境负责。目标环境之外的兼容性、测试、迁移和修复不属于后续变更义务；历史实现不移除、不支持。
 - 文档、注释、issue 内容始终使用中文。
+- 派发子代理时默认只传 agent 和 task，其他参数均有缺省值，除非真的需要他们
 - 子代理优先采用阻塞式，例如前台调用，或后台并发后立即等待。
 - 任务过程中适当输出信息以供观察。
 
