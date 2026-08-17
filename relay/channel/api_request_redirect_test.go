@@ -1,7 +1,6 @@
 package channel
 
 import (
-	"bytes"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -64,7 +63,7 @@ func TestDoRequestReturnsUpstreamRedirectWithoutFollowing(t *testing.T) {
 			ctx.Request = httptest.NewRequest(http.MethodPost, "/relay", nil)
 			ctx.Request.Body = nil
 
-			req, err := http.NewRequest(http.MethodPost, source.URL, bytes.NewReader([]byte("request body")))
+			req, err := http.NewRequest(http.MethodGet, source.URL, nil)
 			require.NoError(t, err)
 			info := &relaycommon.RelayInfo{ChannelMeta: &relaycommon.ChannelMeta{}}
 
@@ -79,7 +78,7 @@ func TestDoRequestReturnsUpstreamRedirectWithoutFollowing(t *testing.T) {
 			assert.Equal(t, statusCode, resp.StatusCode)
 			assert.Equal(t, target.URL+"/redirect-target", resp.Header.Get("Location"))
 			assert.Equal(t, responseBody, string(body))
-			assert.Equal(t, []byte("request body"), gotSource.body)
+			assert.Empty(t, gotSource.body)
 			assert.EqualValues(t, 1, sourceRequests.Load())
 			assert.Zero(t, targetRequests.Load())
 		})
