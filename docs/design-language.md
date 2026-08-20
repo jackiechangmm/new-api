@@ -34,8 +34,8 @@
 | `color.foreground` | `#282825` | 主文字、主要图标 |
 | `color.muted` | `#706F69` | 次级文字、说明文字、元数据 |
 | `color.line.structure` | `rgba(40, 40, 37, 0.42)` | 结构线、边框、分隔线 |
-| `color.line.grid` | `rgba(40, 40, 37, 0.10)` | 主网格 |
-| `color.line.grid-minor` | `rgba(40, 40, 37, 0.06)` | 次网格，仅展板和设计展示区域启用 |
+| `color.line.grid` | `rgba(40, 40, 37, 0.08)` | 主网格，浅色主题默认值 |
+| `color.line.grid-minor` | `rgba(40, 40, 37, 0.02)` | 次网格，仅展板和设计展示区域启用 |
 | `color.accent` | `#E85F1A` | 品牌强调、选中、聚焦、重点构成 |
 | `color.accent-soft` | `rgba(232, 95, 26, 0.14)` | 橙色低透明度背景 |
 | `color.accent-foreground` | `#24130E` | 熔岩橙实心背景上的文字 |
@@ -54,8 +54,8 @@
 | `color.foreground` | `#E9E7DF` | 主文字、主要图标 |
 | `color.muted` | `#A4A29A` | 次级文字、说明文字、元数据 |
 | `color.line.structure` | `rgba(233, 231, 223, 0.45)` | 结构线、边框、分隔线 |
-| `color.line.grid` | `rgba(233, 231, 223, 0.10)` | 主网格 |
-| `color.line.grid-minor` | `rgba(233, 231, 223, 0.06)` | 次网格，仅展板和设计展示区域启用 |
+| `color.line.grid` | `rgba(233, 231, 223, 0.06)` | 主网格，深灰主题默认值 |
+| `color.line.grid-minor` | `rgba(233, 231, 223, 0.02)` | 次网格，仅展板和设计展示区域启用 |
 | `color.accent` | `#E85F1A` | 品牌强调、选中、聚焦、重点构成 |
 | `color.accent-soft` | `rgba(232, 95, 26, 0.18)` | 橙色低透明度背景 |
 | `color.accent-foreground` | `#24130E` | 熔岩橙实心背景上的文字 |
@@ -253,6 +253,22 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
 - 图标尺寸：`compact = 14px`，`default = 16px`，`large = 18px`。
 - 图标与文字间距固定为 `8px`。
 - 控件边框固定为 `1px`；聚焦和错误状态额外使用 `2px` 外框，不改变控件布局尺寸。
+
+### 9.3 按钮尺寸
+
+按钮使用三档固定宽度，保证同一界面中的操作节奏稳定：
+
+| 尺寸 | 宽度 | 高度 | 用途 |
+| --- | ---: | ---: | --- |
+| `button.small` | `28px` | `28px` | 仅图标操作，方形按钮 |
+| `button.medium` | `112px` | `36px` | 约 6 个汉字的常规操作 |
+| `button.large` | `200px` | `44px` | 约 12 个汉字的主要操作 |
+
+规则：
+
+- 文字按钮的水平内边距固定为 `8px`；图标按钮不使用水平内边距。
+- 小尺寸按钮必须保持正方形，主要承载图标，并提供 `aria-label` 或可见的辅助名称。
+- 工具操作型图标按钮默认可以省略边框；悬停、聚焦和选中状态仍必须提供明确反馈。
 
 ## 10. 交互状态
 

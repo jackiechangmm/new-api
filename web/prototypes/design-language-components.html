@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="new-api 设计语言组件展示">
+  <title>设计语言 · 组件展示</title>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --color-background: #f3f1eb;
+      --color-surface: #faf9f5;
+      --color-surface-muted: #eae8e1;
+      --color-foreground: #282825;
+      --color-muted: #706f69;
+      --color-line-structure: rgba(40, 40, 37, 0.42);
+      --color-line-grid: rgba(40, 40, 37, 0.10);
+      --color-line-grid-minor: rgba(40, 40, 37, 0.06);
+      --color-accent: #e85f1a;
+      --color-accent-soft: rgba(232, 95, 26, 0.14);
+      --color-accent-foreground: #24130e;
+      --color-success: #4c806c;
+      --color-warning: #bc771f;
+      --color-error: #be3d36;
+      --color-info: #527184;
+      --color-disabled: rgba(112, 111, 105, 0.35);
+      --font-sans: 'Public Sans', 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      --grid-primary-size: 40px;
+      --grid-minor-size: 10px;
+      --grid-line-width: 1px;
+      --grid-primary-opacity: 8%;
+      --grid-minor-opacity: 2%;
+      --grid-primary-line: color-mix(in srgb, var(--color-foreground) var(--grid-primary-opacity), transparent);
+      --grid-minor-line: color-mix(in srgb, var(--color-foreground) var(--grid-minor-opacity), transparent);
+      --line-structure: 1px;
+      --line-emphasis: 4px;
+      --line-focus: 2px;
+      --radius-none: 0;
+      --radius-circle: 50%;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --control-compact: 28px;
+      --control-default: 36px;
+      --control-large: 44px;
+      --motion-short: 160ms ease-out;
+      color-scheme: light;
+    }
+
+    [data-theme="dark"] {
+      --color-background: #20201e;
+      --color-surface: #282826;
+      --color-surface-muted: #30302d;
+      --color-foreground: #e9e7df;
+      --color-muted: #a4a29a;
+      --color-line-structure: rgba(233, 231, 223, 0.45);
+      --color-line-grid: rgba(233, 231, 223, 0.10);
+      --color-line-grid-minor: rgba(233, 231, 223, 0.06);
+      --color-accent-soft: rgba(232, 95, 26, 0.18);
+      --color-success: #7fb398;
+      --color-warning: #e0a354;
+      --color-error: #f08379;
+      --color-info: #91bacb;
+      --color-disabled: rgba(164, 162, 154, 0.35);
+      --grid-primary-opacity: 6%;
+      --grid-minor-opacity: 2%;
+      color-scheme: dark;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { background: var(--color-background); }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--color-foreground);
+      background-color: var(--color-background);
+      background-image:
+        linear-gradient(to right, var(--grid-minor-line) var(--grid-line-width), transparent var(--grid-line-width)),
+        linear-gradient(to bottom, var(--grid-minor-line) var(--grid-line-width), transparent var(--grid-line-width)),
+        linear-gradient(to right, var(--grid-primary-line) var(--grid-line-width), transparent var(--grid-line-width)),
+        linear-gradient(to bottom, var(--grid-primary-line) var(--grid-line-width), transparent var(--grid-line-width));
+      background-position: 0 0, 0 0, 0 0, 0 0;
+      background-size: var(--grid-minor-size) var(--grid-minor-size), var(--grid-minor-size) var(--grid-minor-size), var(--grid-primary-size) var(--grid-primary-size), var(--grid-primary-size) var(--grid-primary-size);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+    :focus-visible { outline: var(--line-focus) solid var(--color-accent); outline-offset: 2px; }
+
+    .page-shell { width: min(1440px, 100%); margin: 0 auto; }
+
+    .site-header {
+      display: flex;
+      min-height: 64px;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-8);
+      padding: var(--space-4) var(--space-8);
+      border-bottom: var(--line-structure) solid var(--color-line-structure);
+      background: var(--color-surface);
+    }
+
+    .brand-lockup, .header-actions, .inline-group, .control-row, .table-footer, .toast-content {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-lockup { gap: var(--space-3); }
+    .brand-mark { width: 24px; height: 24px; background: var(--color-accent); }
+    .brand-name { font-weight: 700; letter-spacing: 0; }
+    .brand-meta { color: var(--color-muted); font: 12px/1.3 var(--font-mono); }
+    .header-actions { gap: var(--space-2); }
+
+    .icon-button, .button, .select-control, .text-input {
+      min-height: var(--control-default);
+      border: var(--line-structure) solid var(--color-line-structure);
+      border-radius: var(--radius-none);
+      background: var(--color-surface);
+      transition: background-color var(--motion-short), border-color var(--motion-short), color var(--motion-short);
+    }
+
+    .icon-button {
+      display: inline-grid;
+      width: var(--control-default);
+      padding: 0;
+      place-items: center;
+      border-color: transparent;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button:hover, .button:hover, .select-control:hover, .text-input:hover { border-color: var(--color-accent); background: var(--color-accent-soft); }
+    .icon-button[aria-pressed="true"] { border: var(--line-focus) solid var(--color-accent); background: var(--color-accent-soft); }
+    .icon-button.button-sm { width: var(--control-compact); min-width: var(--control-compact); min-height: var(--control-compact); }
+    .lucide { width: 16px; height: 16px; stroke-width: 1.5; }
+    .button-sm .lucide { width: 14px; height: 14px; }
+    .button-lg .lucide { width: 18px; height: 18px; }
+
+    .main-content { padding: var(--space-8); }
+
+    .exhibition-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.52fr);
+      min-height: 280px;
+      align-items: end;
+      gap: var(--space-8);
+      padding: var(--space-8) 0;
+      border-bottom: var(--line-emphasis) solid var(--color-accent);
+    }
+
+    .eyebrow, .section-kicker, .specimen-label, .token-name, .table-label {
+      color: var(--color-muted);
+      font: 12px/1.3 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .eyebrow { margin: 0 0 var(--space-4); color: var(--color-accent); }
+    h1, h2, h3, p { margin: 0; }
+    h1 { max-width: 760px; font-size: clamp(42px, 6vw, 64px); font-weight: 700; line-height: 0.98; letter-spacing: 0; }
+    .intro-note { max-width: 360px; color: var(--color-muted); font-size: 16px; line-height: 1.5; }
+    .intro-code { display: block; margin-top: var(--space-4); color: var(--color-foreground); font: 12px/1.3 var(--font-mono); }
+
+    .section { padding: 32px 0; }
+    .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-8); margin-bottom: var(--space-6); }
+    h2 { font-size: 20px; font-weight: 600; line-height: 1.1; }
+    .section-index { color: var(--color-accent); font: 12px/1.3 var(--font-mono); }
+
+    .token-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: var(--line-structure) solid var(--color-line-structure); border-left: var(--line-structure) solid var(--color-line-structure); }
+    .token { min-height: 132px; padding: var(--space-4); border-right: var(--line-structure) solid var(--color-line-structure); border-bottom: var(--line-structure) solid var(--color-line-structure); background: var(--color-surface); }
+    .swatch { height: 48px; margin-bottom: var(--space-4); border: var(--line-structure) solid var(--color-line-structure); }
+    .swatch-bg { background: var(--color-background); }
+    .swatch-surface { background: var(--color-surface); }
+    .swatch-accent { background: var(--color-accent); }
+    .swatch-success { background: var(--color-success); }
+    .swatch-warning { background: var(--color-warning); }
+    .swatch-error { background: var(--color-error); }
+    .token-value { display: block; margin-top: var(--space-1); color: var(--color-foreground); font: 12px/1.3 var(--font-mono); }
+
+    .showcase-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-6); }
+    .showcase { min-width: 0; padding: var(--space-6); border: var(--line-structure) solid var(--color-line-structure); background: var(--color-surface); }
+    .showcase.span-4 { grid-column: span 4; }
+    .showcase.span-5 { grid-column: span 5; }
+    .showcase.span-7 { grid-column: span 7; }
+    .showcase.span-8 { grid-column: span 8; }
+    .showcase.span-12 { grid-column: span 12; }
+    .showcase-head { display: flex; align-items: start; justify-content: space-between; gap: var(--space-4); padding-bottom: var(--space-4); border-bottom: var(--line-structure) solid var(--color-line-structure); }
+    .showcase h3 { font-size: 16px; font-weight: 600; line-height: 1.5; }
+    .showcase-body { padding-top: var(--space-6); }
+    .state-stack { display: grid; gap: var(--space-4); }
+    .state-row { display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: center; gap: var(--space-4); }
+    .state-name { color: var(--color-muted); font-size: 12px; }
+    .state-name::before { content: '·'; display: inline-block; width: 12px; color: var(--color-accent); font-weight: 700; }
+
+    .button { display: inline-flex; width: 112px; min-width: 112px; height: var(--control-default); min-height: var(--control-default); align-items: center; justify-content: center; gap: var(--space-2); padding: 0 var(--space-2); cursor: pointer; font-size: 14px; }
+    .button-sm { width: var(--control-compact); min-width: var(--control-compact); height: var(--control-compact); min-height: var(--control-compact); padding: 0; font-size: 12px; }
+    .button-md { width: 112px; min-width: 112px; }
+    .button-lg { width: 200px; min-width: 200px; height: var(--control-large); min-height: var(--control-large); }
+    .button-primary { border-color: var(--color-accent); background: var(--color-accent); color: var(--color-accent-foreground); font-weight: 600; }
+    .button-primary:hover { border-color: var(--color-accent-foreground); background: var(--color-accent); }
+    .button-secondary { background: var(--color-surface-muted); }
+    .button-quiet { border-color: transparent; background: transparent; }
+    .button-quiet:hover { border-color: var(--color-accent); }
+    .button-error { border-color: var(--color-error); color: var(--color-error); }
+    .button:disabled { border-color: var(--color-disabled); background: var(--color-surface-muted); color: var(--color-disabled); }
+    .button-loading { color: var(--color-muted); }
+    .size-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+    .loader { width: 14px; height: 14px; border: 1px solid var(--color-muted); border-top-color: var(--color-accent); border-radius: var(--radius-circle); animation: spin 800ms linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .text-input, .select-control { width: 100%; padding: 0 var(--space-3); color: var(--color-foreground); }
+    .text-input::placeholder { color: var(--color-muted); }
+    .text-input[aria-invalid="true"] { border: var(--line-focus) solid var(--color-error); }
+    .field { display: grid; gap: var(--space-2); }
+    .field label { font-size: 12px; font-weight: 500; }
+    .field-note { color: var(--color-muted); font-size: 12px; }
+    .field-error { color: var(--color-error); font-size: 12px; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+    .form-grid .field:first-child { grid-column: span 2; }
+    .select-wrap { position: relative; }
+    .select-control { appearance: none; padding-right: 32px; }
+    .select-arrow { position: absolute; top: 50%; right: var(--space-3); color: var(--color-muted); pointer-events: none; transform: translateY(-50%); }
+
+    .segmented { display: grid; grid-template-columns: repeat(3, 1fr); border: var(--line-structure) solid var(--color-line-structure); }
+    .segment { min-height: var(--control-default); border: 0; border-right: var(--line-structure) solid var(--color-line-structure); border-radius: var(--radius-none); background: var(--color-surface); cursor: pointer; }
+    .segment:last-child { border-right: 0; }
+    .segment:hover { background: var(--color-accent-soft); }
+    .segment[aria-selected="true"] { box-shadow: inset 0 -2px 0 var(--color-accent); background: var(--color-accent-soft); font-weight: 600; }
+    .segment:disabled { color: var(--color-disabled); background: var(--color-surface-muted); cursor: not-allowed; }
+    .tab-panel { min-height: 64px; margin-top: var(--space-4); padding: var(--space-4); border-left: var(--line-emphasis) solid var(--color-accent); background: var(--color-surface-muted); }
+    .tab-panel strong { display: block; margin-bottom: var(--space-1); font-size: 14px; }
+    .tab-panel p { color: var(--color-muted); font-size: 12px; }
+
+    .control-row { justify-content: space-between; gap: var(--space-4); }
+    .toggle { position: relative; width: 44px; height: 24px; flex: 0 0 auto; border: var(--line-structure) solid var(--color-line-structure); border-radius: var(--radius-none); background: var(--color-surface-muted); cursor: pointer; }
+    .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; background: var(--color-muted); border-radius: var(--radius-circle); transition: left var(--motion-short), background-color var(--motion-short); }
+    .toggle[aria-checked="true"] { border-color: var(--color-accent); background: var(--color-accent-soft); }
+    .toggle[aria-checked="true"]::after { left: 23px; background: var(--color-accent); }
+    .toggle-label { display: grid; gap: var(--space-1); }
+    .toggle-label strong { font-size: 14px; font-weight: 500; }
+    .toggle-label span { color: var(--color-muted); font-size: 12px; }
+    .check-row { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-6); }
+    .check-row input { width: 16px; height: 16px; margin: 0; accent-color: var(--color-accent); }
+
+    .status-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+    .status { display: flex; min-height: var(--control-default); align-items: center; gap: var(--space-2); padding: 0 var(--space-3); border: var(--line-structure) solid var(--color-line-structure); }
+    .status-dot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: var(--radius-circle); }
+    .status-success .status-dot { background: var(--color-success); }
+    .status-warning .status-dot { background: var(--color-warning); }
+    .status-error .status-dot { background: var(--color-error); }
+    .status-info .status-dot { background: var(--color-info); }
+    .status strong { font-size: 12px; font-weight: 600; }
+    .status span { color: var(--color-muted); font-size: 12px; }
+
+    .data-table-wrap { overflow-x: auto; border: var(--line-structure) solid var(--color-line-structure); }
+    .data-table { width: 100%; min-width: 640px; border-collapse: collapse; background: var(--color-surface); }
+    .data-table th, .data-table td { height: 44px; padding: 0 var(--space-4); border-bottom: var(--line-structure) solid var(--color-line-structure); text-align: left; white-space: nowrap; }
+    .data-table th { background: var(--color-surface-muted); color: var(--color-muted); font: 12px/1.3 var(--font-mono); font-weight: 400; }
+    .data-table tr:last-child td { border-bottom: 0; }
+    .data-table tr:hover td { background: var(--color-accent-soft); }
+    .mono { font-family: var(--font-mono); font-size: 12px; }
+    .table-status { display: inline-flex; align-items: center; gap: var(--space-2); }
+    .table-footer { min-height: 44px; justify-content: space-between; gap: var(--space-4); padding: 0 var(--space-4); border-top: var(--line-structure) solid var(--color-line-structure); background: var(--color-surface); }
+    .table-footer span { color: var(--color-muted); font: 12px/1.3 var(--font-mono); }
+
+    .menu-demo { position: relative; min-height: 176px; padding: var(--space-6); background: var(--color-surface-muted); }
+    .menu-trigger { display: inline-flex; align-items: center; gap: var(--space-2); }
+    .menu { position: absolute; top: 76px; left: var(--space-6); width: 216px; padding: var(--space-2) 0; border: var(--line-structure) solid var(--color-line-structure); background: var(--color-surface); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16); }
+    .menu-item { display: flex; width: 100%; min-height: var(--control-default); align-items: center; justify-content: space-between; padding: 0 var(--space-3); border: 0; background: transparent; text-align: left; cursor: pointer; }
+    .menu-item:hover, .menu-item[aria-current="true"] { background: var(--color-accent-soft); }
+    .menu-item-check { width: 14px; height: 14px; color: var(--color-accent); }
+    .menu-divider { height: var(--line-structure); margin: var(--space-2) 0; background: var(--color-line-structure); }
+
+    .line-tool { position: fixed; top: 80px; right: var(--space-8); z-index: 4; width: min(360px, calc(100vw - 32px)); border: var(--line-structure) solid var(--color-line-structure); background: var(--color-surface); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16); }
+    .line-tool-header, .line-tool-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4); }
+    .line-tool-header { border-bottom: var(--line-structure) solid var(--color-line-structure); }
+    .line-tool-header h2 { margin-top: var(--space-1); }
+    .line-tool-body { display: grid; gap: var(--space-4); padding: var(--space-6) var(--space-4); }
+    .range-field { display: grid; gap: var(--space-2); }
+    .range-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); font-size: 12px; }
+    .range-heading output, .line-ratio { color: var(--color-muted); font: 12px/1.3 var(--font-mono); }
+    .range-field input[type="range"] { width: 100%; margin: 0; accent-color: var(--color-accent); }
+    .line-tool-footer { border-top: var(--line-structure) solid var(--color-line-structure); }
+    .line-summary { display: grid; min-width: 0; gap: var(--space-1); }
+    .line-summary code { overflow: hidden; color: var(--color-muted); font: 12px/1.3 var(--font-mono); text-overflow: ellipsis; white-space: nowrap; }
+    .line-tool-footer .button { flex: 0 0 auto; }
+    .hidden { display: none; }
+
+    .geometry-board { position: relative; min-height: 208px; overflow: hidden; background-color: var(--color-surface-muted); background-image: linear-gradient(to right, var(--grid-minor-line) var(--grid-line-width), transparent var(--grid-line-width)), linear-gradient(to bottom, var(--grid-minor-line) var(--grid-line-width), transparent var(--grid-line-width)); background-size: var(--grid-minor-size) var(--grid-minor-size); }
+    .geometry-board::before { content: ''; position: absolute; top: 64px; left: 12%; width: 28%; height: 4px; background: var(--color-accent); transform: rotate(-15deg); transform-origin: left center; }
+    .geometry-board::after { content: ''; position: absolute; right: 15%; bottom: 32px; width: 96px; height: 96px; border: 4px solid var(--color-accent); border-radius: var(--radius-circle); }
+    .geometry-label { position: absolute; left: var(--space-6); bottom: var(--space-6); font: 12px/1.3 var(--font-mono); }
+    .geometry-coord { position: absolute; top: var(--space-4); right: var(--space-4); color: var(--color-muted); font: 12px/1.3 var(--font-mono); }
+
+    .toast { display: flex; min-height: var(--control-large); align-items: center; justify-content: space-between; gap: var(--space-4); padding: 0 var(--space-4); border: var(--line-structure) solid var(--color-line-structure); border-left: var(--line-emphasis) solid var(--color-success); background: var(--color-surface); }
+    .toast-content { gap: var(--space-2); }
+    .toast-icon { color: var(--color-success); font-weight: 700; }
+    .toast p { font-size: 14px; }
+    .toast button { min-height: 28px; padding: 0 var(--space-2); border: 0; background: transparent; cursor: pointer; }
+
+    .footer { display: flex; justify-content: space-between; gap: var(--space-8); padding: var(--space-8) 0 var(--space-6); color: var(--color-muted); font: 12px/1.3 var(--font-mono); }
+    .toast-region { position: fixed; right: var(--space-8); bottom: var(--space-8); z-index: 2; width: min(360px, calc(100vw - 32px)); }
+    .hidden { display: none; }
+
+    @media (max-width: 960px) {
+      .main-content { padding: var(--space-6); }
+      .site-header { padding: var(--space-4) var(--space-6); }
+      .exhibition-intro { grid-template-columns: 1fr; min-height: auto; }
+      .token-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .showcase.span-4, .showcase.span-5, .showcase.span-7, .showcase.span-8 { grid-column: span 6; }
+      .showcase.span-12 { grid-column: span 12; }
+    }
+
+    @media (max-width: 640px) {
+      .site-header { align-items: flex-start; }
+      .brand-meta { display: none; }
+      .header-actions { margin-left: auto; }
+      .main-content { padding: var(--space-4); }
+      .exhibition-intro { padding: var(--space-6) 0; }
+      h1 { font-size: 42px; }
+      .section { padding: var(--space-6) 0; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: var(--space-2); }
+      .token-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .showcase-grid { gap: var(--space-4); }
+      .showcase.span-4, .showcase.span-5, .showcase.span-7, .showcase.span-8, .showcase.span-12 { grid-column: span 12; }
+      .showcase { padding: var(--space-4); }
+      .state-row { grid-template-columns: 72px minmax(0, 1fr); gap: var(--space-2); }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .field:first-child { grid-column: span 1; }
+      .status-list { grid-template-columns: 1fr; }
+      .footer { align-items: flex-start; flex-direction: column; gap: var(--space-2); }
+      .toast-region { right: var(--space-4); bottom: var(--space-4); }
+      .line-tool { top: 72px; right: var(--space-4); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">new-api</span>
+        <span class="brand-meta">/ DESIGN LANGUAGE</span>
+      </div>
+      <div class="header-actions">
+        <button class="button button-md button-quiet line-tool-trigger" id="line-tool-toggle" type="button" aria-expanded="false" aria-controls="line-tool"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span>线条参数</span></button>
+        <span class="brand-meta" id="theme-name">WARM WHITE</span>
+        <button class="icon-button button-sm" id="theme-toggle" type="button" aria-label="切换深灰主题" aria-pressed="false" title="切换主题"><i data-lucide="sun-moon" aria-hidden="true"></i></button>
+      </div>
+    </header>
+
+    <aside class="line-tool hidden" id="line-tool" aria-labelledby="line-tool-title">
+      <div class="line-tool-header">
+        <div><span class="specimen-label">TEMP / TUNER</span><h2 id="line-tool-title">线条参数</h2></div>
+        <button class="icon-button button-sm" id="line-tool-close" type="button" aria-label="关闭线条参数" title="关闭"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="line-tool-body">
+        <label class="range-field" for="grid-primary-size"><span class="range-heading"><span>主网格间距</span><output id="grid-primary-size-value">40 px</output></span><input id="grid-primary-size" type="range" min="16" max="80" step="4" value="40"></label>
+        <label class="range-field" for="grid-minor-size"><span class="range-heading"><span>次网格间距</span><output id="grid-minor-size-value">10 px</output></span><input id="grid-minor-size" type="range" min="4" max="20" step="2" value="10"></label>
+        <label class="range-field" for="grid-line-width"><span class="range-heading"><span>网格线宽</span><output id="grid-line-width-value">1 px</output></span><input id="grid-line-width" type="range" min="1" max="3" step="1" value="1"></label>
+        <label class="range-field" for="grid-primary-opacity"><span class="range-heading"><span>主网格深浅</span><output id="grid-primary-opacity-value">8%</output></span><input id="grid-primary-opacity" type="range" min="0" max="20" step="1" value="8"></label>
+        <label class="range-field" for="grid-minor-opacity"><span class="range-heading"><span>次网格深浅</span><output id="grid-minor-opacity-value">2%</output></span><input id="grid-minor-opacity" type="range" min="0" max="16" step="1" value="2"></label>
+      </div>
+      <div class="line-tool-footer"><div class="line-summary"><span class="line-ratio" id="line-ratio">主 / 次间距 1 : 4</span><code id="line-summary">40 / 10 px · 1 px · 8% / 2%</code></div><div class="inline-group"><button class="icon-button button-sm" id="line-tool-reset" type="button" aria-label="恢复默认线条参数" title="恢复默认"><i data-lucide="rotate-ccw" aria-hidden="true"></i></button><button class="button button-md button-secondary" id="line-tool-copy" type="button"><i data-lucide="copy" aria-hidden="true"></i>复制参数</button></div></div>
+    </aside>
+
+    <main class="main-content">
+      <section class="exhibition-intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">DL / 01 · COMPONENTS</p>
+          <h1 id="page-title">设计语言<br>组件展示</h1>
+        </div>
+        <div class="intro-note">
+          平面、直角、结构线。为高密度 AI API 工作流建立一套可辨识、可组合、可验证的界面基础。
+          <code class="intro-code">TOKENS / v1.0.0 / 2026</code>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="color-title">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">01 / FOUNDATION</span>
+            <h2 id="color-title">主题色彩</h2>
+          </div>
+          <span class="section-index">6 TOKENS</span>
+        </div>
+        <div class="token-grid">
+          <div class="token"><div class="swatch swatch-bg"></div><span class="token-name">background</span><code class="token-value">#F3F1EB</code></div>
+          <div class="token"><div class="swatch swatch-surface"></div><span class="token-name">surface</span><code class="token-value">#FAF9F5</code></div>
+          <div class="token"><div class="swatch swatch-accent"></div><span class="token-name">accent</span><code class="token-value">#E85F1A</code></div>
+          <div class="token"><div class="swatch swatch-success"></div><span class="token-name">success</span><code class="token-value">#4C806C</code></div>
+          <div class="token"><div class="swatch swatch-warning"></div><span class="token-name">warning</span><code class="token-value">#BC771F</code></div>
+          <div class="token"><div class="swatch swatch-error"></div><span class="token-name">error</span><code class="token-value">#BE3D36</code></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="controls-title">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">02 / CONTROLS</span>
+            <h2 id="controls-title">操作控件</h2>
+          </div>
+          <span class="section-index">STATES / 06</span>
+        </div>
+        <div class="showcase-grid">
+          <article class="showcase span-5">
+            <div class="showcase-head"><h3>按钮</h3><span class="specimen-label">36px / default</span></div>
+            <div class="showcase-body state-stack">
+              <div class="state-row"><span class="state-name">默认</span><div class="inline-group"><button class="button button-md button-primary" type="button" data-toast="请求已发送">发送请求 <i data-lucide="arrow-right" aria-hidden="true"></i></button></div></div>
+              <div class="state-row"><span class="state-name">次级</span><div class="inline-group"><button class="button button-md button-secondary" type="button">保存草稿</button><button class="button button-sm button-quiet" type="button" aria-label="更多操作" title="更多操作"><i data-lucide="more-horizontal" aria-hidden="true"></i></button></div></div>
+              <div class="state-row"><span class="state-name">危险</span><div class="inline-group"><button class="button button-lg button-error" type="button">删除当前渠道配置 <i data-lucide="x" aria-hidden="true"></i></button></div></div>
+              <div class="state-row"><span class="state-name">禁用</span><div class="inline-group"><button class="button button-md" type="button" disabled>不可用</button></div></div>
+              <div class="state-row"><span class="state-name">加载中</span><div class="inline-group"><button class="button button-md button-loading" type="button" disabled><span class="loader" aria-hidden="true"></span>处理中</button></div></div>
+              <div class="state-row"><span class="state-name">尺寸</span><div class="size-row"><button class="button button-sm button-primary" type="button" aria-label="新增" title="新增"><i data-lucide="plus" aria-hidden="true"></i></button><button class="button button-md button-secondary" type="button">保存渠道配置</button><button class="button button-lg button-quiet" type="button">发布当前渠道的全部配置项</button></div></div>
+            </div>
+          </article>
+
+          <article class="showcase span-7">
+            <div class="showcase-head"><h3>字段与选择器</h3><span class="specimen-label">FORM / 01</span></div>
+            <div class="showcase-body form-grid">
+              <div class="field"><label for="model-input">模型标识</label><input class="text-input" id="model-input" type="text" value="gpt-4.1-mini"><span class="field-note">使用等宽字体显示技术标识</span></div>
+              <div class="field"><label for="channel-select">渠道</label><div class="select-wrap"><select class="select-control" id="channel-select"><option>OpenAI Compatible</option><option>Anthropic</option><option>Google Gemini</option></select><i class="select-arrow" data-lucide="chevron-down" aria-hidden="true"></i></div></div>
+              <div class="field"><label for="error-input">错误字段</label><input class="text-input" id="error-input" type="text" value="invalid-key" aria-invalid="true" aria-describedby="error-message"><span class="field-error" id="error-message">! API 密钥格式无效</span></div>
+            </div>
+          </article>
+
+          <article class="showcase span-4">
+            <div class="showcase-head"><h3>分段控制</h3><span class="specimen-label">SELECTED</span></div>
+            <div class="showcase-body">
+              <div class="segmented" role="tablist" aria-label="视图模式">
+                <button class="segment" type="button" role="tab" aria-selected="true" data-tab="overview">概览</button>
+                <button class="segment" type="button" role="tab" aria-selected="false" data-tab="usage">用量</button>
+                <button class="segment" type="button" role="tab" aria-selected="false" data-tab="logs">日志</button>
+              </div>
+              <div class="tab-panel" id="tab-panel" role="tabpanel"><strong>概览视图</strong><p>展示当前渠道的基础状态与请求概况。</p></div>
+            </div>
+          </article>
+
+          <article class="showcase span-4">
+            <div class="showcase-head"><h3>开关与复选</h3><span class="specimen-label">BINARY</span></div>
+            <div class="showcase-body">
+              <div class="control-row"><div class="toggle-label"><strong>流式响应</strong><span>实时返回生成内容</span></div><button class="toggle" type="button" role="switch" aria-checked="true" aria-label="流式响应"></button></div>
+              <label class="check-row"><input type="checkbox" checked> <span>记录请求元数据</span></label>
+            </div>
+          </article>
+
+          <article class="showcase span-4">
+            <div class="showcase-head"><h3>单色图标</h3><span class="specimen-label">ICON / LINE</span></div>
+            <div class="showcase-body">
+              <div class="control-row"><span class="state-name">工具操作</span><div class="inline-group"><button class="icon-button button-sm utility-button" type="button" aria-label="复制标识" title="复制标识"><i data-lucide="copy" aria-hidden="true"></i></button><button class="icon-button button-sm utility-button" type="button" aria-label="打开详情" title="打开详情"><i data-lucide="external-link" aria-hidden="true"></i></button><button class="icon-button button-sm utility-button" type="button" aria-label="已置顶" aria-pressed="true" title="已置顶"><i data-lucide="pin" aria-hidden="true"></i></button></div></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="feedback-title">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">03 / FEEDBACK</span>
+            <h2 id="feedback-title">反馈与状态</h2>
+          </div>
+          <span class="section-index">SEMANTIC / 04</span>
+        </div>
+        <div class="showcase-grid">
+          <article class="showcase span-7">
+            <div class="showcase-head"><h3>语义状态</h3><span class="specimen-label">DOT + LABEL</span></div>
+            <div class="showcase-body status-list">
+              <div class="status status-success"><span class="status-dot" aria-hidden="true"></span><strong>正常</strong><span>Operational</span></div>
+              <div class="status status-warning"><span class="status-dot" aria-hidden="true"></span><strong>等待</strong><span>Pending</span></div>
+              <div class="status status-error"><span class="status-dot" aria-hidden="true"></span><strong>失败</strong><span>Failed</span></div>
+              <div class="status status-info"><span class="status-dot" aria-hidden="true"></span><strong>信息</strong><span>Informational</span></div>
+            </div>
+          </article>
+          <article class="showcase span-5">
+            <div class="showcase-head"><h3>完成提示</h3><span class="specimen-label">TOAST / INLINE</span></div>
+            <div class="showcase-body"><div class="toast"><div class="toast-content"><span class="toast-icon" aria-hidden="true"><i data-lucide="check" aria-hidden="true"></i></span><p>渠道配置已更新</p></div><button class="button-sm button-quiet" type="button" aria-label="关闭提示" title="关闭提示"><i data-lucide="x" aria-hidden="true"></i></button></div></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="data-title">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">04 / DATA</span>
+            <h2 id="data-title">数据表格</h2>
+          </div>
+          <span class="section-index">MONO / SCANNABLE</span>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead><tr><th scope="col">渠道名称</th><th scope="col">模型</th><th scope="col">延迟</th><th scope="col">今日请求</th><th scope="col">状态</th><th scope="col">操作</th></tr></thead>
+            <tbody>
+              <tr><td>生产主渠道</td><td class="mono">gpt-4.1-mini</td><td class="mono">842 ms</td><td class="mono">12,840</td><td><span class="table-status status-success"><span class="status-dot" aria-hidden="true"></span>正常</span></td><td><button class="button button-quiet" type="button">查看</button></td></tr>
+              <tr><td>备用渠道</td><td class="mono">claude-3-7-sonnet</td><td class="mono">1,204 ms</td><td class="mono">3,281</td><td><span class="table-status status-warning"><span class="status-dot" aria-hidden="true"></span>等待</span></td><td><button class="button button-quiet" type="button">查看</button></td></tr>
+              <tr><td>实验渠道</td><td class="mono">gemini-2.5-pro</td><td class="mono">—</td><td class="mono">0</td><td><span class="table-status status-error"><span class="status-dot" aria-hidden="true"></span>失败</span></td><td><button class="button button-quiet" type="button">查看</button></td></tr>
+            </tbody>
+          </table>
+          <div class="table-footer"><span>显示 1—3 / 共 12 个渠道</span><div class="inline-group"><button class="icon-button button-sm utility-button" type="button" aria-label="上一页" title="上一页"><i data-lucide="chevron-left" aria-hidden="true"></i></button><button class="icon-button button-sm utility-button" type="button" aria-label="下一页" title="下一页"><i data-lucide="chevron-right" aria-hidden="true"></i></button></div></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="overlay-title">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">05 / GEOMETRY</span>
+            <h2 id="overlay-title">浮层与几何</h2>
+          </div>
+          <span class="section-index">GRID / 10 PX</span>
+        </div>
+        <div class="showcase-grid">
+          <article class="showcase span-5">
+            <div class="showcase-head"><h3>菜单浮层</h3><span class="specimen-label">ELEVATION / 01</span></div>
+            <div class="showcase-body"><div class="menu-demo"><button class="button button-md button-secondary menu-trigger" type="button" aria-expanded="true">更多筛选 <i data-lucide="chevron-down" aria-hidden="true"></i></button><div class="menu" role="menu"><button class="menu-item" type="button" role="menuitem" aria-current="true">全部渠道 <i class="menu-item-check" data-lucide="check" aria-hidden="true"></i></button><button class="menu-item" type="button" role="menuitem">仅生产环境</button><div class="menu-divider"></div><button class="menu-item" type="button" role="menuitem">清除筛选</button></div></div></div>
+          </article>
+          <article class="showcase span-7">
+            <div class="showcase-head"><h3>品牌几何构成</h3><span class="specimen-label">EMPHASIS / 4 PX</span></div>
+            <div class="showcase-body"><div class="geometry-board"><span class="geometry-coord">X 040 · Y 080</span><span class="geometry-label">STRUCTURE / ACCENT / CIRCLE</span></div></div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer"><span>DESIGN LANGUAGE / COMPONENTS</span><span>new-api · SYSTEM 01</span></footer>
+    </main>
+  </div>
+
+  <div class="toast-region hidden" id="toast-region" aria-live="polite">
+    <div class="toast"><div class="toast-content"><span class="toast-icon" aria-hidden="true"><i data-lucide="check" aria-hidden="true"></i></span><p id="toast-message">操作完成</p></div><button class="button button-sm button-quiet" id="toast-close" type="button" aria-label="关闭提示" title="关闭提示"><i data-lucide="x" aria-hidden="true"></i></button></div>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const themeToggle = document.querySelector('#theme-toggle');
+    const themeName = document.querySelector('#theme-name');
+    const toastRegion = document.querySelector('#toast-region');
+    const toastMessage = document.querySelector('#toast-message');
+    const toastClose = document.querySelector('#toast-close');
+    const lineTool = document.querySelector('#line-tool');
+    const lineToolToggle = document.querySelector('#line-tool-toggle');
+    const lineToolClose = document.querySelector('#line-tool-close');
+    const lineToolReset = document.querySelector('#line-tool-reset');
+    const lineToolCopy = document.querySelector('#line-tool-copy');
+    const lineRatio = document.querySelector('#line-ratio');
+    const lineSummary = document.querySelector('#line-summary');
+    const lineControls = {
+      primarySize: document.querySelector('#grid-primary-size'),
+      minorSize: document.querySelector('#grid-minor-size'),
+      lineWidth: document.querySelector('#grid-line-width'),
+      primaryOpacity: document.querySelector('#grid-primary-opacity'),
+      minorOpacity: document.querySelector('#grid-minor-opacity')
+    };
+    const lineDefaults = { primarySize: 40, minorSize: 10, lineWidth: 1, primaryOpacity: 8, minorOpacity: 2 };
+
+    function setTheme(theme) {
+      const dark = theme === 'dark';
+      root.dataset.theme = dark ? 'dark' : 'light';
+      themeName.textContent = dark ? 'DARK GRAY' : 'WARM WHITE';
+      themeToggle.setAttribute('aria-pressed', String(dark));
+      themeToggle.setAttribute('aria-label', dark ? '切换暖白主题' : '切换深灰主题');
+      lineDefaults.primaryOpacity = dark ? 6 : 8;
+      lineDefaults.minorOpacity = 2;
+      lineControls.primaryOpacity.value = lineDefaults.primaryOpacity;
+      lineControls.minorOpacity.value = lineDefaults.minorOpacity;
+      updateLineSettings();
+      localStorage.setItem('design-language-theme', theme);
+    }
+
+    function updateLineSettings() {
+      const primarySize = Number(lineControls.primarySize.value);
+      const minorSize = Number(lineControls.minorSize.value);
+      const primaryOpacity = Number(lineControls.primaryOpacity.value);
+      const minorOpacity = Number(lineControls.minorOpacity.value);
+      const ratio = primarySize / minorSize;
+      root.style.setProperty('--grid-primary-size', `${primarySize}px`);
+      root.style.setProperty('--grid-minor-size', `${minorSize}px`);
+      root.style.setProperty('--grid-line-width', `${lineControls.lineWidth.value}px`);
+      root.style.setProperty('--grid-primary-opacity', `${primaryOpacity}%`);
+      root.style.setProperty('--grid-minor-opacity', `${minorOpacity}%`);
+      document.querySelector('#grid-primary-size-value').textContent = `${primarySize} px`;
+      document.querySelector('#grid-minor-size-value').textContent = `${minorSize} px`;
+      document.querySelector('#grid-line-width-value').textContent = `${lineControls.lineWidth.value} px`;
+      document.querySelector('#grid-primary-opacity-value').textContent = `${primaryOpacity}%`;
+      document.querySelector('#grid-minor-opacity-value').textContent = `${minorOpacity}%`;
+      lineRatio.textContent = `主 / 次间距 1 : ${Number.isInteger(ratio) ? ratio : ratio.toFixed(1)}`;
+      lineSummary.textContent = `${primarySize} / ${minorSize} px · ${lineControls.lineWidth.value} px · ${primaryOpacity}% / ${minorOpacity}%`;
+    }
+
+    function resetLineSettings() {
+      Object.entries(lineDefaults).forEach(([name, value]) => {
+        lineControls[name].value = value;
+      });
+      updateLineSettings();
+    }
+
+    function showToast(message) {
+      toastMessage.textContent = message;
+      toastRegion.classList.remove('hidden');
+    }
+
+    lineToolToggle.addEventListener('click', () => {
+      const isOpen = !lineTool.classList.contains('hidden');
+      lineTool.classList.toggle('hidden', isOpen);
+      lineToolToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+    lineToolClose.addEventListener('click', () => {
+      lineTool.classList.add('hidden');
+      lineToolToggle.setAttribute('aria-expanded', 'false');
+    });
+    lineToolReset.addEventListener('click', resetLineSettings);
+    lineToolCopy.addEventListener('click', () => {
+      if (!navigator.clipboard) {
+        showToast(lineSummary.textContent);
+        return;
+      }
+      navigator.clipboard.writeText(lineSummary.textContent).then(() => showToast('线条参数已复制')).catch(() => showToast(lineSummary.textContent));
+    });
+    Object.values(lineControls).forEach((control) => control.addEventListener('input', updateLineSettings));
+
+    themeToggle.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+    toastClose.addEventListener('click', () => toastRegion.classList.add('hidden'));
+    document.querySelectorAll('[data-toast]').forEach((button) => button.addEventListener('click', () => showToast(button.dataset.toast)));
+
+    document.querySelectorAll('[role="switch"]').forEach((toggle) => {
+      toggle.addEventListener('click', () => toggle.setAttribute('aria-checked', toggle.getAttribute('aria-checked') !== 'true'));
+    });
+
+    const tabCopy = {
+      overview: ['概览视图', '展示当前渠道的基础状态与请求概况。'],
+      usage: ['用量视图', '按时间查看请求量、Token 和费用变化。'],
+      logs: ['日志视图', '定位请求链路与上游响应状态。']
+    };
+    const tabPanel = document.querySelector('#tab-panel');
+    document.querySelectorAll('[role="tab"]').forEach((tab) => tab.addEventListener('click', () => {
+      document.querySelectorAll('[role="tab"]').forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+      tabPanel.innerHTML = `<strong>${tabCopy[tab.dataset.tab][0]}</strong><p>${tabCopy[tab.dataset.tab][1]}</p>`;
+    }));
+
+    const savedTheme = localStorage.getItem('design-language-theme');
+    if (savedTheme === 'dark') setTheme('dark');
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>
