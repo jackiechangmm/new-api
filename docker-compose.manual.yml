@@ -1,0 +1,68 @@
+name: new-api-manual
+
+services:
+  new-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: new-api-manual:local
+    ports:
+      - "127.0.0.1:${MANUAL_PORT:-5174}:3000"
+    volumes:
+      - manual_data:/data
+    env_file:
+      - path: .env.manual
+        required: false
+    environment:
+      SQL_DSN: postgresql://root:123456@postgres:5432/new-api
+      REDIS_CONN_STRING: redis://redis
+      TZ: Asia/Shanghai
+      BATCH_UPDATE_ENABLED: "true"
+      SESSION_COOKIE_SECURE: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - manual-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://localhost:3000/api/status | grep -o '\"success\":\\s*true' || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - manual-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep -qx PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: new-api
+    volumes:
+      - manual_pg_data:/var/lib/postgresql/data
+    networks:
+      - manual-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d new-api"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  manual_data:
+  manual_pg_data:
+
+networks:
+  manual-network:
+    driver: bridge

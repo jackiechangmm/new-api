@@ -7,8 +7,11 @@ DEV_API_SERVICE = new-api
 DEV_POSTGRES_DB = new-api
 DEV_POSTGRES_USER = root
 DEV_SQLITE_PATH ?= one-api.db
+MANUAL_COMPOSE_FILE = docker-compose.manual.yml
+MANUAL_COMPOSE = docker compose -f $(MANUAL_COMPOSE_FILE)
+MANUAL_BUILD_STAMP = .cache/manual-build.hash
 
-.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web reset-setup test
+.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web manual-up manual-down manual-reset manual-logs reset-setup test
 
 all: build-all-web start-api
 
@@ -38,6 +41,32 @@ dev-web:
 	@cd $(WEB_DIR) && bun run dev -- --host 0.0.0.0 --port $(DEV_WEB_PORT)
 
 dev: dev-api dev-web
+
+manual-up:
+	@set -e; \
+	mkdir -p .cache; \
+	source_hash="$$(git ls-files -co --exclude-standard -z -- . ':(exclude)*.md' ':(exclude).github/**' ':(exclude)docs/**' ':(exclude)Makefile' ':(exclude)makefile' ':(exclude)docker-compose*.yml' ':(exclude).env.manual*' | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | awk '{print $$1}')"; \
+	if [ ! -f "$(MANUAL_BUILD_STAMP)" ] || [ "$$source_hash" != "$$(cat "$(MANUAL_BUILD_STAMP)")" ]; then \
+		echo "构建人工测试镜像..."; \
+		$(MANUAL_COMPOSE) build; \
+		printf '%s\n' "$$source_hash" > "$(MANUAL_BUILD_STAMP)"; \
+	fi; \
+	echo "启动人工测试环境：http://127.0.0.1:$${MANUAL_PORT:-5174}"; \
+	if ! $(MANUAL_COMPOSE) up -d --wait; then \
+		echo "人工测试环境启动失败，应用日志："; \
+		$(MANUAL_COMPOSE) logs --tail=100 new-api; \
+		exit 1; \
+	fi
+
+manual-down:
+	@$(MANUAL_COMPOSE) stop
+
+manual-reset:
+	@$(MANUAL_COMPOSE) down -v --remove-orphans
+	@$(MAKE) manual-up
+
+manual-logs:
+	@$(MANUAL_COMPOSE) logs -f new-api
 
 # The main package embeds the ignored web/dist output and is covered after build-web.
 test:
