@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>第 1 课：Playground 请求与计费主链</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+  <div class="meta">第 1 课 · 10 分钟 · 项目源码导览</div>
+  <h1>Playground 不是另一套模型调用</h1>
+  <p class="lede">它是一个用户态入口，最后汇入统一 Relay。掌握这条主链，你就能开始在项目里做有边界的 vibe coding。</p>
+
+  <h2>今天的一个胜利</h2>
+  <p>读完后，你应该能回答：用户在 Playground 点一次发送，为什么既能调用上游模型，又会正确扣除用户额度？</p>
+
+  <h2>先看全景</h2>
+  <div class="flow" aria-label="请求流转图">
+    <div class="node">React: PlaygroundInput -> useChatHandler</div>
+    <div class="arrow">↓ POST /pg/chat/completions</div>
+    <div class="node">Gin: UserAuth + Distribute</div>
+    <div class="arrow">↓</div>
+    <div class="node">controller.Playground: 用户会话 -> 临时 playground Token</div>
+    <div class="arrow">↓</div>
+    <div class="node">controller.Relay: 校验 -> 估算 -> 价格 -> 预扣 -> 上游</div>
+    <div class="arrow">↓</div>
+    <div class="node">PostTextConsumeQuota: usage -> 实际 quota -> 结算 -> 日志</div>
+  </div>
+
+  <h2>三个关键节点</h2>
+  <h3>1. 前端只负责发起和展示</h3>
+  <p><a href="../../web/src/features/playground/index.tsx">Playground</a> 组合状态、选项、聊天和输入组件。<a href="../../web/src/features/playground/hooks/use-chat-handler.ts">useChatHandler</a> 根据 <code>config.stream</code> 选择流式或普通请求。请求体由 <code>buildChatCompletionPayload</code> 构造，流式响应只更新界面，不负责计费。</p>
+
+  <h3>2. 用户态入口负责“接入统一管线”</h3>
+  <p><a href="../../router/relay-router.go">/pg/chat/completions</a> 先走 <code>UserAuth</code>，所以用户用登录会话访问。<a href="../../controller/playground.go">controller.Playground</a> 调用 <code>GenRelayInfo</code> 确定分组，再创建一个内存中的 <code>playground-&lt;group&gt;</code> Token 上下文，最后直接调用 <code>Relay(OpenAI)</code>。</p>
+  <div class="callout"><strong>设计要点：</strong>临时 Token 是“复用 Token 上下文”的适配层，不是持久化 API Key。这样 Playground 可以复用分组、模型、渠道选择和计费代码。</div>
+
+  <h3>3. 计费是预扣再结算</h3>
+  <p><a href="../../controller/relay.go">Relay</a> 先估算输入 tokens，<a href="../../relay/helper/price.go">ModelPriceHelper</a> 得到预扣额度，然后调用 <code>PreConsumeBilling</code>。上游返回真实 usage 后，<a href="../../service/text_quota.go">PostTextConsumeQuota</a> 计算实际额度并调用 <code>SettleBilling</code>：补扣差额或返还多扣部分。失败则 defer 触发 <code>Refund</code>。</p>
+  <pre><code>预扣 = 根据估算 usage 先锁定额度
+实际 = 根据上游返回 usage 计算
+结算 = 实际 - 预扣
+失败 = 退回尚未结算的预扣</code></pre>
+  <p class="small">对于 Playground，<code>RelayInfo.IsPlayground</code> 会让 BillingSession 跳过真实 Token 额度调整，但钱包或订阅资金来源仍然参与计费。</p>
+
+  <h2>用源码练习一次定位</h2>
+  <ol>
+    <li>打开 <code>controller/playground.go</code>，找出哪一行把请求交给统一 Relay。</li>
+    <li>打开 <code>controller/relay.go</code>，找出预扣费调用和失败退款所在的两个位置。</li>
+    <li>打开 <code>service/text_quota.go</code>，找出上游 usage 进入结算的位置。</li>
+  </ol>
+  <p>心中填空：入口是 <code>____</code>；预扣是 <code>____</code>；实际结算是 <code>____</code>；失败退款是 <code>____</code>。</p>
+
+  <div class="quiz">
+    <h3>快速检查</h3>
+    <p>为什么 Playground 不直接复制一份模型调用和计费逻辑？</p>
+    <label><input type="radio" name="q" value="a"> 因为前端不能访问上游</label>
+    <label><input type="radio" name="q" value="b"> 因为临时 Token 让它复用统一 Relay 上下文</label>
+    <label><input type="radio" name="q" value="c"> 因为 Playground 不产生费用</label>
+    <button type="button" onclick="check()">检查答案</button>
+    <div id="feedback" role="status"></div>
+  </div>
+
+  <h2>下一步</h2>
+  <p>先阅读项目速查表：<a href="../reference/playground-flow.html">Playground 用户态调用与计费速查</a>。主要一手资料是 <a href="../../controller/relay.go">controller/relay.go</a> 和 <a href="../../service/billing_session.go">service/billing_session.go</a>。下次可以沿着一个真实流式响应，继续看渠道适配器如何产出 usage。</p>
+  <p class="small">有任何一处不清楚，直接问我；下一课会根据你的问题调整难度。</p>
+</main>
+<script>
+function check() {
+  const answer = document.querySelector('input[name="q"]:checked')
+  const feedback = document.getElementById('feedback')
+  feedback.textContent = answer && answer.value === 'b'
+    ? '正确：Playground 只改变入口和身份上下文，核心请求生命周期仍由 Relay 负责。'
+    : '再想一步：关注 controller.Playground 最后一行，以及它为什么先设置临时 Token。'
+  feedback.style.color = answer && answer.value === 'b' ? '#235789' : '#b65c2a'
+}
+</script>
+</body>
+</html>

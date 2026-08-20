@@ -1,0 +1,67 @@
+# Playground 用户态调用与计费速查
+
+## 一次请求的主链
+
+```text
+React Playground
+  -> POST /pg/chat/completions
+  -> middleware.UserAuth + Distribute
+  -> controller.Playground
+  -> GenRelayInfo + 临时 Token 上下文
+  -> controller.Relay(OpenAI)
+  -> 请求校验
+  -> GenRelayInfo
+  -> 估算 prompt tokens
+  -> ModelPriceHelper
+  -> PreConsumeBilling
+  -> 选择 Channel / 上游适配器
+  -> 读取上游 usage
+  -> PostTextConsumeQuota
+  -> SettleBilling
+  -> RecordConsumeLog
+```
+
+## 三个关键对象
+
+| 对象 | 作用 | 主要位置 |
+|---|---|---|
+| `PlaygroundConfig` | 前端当前 group、model、stream、参数 | `web/src/features/playground/types.ts` |
+| `RelayInfo` | 一次请求的后端运行时上下文 | `relay/common/relay_info.go` |
+| `BillingSession` | 预扣、补扣、返还的生命周期 | `service/billing_session.go` |
+
+## Playground 的特殊点
+
+- 用户通过会话登录，路由使用 `UserAuth`，不是 `/v1` 的 `TokenAuth`。
+- `controller.Playground` 先生成 RelayInfo，再创建内存中的 `playground-<group>` 临时 Token，并调用 `SetupContextForToken`。
+- 之后复用普通 `controller.Relay`，所以模型路由、渠道适配、计费和日志不会在 Playground 里另写一套。
+- `RelayInfo.IsPlayground` 让计费会话跳过真实 Token 额度调整；用户钱包/订阅仍然参与计费。
+
+## 计费时序
+
+1. `ModelPriceHelper` 用估算的 prompt tokens 和模型/分组倍率计算 `QuotaToPreConsume`。
+2. `PreConsumeBilling` 创建 `BillingSession` 并从钱包或订阅预扣。
+3. 上游成功返回 usage 后，`PostTextConsumeQuota` 计算实际 quota。
+4. `SettleBilling` 结算差额：实际大于预扣则补扣，小于预扣则返还。
+5. 下游失败时 `Relay` 的 defer 调用 `BillingSession.Refund`。
+6. `RecordConsumeLog` 写入 token、quota、模型、分组和计费明细。
+
+## 修改导航
+
+- 改 Playground 控件或请求体：`web/src/features/playground/`。
+- 改用户态入口或鉴权上下文：`controller/playground.go`、`router/relay-router.go`。
+- 改所有文本请求的统一生命周期：`controller/relay.go`。
+- 改模型价格/预扣：`relay/helper/price.go`。
+- 改钱包/订阅结算：`service/billing_session.go`、`service/funding_source.go`。
+- 改实际 token 结算或日志：`service/text_quota.go`。
+
+## Vibe coding 检查清单
+
+```text
+入口是什么？
+请求格式是什么？
+状态放在前端 hook 还是 gin.Context / RelayInfo？
+预扣发生在哪里？实际 usage 从哪里来？
+失败会 Refund 吗？
+Playground 和 /v1 的差异是什么？
+能否用一个现有测试或最小源码检索验证？
+```
