@@ -55,6 +55,13 @@ func TestStandardHTTPRelayAcceptsSessionButRealtimeDoesNot(t *testing.T) {
 	assert.Equal(t, http.StatusServiceUnavailable, chatResponse.Code)
 	assert.NotContains(t, chatResponse.Body.String(), "AUTH_")
 
+	forbiddenGroupRequest := httptest.NewRequest(http.MethodPost, "/v1/chat/completions", strings.NewReader(`{"model":"missing-channel-model","group":"not-a-user-group","messages":[]}`))
+	forbiddenGroupRequest.Header.Set("Authorization", "Bearer "+accessToken)
+	forbiddenGroupRequest.Header.Set("Content-Type", "application/json")
+	forbiddenGroupResponse := httptest.NewRecorder()
+	engine.ServeHTTP(forbiddenGroupResponse, forbiddenGroupRequest)
+	assert.Equal(t, http.StatusForbidden, forbiddenGroupResponse.Code)
+
 	for _, test := range []struct {
 		method string
 		path   string
@@ -76,6 +83,22 @@ func TestStandardHTTPRelayAcceptsSessionButRealtimeDoesNot(t *testing.T) {
 	realtimeResponse := httptest.NewRecorder()
 	engine.ServeHTTP(realtimeResponse, realtimeRequest)
 	assert.Equal(t, http.StatusUnauthorized, realtimeResponse.Code)
+}
+
+func TestLegacyPlaygroundEndpointIsDisabled(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	_, _, accessToken := createRelaySession(t, "legacy-playground-user")
+	engine := gin.New()
+	SetRelayRouter(engine)
+
+	request := httptest.NewRequest(http.MethodPost, "/pg/chat/completions", strings.NewReader(`{"model":"gpt-test","messages":[]}`))
+	request.Header.Set("Authorization", "Bearer "+accessToken)
+	request.Header.Set("Content-Type", "application/json")
+	response := httptest.NewRecorder()
+	engine.ServeHTTP(response, request)
+
+	require.Equal(t, http.StatusGone, response.Code)
+	assert.Contains(t, response.Body.String(), "playground_endpoint_disabled")
 }
 
 func TestSessionChatUsesStandardRelayResponse(t *testing.T) {

@@ -84,8 +84,8 @@ func Distribute() func(c *gin.Context) {
 				}
 				var selectGroup string
 				usingGroup := common.GetContextKeyString(c, constant.ContextKeyUsingGroup)
-				// check path is /pg/chat/completions
-				if strings.HasPrefix(c.Request.URL.Path, "/pg/chat/completions") {
+				// 会话 Relay 允许用户从自己的可用分组中选择分组；API token 行为保持不变。
+				if strings.HasPrefix(c.Request.URL.Path, "/pg/chat/completions") || common.GetContextKeyBool(c, constant.ContextKeyRelayIsPlayground) {
 					playgroundRequest := &dto.PlayGroundRequest{}
 					err = common.UnmarshalBodyReusable(c, playgroundRequest)
 					if err != nil {
@@ -399,7 +399,7 @@ func getModelRequest(c *gin.Context) (*ModelRequest, bool, error) {
 		}
 		c.Set("relay_mode", relayMode)
 	}
-	if strings.HasPrefix(c.Request.URL.Path, "/pg/chat/completions") {
+	if strings.HasPrefix(c.Request.URL.Path, "/pg/chat/completions") || common.GetContextKeyBool(c, constant.ContextKeyRelayIsPlayground) {
 		// playground chat completions
 		req, err := getModelFromRequest(c)
 		if err != nil {

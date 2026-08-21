@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"net/http"
 
 	"github.com/QuantumNous/new-api/middleware"
 	"github.com/QuantumNous/new-api/model"
@@ -11,6 +12,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+func PlaygroundDisabled(c *gin.Context) {
+	c.JSON(http.StatusGone, gin.H{
+		"error": types.OpenAIError{
+			Message: "Playground endpoint has moved to /v1/chat/completions",
+			Type:    "invalid_request_error",
+			Code:    "playground_endpoint_disabled",
+		},
+	})
+}
 
 func Playground(c *gin.Context) {
 	var newAPIError *types.NewAPIError
