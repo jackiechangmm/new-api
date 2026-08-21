@@ -153,7 +153,7 @@ func SetRelayRouter(router *gin.Engine) {
 			controller.Relay(c, types.RelayFormatOpenAI)
 		})
 
-		// not implemented; keep these compatibility endpoints token-only.
+		// 未实现的兼容接口继续保持仅 API token 认证。
 		tokenOnlyHTTPRouter := relayV1Router.Group("")
 		tokenOnlyHTTPRouter.Use(middleware.TokenAuth(), middleware.ModelRequestRateLimit(), middleware.Distribute())
 		tokenOnlyHTTPRouter.POST("/images/variations", controller.RelayNotImplemented)
