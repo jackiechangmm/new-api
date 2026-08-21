@@ -32,6 +32,150 @@ For commercial licensing, please contact support@quantumnous.com
 
 /* Shiki dual themes: token colors follow dark theme (pre background stays `bg-background` on the block) */
 @layer components {
+  .bululu-home-page {
+    --bululu-line: rgba(40, 40, 37, 0.42);
+    --bululu-surface: #faf9f5;
+    min-height: 100svh;
+    background-color: #f3f1eb;
+    background-image:
+      linear-gradient(to right, rgba(40, 40, 37, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(40, 40, 37, 0.02) 1px, transparent 1px),
+      linear-gradient(to right, rgba(40, 40, 37, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(40, 40, 37, 0.08) 1px, transparent 1px);
+    background-size:
+      10px 10px,
+      10px 10px,
+      40px 40px,
+      40px 40px;
+  }
+
+  .dark .bululu-home-page {
+    --bululu-line: rgba(233, 231, 223, 0.45);
+    --bululu-surface: #282826;
+    background-color: #20201e;
+    background-image:
+      linear-gradient(to right, rgba(233, 231, 223, 0.02) 1px, transparent 1px),
+      linear-gradient(
+        to bottom,
+        rgba(233, 231, 223, 0.02) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to right, rgba(233, 231, 223, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(233, 231, 223, 0.06) 1px, transparent 1px);
+    background-size:
+      10px 10px,
+      10px 10px,
+      40px 40px,
+      40px 40px;
+  }
+
+  .bululu-home-outline {
+    border: 1px solid var(--bululu-line);
+  }
+
+  .bululu-home-divider-top {
+    border-block-start: 1px solid var(--bululu-line);
+  }
+
+  .bululu-home-divider-bottom {
+    border-block-end: 1px solid var(--bululu-line);
+  }
+
+  .bululu-home-slider-handle {
+    border: 1px solid #faf9f5;
+  }
+
+  .dark .bululu-home-slider-handle {
+    border-color: #282826;
+  }
+
+  .bululu-home-hero,
+  .bululu-home-section {
+    border-block-end: 1px solid var(--bululu-line);
+  }
+
+  .bululu-home-hero-content,
+  .bululu-home-section-heading,
+  .bululu-home-metric-grid {
+    border-block-end: 1px solid var(--bululu-line);
+  }
+
+  .bululu-home-content-rail {
+    border-inline: 1px solid var(--bululu-line);
+  }
+
+  .bululu-home-metric-grid > * {
+    background: var(--bululu-surface);
+    border-block-end: 1px solid var(--bululu-line);
+  }
+
+  .bululu-home-routing-layout > :first-child {
+    border-block-end: 1px solid var(--bululu-line);
+  }
+
+  @media (min-width: 768px) {
+    .bululu-home-metric-grid > * {
+      border-block-end: 0;
+      border-inline-end: 1px solid var(--bululu-line);
+    }
+
+    .bululu-home-metric-grid > :last-child {
+      border-inline-end: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bululu-home-routing-layout > :first-child {
+      border-block-end: 0;
+      border-inline-end: 1px solid var(--bululu-line);
+    }
+  }
+
+  .bululu-home-marquee {
+    border-block-end: 1px solid var(--bululu-line);
+    border-inline: 1px solid var(--bululu-line);
+    background: #20201e;
+    color: #e9e7df;
+  }
+
+  .dark .bululu-home-marquee {
+    background: #e9e7df;
+    color: #282825;
+  }
+
+  .bululu-marquee {
+    animation: bululu-marquee 30s linear infinite;
+  }
+
+  .bululu-wire {
+    stroke-dasharray: 6 6;
+    animation: bululu-wire 1.2s linear infinite;
+  }
+
+  @keyframes bululu-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes bululu-wire {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bululu-home *,
+    .bululu-home *::before,
+    .bululu-home *::after {
+      animation-duration: 0ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0ms !important;
+    }
+  }
+}
+@layer components {
   .shiki span {
     color: var(--shiki-light) !important;
     font-style: var(--shiki-light-font-style) !important;

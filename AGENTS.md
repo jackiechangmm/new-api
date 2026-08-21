@@ -158,6 +158,7 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 
 ### 常用文档
 - `docs/RESOURCES.md` 账务、模型转发、图片与异步任务相关代码的索引。
+- `docs/design-language.md` 视觉设计文档。`web/prototypes/design-language-components.html` 组件参考。
 
 ### 常用命令
 
