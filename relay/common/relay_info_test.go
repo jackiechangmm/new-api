@@ -96,6 +96,17 @@ func TestGenRelayInfoMarksSessionRelayAsPlayground(t *testing.T) {
 	assert.Equal(t, "/v1/chat/completions", info.RequestURLPath)
 }
 
+func TestGenRelayInfoPreservesLegacyPlaygroundPath(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+	ctx.Request = httptest.NewRequest("POST", "/pg/chat/completions", nil)
+
+	info, err := GenRelayInfo(ctx, types.RelayFormatOpenAI, &dto.GeneralOpenAIRequest{Model: "gpt-test"}, nil)
+	require.NoError(t, err)
+	assert.True(t, info.IsPlayground)
+	assert.Equal(t, "/v1/chat/completions", info.RequestURLPath)
+}
+
 func TestGenRelayInfoCapturesRequestReasoningEffort(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	tests := []struct {

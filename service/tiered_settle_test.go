@@ -3,7 +3,9 @@ package service
 import (
 	"math"
 	"math/rand"
+	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/pkg/billingexpr"
@@ -512,6 +514,57 @@ func TestBillingSessionReserveWalletTopUpDecrementsBalance(t *testing.T) {
 	userQuota, err := model.GetUserQuota(userID, false)
 	require.NoError(t, err)
 	assert.Equal(t, 450_000, userQuota)
+}
+
+func TestPlaygroundBillingDoesNotTouchTokenQuotaOnSettleOrRefund(t *testing.T) {
+	truncate(t)
+	const userID = 703
+	const tokenID = 703
+	seedUser(t, userID, 500_000)
+	seedToken(t, tokenID, userID, "session-token", 750_000)
+
+	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+	info := &relaycommon.RelayInfo{
+		UserId:          userID,
+		TokenId:         tokenID,
+		TokenKey:        "session-token",
+		TokenUnlimited:  false,
+		IsPlayground:    true,
+		OriginModelName: "test-model",
+	}
+
+	require.Nil(t, PreConsumeBilling(ctx, 100_000, info))
+	userQuota, err := model.GetUserQuota(userID, false)
+	require.NoError(t, err)
+	require.Equal(t, 400_000, userQuota)
+	token, err := model.GetTokenById(tokenID)
+	require.NoError(t, err)
+	require.Equal(t, 750_000, token.RemainQuota)
+
+	require.NoError(t, SettleBilling(ctx, info, 150_000))
+	userQuota, err = model.GetUserQuota(userID, false)
+	require.NoError(t, err)
+	require.Equal(t, 350_000, userQuota)
+	token, err = model.GetTokenById(tokenID)
+	require.NoError(t, err)
+	require.Equal(t, 750_000, token.RemainQuota)
+
+	refundInfo := &relaycommon.RelayInfo{
+		UserId:          userID,
+		TokenId:         tokenID,
+		TokenKey:        "session-token",
+		IsPlayground:    true,
+		OriginModelName: "test-model",
+	}
+	require.Nil(t, PreConsumeBilling(ctx, 20_000, refundInfo))
+	refundInfo.Billing.Refund(ctx)
+	require.Eventually(t, func() bool {
+		quota, queryErr := model.GetUserQuota(userID, false)
+		return queryErr == nil && quota == 350_000
+	}, time.Second, 10*time.Millisecond)
+	token, err = model.GetTokenById(tokenID)
+	require.NoError(t, err)
+	require.Equal(t, 750_000, token.RemainQuota)
 }
 
 func TestTryTieredSettleUsesFinalGroupAfterRetry(t *testing.T) {
