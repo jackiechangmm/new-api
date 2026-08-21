@@ -47,6 +47,22 @@ func TestStandardHTTPRelayAcceptsSessionButRealtimeDoesNot(t *testing.T) {
 	assert.Equal(t, http.StatusServiceUnavailable, chatResponse.Code)
 	assert.NotContains(t, chatResponse.Body.String(), "AUTH_")
 
+	for _, test := range []struct {
+		method string
+		path   string
+	}{
+		{method: http.MethodGet, path: "/v1/files"},
+		{method: http.MethodDelete, path: "/v1/models/blocked-model"},
+	} {
+		t.Run(test.method+" "+test.path, func(t *testing.T) {
+			request := httptest.NewRequest(test.method, test.path, nil)
+			request.Header.Set("Authorization", "Bearer "+accessToken)
+			response := httptest.NewRecorder()
+			engine.ServeHTTP(response, request)
+			assert.Equal(t, http.StatusUnauthorized, response.Code)
+		})
+	}
+
 	realtimeRequest := httptest.NewRequest(http.MethodGet, "/v1/realtime?model=missing-channel-model", nil)
 	realtimeRequest.Header.Set("Authorization", "Bearer "+accessToken)
 	realtimeResponse := httptest.NewRecorder()
