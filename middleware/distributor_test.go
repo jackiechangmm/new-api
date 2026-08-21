@@ -13,6 +13,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestGetModelRequestKeepsSessionGroupWhenRequestOmitsGroup(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+	ctx.Request = httptest.NewRequest(http.MethodPost, "/v1/chat/completions", strings.NewReader(`{"model":"gpt-test","messages":[]}`))
+	ctx.Request.Header.Set("Content-Type", "application/json")
+	common.SetContextKey(ctx, constant.ContextKeyRelayIsPlayground, true)
+	common.SetContextKey(ctx, constant.ContextKeyTokenGroup, "default")
+
+	modelRequest, _, err := getModelRequest(ctx)
+	require.NoError(t, err)
+	assert.Equal(t, "gpt-test", modelRequest.Model)
+	assert.Empty(t, modelRequest.Group)
+	assert.Equal(t, "default", common.GetContextKeyString(ctx, constant.ContextKeyTokenGroup))
+}
+
 func TestGetModelRequestUsesGroupForSessionRelay(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())

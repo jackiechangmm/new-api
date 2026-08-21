@@ -407,7 +407,9 @@ func getModelRequest(c *gin.Context) (*ModelRequest, bool, error) {
 		}
 		modelRequest.Model = req.Model
 		modelRequest.Group = req.Group
-		common.SetContextKey(c, constant.ContextKeyTokenGroup, modelRequest.Group)
+		if req.Group != "" {
+			common.SetContextKey(c, constant.ContextKeyTokenGroup, req.Group)
+		}
 	}
 
 	return &modelRequest, shouldSelectChannel, nil
