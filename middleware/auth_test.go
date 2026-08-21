@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/QuantumNous/new-api/common"
+	"github.com/QuantumNous/new-api/constant"
 	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/service"
 	"github.com/gin-gonic/gin"
@@ -82,6 +83,60 @@ func createMiddlewarePATUser(t *testing.T, username, token string) *model.User {
 	}
 	require.NoError(t, model.DB.Create(user).Error)
 	return user
+}
+
+func TestSetupSessionRelayContextBuildsPlaygroundContext(t *testing.T) {
+	setupDashboardAuthMiddlewareTest(t)
+	user := &model.User{
+		Username: "session-relay-user", Password: "password-placeholder", Role: common.RoleCommonUser,
+		Status: common.UserStatusEnabled, Group: "default", AuthVersion: 1,
+	}
+	require.NoError(t, model.DB.Create(user).Error)
+	now := time.Now().Unix()
+	session := &model.UserSession{
+		SID: "session-relay", UserID: user.Id, Version: 1, UserAuthVersion: user.AuthVersion,
+		Status: model.UserSessionStatusActive, RefreshHash: "refresh-hash", LoginMethod: "password",
+		LastActiveAt: now, ExpiresAt: now + 3600,
+	}
+	require.NoError(t, model.CreateUserSession(session))
+	accessToken, _, err := service.IssueAccessToken(service.AuthIdentity{
+		UserID: user.Id, SessionID: session.SID, UserAuthVersion: user.AuthVersion, SessionVersion: session.Version,
+	})
+	require.NoError(t, err)
+
+	router := gin.New()
+	router.POST("/relay", TokenOrUserAuth(), SetupSessionRelayContext(), func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"id":            c.GetInt("id"),
+			"token_id":      c.GetInt("token_id"),
+			"token_key":     c.GetString("token_key"),
+			"token_group":   common.GetContextKeyString(c, constant.ContextKeyTokenGroup),
+			"is_playground": common.GetContextKeyBool(c, constant.ContextKeyRelayIsPlayground),
+			"authorization": c.GetHeader("Authorization"),
+		})
+	})
+
+	request := httptest.NewRequest(http.MethodPost, "/relay", nil)
+	request.Header.Set("Authorization", "Bearer "+accessToken)
+	response := httptest.NewRecorder()
+	router.ServeHTTP(response, request)
+
+	require.Equal(t, http.StatusOK, response.Code)
+	var body struct {
+		ID            int    `json:"id"`
+		TokenID       int    `json:"token_id"`
+		TokenKey      string `json:"token_key"`
+		TokenGroup    string `json:"token_group"`
+		IsPlayground  bool   `json:"is_playground"`
+		Authorization string `json:"authorization"`
+	}
+	require.NoError(t, common.Unmarshal(response.Body.Bytes(), &body))
+	assert.Equal(t, user.Id, body.ID)
+	assert.Zero(t, body.TokenID)
+	assert.Empty(t, body.TokenKey)
+	assert.Equal(t, user.Group, body.TokenGroup)
+	assert.True(t, body.IsPlayground)
+	assert.Empty(t, body.Authorization)
 }
 
 func TestUserAuthAllowsOpaqueDottedPAT(t *testing.T) {

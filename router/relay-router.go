@@ -69,12 +69,10 @@ func SetRelayRouter(router *gin.Engine) {
 	relayV1Router := router.Group("/v1")
 	relayV1Router.Use(middleware.RouteTag("relay"))
 	relayV1Router.Use(middleware.SystemPerformanceCheck())
-	relayV1Router.Use(middleware.TokenAuth())
-	relayV1Router.Use(middleware.ModelRequestRateLimit())
 	{
 		// WebSocket 路由（统一到 Relay）
 		wsRouter := relayV1Router.Group("")
-		wsRouter.Use(middleware.Distribute())
+		wsRouter.Use(middleware.TokenAuth(), middleware.ModelRequestRateLimit(), middleware.Distribute())
 		wsRouter.GET("/realtime", func(c *gin.Context) {
 			controller.Relay(c, types.RelayFormatOpenAIRealtime)
 		})
@@ -82,7 +80,7 @@ func SetRelayRouter(router *gin.Engine) {
 	{
 		//http router
 		httpRouter := relayV1Router.Group("")
-		httpRouter.Use(middleware.Distribute())
+		httpRouter.Use(middleware.TokenOrUserAuth(), middleware.SetupSessionRelayContext(), middleware.ModelRequestRateLimit(), middleware.Distribute())
 
 		// claude related routes
 		httpRouter.POST("/messages", func(c *gin.Context) {

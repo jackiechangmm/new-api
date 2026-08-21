@@ -272,6 +272,26 @@ func TokenOrUserAuth() func(c *gin.Context) {
 	}
 }
 
+// SetupSessionRelayContext 将已验证的用户会话适配为标准 Relay 所需的上下文，不创建持久化令牌。
+func SetupSessionRelayContext() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		if _, ok := GetSessionAuthIdentity(c); !ok {
+			c.Next()
+			return
+		}
+
+		userGroup := common.GetContextKeyString(c, constant.ContextKeyUserGroup)
+		common.SetContextKey(c, constant.ContextKeyUsingGroup, userGroup)
+		common.SetContextKey(c, constant.ContextKeyRelayIsPlayground, true)
+		if err := SetupContextForToken(c, &model.Token{UserId: c.GetInt("id"), Group: userGroup}); err != nil {
+			abortWithOpenAiMessage(c, http.StatusInternalServerError, "用户会话 Relay 上下文初始化失败")
+			return
+		}
+		c.Request.Header.Del("Authorization")
+		c.Next()
+	}
+}
+
 // TokenAuthReadOnly 宽松版本的令牌认证中间件，用于只读查询接口。
 // 只验证令牌 key 是否存在，不检查令牌状态、过期时间和额度。
 // 即使令牌已过期、已耗尽或已禁用，也允许访问。

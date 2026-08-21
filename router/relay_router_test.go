@@ -7,13 +7,52 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/QuantumNous/new-api/common"
+	"github.com/QuantumNous/new-api/i18n"
 	"github.com/QuantumNous/new-api/model"
+	"github.com/QuantumNous/new-api/service"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestStandardHTTPRelayAcceptsSessionButRealtimeDoesNot(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	user := model.User{
+		Username: "relay-session-user", Status: common.UserStatusEnabled, Group: "default", Quota: 100, AuthVersion: 1,
+	}
+	require.NoError(t, model.DB.Create(&user).Error)
+	now := time.Now().Unix()
+	session := &model.UserSession{
+		SID: "relay-session", UserID: user.Id, Version: 1, UserAuthVersion: user.AuthVersion,
+		Status: model.UserSessionStatusActive, RefreshHash: "refresh-hash", LoginMethod: "password",
+		LastActiveAt: now, ExpiresAt: now + 3600,
+	}
+	require.NoError(t, model.CreateUserSession(session))
+	accessToken, _, err := service.IssueAccessToken(service.AuthIdentity{
+		UserID: user.Id, SessionID: session.SID, UserAuthVersion: user.AuthVersion, SessionVersion: session.Version,
+	})
+	require.NoError(t, err)
+
+	engine := gin.New()
+	SetRelayRouter(engine)
+
+	chatRequest := httptest.NewRequest(http.MethodPost, "/v1/chat/completions", strings.NewReader(`{"model":"missing-channel-model","messages":[]}`))
+	chatRequest.Header.Set("Authorization", "Bearer "+accessToken)
+	chatRequest.Header.Set("Content-Type", "application/json")
+	chatResponse := httptest.NewRecorder()
+	engine.ServeHTTP(chatResponse, chatRequest)
+	assert.Equal(t, http.StatusServiceUnavailable, chatResponse.Code)
+	assert.NotContains(t, chatResponse.Body.String(), "AUTH_")
+
+	realtimeRequest := httptest.NewRequest(http.MethodGet, "/v1/realtime?model=missing-channel-model", nil)
+	realtimeRequest.Header.Set("Authorization", "Bearer "+accessToken)
+	realtimeResponse := httptest.NewRecorder()
+	engine.ServeHTTP(realtimeResponse, realtimeRequest)
+	assert.Equal(t, http.StatusUnauthorized, realtimeResponse.Code)
+}
 
 func TestListModelsSupportsOpenAIAndGeminiAuthentication(t *testing.T) {
 	setupRelayRouterTestDB(t)
@@ -92,6 +131,7 @@ func TestListModelsSupportsOpenAIAndGeminiAuthentication(t *testing.T) {
 func setupRelayRouterTestDB(t *testing.T) {
 	t.Helper()
 
+	require.NoError(t, i18n.Init())
 	gin.SetMode(gin.TestMode)
 	originalIsMasterNode := common.IsMasterNode
 	originalRedisEnabled := common.RedisEnabled
@@ -107,7 +147,7 @@ func setupRelayRouterTestDB(t *testing.T) {
 	require.NoError(t, os.Setenv("SQL_DSN", "local"))
 	require.NoError(t, model.InitDB())
 	model.LOG_DB = model.DB
-	require.NoError(t, model.DB.AutoMigrate(&model.User{}, &model.Token{}, &model.Ability{}))
+	require.NoError(t, model.DB.AutoMigrate(&model.User{}, &model.Token{}, &model.Ability{}, &model.UserSession{}))
 
 	t.Cleanup(func() {
 		if sqlDB, err := model.DB.DB(); err == nil {
