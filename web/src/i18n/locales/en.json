@@ -5377,6 +5377,9 @@
     "OpenClaw 接入指南": "OpenClaw integration guide",
     "Claude Code 配置": "Claude Code setup",
     "上游节点监控面板": "Upstream node monitor",
-    "某新锐香氛品牌": "EMERGING FRAGRANCE BRAND"
+    "某新锐香氛品牌": "EMERGING FRAGRANCE BRAND",
+    "Amount to pay (local currency):": "Amount to pay (local currency):",
+    "Custom Amount ($)": "Custom Amount ($)",
+    "Local currency": "Local currency"
   }
 }
