@@ -4,6 +4,9 @@
 .vscode
 .gitignore
 Makefile
+makefile
+docker-compose*.yml
+.env.manual*
 docs
 .eslintcache
 .gocache
