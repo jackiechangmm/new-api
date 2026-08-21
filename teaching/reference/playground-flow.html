@@ -4,10 +4,9 @@
 
 ```text
 React Playground
-  -> POST /pg/chat/completions
-  -> middleware.UserAuth + Distribute
-  -> controller.Playground
-  -> GenRelayInfo + 临时 Token 上下文
+  -> POST /v1/chat/completions
+  -> TokenOrUserAuth + SetupSessionRelayContext
+  -> ModelRequestRateLimit + Distribute
   -> controller.Relay(OpenAI)
   -> 请求校验
   -> GenRelayInfo
@@ -31,8 +30,9 @@ React Playground
 
 ## Playground 的特殊点
 
-- 用户通过会话登录，路由使用 `UserAuth`，不是 `/v1` 的 `TokenAuth`。
-- `controller.Playground` 先生成 RelayInfo，再创建内存中的 `playground-<group>` 临时 Token，并调用 `SetupContextForToken`。
+- 用户会话调用标准 `/v1` 同步 Relay，`TokenOrUserAuth` 负责会话或 API token 鉴权。
+- `SetupSessionRelayContext` 创建不落库的 `playground-<group>` 虚拟 Token 上下文，并移除会话 JWT。
+- 请求体中的 `group` 只能选择用户可用分组。
 - 之后复用普通 `controller.Relay`，所以模型路由、渠道适配、计费和日志不会在 Playground 里另写一套。
 - `RelayInfo.IsPlayground` 让计费会话跳过真实 Token 额度调整；用户钱包/订阅仍然参与计费。
 
@@ -48,7 +48,7 @@ React Playground
 ## 修改导航
 
 - 改 Playground 控件或请求体：`web/src/features/playground/`。
-- 改用户态入口或鉴权上下文：`controller/playground.go`、`router/relay-router.go`。
+- 改用户态入口或鉴权上下文：`middleware/auth.go`、`middleware/distributor.go`、`router/relay-router.go`。
 - 改所有文本请求的统一生命周期：`controller/relay.go`。
 - 改模型价格/预扣：`relay/helper/price.go`。
 - 改钱包/订阅结算：`service/billing_session.go`、`service/funding_source.go`。
@@ -65,3 +65,7 @@ React Playground
 Playground 和 /v1 的差异是什么？
 能否用一个现有测试或最小源码检索验证？
 ```
+
+## 历史实现
+
+旧版本曾通过 `/pg/chat/completions` 和 `controller.Playground` 接入统一 Relay；该路径现已停用并返回 `410 Gone`。

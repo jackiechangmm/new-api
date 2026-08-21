@@ -187,7 +187,7 @@
       "post": {
         "summary": "创建聊天对话",
         "deprecated": false,
-        "description": "根据对话历史创建模型响应。支持流式和非流式响应。\n\n兼容 OpenAI Chat Completions API。\n",
+        "description": "根据对话历史创建模型响应。支持流式和非流式响应。\n\n兼容 OpenAI Chat Completions API。用户会话可使用面板 Access Token，API 客户端可使用 API token。会话请求可通过 group 选择用户可用分组。\n",
         "operationId": "createChatCompletion",
         "tags": [
           "OpenAI格式(Chat)"
@@ -2672,6 +2672,10 @@
             },
             "description": "对话消息列表"
           },
+          "group": {
+            "type": "string",
+            "description": "用户会话调用时可选的用户可用分组"
+          },
           "temperature": {
             "type": "number",
             "minimum": 0,
@@ -4601,7 +4605,7 @@
       "BearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "使用 Bearer Token 认证。\n格式: `Authorization: Bearer sk-xxxxxx`\n"
+        "description": "使用 Bearer Token 认证。可使用 API token 或面板 Access Token。格式: `Authorization: Bearer <token>`\n"
       },
       "SessionAuth": {
         "type": "apiKey",

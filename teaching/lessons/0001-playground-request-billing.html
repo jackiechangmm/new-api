@@ -18,10 +18,10 @@
   <h2>先看全景</h2>
   <div class="flow" aria-label="请求流转图">
     <div class="node">React: PlaygroundInput -> useChatHandler</div>
-    <div class="arrow">↓ POST /pg/chat/completions</div>
-    <div class="node">Gin: UserAuth + Distribute</div>
+    <div class="arrow">↓ POST /v1/chat/completions</div>
+    <div class="node">Gin: TokenOrUserAuth + SetupSessionRelayContext + Distribute</div>
     <div class="arrow">↓</div>
-    <div class="node">controller.Playground: 用户会话 -> 临时 playground Token</div>
+    <div class="node">SetupSessionRelayContext: 用户会话 -> 虚拟 playground Token</div>
     <div class="arrow">↓</div>
     <div class="node">controller.Relay: 校验 -> 估算 -> 价格 -> 预扣 -> 上游</div>
     <div class="arrow">↓</div>
@@ -32,9 +32,9 @@
   <h3>1. 前端只负责发起和展示</h3>
   <p><a href="../../web/src/features/playground/index.tsx">Playground</a> 组合状态、选项、聊天和输入组件。<a href="../../web/src/features/playground/hooks/use-chat-handler.ts">useChatHandler</a> 根据 <code>config.stream</code> 选择流式或普通请求。请求体由 <code>buildChatCompletionPayload</code> 构造，流式响应只更新界面，不负责计费。</p>
 
-  <h3>2. 用户态入口负责“接入统一管线”</h3>
-  <p><a href="../../router/relay-router.go">/pg/chat/completions</a> 先走 <code>UserAuth</code>，所以用户用登录会话访问。<a href="../../controller/playground.go">controller.Playground</a> 调用 <code>GenRelayInfo</code> 确定分组，再创建一个内存中的 <code>playground-&lt;group&gt;</code> Token 上下文，最后直接调用 <code>Relay(OpenAI)</code>。</p>
-  <div class="callout"><strong>设计要点：</strong>临时 Token 是“复用 Token 上下文”的适配层，不是持久化 API Key。这样 Playground 可以复用分组、模型、渠道选择和计费代码。</div>
+  <h3>2. 标准 Relay 负责接入用户会话</h3>
+  <p><a href="../../router/relay-router.go">/v1/chat/completions</a> 先走 <code>TokenOrUserAuth</code>，随后由 <code>SetupSessionRelayContext</code> 将用户会话适配为统一 Relay 所需的虚拟 Token 上下文。请求体中的 <code>group</code> 只能选择用户可用分组，最后进入 <code>Relay(OpenAI)</code>。</p>
+  <div class="callout"><strong>设计要点：</strong>虚拟 Token 是复用 Token 上下文的适配层，不是持久化 API Key。这样 Playground 可以复用分组、模型、渠道选择和计费代码。</div>
 
   <h3>3. 计费是预扣再结算</h3>
   <p><a href="../../controller/relay.go">Relay</a> 先估算输入 tokens，<a href="../../relay/helper/price.go">ModelPriceHelper</a> 得到预扣额度，然后调用 <code>PreConsumeBilling</code>。上游返回真实 usage 后，<a href="../../service/text_quota.go">PostTextConsumeQuota</a> 计算实际额度并调用 <code>SettleBilling</code>：补扣差额或返还多扣部分。失败则 defer 触发 <code>Refund</code>。</p>
@@ -46,7 +46,7 @@
 
   <h2>用源码练习一次定位</h2>
   <ol>
-    <li>打开 <code>controller/playground.go</code>，找出哪一行把请求交给统一 Relay。</li>
+    <li>打开 <code>router/relay-router.go</code> 和 <code>middleware/auth.go</code>，找出会话请求进入统一 Relay 的两个中间件。</li>
     <li>打开 <code>controller/relay.go</code>，找出预扣费调用和失败退款所在的两个位置。</li>
     <li>打开 <code>service/text_quota.go</code>，找出上游 usage 进入结算的位置。</li>
   </ol>
@@ -64,7 +64,8 @@
 
   <h2>下一步</h2>
   <p>先阅读项目速查表：<a href="../reference/playground-flow.html">Playground 用户态调用与计费速查</a>。主要一手资料是 <a href="../../controller/relay.go">controller/relay.go</a> 和 <a href="../../service/billing_session.go">service/billing_session.go</a>。下次可以沿着一个真实流式响应，继续看渠道适配器如何产出 usage。</p>
-  <p class="small">有任何一处不清楚，直接问我；下一课会根据你的问题调整难度。</p>
+  <h2>历史实现</h2>
+  <p class="small">旧版本曾通过 <code>/pg/chat/completions</code> 和 <code>controller.Playground</code> 接入统一 Relay；该路径现已停用并返回 <code>410 Gone</code>。</p>
 </main>
 <script>
 function check() {
@@ -72,7 +73,7 @@ function check() {
   const feedback = document.getElementById('feedback')
   feedback.textContent = answer && answer.value === 'b'
     ? '正确：Playground 只改变入口和身份上下文，核心请求生命周期仍由 Relay 负责。'
-    : '再想一步：关注 controller.Playground 最后一行，以及它为什么先设置临时 Token。'
+    : '再想一步：关注 SetupSessionRelayContext，以及它为什么先设置虚拟 Token。'
   feedback.style.color = answer && answer.value === 'b' ? '#235789' : '#b65c2a'
 }
 </script>
