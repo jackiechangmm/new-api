@@ -631,9 +631,7 @@ function CTA() {
           <span className='text-[#E85F1A]'>.</span>
         </h2>
         <p className='max-w-xl text-sm leading-relaxed text-[#A4A29A] sm:text-base'>
-          {t(
-            '注册即刻获赠测试额度。一处配置，通吃全网大模型工具。'
-          )}
+          {t('注册即刻获赠测试额度。一处配置，通吃全网大模型工具。')}
         </p>
         <DashboardLink className='inline-flex h-11 items-center gap-2 bg-[#E85F1A] px-5 font-sans text-sm font-bold text-[#24130E] hover:bg-[#FA9A6E]'>
           {t('免费领取 KEY')}
