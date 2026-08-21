@@ -13,6 +13,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestSetPlaygroundRelayTokenNameUsesActualGroup(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+
+	setPlaygroundRelayTokenName(ctx, "vip")
+
+	assert.Equal(t, "playground-vip", ctx.GetString("token_name"))
+}
+
 func TestGetModelRequestKeepsSessionGroupWhenRequestOmitsGroup(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())

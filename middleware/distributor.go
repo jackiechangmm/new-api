@@ -99,6 +99,7 @@ func Distribute() func(c *gin.Context) {
 						}
 						usingGroup = playgroundRequest.Group
 						common.SetContextKey(c, constant.ContextKeyUsingGroup, usingGroup)
+						setPlaygroundRelayTokenName(c, usingGroup)
 					}
 				}
 

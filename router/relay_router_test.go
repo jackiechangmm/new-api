@@ -159,6 +159,10 @@ func TestSessionChatUsesStandardRelayResponse(t *testing.T) {
 	require.Len(t, payload.Choices, 1)
 	assert.Equal(t, "ok", payload.Choices[0].Message.Content)
 
+	var consumeLog model.Log
+	require.NoError(t, model.DB.Where("user_id = ? AND type = ?", user.Id, model.LogTypeConsume).Order("id DESC").First(&consumeLog).Error)
+	assert.Equal(t, "playground-default", consumeLog.TokenName)
+
 	token, err := model.GetTokenById(realToken.Id)
 	require.NoError(t, err)
 	assert.Equal(t, 123_456, token.RemainQuota)

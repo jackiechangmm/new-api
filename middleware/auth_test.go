@@ -110,6 +110,7 @@ func TestSetupSessionRelayContextBuildsPlaygroundContext(t *testing.T) {
 			"id":            c.GetInt("id"),
 			"token_id":      c.GetInt("token_id"),
 			"token_key":     c.GetString("token_key"),
+			"token_name":    c.GetString("token_name"),
 			"token_group":   common.GetContextKeyString(c, constant.ContextKeyTokenGroup),
 			"is_playground": common.GetContextKeyBool(c, constant.ContextKeyRelayIsPlayground),
 			"authorization": c.GetHeader("Authorization"),
@@ -126,6 +127,7 @@ func TestSetupSessionRelayContextBuildsPlaygroundContext(t *testing.T) {
 		ID            int    `json:"id"`
 		TokenID       int    `json:"token_id"`
 		TokenKey      string `json:"token_key"`
+		TokenName     string `json:"token_name"`
 		TokenGroup    string `json:"token_group"`
 		IsPlayground  bool   `json:"is_playground"`
 		Authorization string `json:"authorization"`
@@ -134,6 +136,7 @@ func TestSetupSessionRelayContextBuildsPlaygroundContext(t *testing.T) {
 	assert.Equal(t, user.Id, body.ID)
 	assert.Zero(t, body.TokenID)
 	assert.Empty(t, body.TokenKey)
+	assert.Equal(t, "playground-"+user.Group, body.TokenName)
 	assert.Equal(t, user.Group, body.TokenGroup)
 	assert.True(t, body.IsPlayground)
 	assert.Empty(t, body.Authorization)

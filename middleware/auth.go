@@ -272,6 +272,10 @@ func TokenOrUserAuth() func(c *gin.Context) {
 	}
 }
 
+func setPlaygroundRelayTokenName(c *gin.Context, group string) {
+	c.Set("token_name", fmt.Sprintf("playground-%s", group))
+}
+
 // SetupSessionRelayContext 将已验证的用户会话适配为标准 Relay 所需的上下文，不创建持久化令牌。
 func SetupSessionRelayContext() func(c *gin.Context) {
 	return func(c *gin.Context) {
@@ -287,6 +291,7 @@ func SetupSessionRelayContext() func(c *gin.Context) {
 			abortWithOpenAiMessage(c, http.StatusInternalServerError, "用户会话 Relay 上下文初始化失败")
 			return
 		}
+		setPlaygroundRelayTokenName(c, userGroup)
 		c.Request.Header.Del("Authorization")
 		c.Next()
 	}
