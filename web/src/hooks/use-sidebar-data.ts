@@ -52,15 +52,15 @@ export function useSidebarData(): SidebarData {
     navGroups: [
       {
         id: 'chat',
-        title: t('Chat'),
+        title: t('AI Apps'),
         items: [
           {
-            title: t('Playground'),
-            url: '/playground',
+            title: t('Conversation'),
+            url: '/playground/chat',
             icon: FlaskConical,
           },
           {
-            title: t('Chat'),
+            title: t('External Chat'),
             icon: MessageSquare,
             type: 'chat-presets',
           },
