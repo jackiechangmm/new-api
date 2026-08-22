@@ -266,7 +266,7 @@ export function RechargeFormCard({
                             {t('Local currency')} {formatCurrency(actualPrice)}
                             {hasDiscount && savedAmount > 0 && (
                               <span className='text-green-600'>
-                                • {t('Save')} {formatCurrency(savedAmount)}
+                                • {t('You save')} {formatCurrency(savedAmount)}
                               </span>
                             )}
                           </div>
