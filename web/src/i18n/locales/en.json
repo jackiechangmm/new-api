@@ -5380,6 +5380,16 @@
     "某新锐香氛品牌": "EMERGING FRAGRANCE BRAND",
     "Amount to pay (local currency):": "Amount to pay (local currency):",
     "Custom Amount ($)": "Custom Amount ($)",
-    "Local currency": "Local currency"
+    "Local currency": "Local currency",
+    "AI Apps": "AI Apps",
+    "AI Apps Area": "AI Apps Area",
+    "Conversation": "Conversation",
+    "Conversations and external chat functions": "Conversations and external chat functions",
+    "External Chat": "External Chat",
+    "Redirect to a configured external chat client": "Redirect to a configured external chat client",
+    "Start a conversation": "Start a conversation",
+    "Use prompts and models for simple conversations": "Use prompts and models for simple conversations",
+    "Use prompts and models for simple conversations.": "Use prompts and models for simple conversations.",
+    "Verify routing with Conversation or your client": "Verify routing with Conversation or your client"
   }
 }

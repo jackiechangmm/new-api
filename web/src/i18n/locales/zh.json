@@ -5380,6 +5380,16 @@
     "某新锐香氛品牌": "某新锐香氛品牌",
     "Amount to pay (local currency):": "支付金额（本地货币）：",
     "Custom Amount ($)": "自定义金额 ($)",
-    "Local currency": "本地货币"
+    "Local currency": "本地货币",
+    "AI Apps": "AI 应用",
+    "AI Apps Area": "AI 应用区域",
+    "Conversation": "对话",
+    "Conversations and external chat functions": "对话与外部聊天功能",
+    "External Chat": "外部聊天",
+    "Redirect to a configured external chat client": "跳转到外部聊天客户端",
+    "Start a conversation": "开始对话",
+    "Use prompts and models for simple conversations": "使用提示词和模型进行简单对话",
+    "Use prompts and models for simple conversations.": "使用提示词和模型进行简单对话。",
+    "Verify routing with Conversation or your client": "使用对话或你的客户端验证路由"
   }
 }
