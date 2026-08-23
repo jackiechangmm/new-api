@@ -62,19 +62,17 @@ func SetRelayRouter(router *gin.Engine) {
 	playgroundRouter := router.Group("/pg")
 	playgroundRouter.Use(middleware.RouteTag("relay"))
 	playgroundRouter.Use(middleware.SystemPerformanceCheck())
-	playgroundRouter.Use(middleware.UserAuth(), middleware.Distribute())
+	playgroundRouter.Use(middleware.UserAuth())
 	{
-		playgroundRouter.POST("/chat/completions", controller.Playground)
+		playgroundRouter.POST("/chat/completions", controller.PlaygroundDisabled)
 	}
 	relayV1Router := router.Group("/v1")
 	relayV1Router.Use(middleware.RouteTag("relay"))
 	relayV1Router.Use(middleware.SystemPerformanceCheck())
-	relayV1Router.Use(middleware.TokenAuth())
-	relayV1Router.Use(middleware.ModelRequestRateLimit())
 	{
 		// WebSocket 路由（统一到 Relay）
 		wsRouter := relayV1Router.Group("")
-		wsRouter.Use(middleware.Distribute())
+		wsRouter.Use(middleware.TokenAuth(), middleware.ModelRequestRateLimit(), middleware.Distribute())
 		wsRouter.GET("/realtime", func(c *gin.Context) {
 			controller.Relay(c, types.RelayFormatOpenAIRealtime)
 		})
@@ -82,7 +80,7 @@ func SetRelayRouter(router *gin.Engine) {
 	{
 		//http router
 		httpRouter := relayV1Router.Group("")
-		httpRouter.Use(middleware.Distribute())
+		httpRouter.Use(middleware.TokenOrUserAuth(), middleware.SetupSessionRelayContext(), middleware.ModelRequestRateLimit(), middleware.Distribute())
 
 		// claude related routes
 		httpRouter.POST("/messages", func(c *gin.Context) {
@@ -155,19 +153,21 @@ func SetRelayRouter(router *gin.Engine) {
 			controller.Relay(c, types.RelayFormatOpenAI)
 		})
 
-		// not implemented
-		httpRouter.POST("/images/variations", controller.RelayNotImplemented)
-		httpRouter.GET("/files", controller.RelayNotImplemented)
-		httpRouter.POST("/files", controller.RelayNotImplemented)
-		httpRouter.DELETE("/files/:id", controller.RelayNotImplemented)
-		httpRouter.GET("/files/:id", controller.RelayNotImplemented)
-		httpRouter.GET("/files/:id/content", controller.RelayNotImplemented)
-		httpRouter.POST("/fine-tunes", controller.RelayNotImplemented)
-		httpRouter.GET("/fine-tunes", controller.RelayNotImplemented)
-		httpRouter.GET("/fine-tunes/:id", controller.RelayNotImplemented)
-		httpRouter.POST("/fine-tunes/:id/cancel", controller.RelayNotImplemented)
-		httpRouter.GET("/fine-tunes/:id/events", controller.RelayNotImplemented)
-		httpRouter.DELETE("/models/:model", controller.RelayNotImplemented)
+		// 未实现的兼容接口继续保持仅 API token 认证。
+		tokenOnlyHTTPRouter := relayV1Router.Group("")
+		tokenOnlyHTTPRouter.Use(middleware.TokenAuth(), middleware.ModelRequestRateLimit(), middleware.Distribute())
+		tokenOnlyHTTPRouter.POST("/images/variations", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.GET("/files", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.POST("/files", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.DELETE("/files/:id", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.GET("/files/:id", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.GET("/files/:id/content", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.POST("/fine-tunes", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.GET("/fine-tunes", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.GET("/fine-tunes/:id", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.POST("/fine-tunes/:id/cancel", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.GET("/fine-tunes/:id/events", controller.RelayNotImplemented)
+		tokenOnlyHTTPRouter.DELETE("/models/:model", controller.RelayNotImplemented)
 	}
 
 	relayMjRouter := router.Group("/mj")

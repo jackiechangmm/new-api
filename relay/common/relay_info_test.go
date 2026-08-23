@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/QuantumNous/new-api/constant"
 	"github.com/QuantumNous/new-api/relaykit/dto"
 	"github.com/QuantumNous/new-api/relaykit/relayconvert/convmeta"
 	"github.com/QuantumNous/new-api/relaykit/types"
@@ -81,6 +82,29 @@ func TestRelayInfoMetaTypedNilReceiver(t *testing.T) {
 	assert.NotNil(t, firstOptions.Gemini.SupportsImagine)
 	assert.NotNil(t, firstOptions.Gemini.SafetySetting)
 	assert.NotNil(t, firstOptions.PreserveThinkingSuffix)
+}
+
+func TestGenRelayInfoMarksSessionRelayAsPlayground(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+	ctx.Request = httptest.NewRequest("POST", "/v1/chat/completions", nil)
+	ctx.Set(string(constant.ContextKeyRelayIsPlayground), true)
+
+	info, err := GenRelayInfo(ctx, types.RelayFormatOpenAI, &dto.GeneralOpenAIRequest{Model: "gpt-test"}, nil)
+	require.NoError(t, err)
+	assert.True(t, info.IsPlayground)
+	assert.Equal(t, "/v1/chat/completions", info.RequestURLPath)
+}
+
+func TestGenRelayInfoPreservesLegacyPlaygroundPath(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
+	ctx.Request = httptest.NewRequest("POST", "/pg/chat/completions", nil)
+
+	info, err := GenRelayInfo(ctx, types.RelayFormatOpenAI, &dto.GeneralOpenAIRequest{Model: "gpt-test"}, nil)
+	require.NoError(t, err)
+	assert.True(t, info.IsPlayground)
+	assert.Equal(t, "/v1/chat/completions", info.RequestURLPath)
 }
 
 func TestGenRelayInfoCapturesRequestReasoningEffort(t *testing.T) {

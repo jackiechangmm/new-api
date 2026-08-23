@@ -92,7 +92,12 @@ Do NOT directly import or call `encoding/json` in business code. `json.RawMessag
 - 涉及迁移、事务和行锁的变更，必须在目标 PostgreSQL 环境验证；标准行锁继续使用 `lockForUpdate(tx)`。
 - 主库和日志库均使用 PostgreSQL；账务、日志和其他一致性关键路径以该语义设计与测试。
 
-**Relay and provider behavior:**
+**Relay 路由与认证边界：**
+
+- 标准同步 HTTP Relay 路由使用 `TokenOrUserAuth`，同时支持 API token 和有效的面板 Access Token。
+- 会话请求通过 `SetupSessionRelayContext` 使用不落库的虚拟 Token 上下文，计费来自用户钱包或订阅，真实 API token 额度不变；会话 JWT 在进入上游前移除。
+- `/v1/realtime`、模型发现、直接 `/v1beta`、异步任务提交/查询、Suno、Midjourney 和未实现兼容接口保持 `TokenAuth`；`/v1/videos/:task_id/content` 的媒体下载另支持用户会话。
+- 会话 Relay 的请求体 `group` 必须属于用户可用分组；Playground 使用 `/v1/chat/completions`，旧 `/pg/chat/completions` 已停用。
 
 - When implementing a new channel, confirm whether the provider supports `StreamOptions`; if supported, add the channel to `streamSupportedChannels`.
 - For request structs parsed from client JSON and re-marshaled to upstream providers, optional scalar fields MUST use pointer types with `omitempty` (for example, `*int`, `*uint`, `*float64`, `*bool`).

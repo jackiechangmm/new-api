@@ -36,6 +36,14 @@
 
 ## 模型转发与协议转换
 
+- [Relay 路由与认证边界](../router/relay-router.go)
+  标准同步 `/v1` HTTP Relay 支持用户会话或 API token；Realtime、模型发现、`/v1beta`、异步任务提交/查询和未实现兼容接口保持 API token-only。
+- [会话 Relay 上下文](../middleware/auth.go)
+  `TokenOrUserAuth` 校验会话或 API token，`SetupSessionRelayContext` 创建不落库虚拟 Token 并移除会话 JWT。
+- [模型分发与分组校验](../middleware/distributor.go)
+  负责模型选路、用户会话分组选择和可用分组校验。
+- [Playground 请求入口](../web/src/features/playground/constants.ts)
+  Playground 使用 `/v1/chat/completions`。
 - [中继请求上下文](../relay/common/relay_info.go)
   `RelayInfo` 保存客户端格式、模型映射、渠道、流状态、账务会话与转换链。
 - [文本格式转换注册表](../relaykit/relayconvert/text_converter_registry.go)
@@ -62,6 +70,10 @@
 
 ## 验证入口
 
+- [Relay 路由验收](../router/relay_router_test.go)
+- [会话 Relay 鉴权测试](../middleware/auth_test.go)
+- [会话分组分发测试](../middleware/distributor_test.go)
+- [RelayInfo 会话标记测试](../relay/common/relay_info_test.go)
 - [文本结算测试](../service/text_quota_test.go)
 - [阶梯结算测试](../service/tiered_settle_test.go)
 - [表达式测试](../pkg/billingexpr/billingexpr_test.go)

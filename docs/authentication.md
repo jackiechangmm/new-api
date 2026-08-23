@@ -70,7 +70,15 @@
 
 前端将冷启动状态与登录状态分开管理。网络或服务端临时故障允许后续导航重试 refresh；服务端确认 Refresh Cookie 无效时才进入已完成的匿名状态。内存 SID 与 Cookie SID 不一致时，客户端清除旧内存身份并在不携带旧 SID 的情况下重试一次。
 
-## Session 签发限额与保留策略
+## Relay 会话调用
+
+已登录用户可以使用内存中的 `Authorization: Bearer <Access Token>` 调用标准同步 `/v1` Relay。API token 调用继续使用原有认证和额度语义；Refresh Cookie 不直接用于 Relay 鉴权。
+
+会话请求通过不落库的虚拟 Token 上下文进入统一 Relay，默认使用用户分组，也可在请求体中选择用户可用分组。会话请求的预扣、结算和退款来自用户钱包或订阅，不调整真实 API token 额度；消费日志使用 `token_id=0` 和 `playground-<实际分组>`。
+
+会话 Access Token 在进入 Relay 上游链路前会从请求头移除。只有已注册的同步 HTTP Relay 路由支持会话调用；`/v1/realtime`、模型发现、直接 `/v1beta`、异步任务提交/查询、Suno、Midjourney 和未实现兼容接口仍只接受 API token，`/v1/videos/:task_id/content` 的媒体下载另支持用户会话。
+
+旧的 `/pg/chat/completions` 已停用，返回 `410 Gone`，客户端应迁移到 `/v1/chat/completions`。
 
 服务端在所有登录方式的统一 Session 签发出口执行两级账户限制：
 
