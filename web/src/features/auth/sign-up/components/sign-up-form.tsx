@@ -314,6 +314,9 @@ export function SignUpForm({
                       {...field}
                     />
                   </FormControl>
+                  <p className='text-muted-foreground text-xs'>
+                    {t('Only QQ email addresses are supported for registration.')}
+                  </p>
                   <FormMessage />
                 </FormItem>
               )}

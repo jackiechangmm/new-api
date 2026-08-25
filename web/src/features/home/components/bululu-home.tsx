@@ -31,7 +31,6 @@ import {
   type KeyboardEvent,
   type PointerEvent,
   type ReactNode,
-  useEffect,
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
