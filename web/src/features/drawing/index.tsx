@@ -17,7 +17,14 @@ import { Main } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 import {
   generateImages,
@@ -62,6 +69,36 @@ const ASPECT_RATIOS = [
 const RESOLUTIONS = ['1k', '2k', '4k']
 const QUALITIES = ['auto', 'low', 'medium', 'high']
 
+function DrawingSelect(props: {
+  ariaLabel: string
+  disabled?: boolean
+  onChange: (value: string) => void
+  options: string[]
+  value: string
+}) {
+  return (
+    <Select
+      disabled={props.disabled}
+      onValueChange={(value) => {
+        if (value) props.onChange(value)
+      }}
+      value={props.value}
+    >
+      <SelectTrigger aria-label={props.ariaLabel} className='w-full'>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent alignItemWithTrigger={false}>
+        <SelectGroup>
+          {props.options.map((option) => (
+            <SelectItem key={option} value={option}>
+              {option}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  )
+}
 function useBlobUrl(blob: Blob | undefined): string | undefined {
   const [url, setUrl] = useState<string>()
   useEffect(() => {
@@ -258,73 +295,49 @@ export function Drawing() {
           <div className='mt-4 grid gap-4 sm:grid-cols-5'>
             <label className='space-y-1 text-sm'>
               <span>{t('Image model')}</span>
-              <NativeSelect
-                aria-label={t('Image model')}
-                className='w-full'
+              <DrawingSelect
+                ariaLabel={t('Image model')}
                 disabled={!models.length}
-                onChange={(event) => setModel(event.target.value)}
+                onChange={setModel}
+                options={models}
                 value={model}
-              >
-                {models.map((value) => (
-                  <NativeSelectOption key={value} value={value}>
-                    {value}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+              />
             </label>
             <label className='space-y-1 text-sm'>
               <span>{t('Aspect ratio')}</span>
-              <NativeSelect
-                aria-label={t('Aspect ratio')}
-                className='w-full'
-                onChange={(event) => setAspectRatio(event.target.value)}
+              <DrawingSelect
+                ariaLabel={t('Aspect ratio')}
+                onChange={setAspectRatio}
+                options={ASPECT_RATIOS}
                 value={aspectRatio}
-              >
-                {ASPECT_RATIOS.map((value) => (
-                  <NativeSelectOption key={value}>{value}</NativeSelectOption>
-                ))}
-              </NativeSelect>
+              />
             </label>
             <label className='space-y-1 text-sm'>
               <span>{t('Resolution')}</span>
-              <NativeSelect
-                aria-label={t('Resolution')}
-                className='w-full'
-                onChange={(event) => setResolution(event.target.value)}
+              <DrawingSelect
+                ariaLabel={t('Resolution')}
+                onChange={setResolution}
+                options={RESOLUTIONS}
                 value={resolution}
-              >
-                {RESOLUTIONS.map((value) => (
-                  <NativeSelectOption key={value}>{value}</NativeSelectOption>
-                ))}
-              </NativeSelect>
+              />
             </label>
             <label className='space-y-1 text-sm'>
               <span>{t('Quality')}</span>
-              <NativeSelect
-                aria-label={t('Quality')}
-                className='w-full'
-                onChange={(event) => setQuality(event.target.value)}
+              <DrawingSelect
+                ariaLabel={t('Quality')}
+                onChange={setQuality}
+                options={QUALITIES}
                 value={quality}
-              >
-                {QUALITIES.map((value) => (
-                  <NativeSelectOption key={value}>{value}</NativeSelectOption>
-                ))}
-              </NativeSelect>
+              />
             </label>
             <label className='space-y-1 text-sm'>
               <span>{t('Images')}</span>
-              <NativeSelect
-                aria-label={t('Images')}
-                className='w-full'
-                onChange={(event) => setCount(Number(event.target.value))}
-                value={count}
-              >
-                {[1, 2, 3, 4].map((value) => (
-                  <NativeSelectOption key={value} value={value}>
-                    {value}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+              <DrawingSelect
+                ariaLabel={t('Images')}
+                onChange={(value) => setCount(Number(value))}
+                options={['1', '2', '3', '4']}
+                value={String(count)}
+              />
             </label>
           </div>
           {error ? (
