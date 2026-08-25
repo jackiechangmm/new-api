@@ -8,6 +8,7 @@ export interface DrawingHistoryRecord {
   quality: string
   n: number
   images: Blob[]
+  referenceImages?: Blob[]
 }
 
 const DB_NAME = 'new-api-drawing'
@@ -46,18 +47,27 @@ export async function listDrawingHistory(): Promise<DrawingHistoryRecord[]> {
 export async function deleteDrawingHistory(id: string): Promise<void> {
   const db = await openDatabase()
   try {
-    await requestResult(db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).delete(id))
+    await requestResult(
+      db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).delete(id)
+    )
   } finally {
     db.close()
   }
 }
 
-export async function saveDrawingHistory(record: DrawingHistoryRecord): Promise<boolean> {
+export async function saveDrawingHistory(
+  record: DrawingHistoryRecord
+): Promise<boolean> {
   try {
     const db = await openDatabase()
     try {
       try {
-        await requestResult(db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).put(record))
+        await requestResult(
+          db
+            .transaction(STORE_NAME, 'readwrite')
+            .objectStore(STORE_NAME)
+            .put(record)
+        )
         return true
       } catch {
         const records = await listDrawingHistory()
@@ -66,7 +76,12 @@ export async function saveDrawingHistory(record: DrawingHistoryRecord): Promise<
         await deleteDrawingHistory(oldest.id)
         const retryDb = await openDatabase()
         try {
-          await requestResult(retryDb.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME).put(record))
+          await requestResult(
+            retryDb
+              .transaction(STORE_NAME, 'readwrite')
+              .objectStore(STORE_NAME)
+              .put(record)
+          )
           return true
         } finally {
           retryDb.close()

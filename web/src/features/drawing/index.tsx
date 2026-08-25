@@ -4,10 +4,12 @@ import {
   ChevronRight,
   Download,
   Loader2,
+  Plus,
   RefreshCw,
   Search,
   Trash2,
   WandSparkles,
+  X,
 } from 'lucide-react'
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +32,7 @@ import {
   generateImages,
   getDrawingGroups,
   getDrawingModels,
+  editImages,
   type ImageGenerationRequest,
 } from './api'
 import { filterDrawingPrompts, type DrawingPrompt } from './prompts'
@@ -39,6 +42,7 @@ import {
   saveDrawingHistory,
   type DrawingHistoryRecord,
 } from './storage'
+import { MAX_REFERENCE_IMAGES, validateReferenceImage } from './validation'
 
 type PreviewSource = Blob | string
 
@@ -68,6 +72,9 @@ const ASPECT_RATIOS = [
 ]
 const RESOLUTIONS = ['1k', '2k', '4k']
 const QUALITIES = ['auto', 'low', 'medium', 'high']
+const IMAGE_MODEL_CAPABILITIES: Record<string, { edits: boolean }> = {
+  'gpt-image-2-official': { edits: true },
+}
 
 function DrawingSelect(props: {
   ariaLabel: string
@@ -128,6 +135,9 @@ function HistoryImage({ blob, onClick }: { blob: Blob; onClick: () => void }) {
 export function Drawing() {
   const { t } = useTranslation()
   const [models, setModels] = useState<string[]>([])
+  const [groups, setGroups] = useState<Array<{ label: string; value: string }>>(
+    []
+  )
   const [group, setGroup] = useState('')
   const [model, setModel] = useState('')
   const [prompt, setPrompt] = useState('')
@@ -135,6 +145,9 @@ export function Drawing() {
   const [resolution, setResolution] = useState('1k')
   const [quality, setQuality] = useState('auto')
   const [count, setCount] = useState(1)
+  const [referenceImages, setReferenceImages] = useState<File[]>([])
+  const [referenceError, setReferenceError] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [history, setHistory] = useState<DrawingHistoryRecord[]>([])
   const [page, setPage] = useState(0)
   const [query, setQuery] = useState('')
@@ -163,6 +176,7 @@ export function Drawing() {
   useEffect(() => {
     void Promise.all([getDrawingGroups(), listDrawingHistory()])
       .then(([nextGroups, records]) => {
+        setGroups(nextGroups)
         setHistory(records)
         if (nextGroups[0]) setGroup(nextGroups[0].value)
       })
@@ -189,7 +203,14 @@ export function Drawing() {
   const pageCount = Math.max(1, Math.ceil(history.length / PAGE_SIZE))
 
   const submit = async () => {
-    if (!prompt.trim() || !model || !group) return
+    if (
+      !prompt.trim() ||
+      !model ||
+      !group ||
+      (referenceImages.length > 0 && !hasEditModel)
+    ) {
+      return
+    }
     setError('')
     setIsGenerating(true)
     const payload: ImageGenerationRequest = {
@@ -202,7 +223,9 @@ export function Drawing() {
       response_format: 'b64_json',
     }
     try {
-      const response = await generateImages(payload)
+      const response = referenceImages.length
+        ? await editImages({ ...payload, images: referenceImages })
+        : await generateImages(payload)
       const images = (response.data ?? [])
         .map((item) => item.b64_json)
         .filter((value): value is string => Boolean(value))
@@ -224,6 +247,7 @@ export function Drawing() {
         quality,
         n: count,
         images,
+        referenceImages: [...referenceImages],
       }
       setHistory((current) => [record, ...current])
       setPage(0)
@@ -270,7 +294,48 @@ export function Drawing() {
     setResolution(savedSize.length === 2 ? savedSize[1] : '1k')
     setQuality(record.quality)
     setCount(record.n)
+    setReferenceImages(
+      (record.referenceImages ?? []).map(
+        (blob, index) =>
+          new File([blob], `reference-${index}.png`, { type: blob.type })
+      )
+    )
+    setReferenceError('')
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const hasEditModel = Boolean(model && IMAGE_MODEL_CAPABILITIES[model]?.edits)
+  const referenceBytes = referenceImages.reduce(
+    (total, file) => total + file.size,
+    0
+  )
+
+  const addReferenceImages = async (files: FileList | null) => {
+    if (!files) return
+    const nextFiles = [...referenceImages]
+    let nextError = ''
+    for (const file of files) {
+      const errorKey = await validateReferenceImage(
+        file,
+        nextFiles.length,
+        nextFiles.reduce((total, item) => total + item.size, 0)
+      )
+      if (errorKey) {
+        nextError = t(
+          {
+            unsupported: 'Reference image format is not supported.',
+            'too-many': 'You can select up to 4 reference images.',
+            'too-large': 'Reference images must be 20 MB or smaller in total.',
+            'too-wide':
+              'Reference image dimensions must be 4096 pixels or smaller.',
+          }[errorKey]
+        )
+        continue
+      }
+      nextFiles.push(file)
+    }
+    setReferenceImages(nextFiles)
+    setReferenceError(nextError)
   }
 
   const selectPrompt = (value: string) => {
@@ -285,14 +350,92 @@ export function Drawing() {
           <div className='mb-5'>
             <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
           </div>
-          <textarea
-            aria-label={t('Prompt word')}
-            className='bg-background focus:ring-ring min-h-28 w-full resize-y rounded-lg border p-3 outline-none focus:ring-2'
-            onChange={(event) => setPrompt(event.target.value)}
-            placeholder={t('Describe the image you want to create')}
-            value={prompt}
-          />
-          <div className='mt-4 grid gap-4 sm:grid-cols-5'>
+          <div className='bg-background relative min-h-[38vh] rounded-lg border p-3 pb-14'>
+            <textarea
+              aria-label={t('Prompt word')}
+              className='size-full min-h-[30vh] resize-none bg-transparent outline-none'
+              onChange={(event) => setPrompt(event.target.value)}
+              placeholder={t('Describe the image you want to create')}
+              value={prompt}
+            />
+            <input
+              accept='.jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp'
+              className='hidden'
+              multiple
+              onChange={(event) => {
+                void addReferenceImages(event.target.files)
+                event.target.value = ''
+              }}
+              ref={fileInputRef}
+              type='file'
+            />
+            <div className='absolute right-3 bottom-3 left-3 flex items-end justify-between gap-3'>
+              <div className='flex min-w-0 flex-wrap items-center gap-2'>
+                <Button
+                  aria-label={t('Add reference images')}
+                  disabled={
+                    !hasEditModel ||
+                    isGenerating ||
+                    referenceImages.length >= MAX_REFERENCE_IMAGES
+                  }
+                  onClick={() => fileInputRef.current?.click()}
+                  size='icon-sm'
+                  type='button'
+                  variant='outline'
+                >
+                  <Plus />
+                </Button>
+                {referenceImages.map((file, index) => (
+                  <ReferenceImage
+                    file={file}
+                    key={`${file.name}-${file.lastModified}-${file.size}`}
+                    onDelete={() =>
+                      setReferenceImages((current) =>
+                        current.filter((_, itemIndex) => itemIndex !== index)
+                      )
+                    }
+                    onPreview={() => setPreview({ images: [file], index: 0 })}
+                  />
+                ))}
+              </div>
+              <Button
+                aria-label={isGenerating ? t('Generating...') : t('Generate')}
+                className='size-11 shrink-0 rounded-full'
+                disabled={
+                  isGenerating ||
+                  !model ||
+                  !group ||
+                  !prompt.trim() ||
+                  (referenceImages.length > 0 && !hasEditModel)
+                }
+                onClick={() => void submit()}
+                size='icon'
+                type='button'
+              >
+                {isGenerating ? (
+                  <Loader2 className='animate-spin' />
+                ) : (
+                  <WandSparkles />
+                )}
+              </Button>
+            </div>
+          </div>
+          {referenceError ? (
+            <p className='text-destructive mt-2 text-sm' role='alert'>
+              {referenceError}
+            </p>
+          ) : null}
+          <div className='mt-4 grid gap-4 sm:grid-cols-6'>
+            <label className='space-y-1 text-sm'>
+              <span>{t('Group')}</span>
+              <DrawingSelect
+                ariaLabel={t('Group')}
+                disabled={!groups.length || isGenerating}
+                onChange={setGroup}
+                options={groups.map((item) => item.value)}
+                value={group}
+              />
+            </label>
             <label className='space-y-1 text-sm'>
               <span>{t('Image model')}</span>
               <DrawingSelect
@@ -345,17 +488,23 @@ export function Drawing() {
               {error}
             </p>
           ) : null}
-          <div className='mt-4 flex items-center gap-3'>
-            <Button
-              disabled={isGenerating || !model || !group || !prompt.trim()}
-              onClick={() => void submit()}
-            >
-              <WandSparkles />
-              {isGenerating ? t('Generating...') : t('Generate')}
-            </Button>
+          <div className='mt-4 flex flex-wrap items-center gap-3'>
             {!models.length ? (
               <span className='text-muted-foreground text-sm'>
                 {t('No image models are available for this group.')}
+              </span>
+            ) : null}
+            {models.length > 0 && !hasEditModel ? (
+              <span className='text-muted-foreground text-sm'>
+                {t('Reference images are unavailable for this model.')}
+              </span>
+            ) : null}
+            {referenceImages.length ? (
+              <span className='text-muted-foreground text-xs'>
+                {t('{{count}} reference images, {{size}} MB', {
+                  count: referenceImages.length,
+                  size: (referenceBytes / 1024 / 1024).toFixed(1),
+                })}
               </span>
             ) : null}
           </div>
@@ -448,6 +597,37 @@ export function Drawing() {
         />
       ) : null}
     </Main>
+  )
+}
+
+function ReferenceImage(props: {
+  file: File
+  onDelete: () => void
+  onPreview: () => void
+}) {
+  const { t } = useTranslation()
+  const url = useBlobUrl(props.file)
+  return (
+    <div className='relative size-10 shrink-0'>
+      <button
+        aria-label={t('Preview reference image')}
+        className='size-full overflow-hidden rounded-md border'
+        onClick={props.onPreview}
+        type='button'
+      >
+        {url ? (
+          <img alt='' className='size-full object-cover' src={url} />
+        ) : null}
+      </button>
+      <button
+        aria-label={t('Remove reference image')}
+        className='bg-background absolute -top-2 -right-2 rounded-full border p-0.5'
+        onClick={props.onDelete}
+        type='button'
+      >
+        <X className='size-3' />
+      </button>
+    </div>
   )
 }
 

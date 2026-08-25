@@ -10,6 +10,17 @@ export interface ImageGenerationRequest {
   response_format: 'b64_json'
 }
 
+export interface ImageEditRequest {
+  model: string
+  group: string
+  prompt: string
+  size: string
+  quality: string
+  n: number
+  response_format: 'b64_json'
+  images: File[]
+}
+
 export interface ImageGenerationResponse {
   data?: Array<{ b64_json?: string; url?: string }>
 }
@@ -19,6 +30,29 @@ export async function generateImages(
   signal?: AbortSignal
 ): Promise<ImageGenerationResponse> {
   const response = await api.post('/v1/images/generations', payload, {
+    signal,
+    skipErrorHandler: true,
+  })
+  return response.data
+}
+
+export async function editImages(
+  payload: ImageEditRequest,
+  signal?: AbortSignal
+): Promise<ImageGenerationResponse> {
+  const formData = new FormData()
+  formData.append('model', payload.model)
+  formData.append('group', payload.group)
+  formData.append('prompt', payload.prompt)
+  formData.append('size', payload.size)
+  formData.append('quality', payload.quality)
+  formData.append('n', String(payload.n))
+  formData.append('response_format', payload.response_format)
+  for (const image of payload.images) {
+    formData.append('image[]', image, image.name)
+  }
+
+  const response = await api.post('/v1/images/edits', formData, {
     signal,
     skipErrorHandler: true,
   })
