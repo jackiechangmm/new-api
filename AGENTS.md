@@ -170,7 +170,7 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 - 后端测试：`make test`。
 - 前端构建与预览：`make build-web`；在 `web/` 执行 `bun run preview`。
 - 开发服务：`make dev-api-rebuild`、`make dev-web`。
-- 人工测试：`make manual-up`（启动或更新，http://127.0.0.1:5174）；`make manual-down`、`make manual-reset`、`make manual-logs`。
+- 人工测试：`make manual-up`（启动或更新，http://127.0.0.1:5174）；`make manual-down`、`make manual-reset`、`make manual-redis-reset`、`make manual-logs`。
 
 ### Bululu Rules
 - 本节是本 fork 的最高优先级规则；与继承的环境兼容性要求冲突时，以本节为准。
