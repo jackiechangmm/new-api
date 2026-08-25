@@ -6,15 +6,16 @@ import {
   Search,
   Trash2,
   WandSparkles,
-  X,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Main } from '@/components/layout'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 
 import {
   generateImages,
@@ -22,7 +23,7 @@ import {
   getDrawingModels,
   type ImageGenerationRequest,
 } from './api'
-import { filterDrawingPrompts, DRAWING_PROMPTS, type DrawingPrompt } from './prompts'
+import { filterDrawingPrompts, type DrawingPrompt } from './prompts'
 import {
   deleteDrawingHistory,
   listDrawingHistory,
@@ -31,8 +32,26 @@ import {
 } from './storage'
 
 const PAGE_SIZE = 4
-const SIZES = ['1024x1024', '1536x1024', '1024x1536']
-const QUALITIES = ['low', 'medium', 'high']
+const ASPECT_RATIOS = [
+  'auto',
+  '1:1',
+  '1:3',
+  '3:1',
+  '3:2',
+  '2:3',
+  '4:3',
+  '3:4',
+  '5:4',
+  '4:5',
+  '16:9',
+  '9:16',
+  '2:1',
+  '1:2',
+  '21:9',
+  '9:21',
+]
+const RESOLUTIONS = ['1k', '2k', '4k']
+const QUALITIES = ['auto', 'low', 'medium', 'high']
 
 function useBlobUrl(blob: Blob | undefined): string | undefined {
   const [url, setUrl] = useState<string>()
@@ -48,7 +67,11 @@ function useBlobUrl(blob: Blob | undefined): string | undefined {
 function HistoryImage({ blob, onClick }: { blob: Blob; onClick: () => void }) {
   const url = useBlobUrl(blob)
   return (
-    <button className='aspect-square overflow-hidden rounded-md bg-muted' onClick={onClick} type='button'>
+    <button
+      className='bg-muted aspect-square overflow-hidden rounded-md'
+      onClick={onClick}
+      type='button'
+    >
       {url ? <img alt='' className='size-full object-cover' src={url} /> : null}
     </button>
   )
@@ -56,18 +79,17 @@ function HistoryImage({ blob, onClick }: { blob: Blob; onClick: () => void }) {
 
 export function Drawing() {
   const { t } = useTranslation()
-  const [groups, setGroups] = useState<Array<{ value: string; label: string; desc: string }>>([])
   const [models, setModels] = useState<string[]>([])
   const [group, setGroup] = useState('')
   const [model, setModel] = useState('')
   const [prompt, setPrompt] = useState('')
-  const [size, setSize] = useState(SIZES[0])
-  const [quality, setQuality] = useState(QUALITIES[1])
+  const [aspectRatio, setAspectRatio] = useState('auto')
+  const [resolution, setResolution] = useState('1k')
+  const [quality, setQuality] = useState('auto')
   const [count, setCount] = useState(1)
   const [history, setHistory] = useState<DrawingHistoryRecord[]>([])
   const [page, setPage] = useState(0)
   const [query, setQuery] = useState('')
-  const [tag, setTag] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<Blob>()
@@ -75,7 +97,6 @@ export function Drawing() {
   useEffect(() => {
     void Promise.all([getDrawingGroups(), listDrawingHistory()])
       .then(([nextGroups, records]) => {
-        setGroups(nextGroups)
         setHistory(records)
         if (nextGroups[0]) setGroup(nextGroups[0].value)
       })
@@ -87,16 +108,14 @@ export function Drawing() {
     void getDrawingModels(group)
       .then((nextModels) => {
         setModels(nextModels)
-        setModel((current) => (nextModels.includes(current) ? current : nextModels[0] ?? ''))
+        setModel((current) =>
+          nextModels.includes(current) ? current : (nextModels[0] ?? '')
+        )
       })
       .catch(() => setError(t('Failed to load image models')))
   }, [group, t])
 
-  const tags = useMemo(
-    () => [...new Set(DRAWING_PROMPTS.flatMap((item) => item.tags))].sort(),
-    []
-  )
-  const prompts = useMemo(() => filterDrawingPrompts(query, tag), [query, tag])
+  const prompts = useMemo(() => filterDrawingPrompts(query, ''), [query])
   const visibleHistory = history.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
   const pageCount = Math.max(1, Math.ceil(history.length / PAGE_SIZE))
 
@@ -108,7 +127,7 @@ export function Drawing() {
       model,
       group,
       prompt: prompt.trim(),
-      size,
+      size: `${aspectRatio} ${resolution}`,
       quality,
       n: count,
       response_format: 'b64_json',
@@ -123,23 +142,30 @@ export function Drawing() {
           const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
           return new Blob([bytes], { type: 'image/png' })
         })
-      if (!images.length) throw new Error(t('The image response did not contain an image'))
+      if (!images.length) {
+        throw new Error(t('The image response did not contain an image'))
+      }
       const record: DrawingHistoryRecord = {
         id: crypto.randomUUID(),
         createdAt: Date.now(),
         prompt: payload.prompt,
         model,
         group,
-        size,
+        size: payload.size,
         quality,
         n: count,
         images,
       }
       setHistory((current) => [record, ...current])
       setPage(0)
-      if (!(await saveDrawingHistory(record))) toast.warning(t('This result could not be saved in local history'))
+      if (!(await saveDrawingHistory(record))) {
+        toast.warning(t('This result could not be saved in local history'))
+      }
     } catch (requestError) {
-      const message = requestError instanceof Error ? requestError.message : t('Image generation failed')
+      const message =
+        requestError instanceof Error
+          ? requestError.message
+          : t('Image generation failed')
       setError(message)
     } finally {
       setIsGenerating(false)
@@ -149,7 +175,12 @@ export function Drawing() {
   const remove = async (id: string) => {
     await deleteDrawingHistory(id)
     setHistory((current) => current.filter((record) => record.id !== id))
-    setPage((current) => Math.min(current, Math.max(0, Math.ceil((history.length - 1) / PAGE_SIZE) - 1)))
+    setPage((current) =>
+      Math.min(
+        current,
+        Math.max(0, Math.ceil((history.length - 1) / PAGE_SIZE) - 1)
+      )
+    )
   }
 
   const download = (blob: Blob, name: string) => {
@@ -165,7 +196,9 @@ export function Drawing() {
     setPrompt(record.prompt)
     setModel(record.model)
     setGroup(record.group)
-    setSize(record.size)
+    const savedSize = record.size.split(' ')
+    setAspectRatio(savedSize.length === 2 ? savedSize[0] : 'auto')
+    setResolution(savedSize.length === 2 ? savedSize[1] : '1k')
     setQuality(record.quality)
     setCount(record.n)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -177,56 +210,331 @@ export function Drawing() {
         <section className='border-b pb-6'>
           <div className='mb-5 flex items-start justify-between gap-4'>
             <div>
-              <p className='mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground'>{t('AI Apps')}</p>
+              <p className='text-muted-foreground mb-1 text-xs font-medium tracking-wider uppercase'>
+                {t('AI Apps')}
+              </p>
               <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
-              <p className='mt-1 text-sm text-muted-foreground'>{t('Create images with your available image models.')}</p>
+              <p className='text-muted-foreground mt-1 text-sm'>
+                {t('Create images with your available image models.')}
+              </p>
             </div>
-            <ImageIcon className='mt-1 size-6 text-muted-foreground' />
+            <ImageIcon className='text-muted-foreground mt-1 size-6' />
           </div>
           <div className='grid gap-4 md:grid-cols-2'>
-            <label className='space-y-1 text-sm'><span>{t('Image model')}</span><select aria-label={t('Image model')} className='h-9 w-full rounded-md border bg-background px-2' disabled={!models.length} onChange={(event) => setModel(event.target.value)} value={model}>{models.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
-            <label className='space-y-1 text-sm'><span>{t('Group')}</span><select aria-label={t('Group')} className='h-9 w-full rounded-md border bg-background px-2' onChange={(event) => setGroup(event.target.value)} value={group}>{groups.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
+            <label className='space-y-1 text-sm'>
+              <span>{t('Image model')}</span>
+              <NativeSelect
+                aria-label={t('Image model')}
+                className='w-full'
+                disabled={!models.length}
+                onChange={(event) => setModel(event.target.value)}
+                value={model}
+              >
+                {models.map((value) => (
+                  <NativeSelectOption key={value} value={value}>
+                    {value}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </label>
           </div>
-          <label className='mt-4 block space-y-1 text-sm'><span>{t('Prompt')}</span><textarea aria-label={t('Prompt')} className='min-h-28 w-full resize-y rounded-md border bg-background p-3 outline-none focus:ring-2 focus:ring-ring' onChange={(event) => setPrompt(event.target.value)} placeholder={t('Describe the image you want to create')} value={prompt} /></label>
-          <div className='mt-4 grid gap-4 sm:grid-cols-3'>
-            <label className='space-y-1 text-sm'><span>{t('Size')}</span><select aria-label={t('Size')} className='h-9 w-full rounded-md border bg-background px-2' onChange={(event) => setSize(event.target.value)} value={size}>{SIZES.map((value) => <option key={value}>{value}</option>)}</select></label>
-            <label className='space-y-1 text-sm'><span>{t('Quality')}</span><select aria-label={t('Quality')} className='h-9 w-full rounded-md border bg-background px-2' onChange={(event) => setQuality(event.target.value)} value={quality}>{QUALITIES.map((value) => <option key={value}>{value}</option>)}</select></label>
-            <label className='space-y-1 text-sm'><span>{t('Images')}</span><input aria-label={t('Images')} className='h-9 w-full rounded-md border bg-background px-2' max={4} min={1} onChange={(event) => setCount(Math.min(4, Math.max(1, Number(event.target.value) || 1)))} type='number' value={count} /></label>
+          <label className='mt-4 block space-y-1 text-sm'>
+            <span>{t('Prompt word')}</span>
+            <textarea
+              aria-label={t('Prompt word')}
+              className='bg-background focus:ring-ring min-h-28 w-full resize-y rounded-lg border p-3 outline-none focus:ring-2'
+              onChange={(event) => setPrompt(event.target.value)}
+              placeholder={t('Describe the image you want to create')}
+              value={prompt}
+            />
+          </label>
+          <div className='mt-4 grid gap-4 sm:grid-cols-4'>
+            <label className='space-y-1 text-sm'>
+              <span>{t('Aspect ratio')}</span>
+              <NativeSelect
+                aria-label={t('Aspect ratio')}
+                className='w-full'
+                onChange={(event) => setAspectRatio(event.target.value)}
+                value={aspectRatio}
+              >
+                {ASPECT_RATIOS.map((value) => (
+                  <NativeSelectOption key={value}>{value}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </label>
+            <label className='space-y-1 text-sm'>
+              <span>{t('Resolution')}</span>
+              <NativeSelect
+                aria-label={t('Resolution')}
+                className='w-full'
+                onChange={(event) => setResolution(event.target.value)}
+                value={resolution}
+              >
+                {RESOLUTIONS.map((value) => (
+                  <NativeSelectOption key={value}>{value}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </label>
+            <label className='space-y-1 text-sm'>
+              <span>{t('Quality')}</span>
+              <NativeSelect
+                aria-label={t('Quality')}
+                className='w-full'
+                onChange={(event) => setQuality(event.target.value)}
+                value={quality}
+              >
+                {QUALITIES.map((value) => (
+                  <NativeSelectOption key={value}>{value}</NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </label>
+            <label className='space-y-1 text-sm'>
+              <span>{t('Images')}</span>
+              <input
+                aria-label={t('Images')}
+                className='bg-background h-8 w-full rounded-lg border px-2.5 text-sm'
+                max={4}
+                min={1}
+                onChange={(event) =>
+                  setCount(
+                    Math.min(4, Math.max(1, Number(event.target.value) || 1))
+                  )
+                }
+                type='number'
+                value={count}
+              />
+            </label>
           </div>
-          {error ? <p className='mt-3 text-sm text-destructive' role='alert'>{error}</p> : null}
-          <div className='mt-4 flex items-center gap-3'><Button disabled={isGenerating || !model || !group || !prompt.trim()} onClick={() => void submit()}><WandSparkles />{isGenerating ? t('Generating...') : t('Generate')}</Button>{!models.length ? <span className='text-sm text-muted-foreground'>{t('No image models are available for this group.')}</span> : null}</div>
+          {error ? (
+            <p className='text-destructive mt-3 text-sm' role='alert'>
+              {error}
+            </p>
+          ) : null}
+          <div className='mt-4 flex items-center gap-3'>
+            <Button
+              disabled={isGenerating || !model || !group || !prompt.trim()}
+              onClick={() => void submit()}
+            >
+              <WandSparkles />
+              {isGenerating ? t('Generating...') : t('Generate')}
+            </Button>
+            {!models.length ? (
+              <span className='text-muted-foreground text-sm'>
+                {t('No image models are available for this group.')}
+              </span>
+            ) : null}
+          </div>
         </section>
 
         <section>
-          <div className='mb-4 flex items-center justify-between gap-3'><div><h2 className='text-lg font-semibold'>{t('Drawing history')}</h2><p className='text-sm text-muted-foreground'>{t('Saved only in this browser')}</p></div><div className='flex items-center gap-2'><Button aria-label={t('Previous page')} disabled={page === 0} onClick={() => setPage((current) => current - 1)} size='icon-sm' variant='outline'>←</Button><span className='text-sm'>{page + 1} / {pageCount}</span><Button aria-label={t('Next page')} disabled={page + 1 >= pageCount} onClick={() => setPage((current) => current + 1)} size='icon-sm' variant='outline'>→</Button></div></div>
-          {visibleHistory.length ? <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>{visibleHistory.map((record) => <HistoryCard key={record.id} record={record} onDelete={() => void remove(record.id)} onDownload={download} onPreview={setPreview} onReuse={reuse} />)}</div> : <div className='border border-dashed p-8 text-center text-sm text-muted-foreground'>{t('Your generated images will appear here.')}</div>}
+          <div className='mb-4 flex items-center justify-between gap-3'>
+            <div>
+              <h2 className='text-lg font-semibold'>{t('Drawing history')}</h2>
+              <p className='text-muted-foreground text-sm'>
+                {t('Saved only in this browser')}
+              </p>
+            </div>
+            <div className='flex items-center gap-2'>
+              <Button
+                aria-label={t('Previous page')}
+                disabled={page === 0}
+                onClick={() => setPage((current) => current - 1)}
+                size='icon-sm'
+                variant='outline'
+              >
+                ←
+              </Button>
+              <span className='text-sm'>
+                {page + 1} / {pageCount}
+              </span>
+              <Button
+                aria-label={t('Next page')}
+                disabled={page + 1 >= pageCount}
+                onClick={() => setPage((current) => current + 1)}
+                size='icon-sm'
+                variant='outline'
+              >
+                →
+              </Button>
+            </div>
+          </div>
+          {visibleHistory.length ? (
+            <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+              {visibleHistory.map((record) => (
+                <HistoryCard
+                  key={record.id}
+                  record={record}
+                  onDelete={() => void remove(record.id)}
+                  onDownload={download}
+                  onPreview={setPreview}
+                  onReuse={reuse}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className='text-muted-foreground border border-dashed p-8 text-center text-sm'>
+              {t('Your generated images will appear here.')}
+            </div>
+          )}
         </section>
 
         <section className='border-t pt-6'>
-          <div className='mb-4 flex flex-wrap items-end justify-between gap-3'><div><h2 className='text-lg font-semibold'>{t('Prompt library')}</h2><p className='text-sm text-muted-foreground'>{t('Local prompts for GPT Image 2')}</p></div><div className='flex gap-2'><div className='relative'><Search className='absolute top-2 left-2 size-4 text-muted-foreground' /><Input aria-label={t('Search prompts')} className='w-52 pl-8' onChange={(event) => setQuery(event.target.value)} placeholder={t('Search prompts')} value={query} /></div><select aria-label={t('Filter by tag')} className='h-8 rounded-md border bg-background px-2 text-sm' onChange={(event) => setTag(event.target.value)} value={tag}><option value=''>{t('All tags')}</option>{tags.map((value) => <option key={value}>{value}</option>)}</select></div></div>
-          <div className='flex flex-wrap gap-2 pb-4'>{['', ...tags].map((value) => <Button key={value || 'all'} onClick={() => setTag(value)} size='sm' variant={tag === value ? 'secondary' : 'ghost'}>{value || t('All')}</Button>)}</div>
-          <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>{prompts.map((item) => <PromptCard key={item.id} item={item} onSelect={setPrompt} />)}</div>
+          <div className='mb-4 flex flex-wrap items-end justify-between gap-3'>
+            <div>
+              <h2 className='text-lg font-semibold'>{t('Prompt library')}</h2>
+              <p className='text-muted-foreground text-sm'>
+                {t('Local prompts for GPT Image 2')}
+              </p>
+            </div>
+            <div className='relative'>
+              <Search className='text-muted-foreground absolute top-2 left-2 size-4' />
+              <Input
+                aria-label={t('Search prompts')}
+                className='w-52 pl-8'
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={t('Search prompts')}
+                value={query}
+              />
+            </div>
+          </div>
+          <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+            {prompts.map((item) => (
+              <PromptCard key={item.id} item={item} onSelect={setPrompt} />
+            ))}
+          </div>
         </section>
       </div>
-      {preview ? <PreviewDialog blob={preview} onClose={() => setPreview(undefined)} /> : null}
+      {preview ? (
+        <PreviewDialog blob={preview} onClose={() => setPreview(undefined)} />
+      ) : null}
     </Main>
   )
 }
 
-function HistoryCard(props: { record: DrawingHistoryRecord; onDelete: () => void; onDownload: (blob: Blob, name: string) => void; onPreview: (blob: Blob) => void; onReuse: (record: DrawingHistoryRecord) => void }) {
+function HistoryCard(props: {
+  record: DrawingHistoryRecord
+  onDelete: () => void
+  onDownload: (blob: Blob, name: string) => void
+  onPreview: (blob: Blob) => void
+  onReuse: (record: DrawingHistoryRecord) => void
+}) {
   const { t } = useTranslation()
-  return <article className='overflow-hidden rounded-lg border'><div className='grid grid-cols-2 gap-1 p-1'>{props.record.images.map((blob) => <HistoryImage blob={blob} key={`${props.record.id}-${blob.size}-${blob.type}`} onClick={() => props.onPreview(blob)} />)}</div><div className='space-y-2 p-3'><p className='line-clamp-2 text-sm'>{props.record.prompt}</p><p className='text-xs text-muted-foreground'>{props.record.model} · {props.record.size} · {props.record.quality}</p><div className='flex gap-1'><Button onClick={() => props.onReuse(props.record)} size='sm' variant='outline'><RefreshCw />{t('Reuse')}</Button><Button aria-label={t('Download')} onClick={() => props.onDownload(props.record.images[0], `${props.record.id}.png`)} size='icon-sm' variant='ghost'><Download /></Button><Button aria-label={t('Delete')} onClick={props.onDelete} size='icon-sm' variant='ghost'><Trash2 /></Button></div></div></article>
+  return (
+    <article className='overflow-hidden rounded-lg border'>
+      <div className='grid grid-cols-2 gap-1 p-1'>
+        {props.record.images.map((blob) => (
+          <HistoryImage
+            blob={blob}
+            key={`${props.record.id}-${blob.size}-${blob.type}`}
+            onClick={() => props.onPreview(blob)}
+          />
+        ))}
+      </div>
+      <div className='space-y-2 p-3'>
+        <p className='line-clamp-2 text-sm'>{props.record.prompt}</p>
+        <p className='text-muted-foreground text-xs'>
+          {props.record.model} · {props.record.size} · {props.record.quality}
+        </p>
+        <div className='flex gap-1'>
+          <Button
+            onClick={() => props.onReuse(props.record)}
+            size='sm'
+            variant='outline'
+          >
+            <RefreshCw />
+            {t('Reuse')}
+          </Button>
+          <Button
+            aria-label={t('Download')}
+            onClick={() =>
+              props.onDownload(props.record.images[0], `${props.record.id}.png`)
+            }
+            size='icon-sm'
+            variant='ghost'
+          >
+            <Download />
+          </Button>
+          <Button
+            aria-label={t('Delete')}
+            onClick={props.onDelete}
+            size='icon-sm'
+            variant='ghost'
+          >
+            <Trash2 />
+          </Button>
+        </div>
+      </div>
+    </article>
+  )
 }
 
-function PromptCard(props: { item: DrawingPrompt; onSelect: (prompt: string) => void }) {
+function PromptCard(props: {
+  item: DrawingPrompt
+  onSelect: (prompt: string) => void
+}) {
   const { t } = useTranslation()
   const [coverFailed, setCoverFailed] = useState(false)
   const showCover = Boolean(props.item.coverUrl) && !coverFailed
-  return <article className='rounded-lg border p-4'><div className='mb-3 h-32 overflow-hidden rounded-md bg-muted'>{showCover ? <img alt='' className='size-full object-cover' onError={() => setCoverFailed(true)} src={props.item.coverUrl} /> : <div className='flex size-full items-center justify-center px-4 text-center text-sm text-muted-foreground'>{props.item.title}</div>}</div><h3 className='font-medium'>{props.item.title}</h3><p className='mt-1 line-clamp-2 text-sm text-muted-foreground'>{props.item.description || props.item.prompt}</p><div className='mt-3 flex flex-wrap gap-1'>{props.item.tags.map((tag) => <span className='rounded bg-muted px-2 py-0.5 text-xs' key={tag}>{tag}</span>)}</div><Button className='mt-3 w-full' onClick={() => props.onSelect(props.item.prompt)} size='sm' variant='outline'>{t('Use prompt')}</Button></article>
+  return (
+    <article className='rounded-lg border p-4'>
+      <div className='bg-muted mb-3 h-32 overflow-hidden rounded-md'>
+        {showCover ? (
+          <img
+            alt=''
+            className='size-full object-cover'
+            onError={() => setCoverFailed(true)}
+            src={props.item.coverUrl}
+          />
+        ) : (
+          <div className='text-muted-foreground flex size-full items-center justify-center px-4 text-center text-sm'>
+            {props.item.title}
+          </div>
+        )}
+      </div>
+      <h3 className='font-medium'>{props.item.title}</h3>
+      <p className='text-muted-foreground mt-1 line-clamp-2 text-sm'>
+        {props.item.description || props.item.prompt}
+      </p>
+      <div className='mt-3 flex flex-wrap gap-1'>
+        {props.item.tags.map((tag) => (
+          <span className='bg-muted rounded px-2 py-0.5 text-xs' key={tag}>
+            {tag}
+          </span>
+        ))}
+      </div>
+      <Button
+        className='mt-3 w-full'
+        onClick={() => props.onSelect(props.item.prompt)}
+        size='sm'
+        variant='outline'
+      >
+        {t('Use prompt')}
+      </Button>
+    </article>
+  )
 }
 
 function PreviewDialog(props: { blob: Blob; onClose: () => void }) {
   const { t } = useTranslation()
   const url = useBlobUrl(props.blob)
-  return <div aria-label={t('Image preview')} aria-modal='true' className='fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4' role='dialog'><div className='relative max-h-full max-w-4xl'><Button aria-label={t('Close')} className='absolute -top-10 right-0 text-white' onClick={props.onClose} size='icon-sm' variant='ghost'><X /></Button>{url ? <img alt={t('Image preview')} className='max-h-[85vh] max-w-full object-contain' src={url} /> : <Loader2 className='size-8 animate-spin text-white' />}</div></div>
+  return (
+    <Dialog
+      open
+      onOpenChange={(open) => {
+        if (!open) props.onClose()
+      }}
+    >
+      <DialogContent className='max-w-5xl bg-black/90 p-2' showCloseButton>
+        {url ? (
+          <img
+            alt={t('Image preview')}
+            className='max-h-[85vh] w-full object-contain'
+            src={url}
+          />
+        ) : (
+          <Loader2 className='mx-auto size-8 animate-spin text-white' />
+        )}
+      </DialogContent>
+    </Dialog>
+  )
 }
