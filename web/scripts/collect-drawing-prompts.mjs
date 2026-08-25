@@ -22,22 +22,23 @@ function containsNsfw(record) {
 
 function cleanTags(tags, sourceId) {
   if (!Array.isArray(tags)) return []
-  if (sourceId === 'banana-prompt-quicker') return tags.slice(0, 2)
+  const withoutAttribution = tags.filter((tag) => typeof tag === 'string' && !tag.includes('@'))
+  if (sourceId === 'banana-prompt-quicker') return withoutAttribution.slice(0, 2)
   if (sourceId === 'davidwu-gpt-image2-prompts') {
-    return tags.filter((tag, index) => {
+    return withoutAttribution.filter((tag, index) => {
       if (tag === '需要参考图') return true
       if (index < 2) return true
       return false
     })
   }
   if (sourceId === 'freestylefly-gpt-image-2') {
-    return tags.filter((tag) => tag !== 'featured')
+    return withoutAttribution.filter((tag) => tag !== 'featured')
   }
-  if (sourceId === 'awesome-gpt-image') return tags.slice(0, 1)
-  if (sourceId === 'awesome-gpt4o-image-prompts') return tags.slice(0, 1)
-  if (sourceId === 'youmind-gpt-image-2') return tags.slice(0, 2)
-  if (sourceId === 'youmind-nano-banana-pro') return tags.slice(0, 2)
-  return tags
+  if (sourceId === 'awesome-gpt-image') return withoutAttribution.slice(0, 1)
+  if (sourceId === 'awesome-gpt4o-image-prompts') return withoutAttribution.slice(0, 1)
+  if (sourceId === 'youmind-gpt-image-2') return withoutAttribution.slice(0, 2)
+  if (sourceId === 'youmind-nano-banana-pro') return withoutAttribution.slice(0, 2)
+  return withoutAttribution
 }
 
 function normalize(record, sourceId, index) {

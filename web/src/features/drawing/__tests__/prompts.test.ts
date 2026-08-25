@@ -8,6 +8,8 @@ test('loads the collected prompt set instead of a six-item placeholder set', () 
 })
 
 test('keeps model and content tags while removing source attribution tags', () => {
+  assert.ok(DRAWING_PROMPTS.every((item) => item.tags.every((tag) => !tag.includes('@'))))
+
   const technical = DRAWING_PROMPTS.find((item) => item.title.includes('技术剖面图'))
   assert.deepEqual(technical?.tags, ['nano-banana-pro', '信息图 / 教育视觉图'])
 
