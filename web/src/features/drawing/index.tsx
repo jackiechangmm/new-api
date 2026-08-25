@@ -220,7 +220,9 @@ function HistoryCard(props: { record: DrawingHistoryRecord; onDelete: () => void
 
 function PromptCard(props: { item: DrawingPrompt; onSelect: (prompt: string) => void }) {
   const { t } = useTranslation()
-  return <article className='rounded-lg border p-4'><div className='mb-3 flex h-24 items-center justify-center rounded-md bg-muted'><ImageIcon className='size-8 text-muted-foreground' /></div><h3 className='font-medium'>{t(props.item.titleKey)}</h3><p className='mt-1 line-clamp-2 text-sm text-muted-foreground'>{t(props.item.descriptionKey)}</p><div className='mt-3 flex flex-wrap gap-1'>{props.item.tags.map((tag) => <span className='rounded bg-muted px-2 py-0.5 text-xs' key={tag}>{t(tag)}</span>)}</div><Button className='mt-3 w-full' onClick={() => props.onSelect(props.item.prompt)} size='sm' variant='outline'>{t('Use prompt')}</Button></article>
+  const [coverFailed, setCoverFailed] = useState(false)
+  const showCover = Boolean(props.item.coverUrl) && !coverFailed
+  return <article className='rounded-lg border p-4'><div className='mb-3 h-32 overflow-hidden rounded-md bg-muted'>{showCover ? <img alt='' className='size-full object-cover' onError={() => setCoverFailed(true)} src={props.item.coverUrl} /> : <div className='flex size-full items-center justify-center px-4 text-center text-sm text-muted-foreground'>{props.item.title}</div>}</div><h3 className='font-medium'>{props.item.title}</h3><p className='mt-1 line-clamp-2 text-sm text-muted-foreground'>{props.item.description || props.item.prompt}</p><div className='mt-3 flex flex-wrap gap-1'>{props.item.tags.map((tag) => <span className='rounded bg-muted px-2 py-0.5 text-xs' key={tag}>{tag}</span>)}</div><Button className='mt-3 w-full' onClick={() => props.onSelect(props.item.prompt)} size='sm' variant='outline'>{t('Use prompt')}</Button></article>
 }
 
 function PreviewDialog(props: { blob: Blob; onClose: () => void }) {
