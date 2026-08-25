@@ -93,7 +93,7 @@ export function Drawing() {
   const deferredQuery = useDeferredValue(query)
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
-  const [preview, setPreview] = useState<Blob>()
+  const [preview, setPreview] = useState<Blob | string>()
   const scrollRef = useRef<HTMLElement>(null)
   const [columns, setColumns] = useState(1)
 
@@ -228,7 +228,7 @@ export function Drawing() {
   return (
     <Main ref={scrollRef} className='overflow-y-auto p-4 md:p-6'>
       <div className='mx-auto flex w-full max-w-6xl flex-col gap-8'>
-        <section className='border-b pb-6'>
+        <section className='pb-6'>
           <div className='mb-5'>
             <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
           </div>
@@ -297,19 +297,18 @@ export function Drawing() {
             </label>
             <label className='space-y-1 text-sm'>
               <span>{t('Images')}</span>
-              <input
+              <NativeSelect
                 aria-label={t('Images')}
-                className='bg-background h-8 w-full rounded-lg border px-2.5 text-sm'
-                max={4}
-                min={1}
-                onChange={(event) =>
-                  setCount(
-                    Math.min(4, Math.max(1, Number(event.target.value) || 1))
-                  )
-                }
-                type='number'
+                className='w-full'
+                onChange={(event) => setCount(Number(event.target.value))}
                 value={count}
-              />
+              >
+                {[1, 2, 3, 4].map((value) => (
+                  <NativeSelectOption key={value} value={value}>
+                    {value}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
             </label>
           </div>
           {error ? (
@@ -338,7 +337,9 @@ export function Drawing() {
             <div>
               <h2 className='text-lg font-semibold'>{t('Drawing history')}</h2>
               <p className='text-muted-foreground text-sm'>
-                {t('Saved only in this browser')}
+                {t(
+                  'Drawing results are temporarily stored in the browser. Download and save them promptly.'
+                )}
               </p>
             </div>
             <div className='flex items-center gap-2'>
@@ -385,13 +386,10 @@ export function Drawing() {
           )}
         </section>
 
-        <section className='border-t pt-6'>
+        <section className='pt-6'>
           <div className='mb-4 flex flex-wrap items-end justify-between gap-3'>
             <div>
               <h2 className='text-lg font-semibold'>{t('Prompt library')}</h2>
-              <p className='text-muted-foreground text-sm'>
-                {t('Local prompts for GPT Image 2')}
-              </p>
             </div>
             <div className='relative'>
               <Search className='text-muted-foreground absolute top-2 left-2 size-4' />
@@ -407,13 +405,14 @@ export function Drawing() {
           <PromptGrid
             columns={columns}
             onSelect={setPrompt}
+            onPreview={(url: string) => setPreview(url)}
             prompts={prompts}
             scrollElement={scrollRef}
           />
         </section>
       </div>
       {preview ? (
-        <PreviewDialog blob={preview} onClose={() => setPreview(undefined)} />
+        <PreviewDialog source={preview} onClose={() => setPreview(undefined)} />
       ) : null}
     </Main>
   )
@@ -480,6 +479,7 @@ function PromptGrid(props: {
   columns: number
   prompts: DrawingPrompt[]
   onSelect: (prompt: string) => void
+  onPreview: (url: string) => void
   scrollElement: React.RefObject<HTMLElement | null>
 }) {
   const rows = useMemo(() => {
@@ -510,7 +510,12 @@ function PromptGrid(props: {
           style={{ transform: `translateY(${virtualRow.start}px)` }}
         >
           {rows[virtualRow.index].map((item) => (
-            <PromptCard key={item.id} item={item} onSelect={props.onSelect} />
+            <PromptCard
+              key={item.id}
+              item={item}
+              onPreview={props.onPreview}
+              onSelect={props.onSelect}
+            />
           ))}
         </div>
       ))}
@@ -521,6 +526,7 @@ function PromptGrid(props: {
 function PromptCard(props: {
   item: DrawingPrompt
   onSelect: (prompt: string) => void
+  onPreview: (url: string) => void
 }) {
   const { t } = useTranslation()
   const [coverFailed, setCoverFailed] = useState(false)
@@ -529,13 +535,20 @@ function PromptCard(props: {
     <article className='flex h-[370px] flex-col overflow-hidden rounded-lg border p-4'>
       <div className='bg-muted mb-3 h-32 overflow-hidden rounded-md'>
         {showCover ? (
-          <img
-            alt=''
-            className='size-full object-cover'
-            loading='lazy'
-            onError={() => setCoverFailed(true)}
-            src={props.item.coverUrl}
-          />
+          <button
+            aria-label={props.item.title}
+            className='size-full'
+            onClick={() => props.onPreview(props.item.coverUrl ?? '')}
+            type='button'
+          >
+            <img
+              alt={props.item.title}
+              className='size-full object-cover'
+              loading='lazy'
+              onError={() => setCoverFailed(true)}
+              src={props.item.coverUrl}
+            />
+          </button>
         ) : (
           <div className='text-muted-foreground flex size-full items-center justify-center px-4 text-center text-sm'>
             {props.item.title}
@@ -548,7 +561,10 @@ function PromptCard(props: {
       </p>
       <div className='mt-3 flex max-h-7 min-h-7 flex-wrap gap-1 overflow-hidden'>
         {props.item.tags.map((tag) => (
-          <span className='bg-muted rounded px-2 py-0.5 text-xs' key={tag}>
+          <span
+            className='bg-muted inline-flex h-6 items-center rounded px-2 text-xs'
+            key={tag}
+          >
             {tag}
           </span>
         ))}
@@ -565,9 +581,12 @@ function PromptCard(props: {
   )
 }
 
-function PreviewDialog(props: { blob: Blob; onClose: () => void }) {
+function PreviewDialog(props: { source: Blob | string; onClose: () => void }) {
   const { t } = useTranslation()
-  const url = useBlobUrl(props.blob)
+  const objectUrl = useBlobUrl(
+    typeof props.source === 'string' ? undefined : props.source
+  )
+  const url = typeof props.source === 'string' ? props.source : objectUrl
   return (
     <Dialog
       open
