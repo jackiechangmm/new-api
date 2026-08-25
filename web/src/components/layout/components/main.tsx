@@ -20,11 +20,13 @@ import { cn } from '@/lib/utils'
 
 type MainProps = React.HTMLAttributes<HTMLElement> & {
   fluid?: boolean
+  ref?: React.Ref<HTMLElement>
 }
 
-export function Main({ className, fluid = true, ...props }: MainProps) {
+export function Main({ className, fluid = true, ref, ...props }: MainProps) {
   return (
     <main
+      ref={ref}
       className={cn(
         'flex min-h-0 flex-1 flex-col overflow-hidden',
         !fluid &&

@@ -1,13 +1,13 @@
+import { useVirtualizer } from '@tanstack/react-virtual'
 import {
   Download,
-  Image as ImageIcon,
   Loader2,
   RefreshCw,
   Search,
   Trash2,
   WandSparkles,
 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
@@ -90,9 +90,27 @@ export function Drawing() {
   const [history, setHistory] = useState<DrawingHistoryRecord[]>([])
   const [page, setPage] = useState(0)
   const [query, setQuery] = useState('')
+  const deferredQuery = useDeferredValue(query)
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<Blob>()
+  const scrollRef = useRef<HTMLElement>(null)
+  const [columns, setColumns] = useState(1)
+
+  useEffect(() => {
+    const updateColumns = () => {
+      if (window.innerWidth >= 1024) {
+        setColumns(3)
+      } else if (window.innerWidth >= 640) {
+        setColumns(2)
+      } else {
+        setColumns(1)
+      }
+    }
+    updateColumns()
+    window.addEventListener('resize', updateColumns)
+    return () => window.removeEventListener('resize', updateColumns)
+  }, [])
 
   useEffect(() => {
     void Promise.all([getDrawingGroups(), listDrawingHistory()])
@@ -115,7 +133,10 @@ export function Drawing() {
       .catch(() => setError(t('Failed to load image models')))
   }, [group, t])
 
-  const prompts = useMemo(() => filterDrawingPrompts(query, ''), [query])
+  const prompts = useMemo(
+    () => filterDrawingPrompts(deferredQuery, ''),
+    [deferredQuery]
+  )
   const visibleHistory = history.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
   const pageCount = Math.max(1, Math.ceil(history.length / PAGE_SIZE))
 
@@ -205,22 +226,20 @@ export function Drawing() {
   }
 
   return (
-    <Main className='overflow-y-auto p-4 md:p-6'>
+    <Main ref={scrollRef} className='overflow-y-auto p-4 md:p-6'>
       <div className='mx-auto flex w-full max-w-6xl flex-col gap-8'>
         <section className='border-b pb-6'>
-          <div className='mb-5 flex items-start justify-between gap-4'>
-            <div>
-              <p className='text-muted-foreground mb-1 text-xs font-medium tracking-wider uppercase'>
-                {t('AI Apps')}
-              </p>
-              <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
-              <p className='text-muted-foreground mt-1 text-sm'>
-                {t('Create images with your available image models.')}
-              </p>
-            </div>
-            <ImageIcon className='text-muted-foreground mt-1 size-6' />
+          <div className='mb-5'>
+            <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
           </div>
-          <div className='grid gap-4 md:grid-cols-2'>
+          <textarea
+            aria-label={t('Prompt word')}
+            className='bg-background focus:ring-ring min-h-28 w-full resize-y rounded-lg border p-3 outline-none focus:ring-2'
+            onChange={(event) => setPrompt(event.target.value)}
+            placeholder={t('Describe the image you want to create')}
+            value={prompt}
+          />
+          <div className='mt-4 grid gap-4 sm:grid-cols-5'>
             <label className='space-y-1 text-sm'>
               <span>{t('Image model')}</span>
               <NativeSelect
@@ -237,18 +256,6 @@ export function Drawing() {
                 ))}
               </NativeSelect>
             </label>
-          </div>
-          <label className='mt-4 block space-y-1 text-sm'>
-            <span>{t('Prompt word')}</span>
-            <textarea
-              aria-label={t('Prompt word')}
-              className='bg-background focus:ring-ring min-h-28 w-full resize-y rounded-lg border p-3 outline-none focus:ring-2'
-              onChange={(event) => setPrompt(event.target.value)}
-              placeholder={t('Describe the image you want to create')}
-              value={prompt}
-            />
-          </label>
-          <div className='mt-4 grid gap-4 sm:grid-cols-4'>
             <label className='space-y-1 text-sm'>
               <span>{t('Aspect ratio')}</span>
               <NativeSelect
@@ -397,11 +404,12 @@ export function Drawing() {
               />
             </div>
           </div>
-          <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-            {prompts.map((item) => (
-              <PromptCard key={item.id} item={item} onSelect={setPrompt} />
-            ))}
-          </div>
+          <PromptGrid
+            columns={columns}
+            onSelect={setPrompt}
+            prompts={prompts}
+            scrollElement={scrollRef}
+          />
         </section>
       </div>
       {preview ? (
@@ -468,6 +476,48 @@ function HistoryCard(props: {
   )
 }
 
+function PromptGrid(props: {
+  columns: number
+  prompts: DrawingPrompt[]
+  onSelect: (prompt: string) => void
+  scrollElement: React.RefObject<HTMLElement | null>
+}) {
+  const rows = useMemo(() => {
+    const result: DrawingPrompt[][] = []
+    for (let index = 0; index < props.prompts.length; index += props.columns) {
+      result.push(props.prompts.slice(index, index + props.columns))
+    }
+    return result
+  }, [props.columns, props.prompts])
+  const virtualizer = useVirtualizer({
+    count: rows.length,
+    estimateSize: () => 390,
+    getScrollElement: () => props.scrollElement.current,
+    overscan: 2,
+  })
+
+  return (
+    <div
+      className='relative w-full'
+      style={{ height: `${virtualizer.getTotalSize()}px` }}
+    >
+      {virtualizer.getVirtualItems().map((virtualRow) => (
+        <div
+          className='absolute top-0 left-0 grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3'
+          data-index={virtualRow.index}
+          key={virtualRow.key}
+          ref={virtualizer.measureElement}
+          style={{ transform: `translateY(${virtualRow.start}px)` }}
+        >
+          {rows[virtualRow.index].map((item) => (
+            <PromptCard key={item.id} item={item} onSelect={props.onSelect} />
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function PromptCard(props: {
   item: DrawingPrompt
   onSelect: (prompt: string) => void
@@ -476,12 +526,13 @@ function PromptCard(props: {
   const [coverFailed, setCoverFailed] = useState(false)
   const showCover = Boolean(props.item.coverUrl) && !coverFailed
   return (
-    <article className='rounded-lg border p-4'>
+    <article className='flex h-[370px] flex-col overflow-hidden rounded-lg border p-4'>
       <div className='bg-muted mb-3 h-32 overflow-hidden rounded-md'>
         {showCover ? (
           <img
             alt=''
             className='size-full object-cover'
+            loading='lazy'
             onError={() => setCoverFailed(true)}
             src={props.item.coverUrl}
           />
@@ -491,11 +542,11 @@ function PromptCard(props: {
           </div>
         )}
       </div>
-      <h3 className='font-medium'>{props.item.title}</h3>
-      <p className='text-muted-foreground mt-1 line-clamp-2 text-sm'>
+      <h3 className='line-clamp-2 min-h-12 font-medium'>{props.item.title}</h3>
+      <p className='text-muted-foreground mt-1 line-clamp-3 min-h-15 text-sm'>
         {props.item.description || props.item.prompt}
       </p>
-      <div className='mt-3 flex flex-wrap gap-1'>
+      <div className='mt-3 flex max-h-7 min-h-7 flex-wrap gap-1 overflow-hidden'>
         {props.item.tags.map((tag) => (
           <span className='bg-muted rounded px-2 py-0.5 text-xs' key={tag}>
             {tag}
@@ -503,7 +554,7 @@ function PromptCard(props: {
         ))}
       </div>
       <Button
-        className='mt-3 w-full'
+        className='mt-auto w-full'
         onClick={() => props.onSelect(props.item.prompt)}
         size='sm'
         variant='outline'
