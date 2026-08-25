@@ -1,5 +1,6 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
 import {
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Download,
@@ -51,7 +52,7 @@ type PreviewState = {
   index: number
 }
 
-const PAGE_SIZE = 4
+const PAGE_SIZE = 8
 const ASPECT_RATIOS = [
   'auto',
   '1:1',
@@ -135,9 +136,6 @@ function HistoryImage({ blob, onClick }: { blob: Blob; onClick: () => void }) {
 export function Drawing() {
   const { t } = useTranslation()
   const [models, setModels] = useState<string[]>([])
-  const [groups, setGroups] = useState<Array<{ label: string; value: string }>>(
-    []
-  )
   const [group, setGroup] = useState('')
   const [model, setModel] = useState('')
   const [prompt, setPrompt] = useState('')
@@ -149,7 +147,7 @@ export function Drawing() {
   const [referenceError, setReferenceError] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [history, setHistory] = useState<DrawingHistoryRecord[]>([])
-  const [page, setPage] = useState(0)
+  const [historyVisibleCount, setHistoryVisibleCount] = useState(PAGE_SIZE)
   const [query, setQuery] = useState('')
   const deferredQuery = useDeferredValue(query)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -176,7 +174,6 @@ export function Drawing() {
   useEffect(() => {
     void Promise.all([getDrawingGroups(), listDrawingHistory()])
       .then(([nextGroups, records]) => {
-        setGroups(nextGroups)
         setHistory(records)
         if (nextGroups[0]) setGroup(nextGroups[0].value)
       })
@@ -199,8 +196,8 @@ export function Drawing() {
     () => filterDrawingPrompts(deferredQuery, ''),
     [deferredQuery]
   )
-  const visibleHistory = history.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
-  const pageCount = Math.max(1, Math.ceil(history.length / PAGE_SIZE))
+  const visibleHistory = history.slice(0, historyVisibleCount)
+  const hasMoreHistory = historyVisibleCount < history.length
 
   const submit = async () => {
     if (
@@ -250,7 +247,7 @@ export function Drawing() {
         referenceImages: [...referenceImages],
       }
       setHistory((current) => [record, ...current])
-      setPage(0)
+      setHistoryVisibleCount((current) => Math.max(current, PAGE_SIZE))
       if (!(await saveDrawingHistory(record))) {
         toast.warning(t('This result could not be saved in local history'))
       }
@@ -268,11 +265,8 @@ export function Drawing() {
   const remove = async (id: string) => {
     await deleteDrawingHistory(id)
     setHistory((current) => current.filter((record) => record.id !== id))
-    setPage((current) =>
-      Math.min(
-        current,
-        Math.max(0, Math.ceil((history.length - 1) / PAGE_SIZE) - 1)
-      )
+    setHistoryVisibleCount((current) =>
+      Math.min(current, Math.max(PAGE_SIZE, history.length - 1))
     )
   }
 
@@ -338,24 +332,52 @@ export function Drawing() {
     setReferenceError(nextError)
   }
 
+  const promptInputRef = useRef<HTMLTextAreaElement>(null)
+
   const selectPrompt = (value: string) => {
     setPrompt(value)
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    requestAnimationFrame(() => promptInputRef.current?.focus())
   }
 
   return (
-    <Main ref={scrollRef} className='overflow-y-auto p-4 md:p-6'>
-      <div className='mx-auto flex w-full max-w-6xl flex-col gap-8'>
-        <section className='pb-6'>
+    <Main ref={scrollRef} className='relative overflow-y-auto p-4 md:p-6'>
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-x-0 top-0 z-0 h-[35vh] overflow-hidden [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] opacity-70'
+      >
+        <div
+          className='absolute inset-0 opacity-50'
+          style={{
+            backgroundImage:
+              'radial-gradient(1px 1px at 30px 20px, #fff, transparent), radial-gradient(1.2px 1.2px at 90px 70px, #93c5fd, transparent), radial-gradient(1px 1px at 170px 35px, #fff, transparent), radial-gradient(1.5px 1.5px at 260px 100px, #fff, transparent), radial-gradient(1px 1px at 390px 40px, #60a5fa, transparent)',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '450px 200px',
+          }}
+        />
+        <div
+          className='absolute left-1/2 top-[18vh] size-[180vw] -translate-x-1/2 rounded-full'
+          style={{
+            background:
+              'radial-gradient(circle at 50% 0%, rgba(13, 19, 32, 0.9) 0%, rgba(18, 18, 18, 0) 65%)',
+            boxShadow:
+              '0 -1px 3px rgba(255, 255, 255, 0.65), 0 -6px 18px rgba(147, 197, 253, 0.35), 0 -15px 45px rgba(56, 189, 248, 0.18)',
+          }}
+        />
+      </div>
+      <div className='relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-8'>
+        <section className='pt-[25vh] pb-6'>
           <div className='mb-5'>
             <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
           </div>
-          <div className='bg-background relative min-h-[38vh] rounded-lg border p-3 pb-14'>
+          <div className='bg-background relative mx-auto flex h-[160px] w-full flex-col rounded-lg border p-3 transition-colors focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/15'>
             <textarea
               aria-label={t('Prompt word')}
-              className='size-full min-h-[30vh] resize-none bg-transparent outline-none'
+              className='min-h-0 flex-1 resize-none overflow-y-auto bg-transparent outline-none'
+              disabled={isGenerating}
               onChange={(event) => setPrompt(event.target.value)}
               placeholder={t('Describe the image you want to create')}
+              ref={promptInputRef}
               value={prompt}
             />
             <input
@@ -369,17 +391,18 @@ export function Drawing() {
               ref={fileInputRef}
               type='file'
             />
-            <div className='absolute right-3 bottom-3 left-3 flex items-end justify-between gap-3'>
+            <div className='mt-2 flex min-h-10 items-end justify-between gap-3 pt-2'>
               <div className='flex min-w-0 flex-wrap items-center gap-2'>
                 <Button
                   aria-label={t('Add reference images')}
+                  className='size-10'
                   disabled={
                     !hasEditModel ||
                     isGenerating ||
                     referenceImages.length >= MAX_REFERENCE_IMAGES
                   }
                   onClick={() => fileInputRef.current?.click()}
-                  size='icon-sm'
+                  size='icon'
                   type='button'
                   variant='outline'
                 >
@@ -425,17 +448,7 @@ export function Drawing() {
               {referenceError}
             </p>
           ) : null}
-          <div className='mt-4 grid gap-4 sm:grid-cols-6'>
-            <label className='space-y-1 text-sm'>
-              <span>{t('Group')}</span>
-              <DrawingSelect
-                ariaLabel={t('Group')}
-                disabled={!groups.length || isGenerating}
-                onChange={setGroup}
-                options={groups.map((item) => item.value)}
-                value={group}
-              />
-            </label>
+          <div className='mt-4 grid gap-4 sm:grid-cols-5'>
             <label className='space-y-1 text-sm'>
               <span>{t('Image model')}</span>
               <DrawingSelect
@@ -511,7 +524,7 @@ export function Drawing() {
         </section>
 
         <section>
-          <div className='mb-4 flex items-center justify-between gap-3'>
+          <div className='mb-4 flex items-end justify-between gap-3'>
             <div>
               <h2 className='text-lg font-semibold'>{t('Drawing history')}</h2>
               <p className='text-muted-foreground text-sm'>
@@ -520,29 +533,11 @@ export function Drawing() {
                 )}
               </p>
             </div>
-            <div className='flex items-center gap-2'>
-              <Button
-                aria-label={t('Previous page')}
-                disabled={page === 0}
-                onClick={() => setPage((current) => current - 1)}
-                size='icon-sm'
-                variant='outline'
-              >
-                ←
-              </Button>
-              <span className='text-sm'>
-                {page + 1} / {pageCount}
+            {history.length ? (
+              <span className='text-muted-foreground shrink-0 text-xs'>
+                {visibleHistory.length} / {history.length}
               </span>
-              <Button
-                aria-label={t('Next page')}
-                disabled={page + 1 >= pageCount}
-                onClick={() => setPage((current) => current + 1)}
-                size='icon-sm'
-                variant='outline'
-              >
-                →
-              </Button>
-            </div>
+            ) : null}
           </div>
           {visibleHistory.length ? (
             <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
@@ -562,6 +557,21 @@ export function Drawing() {
               {t('Your generated images will appear here.')}
             </div>
           )}
+          {hasMoreHistory ? (
+            <div className='mt-5 flex justify-center'>
+              <Button
+                aria-label={t('More')}
+                onClick={() =>
+                  setHistoryVisibleCount((current) => current + PAGE_SIZE)
+                }
+                size='sm'
+                variant='outline'
+              >
+                {t('More')}
+                <ChevronDown />
+              </Button>
+            </div>
+          ) : null}
         </section>
 
         <section className='pt-6'>
@@ -706,9 +716,9 @@ function PromptGrid(props: {
   }, [props.columns, props.prompts])
   const virtualizer = useVirtualizer({
     count: rows.length,
-    estimateSize: () => 390,
+    estimateSize: () => 370,
     getScrollElement: () => props.scrollElement.current,
-    overscan: 2,
+    overscan: 6,
   })
 
   return (
