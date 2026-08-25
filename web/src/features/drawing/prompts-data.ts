@@ -7,8 +7,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "海报",
-      "Official"
+      "海报"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/apple.png",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -20,8 +19,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "海报",
-      "Official"
+      "海报"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/dongwucheng.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -33,8 +31,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "有趣",
-      "吐槽",
-      "@canghecode"
+      "吐槽"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/reddit_style_handwrite_annotation.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -46,8 +43,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "有趣",
-      "信息图",
-      "@op7418"
+      "信息图"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/nano_banana_pro_rating.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -59,8 +55,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "PPT",
-      "@op7418"
+      "PPT"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/nano_banana_pro_ppt.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -72,8 +67,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "美食",
-      "@AmirMushich"
+      "美食"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/food.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -97,8 +91,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "表情包",
-      "LINUX DO@heiyub"
+      "表情包"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/q_version_meme_pack.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -110,8 +103,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "学习",
-      "总结",
-      "@Lyn_Ford"
+      "总结"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/article_to_infographic.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -147,8 +139,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "学习",
-      "总结",
-      "@chatgpt_kazlily"
+      "总结"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/mindmap.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -160,8 +151,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "旅游",
-      "@canghecode"
+      "旅游"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/journal.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -197,8 +187,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "封面",
-      "@op7418"
+      "封面"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G6Py5uaaIAEVz9o.jpg?format=jpg&name=large",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -222,8 +211,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "滤镜",
-      "@Arminn_Ai"
+      "滤镜"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G5o8EfRXQAAxv0R?format=jpg&name=medium",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -235,8 +223,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "想象",
-      "@ZaraIrahh"
+      "想象"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G5i9ovQa8AAPk3A?format=jpg&name=medium",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -260,8 +247,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "滤镜",
-      "Wechat@01Founder"
+      "滤镜"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/film_portrait.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -273,8 +259,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "学习",
-      "总结",
-      "@op7418"
+      "总结"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G6RRCifaAAAcSu6.jpg?format=jpg&name=large",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -286,8 +271,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "学习",
-      "总结",
-      "@LufzzLiz"
+      "总结"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G6NXrdNaQAATevh?format=jpg&name=medium",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -347,8 +331,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "穿搭",
-      "@skirano"
+      "穿搭"
     ],
     "coverUrl": "https://i.mji.rip/2025/09/04/b9c7402974fba6627ab1b0bf3fce065d.png",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -360,8 +343,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "穿搭",
-      "Official"
+      "穿搭"
     ],
     "coverUrl": "https://i.mji.rip/2025/09/04/c4dffca8a2916cd1fbefa21237751b81.png",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -385,8 +367,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "美食",
-      "@LufzzLiz"
+      "美食"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/cooking_flowchart.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -458,8 +439,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "有趣",
-      "海报",
-      "@op7418"
+      "海报"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/movie_scene_poster.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -471,8 +451,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "电商",
-      "Wechat@01Founder"
+      "电商"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/ecommerce_model.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -484,8 +463,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "电商",
-      "Wechat@01Founder"
+      "电商"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/product_photography.png",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -533,8 +511,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "滤镜",
-      "Official"
+      "滤镜"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/toriyama.jpeg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -558,8 +535,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "旅游",
-      "@dotey"
+      "旅游"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/travel_journal_illustration.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -583,8 +559,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "插画",
-      "@dotey"
+      "插画"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/home_office_isometric_3d.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -644,8 +619,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "装修",
-      "Wechat@01Founder"
+      "装修"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/furniture_preview.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -657,8 +631,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "装修",
-      "Wechat@01Founder"
+      "装修"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/floor_plan_render.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -670,8 +643,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "封面",
-      "Wechat@01Founder"
+      "封面"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/viral_thumbnail.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -683,8 +655,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "表情包",
-      "@Moeary"
+      "表情包"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/chibi_sticker_pack.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -696,8 +667,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "工作",
-      "封面",
-      "Wechat@01Founder"
+      "封面"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/promo_poster.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -709,8 +679,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "旅游",
-      "Wechat@01Founder"
+      "旅游"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/menu_translation.jpg",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -746,8 +715,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "旅游",
-      "Wechat@01Founder"
+      "旅游"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/landmark_card.png",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -759,8 +727,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "头像",
-      "Wechat@01Founder"
+      "头像"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/popmart_avatar.png",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -772,8 +739,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "表情包",
-      "Wechat@01Founder"
+      "表情包"
     ],
     "coverUrl": "https://cdn.jsdelivr.net/gh/glidea/banana-prompt-quicker@main/images/pet_sticker.png",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -1073,8 +1039,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "想象",
-      "@NanoBanana_labs"
+      "想象"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G6bVr_GW0AAJEOx.jpg?format=jpg&name=large",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -1086,8 +1051,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "想象",
-      "@NanoBanana_labs"
+      "想象"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G6bLciCXcAAgNbC.jpg?format=jpg&name=large",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -1099,8 +1063,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "想象",
-      "@NanoBanana_labs"
+      "想象"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G6bAkrvXAAAkOol.jpg?format=jpg&name=large",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -1112,8 +1075,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "生活",
-      "想象",
-      "@NanoBanana_labs"
+      "想象"
     ],
     "coverUrl": "https://pbs.twimg.com/media/G6a251CWQAA8oUw.jpg?format=jpg&name=large",
     "sourceUrl": "https://glidea.github.io/banana-prompt-quicker/"
@@ -3525,9 +3487,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [real object], [doodle concept and interaction], [ad copy], and [brand logo] with specific content.",
     "tags": [
       "广告设计",
-      "advertising",
-      "@azed_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "advertising"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/1.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3539,9 +3499,7 @@ export const DRAWING_PROMPTS = [
     "description": "Can replace Harry Potter with any character name.",
     "tags": [
       "人像/角色",
-      "portrait",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/2.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3553,9 +3511,7 @@ export const DRAWING_PROMPTS = [
     "description": "Fill in [subject] and [part] with specific descriptions. E.g., [subject]: a Sith Lord holding a red lightsaber.",
     "tags": [
       "人像/角色",
-      "portrait",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/3.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3568,8 +3524,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/4.png",
@@ -3583,8 +3537,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/5.png",
@@ -3598,8 +3550,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@thisdudelikesAI",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/6.png",
@@ -3612,9 +3562,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [animal type] and [landmark] with specific descriptions.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@berryxia_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/7.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3627,8 +3575,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D渲染/材质",
       "3d_render",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/8.png",
@@ -3642,8 +3588,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D渲染/材质",
       "3d_render",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/9.png",
@@ -3657,8 +3601,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "创意转换",
       "creative",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/10.png",
@@ -3671,9 +3613,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace brand name, tagline, and keycap colors.",
     "tags": [
       "产品展示图",
-      "product",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/11.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3685,9 +3625,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace the emoji icon, title and tagline.",
     "tags": [
       "产品展示图",
-      "product",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/12.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3699,9 +3637,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace target audience and scene description in brackets.",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/13.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3713,9 +3649,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace { beautify } with the word you want to blend.",
     "tags": [
       "文字渲染",
-      "text_render",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "text_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/14.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3727,9 +3661,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace character and landscape descriptions.",
     "tags": [
       "人像/角色",
-      "portrait",
-      "rezzycheck (Sora)",
-      "moosl/awsome-gpt-image-2-prompts"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/15.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3741,9 +3673,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [Subject 1] and [Subject 2] with specific subject descriptions.",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/16.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3755,9 +3685,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace 【🐼】 with other animal Emojis.",
     "tags": [
       "产品展示图",
-      "product",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/17.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3769,9 +3697,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [SUBJECT] and [PART] in the prompt.",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/18.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3783,9 +3709,7 @@ export const DRAWING_PROMPTS = [
     "description": "City, weather, temperature, and building names can be customized.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/19.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3798,8 +3722,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D渲染/材质",
       "3d_render",
-      "@azed_ai",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/20.png",
@@ -3812,9 +3734,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace the name, title, email, and link data in the JSON code.",
     "tags": [
       "文字渲染",
-      "text_render",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "text_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/21.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3826,9 +3746,7 @@ export const DRAWING_PROMPTS = [
     "description": "Can reference this prompt to generate other city landscapes.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/22.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3841,8 +3759,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D渲染/材质",
       "3d_render",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/23.png",
@@ -3855,9 +3771,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace {Chang'e Flying to the Moon} with any story scene description.",
     "tags": [
       "3D/手办/潮玩",
-      "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_cute"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/24.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3869,9 +3783,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace {The Lord of the Rings} with other movies. The anime style can also be modified.",
     "tags": [
       "海报设计",
-      "poster",
-      "photis (Sora)",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/25.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3884,8 +3796,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/26.png",
@@ -3898,9 +3808,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [LOGO] with a specific brand logo description.",
     "tags": [
       "产品展示图",
-      "product",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/27.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3913,8 +3821,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@azed_ai",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/28.png",
@@ -3927,9 +3833,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [image/emoji] with a specific image description or Emoji.",
     "tags": [
       "产品展示图",
-      "product",
-      "@azed_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/29.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3941,9 +3845,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace 【Cyberpunk】 with other styles like futuristic city, steampunk, medieval village, etc.",
     "tags": [
       "风景/场景",
-      "scene",
-      "terry623",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/30.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3956,8 +3858,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "动漫/插画",
       "illustration",
-      "@Anima_Labs",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/31.png",
@@ -3970,9 +3870,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [PROMPT] with a specific subject.",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/32.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3984,9 +3882,7 @@ export const DRAWING_PROMPTS = [
     "description": "Modify values in parameters object to customize the card.",
     "tags": [
       "AI卡牌",
-      "card",
-      "@hewarsaber",
-      "moosl/awsome-gpt-image-2-prompts"
+      "card"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/33.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -3998,9 +3894,7 @@ export const DRAWING_PROMPTS = [
     "description": "Recreates a nostalgic 2008-era gaming scene.",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/34.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4012,9 +3906,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace {❄️} with your target emoji or object.",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/35.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4026,9 +3918,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "食物摄影",
-      "food",
-      "@madpencil_",
-      "moosl/awsome-gpt-image-2-prompts"
+      "food"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/36.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4040,9 +3930,7 @@ export const DRAWING_PROMPTS = [
     "description": "Showcases steampunk style with metallic materials.",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "@f-is-h",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/37.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4054,9 +3942,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace 【🍓】 with other Emojis.",
     "tags": [
       "食物摄影",
-      "food",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "food"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/38.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4069,8 +3955,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "产品展示图",
       "product",
-      "@gnrlyxyz",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/39.png",
@@ -4083,9 +3967,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "文字渲染",
-      "text_render",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts"
+      "text_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/40.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4097,9 +3979,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace 🦖 with other Emojis.",
     "tags": [
       "产品展示图",
-      "product",
-      "@gizakdag",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/41.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4111,9 +3991,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace city and country names to generate different city posters.",
     "tags": [
       "海报设计",
-      "poster",
-      "@michaelrabone",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/42.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4125,9 +4003,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [SUBJECT/OBJECT] and [LOCATION]. E.g., Chinese dragon above the Great Wall.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@umesh_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/43.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4139,9 +4015,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [🍔] with other Emojis or objects.",
     "tags": [
       "Logo设计",
-      "logo",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/44.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4153,9 +4027,7 @@ export const DRAWING_PROMPTS = [
     "description": "Reference this prompt to generate similar prompts for other buildings.",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/45.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4167,9 +4039,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [object/animal] with a specific object, animal name, or emoji.",
     "tags": [
       "产品展示图",
-      "product",
-      "@azed_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/46.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4181,9 +4051,7 @@ export const DRAWING_PROMPTS = [
     "description": "Designed to generate a very casual, even somewhat failed snapshot style.",
     "tags": [
       "人像/角色",
-      "portrait",
-      "@jiamimaodashu",
-      "moosl/awsome-gpt-image-2-prompts"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/47.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4195,9 +4063,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [🥹] with other Emojis.",
     "tags": [
       "产品展示图",
-      "product",
-      "@gizakdag",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/48.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4209,9 +4075,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace 🔥 with other Emojis.",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/49.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4223,9 +4087,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace city, country, landmark, and date in brackets.",
     "tags": [
       "文字渲染",
-      "text_render",
-      "@M_w14_",
-      "moosl/awsome-gpt-image-2-prompts"
+      "text_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/50.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4237,9 +4099,7 @@ export const DRAWING_PROMPTS = [
     "description": "Core terms: \"dimensional break effects\" and \"motion depth.\"",
     "tags": [
       "AI卡牌",
-      "card",
-      "@op7418",
-      "moosl/awsome-gpt-image-2-prompts"
+      "card"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/51.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4251,9 +4111,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/52.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4266,8 +4124,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D渲染/材质",
       "3d_render",
-      "@BrettFromDJ",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/53.png",
@@ -4280,9 +4136,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "@egeberkina",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/54.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4294,9 +4148,7 @@ export const DRAWING_PROMPTS = [
     "description": "Creative product concept combining brand elements.",
     "tags": [
       "产品展示图",
-      "product",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/55.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4308,9 +4160,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace university name and characteristics.",
     "tags": [
       "3D/手办/潮玩",
-      "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_cute"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/56.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4322,9 +4172,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace {Programmer} with other professions.",
     "tags": [
       "AI卡牌",
-      "card",
-      "@berryxia_ai",
-      "moosl/awsome-gpt-image-2-prompts"
+      "card"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/57.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4337,8 +4185,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/58.png",
@@ -4352,8 +4198,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@balconychy",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/59.png",
@@ -4366,9 +4210,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace scene in brackets with other Chinese stories.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/60.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4381,8 +4223,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "动漫/插画",
       "illustration",
-      "@hellokaton",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/61.png",
@@ -4395,9 +4235,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/62.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4409,9 +4247,7 @@ export const DRAWING_PROMPTS = [
     "description": "Add your own text content at the end of the prompt.",
     "tags": [
       "文字渲染",
-      "text_render",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "text_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/63.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4423,9 +4259,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [brand product] with a specific product description.",
     "tags": [
       "广告设计",
-      "advertising",
-      "@op7418",
-      "moosl/awsome-gpt-image-2-prompts"
+      "advertising"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/64.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4437,9 +4271,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace 'toilet' with any object. Uses Markdown-style structured prompt.",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/65.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4451,9 +4283,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [pumpkin emoji] with other emojis or objects.",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "gizakdag",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/66.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4465,9 +4295,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace the text content at the end.",
     "tags": [
       "文字渲染",
-      "text_render",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "text_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/67.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4480,8 +4308,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@balconychy",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/68.png",
@@ -4494,9 +4320,7 @@ export const DRAWING_PROMPTS = [
     "description": "Modify the scene description inside the brackets.",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/69.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4508,9 +4332,7 @@ export const DRAWING_PROMPTS = [
     "description": "Simple prompt for generating anime sticker collections.",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@richardchang",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/70.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4522,9 +4344,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace city name for different scenes.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/71.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4537,8 +4357,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "人像/角色",
       "portrait",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/72.png",
@@ -4552,8 +4370,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "动漫/插画",
       "illustration",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/73.png",
@@ -4567,8 +4383,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "动漫/插画",
       "illustration",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/74.png",
@@ -4582,8 +4396,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "广告设计",
       "advertising",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/75.png",
@@ -4596,9 +4408,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace 'toilet' with any object. Uses JSON format for precise control.",
     "tags": [
       "3D渲染/材质",
-      "3d_render",
-      "@0xdlk",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/76.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4611,8 +4421,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/77.png",
@@ -4626,8 +4434,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@balconychy",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/78.png",
@@ -4640,9 +4446,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace the copy content for different covers.",
     "tags": [
       "海报设计",
-      "poster",
-      "@balconychy",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/79.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4655,8 +4459,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "动漫/插画",
       "illustration",
-      "@leon_yuan2001",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/80.png",
@@ -4669,9 +4471,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [Jackie Chan] with any character name.",
     "tags": [
       "3D/手办/潮玩",
-      "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "3d_cute"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/81.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4683,9 +4483,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [Country Name] with the specific country name.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@TheRelianceAI",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/82.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4698,8 +4496,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "人像/角色",
       "portrait",
-      "AnimeAI",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/83.png",
@@ -4712,9 +4508,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [shape or logo] with a specific description.",
     "tags": [
       "文字渲染",
-      "text_render",
-      "@Gdgtify",
-      "moosl/awsome-gpt-image-2-prompts"
+      "text_render"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/84.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4727,8 +4521,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "产品展示图",
       "product",
-      "@Alittlefatwhale",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/85.png",
@@ -4741,9 +4533,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace with your own satirical theme.",
     "tags": [
       "海报设计",
-      "poster",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/86.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4756,8 +4546,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/87.png",
@@ -4771,8 +4559,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/88.png",
@@ -4786,8 +4572,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/89.png",
@@ -4800,9 +4584,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/90.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4814,9 +4596,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "动漫/插画",
-      "illustration",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/91.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4828,9 +4608,7 @@ export const DRAWING_PROMPTS = [
     "description": "Replace [3D Coca-Cola classic soda bottle] with other objects for different themes.",
     "tags": [
       "海报设计",
-      "poster",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/92.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4843,8 +4621,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/93.png",
@@ -4857,9 +4633,7 @@ export const DRAWING_PROMPTS = [
     "description": "Customize room elements as needed.",
     "tags": [
       "风景/场景",
-      "scene",
-      "@ZHO_ZHO_ZHO",
-      "moosl/awsome-gpt-image-2-prompts"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/94.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4872,8 +4646,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/95.png",
@@ -4887,8 +4659,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "动漫/插画",
       "illustration",
-      "AnimeAI",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/96.png",
@@ -4902,8 +4672,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@balconychy",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/97.png",
@@ -4916,9 +4684,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/98.png",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4931,8 +4697,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@dotey",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/99.png",
@@ -4946,8 +4710,6 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "3D/手办/潮玩",
       "3d_cute",
-      "@balconychy",
-      "moosl/awsome-gpt-image-2-prompts",
       "需要参考图"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/100.png",
@@ -4960,9 +4722,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/101.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4974,9 +4734,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/102.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -4988,9 +4746,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/103.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5002,9 +4758,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "建筑/空间",
-      "architecture",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "architecture"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/104.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5016,9 +4770,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/105.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5030,9 +4782,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/106.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5044,9 +4794,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/107.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5058,9 +4806,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/108.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5072,9 +4818,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/109.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5086,9 +4830,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/110.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5100,9 +4842,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/111.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5114,9 +4854,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/112.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5128,9 +4866,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/113.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5142,9 +4878,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/114.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5156,9 +4890,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/115.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5170,9 +4902,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/116.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5184,9 +4914,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/117.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5198,9 +4926,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/118.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5212,9 +4938,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/119.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5226,9 +4950,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/120.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5240,9 +4962,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/121.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5254,9 +4974,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/122.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5268,9 +4986,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "场景/叙事",
-      "scene",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/123.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5282,9 +4998,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/124.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5296,9 +5010,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/125.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5310,9 +5022,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/126.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5324,9 +5034,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/127.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5338,9 +5046,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/128.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5352,9 +5058,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/129.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5366,9 +5070,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/130.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5380,9 +5082,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/131.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5394,9 +5094,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/132.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5408,9 +5106,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/133.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5422,9 +5118,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/134.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5436,9 +5130,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/135.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5450,9 +5142,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/136.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5464,9 +5154,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/137.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5478,9 +5166,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/138.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5492,9 +5178,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/139.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5506,9 +5190,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/140.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5520,9 +5202,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/141.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5534,9 +5214,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/142.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5548,9 +5226,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/143.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5562,9 +5238,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "建筑/空间",
-      "architecture",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "architecture"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/144.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5576,9 +5250,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/145.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5590,9 +5262,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/146.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5604,9 +5274,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/147.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5618,9 +5286,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/148.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5632,9 +5298,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/149.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5646,9 +5310,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/150.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5660,9 +5322,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/151.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5674,9 +5334,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/152.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5688,9 +5346,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/153.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5702,9 +5358,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/154.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5716,9 +5370,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/155.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5730,9 +5382,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/156.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5744,9 +5394,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/157.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5758,9 +5406,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/158.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5772,9 +5418,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/159.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5786,9 +5430,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/160.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5800,9 +5442,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/161.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5814,9 +5454,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/162.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5828,9 +5466,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/163.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5842,9 +5478,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/164.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5856,9 +5490,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/165.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5870,9 +5502,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/166.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5884,9 +5514,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/167.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5898,9 +5526,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/168.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5912,9 +5538,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/169.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5926,9 +5550,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/170.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5940,9 +5562,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/171.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5954,9 +5574,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/172.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5968,9 +5586,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/173.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5982,9 +5598,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/174.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -5996,9 +5610,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/175.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6010,9 +5622,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/176.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6024,9 +5634,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/177.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6038,9 +5646,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/178.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6052,9 +5658,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/179.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6066,9 +5670,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "场景/叙事",
-      "scene",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/180.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6080,9 +5682,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/181.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6094,9 +5694,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/182.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6108,9 +5706,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/183.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6122,9 +5718,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/184.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6136,9 +5730,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/185.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6150,9 +5742,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/186.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6164,9 +5754,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/187.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6178,9 +5766,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/188.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6192,9 +5778,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/189.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6206,9 +5790,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/190.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6220,9 +5802,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "场景/叙事",
-      "scene",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/191.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6234,9 +5814,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/192.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6248,9 +5826,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/193.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6262,9 +5838,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/194.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6276,9 +5850,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/195.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6290,9 +5862,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/196.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6304,9 +5874,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/197.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6318,9 +5886,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/198.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6332,9 +5898,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/199.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6346,9 +5910,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/200.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6360,9 +5922,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/201.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6374,9 +5934,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "建筑/空间",
-      "architecture",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "architecture"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/202.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6388,9 +5946,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/203.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6402,9 +5958,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/204.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6416,9 +5970,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/205.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6430,9 +5982,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/206.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6444,9 +5994,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/207.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6458,9 +6006,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/208.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6472,9 +6018,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/209.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6486,9 +6030,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/210.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6500,9 +6042,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6514,9 +6054,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/212.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6528,9 +6066,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/213.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6542,9 +6078,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/214.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6556,9 +6090,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/215.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6570,9 +6102,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/216.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6584,9 +6114,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/217.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6598,9 +6126,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/218.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6612,9 +6138,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/219.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6626,9 +6150,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/220.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6640,9 +6162,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/221.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6654,9 +6174,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/222.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6668,9 +6186,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/223.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6682,9 +6198,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/224.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6696,9 +6210,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/225.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6710,9 +6222,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/226.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6724,9 +6234,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/227.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6738,9 +6246,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/228.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6752,9 +6258,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/229.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6766,9 +6270,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/230.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6780,9 +6282,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/231.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6794,9 +6294,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/232.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6808,9 +6306,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/233.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6822,9 +6318,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/234.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6836,9 +6330,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/235.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6850,9 +6342,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/236.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6864,9 +6354,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/237.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6878,9 +6366,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/238.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6892,9 +6378,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/239.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6906,9 +6390,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/240.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6920,9 +6402,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/241.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6934,9 +6414,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/242.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6948,9 +6426,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/243.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6962,9 +6438,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/244.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6976,9 +6450,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "古风/历史",
-      "ancient",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ancient"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/245.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -6990,9 +6462,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/246.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7004,9 +6474,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "古风/历史",
-      "ancient",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ancient"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/247.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7018,9 +6486,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/248.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7032,9 +6498,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/249.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7046,9 +6510,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/250.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7060,9 +6522,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/251.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7074,9 +6534,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/252.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7088,9 +6546,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/253.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7102,9 +6558,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/254.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7116,9 +6570,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/255.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7130,9 +6582,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/256.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7144,9 +6594,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/257.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7158,9 +6606,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/258.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7172,9 +6618,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "场景/叙事",
-      "scene",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/259.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7186,9 +6630,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/260.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7200,9 +6642,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/261.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7214,9 +6654,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/262.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7228,9 +6666,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/263.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7242,9 +6678,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/264.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7256,9 +6690,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/265.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7270,9 +6702,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/266.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7284,9 +6714,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/267.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7298,9 +6726,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/268.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7312,9 +6738,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/269.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7326,9 +6750,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/270.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7340,9 +6762,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/271.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7354,9 +6774,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/272.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7368,9 +6786,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/273.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7382,9 +6798,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/274.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7396,9 +6810,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/275.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7410,9 +6822,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/276.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7424,9 +6834,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/277.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7438,9 +6846,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/278.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7452,9 +6858,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/279.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7466,9 +6870,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/280.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7480,9 +6882,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "场景/叙事",
-      "scene",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "scene"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/281.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7494,9 +6894,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "古风/历史",
-      "ancient",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ancient"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/282.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7508,9 +6906,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/283.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7522,9 +6918,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/284.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7536,9 +6930,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/285.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7550,9 +6942,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/286.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7564,9 +6954,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "3D/手办/潮玩",
-      "3d",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "3d"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/287.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7578,9 +6966,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "建筑/空间",
-      "architecture",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "architecture"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/288.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7592,9 +6978,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/289.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7606,9 +6990,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "古风/历史",
-      "ancient",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ancient"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/290.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7620,9 +7002,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/291.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7634,9 +7014,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/292.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7648,9 +7026,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "3D/手办/潮玩",
-      "3d",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "3d"
     ],
     "coverUrl": "",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7662,9 +7038,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/294.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7676,9 +7050,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/295.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7690,9 +7062,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/296.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7704,9 +7074,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/297.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7718,9 +7086,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/298.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7732,9 +7098,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/299.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7746,9 +7110,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/300.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7760,9 +7122,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/301.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7774,9 +7134,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/302.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7788,9 +7146,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/303.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7802,9 +7158,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/304.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7816,9 +7170,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/305.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7830,9 +7182,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/306.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7844,9 +7194,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/307.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7858,9 +7206,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/308.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7872,9 +7218,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/309.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7886,9 +7230,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/310.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7900,9 +7242,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "文档设计",
-      "document",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "document"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/311.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7914,9 +7254,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/312.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7928,9 +7266,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/313.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7942,9 +7278,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/314.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7956,9 +7290,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/315.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7970,9 +7302,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/316.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7984,9 +7314,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/317.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -7998,9 +7326,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/318.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8012,9 +7338,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/319.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8026,9 +7350,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/320.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8040,9 +7362,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/321.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8054,9 +7374,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/322.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8068,9 +7386,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/323.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8082,9 +7398,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/324.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8096,9 +7410,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "古风/历史",
-      "ancient",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ancient"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/325.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8110,9 +7422,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/326.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8124,9 +7434,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/327.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8138,9 +7446,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/328.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8152,9 +7458,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/329.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8166,9 +7470,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/330.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8180,9 +7482,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/331.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8194,9 +7494,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/332.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8208,9 +7506,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/333.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8222,9 +7518,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "古风/历史",
-      "ancient",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ancient"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/334.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8236,9 +7530,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/335.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8250,9 +7542,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/336.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8264,9 +7554,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/337.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8278,9 +7566,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/338.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8292,9 +7578,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/339.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8306,9 +7590,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/340.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8320,9 +7602,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/341.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8334,9 +7614,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/342.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8348,9 +7626,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/343.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8362,9 +7638,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/344.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8376,9 +7650,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "文档设计",
-      "document",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "document"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/345.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8390,9 +7662,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/346.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8404,9 +7674,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/347.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8418,9 +7686,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/348.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8432,9 +7698,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/349.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8446,9 +7710,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/350.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8460,9 +7722,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/351.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8474,9 +7734,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/352.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8488,9 +7746,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/353.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8502,9 +7758,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/354.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8516,9 +7770,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/355.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8530,9 +7782,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/356.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8544,9 +7794,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/357.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8558,9 +7806,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/358.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8572,9 +7818,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/359.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8586,9 +7830,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "海报设计",
-      "poster",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/360.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8600,9 +7842,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/361.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8614,9 +7854,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "动漫/插画",
-      "anime",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "anime"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/362.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8628,9 +7866,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/363.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8642,9 +7878,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/364.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8656,9 +7890,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/365.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8670,9 +7902,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/366.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8684,9 +7914,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/367.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8698,9 +7926,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/368.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8712,9 +7938,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/369.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8726,9 +7950,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/370.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8740,9 +7962,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/371.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8754,9 +7974,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "古风/历史",
-      "ancient",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ancient"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/372.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8768,9 +7986,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/373.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8782,9 +7998,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "文档设计",
-      "document",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "document"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/374.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8796,9 +8010,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/375.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8810,9 +8022,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/376.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8824,9 +8034,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/377.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8838,9 +8046,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/378.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8852,9 +8058,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/379.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8866,9 +8070,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "人像/角色",
-      "character",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "character"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/380.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8880,9 +8082,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/381.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8894,9 +8094,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/382.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8908,9 +8106,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/383.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8922,9 +8118,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/384.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8936,9 +8130,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/385.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8950,9 +8142,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/386.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8964,9 +8154,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "信息图设计",
-      "infographic",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/387.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8978,9 +8166,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/388.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -8992,9 +8178,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/389.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9006,9 +8190,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/390.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9020,9 +8202,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/391.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9034,9 +8214,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "Logo设计",
-      "logo",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "logo"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/392.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9048,9 +8226,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/393.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9062,9 +8238,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/394.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9076,9 +8250,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "产品展示图",
-      "product",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "product"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/395.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9090,9 +8262,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "插画/艺术",
-      "illustration",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/396.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9104,9 +8274,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/397.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9118,9 +8286,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/398.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9132,9 +8298,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/399.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9146,9 +8310,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/400.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9160,9 +8322,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/401.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9174,9 +8334,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/402.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9188,9 +8346,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/403.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9202,9 +8358,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/404.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9216,9 +8370,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/405.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9230,9 +8382,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "摄影",
-      "photography",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "photography"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/406.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9244,9 +8394,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "UI与界面",
-      "ui",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/407.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9258,9 +8406,7 @@ export const DRAWING_PROMPTS = [
     "description": "",
     "tags": [
       "其他",
-      "other",
-      "freestylefly",
-      "freestylefly/awesome-gpt-image-2"
+      "other"
     ],
     "coverUrl": "",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9272,8 +8418,7 @@ export const DRAWING_PROMPTS = [
     "description": "3d-render, 图像生成, gpt-image-2, Infographic",
     "tags": [
       "图像模板 - 信息图表",
-      "infographic",
-      "open-design"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/409.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9285,8 +8430,7 @@ export const DRAWING_PROMPTS = [
     "description": "anime, action, 图像生成, gpt-image-2, Anime / Manga, 插画, 武术",
     "tags": [
       "图像模板 - 动漫插画",
-      "anime_illustration",
-      "open-design"
+      "anime_illustration"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/410.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9298,8 +8442,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, fantasy, product, 图像生成, gpt-image-2, App / Web Design",
     "tags": [
       "图像模板 - 产品海报",
-      "product_poster",
-      "open-design"
+      "product_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/411.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9311,8 +8454,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-ui, fighting-game, anime, hud, street-fighter, tekken, vs-screen, key-visual, cinematic, 图像生成",
     "tags": [
       "图像模板 - 游戏截图/UI",
-      "game_ui",
-      "open-design"
+      "game_ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/412.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9324,8 +8466,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-ui, arpg, three-kingdoms, guanyu, mounted-combat, cinematic, hud, boss-fight, unreal-engine-5, 图像生成",
     "tags": [
       "图像模板 - 游戏截图/UI",
-      "game_ui",
-      "open-design"
+      "game_ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/413.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9337,8 +8478,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-ui, arpg, three-kingdoms, lyubu, archery, cinematic, hud, unreal-engine-5, 图像生成, gpt-image-2",
     "tags": [
       "图像模板 - 游戏截图/UI",
-      "game_ui",
-      "open-design"
+      "game_ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/414.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9350,8 +8490,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-ui, arpg, three-kingdoms, zhaoyun, escort-mission, cinematic, hud, combo, elden-ring, unreal-engine-5",
     "tags": [
       "图像模板 - 游戏截图/UI",
-      "game_ui",
-      "open-design"
+      "game_ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/415.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9363,8 +8502,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-ui, mmo, hud, ancient-china, open-world, cinematic, wuxia, 图像生成, gpt-image-2, Game UI",
     "tags": [
       "图像模板 - 游戏截图/UI",
-      "game_ui",
-      "open-design"
+      "game_ui"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/416.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9376,8 +8514,7 @@ export const DRAWING_PROMPTS = [
     "description": "food, nature, 图像生成, gpt-image-2, Illustration, 地图",
     "tags": [
       "图像模板 - 插画地图",
-      "illustration_map",
-      "open-design"
+      "illustration_map"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/417.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9389,8 +8526,7 @@ export const DRAWING_PROMPTS = [
     "description": "infographic, dance, choreography, pose-reference, anime, idol, japanese, otaku-dance, grid-sheet, video-reference",
     "tags": [
       "图像模板 - 信息图表",
-      "infographic",
-      "open-design"
+      "infographic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/418.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9402,8 +8538,7 @@ export const DRAWING_PROMPTS = [
     "description": "图像生成, gpt-image-2, Illustration",
     "tags": [
       "图像模板 - 插画地图",
-      "illustration_map",
-      "open-design"
+      "illustration_map"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/419.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9415,8 +8550,7 @@ export const DRAWING_PROMPTS = [
     "description": "anime, cinematic, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/420.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9428,8 +8562,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, 3d-render, 图像生成, gpt-image-2, Profile / Avatar, 头像, 时尚",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/421.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9441,8 +8574,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/422.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9454,8 +8586,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, anime, cinematic, cyberpunk, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/423.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9467,8 +8598,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, anime, fantasy, cinematic-romance, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/424.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9480,8 +8610,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, anime, fantasy, 3d-render, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/425.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9493,8 +8622,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/426.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9506,8 +8634,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/427.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9519,8 +8646,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, anime, cinematic, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/428.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9532,8 +8658,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/429.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9545,8 +8670,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/430.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9558,8 +8682,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/431.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9571,8 +8694,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, fantasy, typography, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/432.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9584,8 +8706,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/433.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9597,8 +8718,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, fantasy, 3d-render, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/434.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9610,8 +8730,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, fantasy, nature, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/435.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9623,8 +8742,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, fantasy, nature, 图像生成, gpt-image-2, Profile / Avatar, 头像, 汉服",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/436.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9636,8 +8754,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, fantasy, 图像生成, gpt-image-2, Profile / Avatar, 头像, 汉服",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/437.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9649,8 +8766,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, fantasy, nature, 图像生成, gpt-image-2, Profile / Avatar, 头像",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/438.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9662,8 +8778,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, 图像生成, gpt-image-2, Profile / Avatar, 头像, 汉服",
     "tags": [
       "图像模板 - 头像肖像",
-      "portrait",
-      "open-design"
+      "portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/439.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9675,8 +8790,7 @@ export const DRAWING_PROMPTS = [
     "description": "anime, fantasy, typography, action, 图像生成, gpt-image-2, Social Media Post, 海报, 社交媒体",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/440.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9688,8 +8802,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, 图像生成, gpt-image-2, Social Media Post, 社交媒体",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/441.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9701,8 +8814,7 @@ export const DRAWING_PROMPTS = [
     "description": "anime, fantasy, 图像生成, gpt-image-2, Social Media Post, 社交媒体",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/442.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9714,8 +8826,7 @@ export const DRAWING_PROMPTS = [
     "description": "图像生成, gpt-image-2, Social Media Post, 时尚, 社交媒体, 编辑风",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/443.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9727,8 +8838,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, action, 图像生成, gpt-image-2, Social Media Post, 时尚, 社交媒体, 编辑风, 拼图",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/444.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9740,8 +8850,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, typography, 图像生成, gpt-image-2, Social Media Post, 海报, 社交媒体",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/445.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9753,8 +8862,7 @@ export const DRAWING_PROMPTS = [
     "description": "storyboard, dance, portrait, cinematic, sequence, fashion, 图像生成, gpt-image-2, Social Media Post, 社交媒体",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/446.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9766,8 +8874,7 @@ export const DRAWING_PROMPTS = [
     "description": "anime, typography, food, 图像生成, gpt-image-2, Social Media Post, 社交媒体",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/447.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9779,8 +8886,7 @@ export const DRAWING_PROMPTS = [
     "description": "fantasy, 图像生成, gpt-image-2, Social Media Post, 时尚, 社交媒体",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/448.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9792,8 +8898,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, 图像生成, gpt-image-2, Social Media Post, 旅行, 社交媒体, 拼图",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/449.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9805,8 +8910,7 @@ export const DRAWING_PROMPTS = [
     "description": "action, 图像生成, gpt-image-2, Social Media Post, 社交媒体, 复古",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/450.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9818,8 +8922,7 @@ export const DRAWING_PROMPTS = [
     "description": "fantasy, 3d-render, product, 图像生成, gpt-image-2, Social Media Post, 海报, VR",
     "tags": [
       "图像模板 - 社交媒体海报",
-      "social_poster",
-      "open-design"
+      "social_poster"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/451.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9831,8 +8934,7 @@ export const DRAWING_PROMPTS = [
     "description": "视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 动画",
-      "animation",
-      "open-design"
+      "animation"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/452.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9844,8 +8946,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, product, 视频生成, seedance-2.0, Advertising",
     "tags": [
       "视频模板 - 广告/品牌",
-      "advertising",
-      "open-design"
+      "advertising"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/453.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9857,8 +8958,7 @@ export const DRAWING_PROMPTS = [
     "description": "fantasy, action, 视频生成, seedance-2.0, General, 龙",
     "tags": [
       "视频模板 - 武侠/历史",
-      "wuxia_history",
-      "open-design"
+      "wuxia_history"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/454.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9870,8 +8970,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, nature, 视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 武侠/历史",
-      "wuxia_history",
-      "open-design"
+      "wuxia_history"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/455.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9883,8 +8982,7 @@ export const DRAWING_PROMPTS = [
     "description": "视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 动画",
-      "animation",
-      "open-design"
+      "animation"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/456.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9896,8 +8994,7 @@ export const DRAWING_PROMPTS = [
     "description": "fantasy, 视频生成, seedance-2.0, General, 舞蹈",
     "tags": [
       "视频模板 - 舞蹈/动作",
-      "dance_action",
-      "open-design"
+      "dance_action"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/457.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9909,8 +9006,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, 3d-render, 视频生成, seedance-2.0, Motion Graphics",
     "tags": [
       "视频模板 - 短视频/影像",
-      "short_video",
-      "open-design"
+      "short_video"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/458.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9922,8 +9018,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, cinematic-romance, 视频生成, seedance-2.0, 生日",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/459.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9935,8 +9030,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, action, 视频生成, seedance-2.0, 龙",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/460.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9948,8 +9042,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, action, 视频生成, seedance-2.0, 舞蹈",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/461.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9961,8 +9054,7 @@ export const DRAWING_PROMPTS = [
     "description": "portrait, cinematic, action, 视频生成, seedance-2.0",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/462.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9974,8 +9066,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, 视频生成, seedance-2.0",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/463.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -9987,8 +9078,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, cyberpunk, fantasy, 视频生成, seedance-2.0, 音乐",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/464.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10000,8 +9090,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, action, 视频生成, seedance-2.0, 导航",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/465.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10013,8 +9102,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, cyberpunk, action, 视频生成, seedance-2.0, 舞蹈, 赛车",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/466.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10026,8 +9114,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, cyberpunk, 视频生成, seedance-2.0",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/467.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10039,8 +9126,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, 视频生成, seedance-2.0",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/468.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10052,8 +9138,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, cyberpunk, 3d-render, 视频生成, seedance-2.0, General, 游戏",
     "tags": [
       "视频模板 - 游戏/科幻",
-      "game_scifi",
-      "open-design"
+      "game_scifi"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/469.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10065,8 +9150,7 @@ export const DRAWING_PROMPTS = [
     "description": "action, 视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 短视频/影像",
-      "short_video",
-      "open-design"
+      "short_video"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/470.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10078,8 +9162,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, 3d-render, 视频生成, seedance-2.0, VFX / Fantasy",
     "tags": [
       "视频模板 - 特效/奇幻",
-      "vfx_fantasy",
-      "open-design"
+      "vfx_fantasy"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/471.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10091,8 +9174,7 @@ export const DRAWING_PROMPTS = [
     "description": "视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 动画",
-      "animation",
-      "open-design"
+      "animation"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/472.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10104,8 +9186,7 @@ export const DRAWING_PROMPTS = [
     "description": "anime, fantasy, action, 视频生成, seedance-2.0",
     "tags": [
       "视频模板 - 动漫改编",
-      "anime_adaptation",
-      "open-design"
+      "anime_adaptation"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/473.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10117,8 +9198,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, action, nature, 视频生成, seedance-2.0",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/474.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10130,8 +9210,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, 视频生成, seedance-2.0, Advertising, 分镜",
     "tags": [
       "视频模板 - 广告/品牌",
-      "advertising",
-      "open-design"
+      "advertising"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/475.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10143,8 +9222,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, action, food, 视频生成, seedance-2.0, 乡村, 治愈",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/476.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10156,8 +9234,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, typography, 视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 动画",
-      "animation",
-      "open-design"
+      "animation"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/477.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10169,8 +9246,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, product, 视频生成, seedance-2.0, 武侠",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/478.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10182,8 +9258,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, cinematic-romance, 视频生成, seedance-2.0, 舞蹈, 浪漫",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/479.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10195,8 +9270,7 @@ export const DRAWING_PROMPTS = [
     "description": "cyberpunk, action, 视频生成, seedance-2.0, General, 舞蹈",
     "tags": [
       "视频模板 - 舞蹈/动作",
-      "dance_action",
-      "open-design"
+      "dance_action"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/480.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10208,8 +9282,7 @@ export const DRAWING_PROMPTS = [
     "description": "fantasy, 3d-render, 视频生成, seedance-2.0, General, 武术",
     "tags": [
       "视频模板 - 短视频/影像",
-      "short_video",
-      "open-design"
+      "short_video"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/481.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10221,8 +9294,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, 视频生成, seedance-2.0, VFX / Fantasy",
     "tags": [
       "视频模板 - 特效/奇幻",
-      "vfx_fantasy",
-      "open-design"
+      "vfx_fantasy"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/482.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10234,8 +9306,7 @@ export const DRAWING_PROMPTS = [
     "description": "food, 视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 短视频/影像",
-      "short_video",
-      "open-design"
+      "short_video"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/483.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10247,8 +9318,7 @@ export const DRAWING_PROMPTS = [
     "description": "cinematic, fantasy, action, 视频生成, seedance-2.0, Advertising, 舞蹈",
     "tags": [
       "视频模板 - 广告/品牌",
-      "advertising",
-      "open-design"
+      "advertising"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/484.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10260,8 +9330,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-cinematic, arpg, three-kingdoms, ancient-china, combat, cavalry, guanyu, key-visual, hud-safe, companion-to-image",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/485.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10273,8 +9342,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-cinematic, arpg, three-kingdoms, ancient-china, combat, archery, lyubu, key-visual, hud-safe, companion-to-image",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/486.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10286,8 +9354,7 @@ export const DRAWING_PROMPTS = [
     "description": "game-cinematic, arpg, three-kingdoms, ancient-china, combat, cavalry, zhaoyun, escort, key-visual, hud-safe",
     "tags": [
       "视频模板 - 电影叙事",
-      "cinematic",
-      "open-design"
+      "cinematic"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/487.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10299,8 +9366,7 @@ export const DRAWING_PROMPTS = [
     "description": "视频生成, seedance-2.0, General, 复古",
     "tags": [
       "视频模板 - 动画",
-      "animation",
-      "open-design"
+      "animation"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/488.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10312,8 +9378,7 @@ export const DRAWING_PROMPTS = [
     "description": "fantasy, 3d-render, 视频生成, seedance-2.0, Social / Meme, 舞蹈, K-pop",
     "tags": [
       "视频模板 - 社交/舞蹈",
-      "social_dance",
-      "open-design"
+      "social_dance"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/489.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10325,8 +9390,7 @@ export const DRAWING_PROMPTS = [
     "description": "action, 视频生成, seedance-2.0, General",
     "tags": [
       "视频模板 - 短视频/影像",
-      "short_video",
-      "open-design"
+      "short_video"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/490.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10338,9 +9402,7 @@ export const DRAWING_PROMPTS = [
     "description": "山海传说（Legend of the Frontier）角色定帧图，燕飞，老板原创",
     "tags": [
       "角色肖像",
-      "character-portrait",
-      "老板原创",
-      "original"
+      "character-portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/491.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10352,9 +9414,7 @@ export const DRAWING_PROMPTS = [
     "description": "山海传说（Legend of the Frontier）角色定帧图，纪千千，老板原创",
     "tags": [
       "角色肖像",
-      "character-portrait",
-      "老板原创",
-      "original"
+      "character-portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/492.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10366,9 +9426,7 @@ export const DRAWING_PROMPTS = [
     "description": "山海传说（Legend of the Frontier）角色定帧图，刘裕，老板原创",
     "tags": [
       "角色肖像",
-      "character-portrait",
-      "老板原创",
-      "original"
+      "character-portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/493.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -10380,9 +9438,7 @@ export const DRAWING_PROMPTS = [
     "description": "山海传说（Legend of the Frontier）角色定帧图，拓跋珪，老板原创",
     "tags": [
       "角色肖像",
-      "character-portrait",
-      "老板原创",
-      "original"
+      "character-portrait"
     ],
     "coverUrl": "https://raw.githubusercontent.com/davidwuw0811-boop/awesome-gpt-image2-prompts/main/images/494.jpg",
     "sourceUrl": "https://github.com/davidwuw0811-boop/awesome-gpt-image2-prompts"
@@ -13029,8 +12085,7 @@ export const DRAWING_PROMPTS = [
       "Brand",
       "3D",
       "Tech",
-      "Commerce",
-      "featured"
+      "Commerce"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case378.jpg",
     "sourceUrl": "https://x.com/Genematicai/status/2050654848216109429"
@@ -13048,8 +12103,7 @@ export const DRAWING_PROMPTS = [
       "Character",
       "Tech",
       "Commerce",
-      "Food",
-      "featured"
+      "Food"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case377.jpg",
     "sourceUrl": "https://x.com/xRahultripathi/status/2050677614168391716"
@@ -13067,8 +12121,7 @@ export const DRAWING_PROMPTS = [
       "Realistic",
       "Tech",
       "Commerce",
-      "Food",
-      "featured"
+      "Food"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case376.jpg",
     "sourceUrl": "https://x.com/Shinning1010/status/2050693240253214894"
@@ -13083,8 +12136,7 @@ export const DRAWING_PROMPTS = [
       "Charts & Infographics",
       "Charts",
       "Travel",
-      "History",
-      "featured"
+      "History"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case375.jpg",
     "sourceUrl": "https://x.com/ToroJushiAi/status/2050713034503409874"
@@ -13113,8 +12165,7 @@ export const DRAWING_PROMPTS = [
       "Products & E-commerce",
       "Brand",
       "Commerce",
-      "Food",
-      "featured"
+      "Food"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case373.jpg",
     "sourceUrl": "https://x.com/xpg0970/status/2050108279385419965"
@@ -13168,8 +12219,7 @@ export const DRAWING_PROMPTS = [
       "3D",
       "Tech",
       "Commerce",
-      "Education",
-      "featured"
+      "Education"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case370.jpg",
     "sourceUrl": "https://x.com/ShamsAmin56/status/2050281206139461780"
@@ -13249,8 +12299,7 @@ export const DRAWING_PROMPTS = [
       "Brand",
       "Tech",
       "Commerce",
-      "Education",
-      "featured"
+      "Education"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case365.jpg",
     "sourceUrl": "https://x.com/Gdgtify/status/2049766203392921897"
@@ -13304,8 +12353,7 @@ export const DRAWING_PROMPTS = [
       "Realistic",
       "Tech",
       "Commerce",
-      "Food",
-      "featured"
+      "Food"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case362.jpg",
     "sourceUrl": "https://x.com/Preda2005/status/2049846981271699685"
@@ -13319,8 +12367,7 @@ export const DRAWING_PROMPTS = [
       "gpt-image-2",
       "Charts & Infographics",
       "3D",
-      "Tech",
-      "featured"
+      "Tech"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case361.jpg",
     "sourceUrl": "https://x.com/Ankit_patel211/status/2048834306379075759"
@@ -13338,8 +12385,7 @@ export const DRAWING_PROMPTS = [
       "Poster",
       "Tech",
       "Commerce",
-      "Education",
-      "featured"
+      "Education"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case360.jpg",
     "sourceUrl": "https://x.com/Gemalpha_88/status/2048918707343401034"
@@ -13357,8 +12403,7 @@ export const DRAWING_PROMPTS = [
       "Character",
       "Tech",
       "Commerce",
-      "Story",
-      "featured"
+      "Story"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case359.jpg",
     "sourceUrl": "https://x.com/Goodmanprotocol/status/2049002279051895243"
@@ -13442,8 +12487,7 @@ export const DRAWING_PROMPTS = [
       "Product",
       "Brand",
       "Tech",
-      "Commerce",
-      "featured"
+      "Commerce"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case354.jpg",
     "sourceUrl": "https://x.com/wanerfu/status/2048659924822184026"
@@ -13461,8 +12505,7 @@ export const DRAWING_PROMPTS = [
       "Poster",
       "Commerce",
       "Food",
-      "Story",
-      "featured"
+      "Story"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case353.jpg",
     "sourceUrl": "https://x.com/liyue_ai/status/2048667226195317219"
@@ -13510,8 +12553,7 @@ export const DRAWING_PROMPTS = [
       "Character",
       "Tech",
       "Commerce",
-      "Social",
-      "featured"
+      "Social"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case350.jpg",
     "sourceUrl": "https://x.com/ryanpp27/status/2048602248524214542"
@@ -13578,8 +12620,7 @@ export const DRAWING_PROMPTS = [
       "gpt-image-2",
       "Illustration & Art",
       "Illustration",
-      "Creative",
-      "featured"
+      "Creative"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case346.jpg",
     "sourceUrl": "https://x.com/dotey/status/2048529821706195442"
@@ -13615,8 +12656,7 @@ export const DRAWING_PROMPTS = [
       "Brand",
       "Tech",
       "Commerce",
-      "Fashion",
-      "featured"
+      "Fashion"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case344.jpg",
     "sourceUrl": "https://x.com/Daniel_adsss/status/2048542581638701446"
@@ -13669,8 +12709,7 @@ export const DRAWING_PROMPTS = [
       "Poster",
       "Tech",
       "Commerce",
-      "Education",
-      "featured"
+      "Education"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case341.jpg",
     "sourceUrl": "https://x.com/hqmank/status/2048587150544028084"
@@ -13714,8 +12753,7 @@ export const DRAWING_PROMPTS = [
       "gpt-image-2",
       "History & Classical Themes",
       "History",
-      "Creative",
-      "featured"
+      "Creative"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case338.png",
     "sourceUrl": "https://github.com/freestylefly/awesome-gpt-image-2/blob/main/docs/gallery-part-2.md#case-338"
@@ -13772,8 +12810,7 @@ export const DRAWING_PROMPTS = [
       "gpt-image-2",
       "Charts & Infographics",
       "Charts",
-      "Tech",
-      "featured"
+      "Tech"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case334.png",
     "sourceUrl": "https://github.com/freestylefly/awesome-gpt-image-2/blob/main/docs/gallery-part-2.md#case-334"
@@ -13829,8 +12866,7 @@ export const DRAWING_PROMPTS = [
       "gpt-image-2",
       "UI & Interfaces",
       "UI",
-      "Creative",
-      "featured"
+      "Creative"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case330.png",
     "sourceUrl": "https://github.com/freestylefly/awesome-gpt-image-2/blob/main/docs/gallery-part-2.md#case-330"
@@ -14175,8 +13211,7 @@ export const DRAWING_PROMPTS = [
       "Illustration",
       "Tech",
       "Commerce",
-      "Social",
-      "featured"
+      "Social"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case310.jpg",
     "sourceUrl": "https://x.com/TechieBySA/status/2031795709243019280"
@@ -16372,8 +15407,7 @@ export const DRAWING_PROMPTS = [
     "tags": [
       "gpt-image-2",
       "Other Use Cases",
-      "Tech",
-      "featured"
+      "Tech"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case166.jpg",
     "sourceUrl": "https://x.com/songguoxiansen/status/2046476566537080849"
@@ -18886,8 +17920,7 @@ export const DRAWING_PROMPTS = [
       "Infographic",
       "Poster",
       "Tech",
-      "Commerce",
-      "featured"
+      "Commerce"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case17.jpg",
     "sourceUrl": "https://x.com/wory37303852"
@@ -19042,8 +18075,7 @@ export const DRAWING_PROMPTS = [
       "Illustration & Art",
       "Illustration",
       "Character",
-      "Creative",
-      "featured"
+      "Creative"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case6.jpg",
     "sourceUrl": "https://github.com/freestylefly/awesome-gpt-image-2/blob/main/docs/gallery-part-1.md#case-6"
@@ -19105,8 +18137,7 @@ export const DRAWING_PROMPTS = [
       "UI",
       "Poster",
       "Tech",
-      "Social",
-      "featured"
+      "Social"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case2.jpg",
     "sourceUrl": "https://github.com/freestylefly/awesome-gpt-image-2/blob/main/docs/gallery-part-1.md#case-2"
@@ -19123,8 +18154,7 @@ export const DRAWING_PROMPTS = [
       "Infographic",
       "Tech",
       "Education",
-      "Travel",
-      "featured"
+      "Travel"
     ],
     "coverUrl": "https://raw.githubusercontent.com/freestylefly/awesome-gpt-image-2/main/data/images/case1.jpg",
     "sourceUrl": "https://github.com/freestylefly/awesome-gpt-image-2/blob/main/docs/gallery-part-1.md#case-1"
@@ -19135,8 +18165,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "山姆·奥特曼、唐纳德·特朗普和埃隆·马斯克在一家繁忙电影院的柜台后面工作",
     "description": "",
     "tags": [
-      "摄影与照片级写实",
-      "@flowersslop"
+      "摄影与照片级写实"
     ],
     "coverUrl": "https://github.com/user-attachments/assets/45e4f24f-4f73-4426-947d-e6ed51291956",
     "sourceUrl": "https://x.com/flowersslop/status/2044334054380552438"
@@ -19147,8 +18176,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "在夏夜晚上 10 点的便利店门口，生成一张超写实的城市街头多人合影。3 到 4 个年轻人在门口短暂聊天，有人拿着饮料，有人坐在室外塑料椅上，有人站着看手机。玻璃门窗内透出明亮白光，外面有暖黄色路灯和远处汽车车灯。人物穿着日常服装：T 恤、衬衫、短裤、牛仔裤、运动鞋。不要网红造型。面部和姿态必须像真实路人，不能过度精修。环境中必须包含真实便利店元素：冰柜贴纸、促销海报、垃圾桶、门口地垫、玻璃反光、路边共享单车、地面上的饮料瓶水珠。整张图应像摄影师在城市里抓拍到的真实生活切片。重点测试自然的多人互动、夜间便利店光线、玻璃反射，以及普通人的生活氛围还原。",
     "description": "Nano Banana 2",
     "tags": [
-      "摄影与照片级写实",
-      "卡尔的AI沃茨"
+      "摄影与照片级写实"
     ],
     "coverUrl": "https://github.com/user-attachments/assets/d529419b-8f8f-4dd4-a5f2-46d5fcbcf607",
     "sourceUrl": "https://mp.weixin.qq.com/s/ASxig6mFVYxrIE8-8Fthew"
@@ -19159,8 +18187,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张完全 RAW 质感、未经处理、未经编辑、具备完整 iPhone 相机画质的图像。场景是美国的一处地铁站，带有一瞬间的运动模糊。地铁正在行驶。地铁前方站着一位老年女性和一位老年男性。",
     "description": "Nano Banana 2",
     "tags": [
-      "摄影与照片级写实",
-      "@WolfRiccardo"
+      "摄影与照片级写实"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HFPFd4ZbkAMW8ox?format=jpg&name=large",
     "sourceUrl": "https://x.com/WolfRiccardo/status/2041192232623972441"
@@ -19171,8 +18198,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "在 Apple Park 举办 iPhone 20 发布会期间，用 iPhone 从远处人群中拍摄的一张业余照片，蒂姆·库克正在台上演讲",
     "description": "",
     "tags": [
-      "摄影与照片级写实",
-      "OpenNana"
+      "摄影与照片级写实"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/apple-park-tim-cook-keynote.jpg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/apple-park-tim-cook-keynote"
@@ -19183,8 +18209,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一张业余照片：一本摊开的笔记本平放着，里面用黑色圆珠笔写满了手写笔记。字迹自然随意、略显凌乱，像个人笔记，带有真实的小瑕疵、划掉的词语和下划线标题。从略高一点的角度拍摄，窗边自然日光，无闪光灯。轻松的桌面环境，用 iPhone 拍摄。",
     "description": "",
     "tags": [
-      "摄影与照片级写实",
-      "OpenNana"
+      "摄影与照片级写实"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/black-pen-handwritten-notes.jpg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/black-pen-handwritten-notes"
@@ -19195,8 +18220,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一大堆米，其中有一粒米上写着极小的文字“wOw”",
     "description": "",
     "tags": [
-      "摄影与照片级写实",
-      "@adonis_singh"
+      "摄影与照片级写实"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGc-2eKWYAATrs9?format=jpg&name=large",
     "sourceUrl": "https://x.com/adonis_singh/status/2046673729082560919"
@@ -19207,8 +18231,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "[地点] 的 360 等距柱状全景图",
     "description": "",
     "tags": [
-      "摄影与照片级写实",
-      "@LexnLin"
+      "摄影与照片级写实"
     ],
     "coverUrl": "https://pbs.twimg.com/amplify_video_thumb/2046725535439482880/img/v9e7898p1ynJv-xz.jpg",
     "sourceUrl": "https://x.com/LexnLin/status/2046725722320888313"
@@ -19219,8 +18242,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一个《杀手》关卡：你身处 OpenAI 总部，任务是在不被发现的情况下偷走 GPT-6",
     "description": "",
     "tags": [
-      "游戏与娱乐",
-      "@flowersslop"
+      "游戏与娱乐"
     ],
     "coverUrl": "https://github.com/user-attachments/assets/e89dc393-653c-42e7-87f8-cd7741640f12",
     "sourceUrl": "https://x.com/flowersslop/status/2044734896321532390"
@@ -19242,8 +18264,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "GTA 6 游戏内画面，非常细致，非常真实。镜头是对着一台固定的 4K 显示器近距离拍摄的。（画面带有轻微模糊，像是手持拍摄。）环境宽阔明亮，细节真实。角色正和 / :dog. 一起走在海滩上。",
     "description": "Nano Banana 2",
     "tags": [
-      "游戏与娱乐",
-      "@WolfRiccardo"
+      "游戏与娱乐"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HFPAX19XMAAJ8V_?format=jpg&name=large",
     "sourceUrl": "https://x.com/WolfRiccardo/status/2041187268711321735"
@@ -19254,8 +18275,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张 GTA 6 的游戏截图，内容为 [场景描述]",
     "description": "Mission 1",
     "tags": [
-      "游戏与娱乐",
-      "Article"
+      "游戏与娱乐"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGU8siPXMAACZEd?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19266,8 +18286,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "帮我生成一张《英雄联盟》中路对线截图，画面内容是特朗普对阵哈梅内伊",
     "description": "",
     "tags": [
-      "游戏与娱乐",
-      "@underwoodxie96"
+      "游戏与娱乐"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGa7l2cbIAA_3nt?format=jpg&name=large",
     "sourceUrl": "https://x.com/underwoodxie96/status/2046529342415790275"
@@ -19278,8 +18297,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张单图，里面包含 100 个完全不同的像素风物品，并且每个物品都带有有意义的标签",
     "description": "",
     "tags": [
-      "游戏与娱乐",
-      "@ProperPrompter"
+      "游戏与娱乐"
     ],
     "coverUrl": "https://pbs.twimg.com/amplify_video_thumb/2046534148748451840/img/jbY5FyJJIEVLKH2J.jpg",
     "sourceUrl": "https://x.com/ProperPrompter/status/2046534215311970694"
@@ -19290,8 +18308,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "在《塞尔达：王国之泪》游戏里，林克坐在一列由他自己制造的 e531 系列列车里",
     "description": "Scene 1",
     "tags": [
-      "游戏与娱乐",
-      "@marmaduke091"
+      "游戏与娱乐"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HFJzGO8WMAA_HBa?format=jpg&name=large",
     "sourceUrl": "https://x.com/marmaduke091/status/2040820686751432990"
@@ -19302,8 +18319,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一张 GTA 圣安地列斯的游戏截图：一头狮子正在和一个 NPC 打斗",
     "description": "GPT Image 1.5",
     "tags": [
-      "游戏与娱乐",
-      "@flowersslop"
+      "游戏与娱乐"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HFH_lAIboAAG7Wi?format=jpg&name=large",
     "sourceUrl": "https://x.com/flowersslop/status/2040693687500341568"
@@ -19325,8 +18341,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "9:16 纵向比例，生成一张抖音直播截图，画面中是刘亦菲在直播，刘亦菲手里拿着一块牌子，牌子上写着：今晚直播，欢迎来和亦菲聊天！",
     "description": "",
     "tags": [
-      "UI / UX 与社交媒体",
-      "OpenNana"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/liu-yifei-douyin-live-chat.jpg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/liu-yifei-douyin-live-chat"
@@ -19337,8 +18352,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一张 YouTube 视频截图，内容是某人穿越到了中世纪",
     "description": "Frame 1",
     "tags": [
-      "UI / UX 与社交媒体",
-      "@flowersslop"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HFByWu7bsAAxlJd?format=jpg&name=large",
     "sourceUrl": "https://x.com/flowersslop/status/2040261168460108213"
@@ -19349,8 +18363,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "“宋朝人的朋友圈” / “SONG DYNASTY SOCIAL MEDIA FEED”，采用古今穿越幽默融合的界面设计风格。画面模拟手机社交媒体界面，但内容全部是宋朝场景。头像是宋代文人的肖像，用户名为 “Su Dongpo SuShi_Official”，发帖内容为 “刚到黄州，被贬了但心态还行。今天自己做了东坡肉，味道绝了，附上做法：”。配图是一张工笔画风格的东坡肉特写。点赞列表为 “黄庭坚、秦观、佛印等 126 人”，评论区为 “王安石：呵呵” “司马光：还是那个味”。点赞图标等界面元素替换成宋代纹样。状态栏显示 “大宋移动 5G” 和 “元丰三年”。整体配色为手机深色模式搭配雅致宋韵色调，形成历史与社交媒体趣味碰撞的代表作。",
     "description": "",
     "tags": [
-      "UI / UX 与社交媒体",
-      "OpenNana"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/song-dynasty-cyber-social-feed.jpg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/song-dynasty-cyber-social-feed"
@@ -19361,8 +18374,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张 [历史人物姓名] 出现在 [平台名称] 上的截图",
     "description": "Douyin Live",
     "tags": [
-      "UI / UX 与社交媒体",
-      "Article"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGbtA0KagAADPAR?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19373,8 +18385,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张高保真的移动电商 App 首页截图，灵感来自 2026 年中国主流电商 App。界面需要完全真实，具备完整的移动端 UI 逻辑和强烈的商业设计完成度。\n\n布局要求：\n- 状态栏包含时间 9:41、5G 信号和电池图标\n- 搜索区左侧是城市选择器，中间是圆角搜索框，右侧是消息和扫码图标\n- 搜索区下方有横向分类标签\n- 顶部有促销轮播 Banner\n- 有 10 图标功能网格\n- 有带倒计时和 3 张商品卡片的限时秒杀模块\n- 有“猜你喜欢”双列商品瀑布流，至少 6 张商品卡片\n- 底部标签栏包含 5 个标签\n\n在合适的位置使用以下精确中文文案：\n- city: \"杭州\"\n- search placeholder: \"搜索耳机、咖啡机、运动鞋\"\n- category tabs: \"推荐、数码、家电、服饰、美妆、食品、运动、家居\"\n- top banner: \"618 预售开启\" and \"每满300减50\"\n- function grid: \"超市、百亿补贴、秒杀、直播、充值中心、到家、领券、品牌馆、全球购、排行榜\"\n- flash sale title: \"限时秒杀\"\n- recommendation section: \"猜你喜欢\"\n- bottom tabs: \"首页、分类、购物车、消息、我的\"\n\n所有中文文字都必须清晰可读，并使用真实字体。间距、图标风格、留白、阴影、圆角、分割线和标签处理都应尽量接近真实 App 截图，而不是概念设计图。",
     "description": "Nano Banana 2",
     "tags": [
-      "UI / UX 与社交媒体",
-      "卡尔的AI沃茨"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://github.com/user-attachments/assets/6b709a24-b00a-4942-8c77-8f10ac03e8f8",
     "sourceUrl": "https://mp.weixin.qq.com/s/ASxig6mFVYxrIE8-8Fthew"
@@ -19385,8 +18396,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创建一个高保真的中文音乐 App 播放器界面截图，采用手机竖屏比例，视觉精致，类似现代流媒体播放器。使用深色模式，背景来自专辑封面颜色的模糊扩散版本。中央放置一张大型方形专辑封面，带有细腻阴影和圆角。\n\n界面要求：\n- 顶部状态栏时间为 18:26\n- 导航栏左侧是返回箭头，中间是标题，右侧是更多操作图标\n- 播放进度条显示当前时间 01:42，总时长 04:18\n- 包含随机播放、上一首、播放/暂停、下一首、循环播放控制按钮\n- 歌词区显示 5 到 7 行滚动歌词，当前行高亮\n- 操作栏包含喜欢、评论、下载、加入歌单、分享\n- 底部区域包含设备投播入口和播放队列入口\n\n使用以下精确中文标签与名称：\n- title: \"正在播放\"\n- song name: \"海边的晚风\"\n- artist: \"林秋\"\n- album: \"夏夜实验室\"\n\n歌词排版、按钮图标、反光、阴影和深色层级都应该像真实量产界面，而不是 Dribbble 概念图。",
     "description": "Nano Banana 2",
     "tags": [
-      "UI / UX 与社交媒体",
-      "卡尔的AI沃茨"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://github.com/user-attachments/assets/88f33c6a-c307-4e7a-af7e-5f692cbf41a1",
     "sourceUrl": "https://mp.weixin.qq.com/s/ASxig6mFVYxrIE8-8Fthew"
@@ -19397,8 +18407,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "为我生成一个 xx 风格的 UI 设计系统，包含网页、移动端、卡片、控件、按钮等内容",
     "description": "",
     "tags": [
-      "UI / UX 与社交媒体",
-      "OpenNana"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/custom-style-ui-system.jpeg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/custom-style-ui-system"
@@ -19409,8 +18418,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成图片：\n一个 T-800 机器人的淘宝商品详情页，展示：\n机器人的正面、侧面和背面三视图，\n商品价格，\n商品详情，\n功能与使用场景",
     "description": "",
     "tags": [
-      "UI / UX 与社交媒体",
-      "OpenNana"
+      "UI / UX 与社交媒体"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/terminator-taobao-page.jpeg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/terminator-taobao-page"
@@ -19421,8 +18429,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "整部《超人》电影的拼贴图，一次输出，一张图完成",
     "description": "",
     "tags": [
-      "视频、动画与拼贴",
-      "@chetaslua"
+      "视频、动画与拼贴"
     ],
     "coverUrl": "https://github.com/user-attachments/assets/68495d40-f558-4d7a-aacf-40ef36264679",
     "sourceUrl": "https://x.com/chetaslua/status/2044462992176386532"
@@ -19433,8 +18440,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张 “Where is [你的名字]” 风格的人群搜寻海报，背景城市由你选择",
     "description": "",
     "tags": [
-      "视频、动画与拼贴",
-      "@icreatelife"
+      "视频、动画与拼贴"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGcgIHWWgAEph1p?format=jpg&name=large",
     "sourceUrl": "https://x.com/icreatelife/status/2046639884421550482"
@@ -19445,8 +18451,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创作一篇关于 GPT-Image-2 今天发布的八格漫画",
     "description": "",
     "tags": [
-      "视频、动画与拼贴",
-      "@venturetwins"
+      "视频、动画与拼贴"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGcOKlnaYAAFJcW?format=jpg&name=large",
     "sourceUrl": "https://x.com/venturetwins/status/2046620134933250409"
@@ -19457,8 +18462,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张 1980 年代风格的宣传海报。使用精确标语“热烈庆祝GPT-Image-2全量开放”。海报中包含 Sam Altman、Dario Amodei 和 Elon Musk，并且给 Dario Amodei 戴上一条红领巾。",
     "description": "",
     "tags": [
-      "字体排版与海报设计",
-      "@akokoi1"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGbWGhYaAAEtoTn?format=jpg&name=large",
     "sourceUrl": "https://x.com/akokoi1/status/2046558658096738672"
@@ -19491,8 +18495,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "请为“XXX”生成一张核心角色关系图。",
     "description": "",
     "tags": [
-      "字体排版与海报设计",
-      "OpenNana"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/key-character-relationship-map.jpeg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/key-character-relationship-map"
@@ -19503,8 +18506,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张关于景德镇青花瓷的详细解析图，并配套详细的中文知识解读。",
     "description": "",
     "tags": [
-      "字体排版与海报设计",
-      "OpenNana"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/jingdezhen-blue-white-porcelain-diagram.jpeg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/jingdezhen-blue-white-porcelain-diagram"
@@ -19515,8 +18517,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "请围绕 [主题] 自动生成一张“博物馆图录风中文拆解信息图”。\n\n整张图需要把真实主体主视觉、结构拆解、中文标注、材质说明、纹样寓意、色彩寓意和核心特征总结融合在一起。你要根据 [主题] 自动判断最合适的主体对象、服饰体系、器物结构、时代风格、关键部件、材质工艺、色彩方案和版式结构，用户无需提供其他信息。\n\n整体风格应偏向国家级博物馆展板、历史服饰图录和文化博物馆专题信息图，而不是普通海报、古风人像、电商详情页或动漫插画。背景使用米白、丝白、浅茶色等纸张纹理，让整体显得高级、克制、专业且具有收藏感。\n\n固定布局为：\n- 顶部：中文主标题 + 副标题 + 简介\n- 左侧：结构拆解区，用中文引线标注关键部件，并配合局部细节特写\n- 右上：材质 / 工艺 / 肌理区，展示真实纹理样本与说明\n- 右中：纹样 / 色彩 / 寓意区，展示主要配色、纹样样本与文化解释\n- 底部：穿戴顺序 / 构成流程图 + 核心特征总结\n\n如果主题适合展示人物，就以真实人物全身站姿作为中心主体；如果更适合器物或单体结构，就改为中心主体拆解图，但整体形式仍然必须是一张完整的中文信息图。所有文字必须为简体中文，清晰、整洁、可读，不能出现乱码、错字、英文或拼音。重点突出真实结构、材料差异、文化解读和图录氛围。\n\n避免：海报感、影棚人像感、电商感、动漫感、cosplay 感、随机标注、结构错误、文字模糊、假材质、过度装饰。",
     "description": "",
     "tags": [
-      "字体排版与海报设计",
-      "OpenNana"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/museum-level-chinese-disassembly-infographic.jpeg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/museum-level-chinese-disassembly-infographic"
@@ -19538,8 +18539,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一组工笔风书签设计\n设计一张《小王子》与 SpaceX 的联名明信片\n生成一张以《言叶之庭》为主题的 2026 年 4 月 19 日单日历\n生成一组劳动节手持标语牌设计\n生成一张 2026 年谷雨节气海报\n为一个运动 App 生成一套图标字体\n设计一张主题为“奔赴山海”的胶片摄影风海报\n设计一张黑白线稿风格的上海明信片\n设计一套“Elon Musk”印章篆刻\n设计一组杜蕾斯与茶颜悦色的联名宣传物料",
     "description": "Prompt 1",
     "tags": [
-      "字体排版与海报设计",
-      "@akokoi1"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGOtEbUbwAAnR5l?format=jpg&name=large",
     "sourceUrl": "https://x.com/akokoi1/status/2045693939584516441"
@@ -19550,8 +18550,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成 [经典文本标题] 的真迹手稿图像\n\n生成 [经典文本标题] 的真迹手稿图像，并把作品的情感核心融入书法表达之中",
     "description": "Example 1",
     "tags": [
-      "字体排版与海报设计",
-      "Article"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGb2ERIbgAAW4R5?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19562,8 +18561,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张 [书体风格] 的书法字帖练习页",
     "description": "Wang Xizhi Style",
     "tags": [
-      "字体排版与海报设计",
-      "Article"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGb7IZWaoAA8DCz?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19574,8 +18572,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "基于 [主题：xxx] 自动生成一张高审美的“剪影宇宙 / 收藏版叙事海报”。不要默认使用瓶子、沙漏、玻璃罩、怀表这类常见容器，而是让 AI 自行选择最具象征性、视觉张力最强、最适合该主题叙事的外轮廓。这个剪影可以是器物、建筑、大门、高塔、拱门、穹顶、楼梯间、走廊、雕像、侧脸、眼睛、手、头骨、翅膀、面具、镜子、王座、戒指、裂缝、光幕、影子、几何形体、空间剖面、舞台框架、抽象符号，或任何更有创意、最能代表主题的轮廓。\n\n目标不是简单地把一个世界塞进某个物体，而是让整个主题宇宙自然地在这个轮廓内部、边缘与穿透关系中生长出来。轮廓必须优雅、可识别，并在构图中占据主导位置。在轮廓内部或边界附近，生成一个与主题紧密相关、层次丰富的叙事世界，包含标志性场景、关键建筑或空间、象征与隐喻、角色或文明痕迹、前中后景层次，以及带有情绪张力的氛围。门、楼梯、桥、水、烟雾、道路、光源、废墟、机械结构、风景、抽象形态、生物、道具等元素都应统一并自然融合，而不是拼贴堆砌。\n\n最终画面应具有高端收藏海报的设计感。大形要稳，主轮廓必须一眼可辨，内部世界要有深度、结构和呼吸感。细节丰富但不过度拥挤。可以加入小型人物剪影、远景建筑、光束、门洞、桥梁、台阶、走廊、倒影、天窗或远景结构，用于增强尺度感、故事感和史诗氛围。整体气质应安静、宏大、精致、余韵悠长，而不是喧闹或堆满信息。\n\n融合收藏版电影海报、高端叙事视觉设计、梦幻水彩肌理与精致纸张印刷感。强调纸张颗粒、羽化边缘、水彩笔触、柔和扩散、空气透视、轻雾、选择性体积光、光线穿过雾气、充足留白和克制版式。画面应具有高级、诗意、庄严、神圣、怀旧、安静和神话感。\n\n让 AI 根据主题自行选择高阶配色，但要保持统一、克制、有品位、低饱和、高级。避免混乱高饱和、廉价霓虹或塑料数码色。合适的配色家族可以是黑金灰、冷蓝灰、雾白灰、棕红配米白、深铜色、旧纸色、深海蓝、暮色紫或银灰，只要服务于主题即可。\n\n最终要求：第一眼就能感受到强烈主题识别与记忆点鲜明的轮廓；第二眼能读出完整叙事世界；第三眼近看仍然有细节和余味。避免通用背景、硬拼贴构图、模板化奇幻素材、电子游戏宣传图气质、过度卡通化，或因为过度写实而破坏艺术氛围。如果合适，可以加入低调的标题、编号、签名或标记作为海报设计的一部分，但绝不能压过主体画面。",
     "description": "Poster 1",
     "tags": [
-      "字体排版与海报设计",
-      "Article"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGb-f9yboAAn3en?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19586,8 +18583,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "为 [商品名称] 生成一张电商商品详情页",
     "description": "Protein Powder",
     "tags": [
-      "字体排版与海报设计",
-      "Article"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGa6X8CW4AEonBd?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19598,8 +18594,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张 [场景 / 内容] 图像",
     "description": "Campus Daily",
     "tags": [
-      "字体排版与海报设计",
-      "Article"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGCnWfOXwAAVCRn?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19610,8 +18605,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张手写中药或西药处方的图像",
     "description": "Traditional Chinese Medicine",
     "tags": [
-      "字体排版与海报设计",
-      "Article"
+      "字体排版与海报设计"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGaqaO2W4AA2W-6?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19622,8 +18616,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "现在洛杉矶是上午 10 点，丹佛是上午 11 点，芝加哥是中午 12 点，纽约是下午 1 点，伦敦是下午 6 点，东京是凌晨 2 点。请渲染一面挂着不同模拟时钟的墙，每个时钟都显示其城市的正确时间，并在时钟下方标注城市名称。",
     "description": "",
     "tags": [
-      "信息图、教育与文档",
-      "@Angaisb_"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGYD-Y4bMAA0KxJ?format=jpg&name=large",
     "sourceUrl": "https://x.com/Angaisb_/status/2046666389734179018"
@@ -19634,8 +18627,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "为 [主题] 生成一张高质量的竖版百科风信息图。\n\n这不应该是一张普通海报，也不应只是简单插画。它应当像一个模块化教育信息图，融合野外图鉴的清晰度、百科页面的结构、生活方式知识卡的精致感，以及适合社交媒体传播的解释力。\n\n图像应包含：\n- 一个清晰且有吸引力的主题主视觉\n- 若干放大的细节标注\n- 多个圆角模块化信息区块\n- 强烈的标题层级和重点标签\n- 简洁但信息量高的教育内容\n- 评分、快速结论或 Top 5 模块\n\n根据主题自动调整内容模块。可用分类包括：\n基础档案、分类、外观、习性或生态、形成机制或结构、生长或使用条件、养护或维护建议、风险与注意事项、适用人群或应用场景、优缺点，以及快速评分卡。\n\n视觉要求：\n使用干净的浅色背景、柔和配色、细腻阴影、精致小图标、圆角信息卡片和整洁版式。信息密度要高但不能拥挤，最终成品应更像可发布、可收藏、可复用的知识卡模板，而不是广告。\n\n不要让它看起来像商业促销海报。重点应放在知识组织、模块化信息和图鉴式展示上。",
     "description": "Panda",
     "tags": [
-      "信息图、教育与文档",
-      "Article"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGcAZlsa8AEpG1O?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19646,8 +18638,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创建一张 10x10 网格图，里面的物品名称都以字母 A 开头",
     "description": "",
     "tags": [
-      "信息图、教育与文档",
-      "@umesh_ai"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGaqAFba0AES6z_?format=jpg&name=large",
     "sourceUrl": "https://x.com/umesh_ai/status/2046510988367945983"
@@ -19658,8 +18649,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创建一个 10 × 10 网格，展示 100 个代表近期技术进展的不同主题。采用真实、精致的编辑插画风格。每个主题占据自己的方格，并在下方附上简短清晰的标签。保持白色背景上的网格整齐。让每个主题在视觉上都不同，并确保每个标签拼写正确。使用这些行主题：第 1 行：AI 模型与智能体；第 2 行：机器人；第 3 行：半导体与算力；第 4 行：网络与智能设备；第 5 行：生物科技与健康科技；第 6 行：能源与电力系统；第 7 行：交通与自动驾驶；第 8 行：航天与航空航天；第 9 行：制造与材料；第 10 行：气候与环境技术。把每个格子表现为真实的小场景、产品级物件、实验室仪器、机器人、芯片、载具或设备，清楚传达该主题。整体风格保持统一、现代、真实且具有视觉冲击力。",
     "description": "",
     "tags": [
-      "信息图、教育与文档",
-      "@chetaslua"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGaW8ECaEAAq-LZ?format=jpg&name=large",
     "sourceUrl": "https://x.com/chetaslua/status/2046489044243403029"
@@ -19670,8 +18660,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "为 [主题] 生成一张中文健身信息图。\n\n这张图既要专业，也要便于普通成年人作为训练参考。除非另有说明，否则默认受众是没有重大伤病的健康成年人，目标是增肌并提升基础力量，水平为新手到中级，训练场景是普通健身房，总训练时长控制在 40 到 60 分钟内。\n\n根据训练主题自动选择输出形式：\n\n1. 如果主题是胸、背阔肌、肱二头肌、腹肌、肩部或腿部等肌群 / 身体部位，就生成对应部位的训练计划信息图。\n2. 如果主题是引体向上、俯卧撑、双杠臂屈伸或深蹲等动作 / 技能目标，就生成动作解锁或进阶计划信息图。\n\n采用清晰、现代、专业、易读的中文竖版信息图风格。视觉设计应干净，适合社交分享或个人训练参考。不要写长段落。每个模块都应使用简短短语，数字信息要足够突出。\n\n信息图必须包含：\nA. 主标题与副标题区域\nB. 训练目标区域\nC. 热身区域\nD. 4 到 6 个核心动作组成的主要训练区域\nE. 进阶或解锁逻辑区域\nF. 替代动作区域\nG. 执行提醒区域\nH. 恢复建议区域\nI. 视觉要求：现代、干净、专业、模块化卡片布局\n\n最终结果应是一张完整信息图，而不是纯文字段落。",
     "description": "Chest",
     "tags": [
-      "信息图、教育与文档",
-      "Article"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGbRt9DW8AA5V1S?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19682,8 +18671,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张 2026 年 [科目名称] 高考试卷图像",
     "description": "Chinese",
     "tags": [
-      "信息图、教育与文档",
-      "Article"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGMr98EaYAA_DsG?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19694,8 +18682,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "为 [城市] 生成一张三天旅行指南图像",
     "description": "City 1",
     "tags": [
-      "信息图、教育与文档",
-      "Article"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGa2KbFXMAAv9Wh?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19706,8 +18693,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "为 [主题] 生成一张高设计感的角色关系海报。这不应是一张普通插画，而应是一张融合信息可视化、叙事结构、海报级设计以及对原作风格高度还原的关系图。\n\n自动完成以下事项：\n- 识别原作及其核心设定\n- 选出 6 到 12 位最具代表性的关键角色，必要时上限 15 位\n- 识别并展示最重要的关系，例如血缘、爱情、友情、联盟、敌对、师徒、主仆、操控、背叛和隐藏关系\n- 自动选择最合适的构图，如主角中心式、双核心对抗式、阵营布局、家谱式或时间演化结构\n- 提取作品的风格 DNA，包括配色、世界观符号、材质语言、情绪气质、版式节奏和标志性母题\n- 将这些风格元素转化为整张关系图的视觉设计，而不是简单复制官方海报\n- 用不同颜色、线型和箭头区分不同关系类型，同时保持版面清晰可读\n- 核心角色最突出，次要角色次之，边缘角色更弱，以形成明确的视觉层级\n- 确保每个角色名都清晰易读，必要时可加上身份或阵营标签\n\n最终成品应当：\n- 让主要关系一眼就能看懂\n- 强烈唤起原作的辨识度和世界设定\n- 兼具信息图清晰度与高级海报设计感\n- 整体统一、精致、完整，适合社交分享或海报展示\n- 避免廉价流程图感、混乱或信息过载",
     "description": "Demon Slayer",
     "tags": [
-      "信息图、教育与文档",
-      "Article"
+      "信息图、教育与文档"
     ],
     "coverUrl": "https://pbs.twimg.com/media/HGXHhQcbAAAFcYA?format=jpg&name=large",
     "sourceUrl": "https://x.com/MrLarus/status/2046627021674168640"
@@ -19718,8 +18704,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创建一张 16 格表情图，主角是一位银发蓝眼的动漫少女。她的脸型、发型和服装必须在所有格子中保持高度一致。16 种表情应包含：开心、难过、生气、惊讶、害羞、无语、邪魅一笑、沉思、好奇、自豪、委屈、不屑、困惑、害怕、哭泣，以及爱心表情。",
     "description": "Nano Banana 2",
     "tags": [
-      "角色与一致性",
-      "卡尔的AI沃茨"
+      "角色与一致性"
     ],
     "coverUrl": "https://github.com/user-attachments/assets/27258fa9-086e-4dfa-b61e-d9ada90425b2",
     "sourceUrl": "https://mp.weixin.qq.com/s/ASxig6mFVYxrIE8-8Fthew"
@@ -19730,8 +18715,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "基于这个角色和背景，请创建一张类似官方设定资料的角色参考页。\n- 包含三视图：正面、侧面和背面\n- 添加角色的多种表情变化\n- 拆解并展示服装与装备的细节部分\n- 添加配色板\n- 包含简短的世界观说明\n- 整体采用规整版式（白底、插画风）",
     "description": "",
     "tags": [
-      "角色与一致性",
-      "OpenNana"
+      "角色与一致性"
     ],
     "coverUrl": "https://raw.githubusercontent.com/ZeroLu/awesome-gpt-image/main/assets/opennana/official-character-reference-sheet.jpeg",
     "sourceUrl": "https://opennana.com/awesome-prompt-gallery/official-character-reference-sheet"
@@ -19764,8 +18748,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A high-end, hyper-realistic 3D render of a premium claw machine inspired by Milka branding. The machine is finished in glossy Milka lavender-purple with smooth, rounded edges, and set against a warm, minimal cream-toned backdrop. Inside, the claw machine is filled with meticulously detailed Milka chocolate bars, shiny golden hazelnuts, and soft plush cows with signature Milka purple patches. The front and top panels feature glowing, embossed Milka logos in white. The machine has crystal-clear glass panels, chrome control buttons, and a sleek joystick. Soft ambient lighting inside casts warm highlights on the prizes, creating a cozy, indulgent, and luxurious chocolate-themed arcade atmosphere. The focus is on elegance, brand immersion, and photorealistic product presentation.",
     "description": "A high-end, hyper-realistic 3D render of a premium claw machine inspired by Milka branding. The mach",
     "tags": [
-      "gpt4o",
-      "Amira Zairi"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1746411555687-6mc7zaq2lk2.jpeg",
     "sourceUrl": "https://x.com/azed_ai/status/1918666633176142125"
@@ -19776,8 +18759,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "画一张带有圆角和柔和投影的现代 UI 卡片 2:3图片。卡片中央应展示一个上穿图片转换为的 3D 卡通风角色。姿势和服饰应该都是图片的 Q 版版本，在角色下方，包含一个加粗的黑色标题（“Reyna”）和一个字体更小、颜色更浅的副标题（“Valorant”）。使用干净、简约的白色或浅灰色背景。整体外观应感觉现代、有趣且富有科技感，适合创意应用或游戏界面。",
     "description": "画一张带有圆角和柔和投影的现代 UI 卡片 2:3图片。卡片中央应展示一个上穿图片转换为的 3D 卡通风角色。姿势和服饰应该都是图片的 Q 版版本，在角色下方，包含一个加粗的黑色标题（“Reyna”）",
     "tags": [
-      "gpt4o",
-      "歸藏(guizang.ai)"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745881822179-ob6slhokts.jpeg",
     "sourceUrl": "https://x.com/op7418/status/1915739386278543766"
@@ -19788,8 +18770,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A close-up photograph of a luxurious wooden door with detailed paneling and rich grain texture. The door features a custom-shaped doorknob in the form of the [LOGO_NAME] logo, made of polished material (metal, brass, ceramic, etc.) to look realistic and tangible. The handle is mounted on an antique bronze base, with soft, ambient lighting emphasizing the reflections, shadows, and depth of both the knob and door.",
     "description": "A close-up photograph of a luxurious wooden door with detailed paneling and rich grain texture. The",
     "tags": [
-      "gpt4o",
-      "Umesh"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745881819979-lopiam7p21.jpeg",
     "sourceUrl": "https://x.com/umesh_ai/status/1915243668870467950"
@@ -19800,8 +18781,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "a candy sculpture version of this portrait wrapped in transparent plastic and held by a hand, [background]",
     "description": "a candy sculpture version of this portrait wrapped in transparent plastic and held by a hand, [backg",
     "tags": [
-      "gpt4o",
-      "candy sculpture"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745881818096-qpbkdyc2xqs.jpeg",
     "sourceUrl": "https://x.com/azed_ai/status/1915495730569240814"
@@ -19812,8 +18792,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Create a 3D miniature scene inside a clear glass snow globe, with a playful and cute child figurine in the center. The child is wearing beige overalls, a brown t-shirt, yellow shoes, and is smiling with a joyful expression. Surrounding the child are construction-themed items like a yellow crane, excavators, and traffic cones, all in a playful, cartoonish style. The base of the snow globe is inscribed with the word \"FENDI\" in bold letters, and there are small stones scattered around the base. The background is a soft beige color, enhancing the warm, playful vibe of the scene. The snow globe should have a glossy, realistic texture, and the entire scene should evoke a feeling of joy and fun.",
     "description": "Create a 3D miniature scene inside a clear glass snow globe, with a playful and cute child figurine",
     "tags": [
-      "gpt4o",
-      "阿曼达"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745454973251-wch16z45vza.jpeg",
     "sourceUrl": "https://mp.weixin.qq.com/s/vXzwkdXBMHJvI-J4GUehlw"
@@ -19824,8 +18803,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创建 [🧸] 的高分辨率 3D 渲染图，将其设计为一个可充气的蓬松物体。其形状应看起来柔软、圆润且充满空气——就像毛绒气球或充气玩具一样。\n\n使用光滑的哑光纹理，并搭配细微的织物褶皱和缝线，以强调其充气效果。其形状应略微不规则且柔软，并配以柔和的阴影和灯光，以突出其体积感和真实感。将其放置在干净简约的背景（浅灰色或淡蓝色）上，并保持俏皮的雕塑美感。",
     "description": "创建 [🧸] 的高分辨率 3D 渲染图，将其设计为一个可充气的蓬松物体。其形状应看起来柔软、圆润且充满空气——就像毛绒气球或充气玩具一样。",
     "tags": [
-      "gpt4o",
-      "歸藏(guizang.ai)"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745279544923-d036iuo8rnu.jpeg",
     "sourceUrl": "https://x.com/op7418/status/1913132678100242652"
@@ -19836,8 +18814,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Create a high-resolution 3D render of [] designed as an inflatable, puffy object. The shape should appear soft, rounded, and air-filled — like a plush balloon or blow-up toy. Use a smooth, matte texture with subtle fabric creases and stitching to emphasize the inflatable look. The form should be slightly irregular and squishy, with gentle shadows and soft lighting that highlight volume and realism. Place it on a clean, minimal background (light gray or pale blue), and maintain a playful, sculptural aesthetic.",
     "description": "Create a high-resolution 3D render of [] designed as an inflatable, puffy object. The shape should a",
     "tags": [
-      "gpt4o",
-      "Gizem Akdag"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745279542278-fql1nsaxlv.jpeg",
     "sourceUrl": "https://x.com/gizakdag/status/1912858535643197927"
@@ -19848,8 +18825,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A blueprint schematic of a retro-futuristic motorcycle, drawn in the style of early 20th-century industrial patents. Rendered in crisp blue ink with white technical lines, featuring exploded views, angular labels, and stamped diagram codes.",
     "description": "A blueprint schematic of a retro-futuristic motorcycle, drawn in the style of early 20th-century ind",
     "tags": [
-      "gpt4o",
-      "Amira Zairi"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745248340542-hqkzuqp1bib.jpeg",
     "sourceUrl": "https://x.com/azed_ai/status/1914258586588639270"
@@ -19860,8 +18836,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A whimsical miniature Apple Store, designed to look like a giant Apple product box, complete with the iconic Apple logo and intricate details. The two-story building features large glass windows that clearly showcase a modern and high-end interior: minimalist display tables, bright and gentle lighting, and staff members assisting customers. On the street, adorable little figurines are strolling or relaxing, with benches, street lamps, and potted plants arranged around them, creating a charming corner of the city. The entire scene adopts an urban miniature landscape style, rich in detail and realism, with soft lighting that evokes a pleasant and relaxing afternoon atmosphere.",
     "description": "A whimsical miniature Apple Store, designed to look like a giant Apple product box, complete with th",
     "tags": [
-      "gpt4o",
-      "Andy"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745116843453-x0oohb0fv5.jpeg",
     "sourceUrl": "https://x.com/andidacheung/status/1913783472092840241"
@@ -19872,8 +18847,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "3D Q版迷你风格，一个充满奇趣的迷你星巴克咖啡馆，外观就像一个巨大的外带咖啡杯，还有盖子和吸管。建筑共两层，大大的玻璃窗清晰地展示出内部温馨而精致的设计：木质的家具、温暖的灯光以及忙碌的咖啡师们。街道上有可爱的小人偶漫步或坐着，四周布置着长凳、街灯和植物盆栽，营造出迷人的城市一角。整体采用城市微缩景观风格，细节丰富、逼真，画面光线柔和、呈现出午后的惬意感受。",
     "description": "3D Q版迷你风格，一个充满奇趣的迷你星巴克咖啡馆，外观就像一个巨大的外带咖啡杯，还有盖子和吸管。建筑共两层，大大的玻璃窗清晰地展示出内部温馨而精致的设计：木质的家具、温暖的灯光以及忙碌的咖啡师们。街",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745114785548-gpw713fk7rf.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1913759515700285569"
@@ -19884,8 +18858,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创建3:2的图片，一个高高的、外观逼真且充满活力的胶囊体水平漂浮着。\n\n它的左半边是标志性的星巴克绿色，标有“Starbucks – Uplifting the Everyday”字样以及经典的美人鱼（Siren）标志。\n\n右半边是透明的，里面填充着漂浮的烘焙咖啡豆、细腻的奶泡漩涡、手绘咖啡杯图标以及代表社区连接的抽象暖色调线条，需要有背景色。",
     "description": "创建3:2的图片，一个高高的、外观逼真且充满活力的胶囊体水平漂浮着。",
     "tags": [
-      "gpt4o",
-      "藏老师"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745113621425-xzlsmyjdwym.jpeg",
     "sourceUrl": "https://x.com/egeberkina/status/1913225556864147676"
@@ -19896,8 +18869,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A tall, realistic cheerful capsule floats horizontally. The left side is rich green with a red stripe, labeled “GUCCI – ICON SERIES” in elegant serif. The right side is transparent, filled with tiny loafers, gold GG belt buckles, and silk scarf patterns — suspended like artifacts in a luxe archive",
     "description": "A tall, realistic cheerful capsule floats horizontally. The left side is rich green with a red strip",
     "tags": [
-      "gpt4o",
-      "Ege"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745113619395-gaw03rbsm2s.jpeg",
     "sourceUrl": "https://x.com/egeberkina/status/1913225556864147676"
@@ -19908,8 +18880,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A tall, realistic cheerful capsule floats horizontally. The left side is soft neutral beige, labeled “UNIQLO – ESSENTIAL FIT” with the classic red UNIQLO logo. The right half is transparent, filled with floating fabric swatches, puffer coat folds, thermal fiber textures, and line icons of wardrobe basics.",
     "description": "A tall, realistic cheerful capsule floats horizontally. The left side is soft neutral beige, labeled",
     "tags": [
-      "gpt4o",
-      "Ege"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1745113617639-sadh61rv3ta.jpeg",
     "sourceUrl": "https://x.com/egeberkina/status/1913225547687088397"
@@ -19920,8 +18891,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "I will send you a photo of a woman and a perfume bottle. Please don’t change the woman’s face or the perfume bottle, but you can change her outfit. Using these visuals, I’d like you to create a perfume advertisement poster for a fragrance called “Miilesus.”",
     "description": "I will send you a photo of a woman and a perfume bottle. Please don’t change the woman’s face or the",
     "tags": [
-      "gpt4o",
-      "Melis"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744936035093-2kf3i4b77xp.jpeg",
     "sourceUrl": "https://x.com/miilesus/status/1909254147771089098"
@@ -19932,8 +18902,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一幅超写实、电影感的插画，描绘了劳拉·克劳馥动态地撞穿一张“考古探险”集换卡牌的边框。她正处于跳跃中或用绳索摆荡，穿着标志性的冒险装备，可能正在使用双枪射击，枪口的火焰帮助将卡牌古老的石雕边框震碎，在破口周围制造出可见的维度破裂效果，如能量裂纹和空间扭曲，使灰尘和碎片四散飞溅。她的身体充满活力地向前冲出，带有明显的运动深度，突破了卡牌的平面，卡牌内部（背景）描绘着茂密的丛林遗迹或布满陷阱的古墓内部。卡牌的碎屑与 crumbling 的石头、飞舞的藤蔓、古钱币碎片和用过的弹壳混合在一起。“考古探险”的标题和“劳拉·克劳馥”的名字（带有一个风格化的文物图标）在卡牌剩余的、布满裂纹和风化痕迹的部分上可见。充满冒险感的、动态的灯光突出了她的运动能力和危险的环境。",
     "description": "一幅超写实、电影感的插画，描绘了劳拉·克劳馥动态地撞穿一张“考古探险”集换卡牌的边框。她正处于跳跃中或用绳索摆荡，穿着标志性的冒险装备，可能正在使用双枪射击，枪口的火焰帮助将卡牌古老的石雕边框震碎，在",
     "tags": [
-      "gpt4o",
-      "歸藏(guizang.ai)"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744936033572-d3jhy8l1xr6.jpeg",
     "sourceUrl": "https://x.com/op7418/status/1912782170424578339"
@@ -19944,8 +18913,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Generate a portrait ratio image with this prompt A professional studio photo Panini soccer card featuring football legend Lionel Messi wearing his iconic Argentina blue and white striped jersey. In a dramatic moment, Messi kicks the ball with force, breaking through the boundary of the card—shattering it into fragments. The card explodes into reality as Messi emerges from the 2D surface into the 3D world. In the foreground, a football spins at high speed, blurring toward the viewer. The background reveals the torn remains of the card against a dark backdrop, while radiant aurora-like light beams burst outward from the broken card, creating a surreal and powerful dimensional crossover effect.",
     "description": "Generate a portrait ratio image with this prompt A professional studio photo Panini soccer card feat",
     "tags": [
-      "gpt4o",
-      "Howard Chen"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744936032664-95mi2fpl3at.jpeg",
     "sourceUrl": "https://x.com/hc_dsn/status/1912367201476309396"
@@ -19956,8 +18924,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Create a Bauhaus style poster from this image and add the slogan [Good Morning] as the title.",
     "description": "Create a Bauhaus style poster from this image and add the slogan [Good Morning] as the title.",
     "tags": [
-      "gpt4o",
-      "Melis"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744936030607-fwdqe8s6jgp.jpeg",
     "sourceUrl": "https://x.com/miilesus/status/1912796694309196065"
@@ -19968,8 +18935,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A beautiful woman wearing a pink cheongsam, floral headwear with colorful flowers in her hair, and an elegant white lace collar around her neck. She is holding large butterflies in one hand. The photography style features high-definition details, resembling a fashion magazine cover design. The text \"FASHION DESIGN\" is displayed at the top center of the photo. The background is a minimalist, light gray solid color, designed to highlight the model.",
     "description": "A beautiful woman wearing a pink cheongsam, floral headwear with colorful flowers in her hair, and a",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744936028228-1f4qomdg292.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1912541006961967325"
@@ -19980,8 +18946,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Create a realistic passport page with an entry stamp for [{City}, {Country}]. The stamp should say \"Welcome to {City}\" in bold English, designed in a round or oval shape with decorative borders. Include the word \"ARRIVAL\" and a fictional date like \"15 APR 2025\" Incorporate a subtle silhouette of {Main Landmark} as a background detail within the stamp. Use deep blue or red ink with light smudges for added realism. The stamp should appear slightly angled, as if hand-pressed. The passport page should show visible paper texture and security patterns.",
     "description": "Create a realistic passport page with an entry stamp for [{City}, {Country}]. The stamp should say \"",
     "tags": [
-      "gpt4o",
-      "89'S"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744936027004-vb8o5csr25.jpeg",
     "sourceUrl": "https://x.com/M_w14_/status/1912146666410459618"
@@ -19992,8 +18957,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Pretend you are PSA, the Collectibles Authentication and Grading Service. Instead of cards, you will be grading the aura of the character in the image I provide. Be strict and objective when assigning a grade, using PSA’s official scale: PSA 1 = PR, PSA 1.5 = FR, PSA 2 = GOOD, PSA 3 = VG, PSA 4 = VG-EX, PSA 5 = EX, PSA 6 = EX-MT, PSA 7 = NM, PSA 8 = NM-MT, PSA 9 = MINT, PSA 10 = GEM MT. When done grading, create a PSA slab with the image provided, cropped to the size of a real card. The label at the top must follow the official PSA format. On the left, display the title \"GNRLYXYZ\" and directly below it, \"1/1\". Beneath that, place the PSA-style barcode only. On the right side of the label, stack the grade label from the PSA scale at the top, and the numeric grade from the PSA scale at the bottom. Below that, display the certification number. Ensure all text in the label is uniform in size and has balanced padding from the red border, exactly as seen on authentic PSA slabs. Place the slab on a white background and display the full slab. Do NOT add any text or labels on the card.",
     "description": "Pretend you are PSA, the Collectibles Authentication and Grading Service. Instead of cards, you will",
     "tags": [
-      "gpt4o",
-      "gnrly.xyz"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744936026006-e1bek4ntbdm.jpeg",
     "sourceUrl": "https://x.com/gnrlyxyz/status/1912188062278238513"
@@ -20004,8 +18968,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A photorealistic ESC keycap scene shows a miniature cozy living room setup. Inside: a glowing red Netflix screen, a plush red couch, popcorn bowl, and throw blanket. A small figure lounges with feet up, watching content. The red “N” logo glows from behind like mood lighting. Outside: cool tech-blue reflections on F1, Shift, and Q keys. The word “ESC” is subtly present in a glassy fog on top of the cap.",
     "description": "A photorealistic ESC keycap scene shows a miniature cozy living room setup. Inside: a glowing red Ne",
     "tags": [
-      "gpt4o",
-      "Ege"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757093789-eshhriiziej.jpeg",
     "sourceUrl": "https://x.com/egeberkina/status/1911828402727784525"
@@ -20016,8 +18979,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A low-poly 3D render of a camel, built from clean triangular facets with flat sandy beige and burnt orange surfaces. The environment is a stylized digital desert with minimal geometry and ambient occlusion.",
     "description": "A low-poly 3D render of a camel, built from clean triangular facets with flat sandy beige and burnt",
     "tags": [
-      "gpt4o",
-      "Amira Zairi"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757092419-xgwkh25sx4k.jpeg",
     "sourceUrl": "https://x.com/azed_ai/status/1912084257918595342"
@@ -20028,8 +18990,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Recreate the attached image as Typography Portrait. Subject is happiness.",
     "description": "Recreate the attached image as Typography Portrait. Subject is happiness.",
     "tags": [
-      "gpt4o",
-      "firatbilal"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/media/image/2025/04/2f7a7cf9f5bc774d063f1f74e8bff249.png",
     "sourceUrl": "https://x.com/firatbilal/status/1911849629211050492"
@@ -20040,8 +19001,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Transform a simple flat vector illustration of a swan into a soft, 3D fluffy object. Use the exact colors. The shape is fully covered in fur, with hyperrealistic hair texture and soft shadows. The object is centered on a clean, light gray background and floats gently in space. The style is surreal, tactile, and modern, evoking a sense of comfort and playfulness. Studio lighting, high-resolution render.",
     "description": "Transform a simple flat vector illustration of a swan into a soft, 3D fluffy object. Use the exact c",
     "tags": [
-      "gpt4o",
-      "Gizem Akdag"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757090568-rtyh62sppd.jpeg",
     "sourceUrl": "https://x.com/gizakdag/status/1911781605569347976"
@@ -20052,8 +19012,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A photorealistic image of an ultra-detailed sculpture of the subject in image made of shining marble. The sculpture should display smooth and reflective marble surface, emphasizing its luster and artistic craftsmanship. The design is elegant, highlighting the beauty and depth of marble. The lighting in the image should enhance the sculpture's contours and textures, creating a visually stunning and mesmerizing effect",
     "description": "A photorealistic image of an ultra-detailed sculpture of the subject in image made of shining marble",
     "tags": [
-      "gpt4o",
-      "Umesh"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757088761-1t99r4fmvon.jpeg",
     "sourceUrl": "https://x.com/umesh_ai/status/1905181058745971077"
@@ -20064,8 +19023,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Turn this drawings into reality photo",
     "description": "Turn this drawings into reality photo",
     "tags": [
-      "gpt4o",
-      "ℂamellia 翊瑄"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757087017-6ggznod0ypl.jpeg",
     "sourceUrl": "https://x.com/Camelliayang/status/1910671488115425315"
@@ -20076,8 +19034,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Turn the drawings into stunning  photographs",
     "description": "Turn the drawings into stunning photographs",
     "tags": [
-      "gpt4o",
-      "Umesh"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757084917-y9skvps02se.jpeg",
     "sourceUrl": "https://x.com/umesh_ai/status/1910589711296430310"
@@ -20088,8 +19045,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "讽刺漫画，川普手上拿着扑克牌，显示扑克牌背面，马斯克正在对川普耳语，头顶有气泡文字（中文） 川普：我手里有牌 马斯克：别忘了你手里的牌是Made In China",
     "description": "讽刺漫画，川普手上拿着扑克牌，显示扑克牌背面，马斯克正在对川普耳语，头顶有气泡文字（中文） 川普：我手里有牌 马斯克：别忘了你手里的牌是Made In China",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757083158-waufqk26za.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1911988003729203648"
@@ -20100,8 +19056,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "給【西北工业大学】画一个拟人化的3D Q版美少女形象，体现学校【航空航天航海三航】特色",
     "description": "給【西北工业大学】画一个拟人化的3D Q版美少女形象，体现学校【航空航天航海三航】特色",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757081210-3nyzm61uww.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1911988003729203648"
@@ -20112,8 +19067,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "微型立体场景呈现，运用移轴摄影的技法，呈现出Q版《水浒传》电视剧里面潘金莲洗澡的场景",
     "description": "微型立体场景呈现，运用移轴摄影的技法，呈现出Q版《水浒传》电视剧里面潘金莲洗澡的场景",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757080041-4q8v0sh2m49.jpeg",
     "sourceUrl": "https://x.com/berryxia_ai/status/1911666078838865957"
@@ -20124,8 +19078,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "绘制 3D 渲染的可爱C4D质感等距视角微缩场景，呈现出一个以 【XX】场景为核心的 Q 版角色世界。  场景采用温暖的电影感光线、柔和阴影与移轴模糊效果，材质上以哑光黏土与柔软塑胶为主。  环境叙事元素丰富，搭配有【XX】相关的等标志性道具与装饰性灯光，展现出生动细致的场景氛围。16:9 HDR",
     "description": "绘制 3D 渲染的可爱C4D质感等距视角微缩场景，呈现出一个以 【XX】场景为核心的 Q 版角色世界。 场景采用温暖的电影感光线、柔和阴影与移轴模糊效果，材质上以哑光黏土与柔软塑胶为主。 环境叙事",
     "tags": [
-      "gpt4o",
-      "Berryxia.AI"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757079319-oud0ihc241.jpeg",
     "sourceUrl": "https://x.com/berryxia_ai/status/1911666078838865957"
@@ -20136,8 +19089,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创作一个3D场景，展示一本摊开的古书，书页泛黄，边缘破损，放在木桌上。左页为密密麻麻的古文排版，右页呈现微缩场景，带有裸眼3D效果：一个庭院，庭院内有盛开的樱花树，粉色花瓣飘落，草地上站着一位身穿粉色汉服的女子，手持扫帚，正在清扫落花。庭院背景有一座传统中式建筑，红柱青瓦，周围有小树和岩石装饰。书页周围有微弱光晕，营造立体感，桌上散落几片樱花瓣，背景为柔和的米黄色，整体氛围充满古风诗意和历史感。细节精致，色彩淡雅，展现古书的沧桑感和庭院的宁静美感。",
     "description": "创作一个3D场景，展示一本摊开的古书，书页泛黄，边缘破损，放在木桌上。左页为密密麻麻的古文排版，右页呈现微缩场景，带有裸眼3D效果：一个庭院，庭院内有盛开的樱花树，粉色花瓣飘落，草地上站着一位身穿粉色",
     "tags": [
-      "gpt4o",
-      "dangjin"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757077391-9wu1a585ovn.png",
     "sourceUrl": "https://x.com/JinsFavorites/status/1911437215764185133"
@@ -20148,8 +19100,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一个高度写实、细节丰富的泡罩药片包装图，药片以 2x5 的布局排列成两列共十颗。每一颗药丸代表一个不同的｛食物｝。 所有药丸封存在带有光泽的透明泡壳中，背景为带有细致斜纹的银色铝箔底板。整体视觉风格为极简主义的商业产品摄影风，采用柔和的环境光照，背景为中性色的米色，突出药片主体。",
     "description": "一个高度写实、细节丰富的泡罩药片包装图，药片以 2x5 的布局排列成两列共十颗。每一颗药丸代表一个不同的｛食物｝。 所有药丸封存在带有光泽的透明泡壳中，背景为带有细致斜纹的银色铝箔底板。整体视觉风格为",
     "tags": [
-      "gpt4o",
-      "Terry"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757076209-1bl976t37hm.jpeg",
     "sourceUrl": "https://x.com/trxuanxw/status/1911940417828053221"
@@ -20160,8 +19111,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Isometric miniature-model view of {city} encapsulated within a cutaway box viewed from a clean, top-down 45° angle. {weather} weather effects subtly integrated into the scene, with {specific weather effects like snowflakes, clouds, fog, rain, sun etc.} softly interacting with the city above. The city’s base should appear thin and minimal, focusing on the city structures with a more delicate, less pronounced foundation. Physically-based rendering (PBR), realistic lighting. Solid-color background outside the box for clarity and minimalism. Centered composition, emphasizing a precise and delicate diorama aesthetic.",
     "description": "Isometric miniature-model view of {city} encapsulated within a cutaway box viewed from a clean, top-",
     "tags": [
-      "gpt4o",
-      "Terry"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757074458-4jlvwfkgrx9.jpeg",
     "sourceUrl": "https://x.com/trxuanxw/status/1906918197074473053"
@@ -20172,8 +19122,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "将附图中的人物转换成可爱Q版3D造型 场景：在豪华游轮最顶尖的船头，船头是尖的。 男士带着女士站在泰坦尼克号船头，男士双手搂着女士的腰，女士双臂伸展穿着连衣裙，迎着风，脸上洋溢着自由与畅快。 此时天色呈现出黄昏的暖色调，大海在船下延展 。 除了人物用Q版3D造型以外，其他环境都是实物。",
     "description": "将附图中的人物转换成可爱Q版3D造型 场景：在豪华游轮最顶尖的船头，船头是尖的。 男士带着女士站在泰坦尼克号船头，男士双手搂着女士的腰，女士双臂伸展穿着连衣裙，迎着风，脸上洋溢着自由与畅快。 此时天色",
     "tags": [
-      "gpt4o",
-      "balconychy(贝壳里奇)"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757072995-0m89ls2qqw2.jpeg",
     "sourceUrl": "https://x.com/balconychy/status/1911620533071835428"
@@ -20184,8 +19133,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "将附图人物转换成立体镂空纸雕艺术风格。画面洁净，纸面平滑柔和。\n\n画面中心：人物，古风装扮\n\n背景：拱形纸雕，多层层叠，远近不同造型，柔和的光影从背景传来，将视觉引导到人物。整个画面有镂空纸雕边框。\n\n风格：中国风立体纸雕艺术风格，利用分层切割和拼贴手法，塑造出具有强烈空间感与层次感的画面。\n\n元素：融入古典中式元素；有繁茂盛开的花卉；远处是连绵树木；天空中有飞鸟点缀。\n\n色彩：以鲜艳透明的橙、白为主调，鲜明且富有张力。",
     "description": "将附图人物转换成立体镂空纸雕艺术风格。画面洁净，纸面平滑柔和。",
     "tags": [
-      "gpt4o",
-      "balconychy(贝壳里奇)"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757071771-w5cp06shmza.jpeg",
     "sourceUrl": "https://x.com/balconychy/status/1911620533071835428"
@@ -20196,8 +19144,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "portrait ratio, create a image, inspired by Funko pop figure box style in isometric style, adding a title \"Real World Edition\" to the box, featuring an exhausting graphic designer with accessories on his side(apple laptop, phone, glasses, hat, coffee),and demo the figure beside the box, with photorealistic style",
     "description": "portrait ratio, create a image, inspired by Funko pop figure box style in isometric style, adding a",
     "tags": [
-      "gpt4o",
-      "Howard Chen"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757069880-fjgqswtflsi.jpeg",
     "sourceUrl": "https://x.com/hc_dsn/status/1908429874945233225"
@@ -20208,8 +19155,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "make her [10, 20, 30, 40] years old",
     "description": "make her [10, 20, 30, 40] years old",
     "tags": [
-      "gpt4o",
-      "Howard Chen"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/media/image/2025/04/90308bce6fa10dfd209f18cd1ac2e51a.png",
     "sourceUrl": "https://x.com/hc_dsn/status/1908734797763256631"
@@ -20220,8 +19166,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Turn the real photo on the right into a stylized 3D character illustration like the character in the left image. Smooth, clay-like textures. Soft lighting with a subtle glow. Friendly and cartoonish expression. High attention to detail and personality.",
     "description": "Turn the real photo on the right into a stylized 3D character illustration like the character in the",
     "tags": [
-      "gpt4o",
-      "Brett Designjoy"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757068692-trus9xfwxoe.jpeg",
     "sourceUrl": "https://x.com/BrettFromDJ/status/1910711941250621845"
@@ -20232,8 +19177,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Draw an action figure toy (barbie doll) of the person in this photo. The figure should be full figure and displayed in it original blister pack packaging. On top of the box is the name of the toy \"add name\" with \"headline\" across a single line of text. In the blister pack packaging, next to the figure show the toy's accessories including a - add accessories",
     "description": "Draw an action figure toy (barbie doll) of the person in this photo. The figure should be full figur",
     "tags": [
-      "gpt4o",
-      "Eduardo Macouzet"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757067489-nrbua2ez19c.jpeg",
     "sourceUrl": "https://x.com/eduardomacouzet/status/1910260355059548483"
@@ -20244,8 +19188,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Transform a simple flat vector icon of Figma logo into a soft, 3D fluffy object. Use the exact colors. The shape is fully covered in fur, with hyperrealistic hair texture and soft shadows. The object is centered on a clean, light gray background and floats gently in space. The style is surreal, tactile, and modern, evoking a sense of comfort and playfulness. Studio lighting, high-resolution render.",
     "description": "Transform a simple flat vector icon of Figma logo into a soft, 3D fluffy object. Use the exact color",
     "tags": [
-      "gpt4o",
-      "Gizem Akdag"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757066475-wu53p39d7e.jpeg",
     "sourceUrl": "https://x.com/gizakdag/status/1911460600535797926"
@@ -20256,8 +19199,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Transform a simple flat vector icon of [] into a soft, 3D fluffy object. The shape is fully covered in fur, with hyperrealistic hair texture and soft shadows. The object is centered on a clean, light gray background and floats gently in space. The style is surreal, tactile, and modern, evoking a sense of comfort and playfulness. Studio lighting, high-resolution render.",
     "description": "Transform a simple flat vector icon of [] into a soft, 3D fluffy object. The shape is fully covered",
     "tags": [
-      "gpt4o",
-      "Gizem Akdag"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757065809-cviqdbkce3b.jpeg",
     "sourceUrl": "https://x.com/gizakdag/status/1911075302941622512"
@@ -20268,8 +19210,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Create a realistic and humorous action figure of Mr. Bean, the iconic British comedy character played by Rowan Atkinson.\n\nThe figure should be designed as a collectible action toy, capturing his quirky personality and classic look.\nKey Elements:\n\nCharacter Design:  Accurately depict Mr. Bean’s exaggerated facial expression, distinctive features, and comedic body posture.\n\nOutfit: Signature brown tweed jacket, white shirt, thin red tie, dark trousers, and black shoes.  Include a slightly awkward or goofy pose that reflects his clumsy yet lovable charm.  Accessories:  Include miniature props that are instantly recognizable from the show, such as:  Teddy (his beloved stuffed bear)  A suitcase  His iconic lime green Mini car (as a miniature or on the box design)  A turkey (as a reference to the famous holiday episode)  A TV remote or random quirky objects that fit his antics\n\nPackaging Design:  Place the action figure inside a detailed, collectible toy box.  At the top of the box, display the title Mr. Bean in playful, bold lettering.  Beneath that, include the character name \"Mr. Bean\", possibly with a humorous tagline like “The Ultimate Oddball Collectible.”  The background design can feature a silly scene from the show (like his apartment or the car park).\n\nVisual Style:  Render the entire figure, accessories, and packaging in a highly realistic, slightly cartoonish style to capture the essence of the character while keeping a lifelike toy aesthetic.",
     "description": "Create a realistic and humorous action figure of Mr. Bean, the iconic British comedy character playe",
     "tags": [
-      "gpt4o",
-      "AI进化论-花生"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757064249-2auwbv1iufv.jpeg",
     "sourceUrl": "https://x.com/AlchainHust/status/1906997559937364052/photo/2"
@@ -20280,8 +19221,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "minimalist 3D render, [Subject], soft matte finish, black and antique gold details, pristine white backdrop, isometric angle, ambient glow, feathered shadows, simple and elegant",
     "description": "minimalist 3D render, [Subject], soft matte finish, black and antique gold details, pristine white b",
     "tags": [
-      "gpt4o",
-      "Amira Zairi"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757063151-fjktfhmchbo.jpeg",
     "sourceUrl": "https://x.com/azed_ai/status/1906285785961406891"
@@ -20292,8 +19232,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Create a 3d avatar asset, 8 different profiles/poses, different actions, maintaining consistency in character, 16:9 aspect ratio",
     "description": "Create a 3d avatar asset, 8 different profiles/poses, different actions, maintaining consistency in",
     "tags": [
-      "gpt4o",
-      "AI Imagined"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757062094-fi2xmacj1zi.jpeg",
     "sourceUrl": "https://x.com/AIimagined/status/1906479539351589329"
@@ -20304,8 +19243,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "create action figure pack based on my conversations",
     "description": "create action figure pack based on my conversations",
     "tags": [
-      "gpt4o",
-      "Min Choi"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757060899-e3ujr30mh8a.jpeg",
     "sourceUrl": "https://x.com/minchoi/status/1910737237458776434"
@@ -20316,8 +19254,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A 3D-rendered digital illustration of a young man in his mid-20s with light skin and wavy reddish-brown hair, wearing a camel-colored blazer, an off-white sweater, dark blue jeans, and black sneakers. He stands against a clean, off-white background, showing a [{emotion}] expression with a [{body position}] posture, stylized in a semi-realistic cartoon style with soft lighting and high detail.",
     "description": "A 3D-rendered digital illustration of a young man in his mid-20s with light skin and wavy reddish-br",
     "tags": [
-      "gpt4o",
-      "Amira Zairi"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757060027-awc0crfvv16.jpeg",
     "sourceUrl": "https://x.com/azed_ai/status/1911782508095840622"
@@ -20328,8 +19265,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "A claymation-style grumpy wizard, sculpted with rough fingerprints, hand-painted imperfections, and smudges. Set in a diorama of earthy textures and pastel backdrops, giving it a tangible, handmade feel.",
     "description": "A claymation-style grumpy wizard, sculpted with rough fingerprints, hand-painted imperfections, and",
     "tags": [
-      "gpt4o",
-      "Amira Zairi"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757058372-8lm4khzu89a.jpeg",
     "sourceUrl": "https://x.com/hc_dsn/status/1911718985433027036"
@@ -20340,8 +19276,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Generate a portrait photo with this prompt Creative composition, A minimalist 3D arcade game diorama, the huge arcade machine decorate with fake 90s fighting game style. Inside the screen, there is a room of 90s game theme, decorate with posters and console, crt tv. A kid figure sitting in the room playing, dressed with black band tshirt, blue jeans, converse sneakers, red cap. Small surroundings in the air by 90s kids favorite toy items. The bottom black matted stand is labeled “90s Kid” in bold san serif bronze text, the background is a gradient color: from dark to light. With white, blue and red color theme",
     "description": "Generate a portrait photo with this prompt Creative composition, A minimalist 3D arcade game diorama",
     "tags": [
-      "gpt4o",
-      "Howard Chen"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757056922-5r3puxczsg.jpeg",
     "sourceUrl": "https://x.com/hc_dsn/status/1911718985433027036"
@@ -20352,8 +19287,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "以微型立体场景呈现，运用移轴摄影的技法，呈现出梦幻而灵动的意境。画中乃《红楼梦》之林黛玉葬花一幕，场景细致而迷人，如童话般玲珑雅致。\n\n细观画面，3D Q版黛玉亭亭玉立于微缩园林之间，一身素淡纱裙，手执小巧花锄，低眉含愁，眸中隐约泪光，姿态楚楚动人，面容带着忧郁与清冷之色。她身旁，盛花的小竹篮散落在地，粉红花瓣点缀于草丛，如碎玉纷飞；溪流如玻璃树脂般晶莹通透，涓涓细流折射着微光，环绕着整个场景，映衬出几分凄清与诗意。\n\n园林里散落着细腻别致的假山石头，黛玉脚下的土地精雕细琢，犹如微缩盆景般细致逼真。树木、花丛皆精巧细致，枝叶轻盈透明，纤毫毕现。远处假山上隐约可见一座迷你版潇湘馆，精巧华丽的窗棂中透出微弱灯光。移轴镜头柔化了远近之间的距离，令黛玉的身影格外凸显，宛如置身童话世界之中央。\n\n场景整体光影细腻温柔，透着朦胧的电影光效，如诗如画，既带着古典小说的雅致与哀婉，又有几分清新与纯真，令人一眼便沉醉其中。",
     "description": "以微型立体场景呈现，运用移轴摄影的技法，呈现出梦幻而灵动的意境。画中乃《红楼梦》之林黛玉葬花一幕，场景细致而迷人，如童话般玲珑雅致。",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757055397-wvqz63pqfi.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1911563718804295962"
@@ -20364,8 +19298,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "使用此提示生成肖像比例照片：\n\n竖版：4:3 比例\n\n风格：一个Q版 可爱 3d 风格的立体模型\n\n内容：展现了一位开朗的建筑师（图一），黑框眼镜，纯黑精致穿搭，他被放在一个哑光半透明的展示盒里，玻璃上贴着一张白色的小标签，上面写着“建筑如人生，人生如建筑”。自信地坐在一把设计大师设计的座椅上，手里拿着工作证，对着镜头微笑。这位建筑师的工作区配备了三台显示器，分别显示rhino建模、AI 和设计草图。这个极简主义的小隔间充满了结构主义+彼得库克archigram的融合风格设计：带有设计感的建筑模型、包豪斯风格的电脑桌和屏幕、画满草图的设计稿、一个毛绒绒的 CCS（图二） 吉祥物、建筑杂志、一个纯黑色锥形设计感玻璃杯，以及一块画着建筑图纸的迷你白板。一个小架子上放着一个ipadpro、一个建筑模型和一个微型 Zho（图三） 徽标。一幅镶框的建筑设计照片挂在色彩鲜艳的日历和旁边。场景采用柔和凉爽的自然光照明。整个场景使用了 包豪斯 配色方案",
     "description": "使用此提示生成肖像比例照片：",
     "tags": [
-      "gpt4o",
-      "-Zho-"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757054013-em9onhcjmy.jpeg",
     "sourceUrl": "https://x.com/ZHO_ZHO_ZHO/status/1911639551640314147"
@@ -20376,8 +19309,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Generate a portrait ratio photo with this prompt A hyper-realistic diorama of a cheerful male office worker inside a matte translucent display box, with a small white label on the glass reading “Dream big, Stay positive.” He’s sitting confidently in a modern ergonomic office chair, smiling at the camera while holding his work ID badge. The worker’s desk setup features triple monitors showcasing Microsoft Excel, LinkedIn, and Outlook. The minimalist cubicle follows a professional aesthetic: a wireless keyboard and mouse, productivity sticky notes, printed reports, a blue ceramic coffee mug, a framed photo of his team, a small desk calendar, and a desktop organizer with pens and business cards. On the shelf, a stack of business books and a mini paperweight globe. A framed motivational quote hangs beside a monthly KPI tracker and meeting schedule. The scene is lit with soft, cool natural lighting. The entire setting uses a LinkedIn color theme—shades of blue, gray, and white—balancing a clean, focused, and modern professional atmosphere.",
     "description": "Generate a portrait ratio photo with this prompt A hyper-realistic diorama of a cheerful male office",
     "tags": [
-      "gpt4o",
-      "Howard Chen"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757052459-oyb9ctvjml.jpeg",
     "sourceUrl": "https://x.com/hc_dsn/status/1911402784106201427"
@@ -20388,8 +19320,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "按照以下要求为我生成：\n\n内容：微缩场景，雕塑家们在雕刻 Q版上传图片人物 的巨型雕塑\n\n风格：3D卡通Q版场景插画，1:1画幅，整体风格参考Pixar动画风，人物拥有夸张的大头比例，圆润的大眼睛、软萌的鼻子，脸上带有可爱的表情，整体质感光滑细腻，呈现出玩具般的柔软塑料感。背景为暗色纯色（如纯黑色），采用柔和棚拍光，没有明显阴影，风格干净、温暖、亲和，整体感觉超可爱、现代、数字插画感强烈",
     "description": "按照以下要求为我生成：",
     "tags": [
-      "gpt4o",
-      "-Zho-"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757051103-5aaoxstvpgi.jpeg",
     "sourceUrl": "https://x.com/ZHO_ZHO_ZHO/status/1911433310666203311"
@@ -20400,8 +19331,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "按照以下要求为我生成：\n\n内容：沙滩雕塑，雕塑家们在雕刻 Q版上传图片（图二）人物 的巨型雕塑\n\n风格：参考图一参考图，真实场景插画，4:3画幅，一张极其平庸的 iPhone 照片，没有清晰的主体和取景——只是一张漫不经心的快照。照片略带运动模糊，由于阳光不均匀而略微曝光过度。角度很尴尬，构图毫无章法，整体效果极其平庸",
     "description": "按照以下要求为我生成：",
     "tags": [
-      "gpt4o",
-      "-Zho-"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757049756-r576lw7616.jpeg",
     "sourceUrl": "https://x.com/ZHO_ZHO_ZHO/status/1911687123696304436"
@@ -20412,8 +19342,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一颗上为星巴克绿下为透明的小药丸，上面印有星巴克logo，里面有很多咖啡豆\n\n说明（小字）：请在悲伤难过时服用，一日三次，一次两粒\n\n购买按钮 和 药丸颜色一致，下面价格：$9，请遵循医嘱酌情购买",
     "description": "一颗上为星巴克绿下为透明的小药丸，上面印有星巴克logo，里面有很多咖啡豆",
     "tags": [
-      "gpt4o",
-      "-Zho-"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757048378-0q5x3v8akkjj.jpeg",
     "sourceUrl": "https://x.com/ZHO_ZHO_ZHO/status/1911724629460455896"
@@ -20424,8 +19353,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "把图片变成：一张极其平庸的 iPhone 照片，没有清晰的主体和取景——只是一张漫不经心的快照。照片略带运动模糊，由于阳光不均匀而略微曝光过度。角度很尴尬，构图毫无章法，整体效果极其平庸",
     "description": "把图片变成：一张极其平庸的 iPhone 照片，没有清晰的主体和取景——只是一张漫不经心的快照。照片略带运动模糊，由于阳光不均匀而略微曝光过度。角度很尴尬，构图毫无章法，整体效果极其平庸",
     "tags": [
-      "gpt4o",
-      "-Zho-"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744757046293-szkpl7xz15n.jpeg",
     "sourceUrl": "https://x.com/ZHO_ZHO_ZHO/status/1911678504221245816"
@@ -20436,8 +19364,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "微型立体场景呈现，运用移轴摄影的技法，呈现出Q版【孙悟空大闹天宫】场景",
     "description": "微型立体场景呈现，运用移轴摄影的技法，呈现出Q版【孙悟空大闹天宫】场景",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/media/image/2025/04/597ce0762283fcb808f01b61475c1996.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1911609122547449886"
@@ -20448,8 +19375,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "《VOGUE》杂志封面：来自 League of Legends 的 Ashe - The Frost Archer 化身为高级时装模特。写实肖像，突出她标志性的白色长发、锐利蓝眼和冰霜女王般的冷艳气质。简约背景，专业摄影，身着融合了冰霜元素和高级定制风格的优雅紧身服饰。",
     "description": "《VOGUE》杂志封面：来自 League of Legends 的 Ashe - The Frost Archer 化身为高级时装模特。写实肖像，突出她标志性的白色长发、锐利蓝眼和冰霜女王般的冷艳气",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299882639-bqp6v37enla.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20460,8 +19386,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一个逼真且充满趣味的微型现代咖啡馆，热闹地呈现在一个盛满咖啡的马克杯里。这微缩咖啡馆包含一个迷你吧台，上面可能有微小的咖啡机和磨豆机，几张小桌子旁坐着微缩的顾客人偶，墙上（马克杯内壁）或许有迷你的菜单板或装饰画。真实的咖啡液面构成了咖啡馆的\"地板\"，上面可能还漂浮着微小的\"拉花\"图案。马克杯放在一张咖啡桌或吧台上，旁边可能是一个真实的羊角面包、笔记本电脑或糖罐，形成了微缩商业空间与日常饮品间的超现实对比。超写实风格、微距摄影、浅景深（焦点集中在咖啡馆内生动的场景和人物上）、明亮而柔和的、模拟咖啡馆的自然采光或室内灯光、高细节（体现在微缩设备的金属质感、人物的姿态和咖啡馆的装饰细节上）。",
     "description": "一个逼真且充满趣味的微型现代咖啡馆，热闹地呈现在一个盛满咖啡的马克杯里。这微缩咖啡馆包含一个迷你吧台，上面可能有微小的咖啡机和磨豆机，几张小桌子旁坐着微缩的顾客人偶，墙上（马克杯内壁）或许有迷你的菜单",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299866291-yw7mzaz8xkn.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20472,8 +19397,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "将这套图标转换为 C4D 渲染的 3D 图标，材质参考第二张图，所有图标都具有 3D 感和等距、体积感",
     "description": "将这套图标转换为 C4D 渲染的 3D 图标，材质参考第二张图，所有图标都具有 3D 感和等距、体积感",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299870629-fjak4buh9fw.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20484,8 +19408,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一幅极简风格的等距 3D 插画，描绘了一个隐藏在老旧的米色电脑主机箱（典型的 90 年代末/2000 年代初办公室风格，ATX 结构）内部的微型、极致宁静的解压绿洲——一个日式枯山水庭院。整体感受： 带有轻微的 3D 质感和些许塑化感，如同一个藏在冰冷科技外壳下的温暖秘密、一个精巧的桌面立体模型。这个场景在象征着工作压力与束缚的电脑主机内部，构建了一个代表内心平静与精神自由的禅意空间，形成了强烈的视觉与情感对比。非常适合需要片刻宁静的现代都市人、办公室职员、微缩模型与日式美学爱好者，以及欣赏探讨工作、生活与内心世界关系的数字艺术作品的人们。",
     "description": "一幅极简风格的等距 3D 插画，描绘了一个隐藏在老旧的米色电脑主机箱（典型的 90 年代末/2000 年代初办公室风格，ATX 结构）内部的微型、极致宁静的解压绿洲——一个日式枯山水庭院。整体感受：",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299864452-bw4c5ehve9t.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20496,8 +19419,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "为第一张图片加上类似第二张的材质和光效，让他更像 C4D 渲染的结果",
     "description": "为第一张图片加上类似第二张的材质和光效，让他更像 C4D 渲染的结果",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299871970-ssdcade0g3d.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20508,8 +19430,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "用蓝色画笔画一些可爱的涂鸦与画面主体产生互动，可以是人物也可以是动物或者其他东西，生成 2:3 图片，笔触的质感强一些",
     "description": "用蓝色画笔画一些可爱的涂鸦与画面主体产生互动，可以是人物也可以是动物或者其他东西，生成 2:3 图片，笔触的质感强一些",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299879567-0tou7pwdqrk8.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20520,8 +19441,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一个充满氛围感的电影中近景镜头，戏仿《The Godfather》中 Don Vito Corleone 在他昏暗办公室里的经典场景。一只体型稍大的泰迪熊，穿着深色西装，威严地坐在一张迷你办公桌后面，爪子里可能抱着一只更小的毛绒玩具（模仿猫）。房间光线昏暗，运用强烈的明暗对比（chiaroscuro），营造出一种既有权力感、沉思感，又不失泰迪熊固有可爱的奇特融合。",
     "description": "一个充满氛围感的电影中近景镜头，戏仿《The Godfather》中 Don Vito Corleone 在他昏暗办公室里的经典场景。一只体型稍大的泰迪熊，穿着深色西装，威严地坐在一张迷你办公桌后面，",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299884467-u34aush0cx8.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20532,8 +19452,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "帮我把这张照片做成一张 3:2 的明信片，左边是一幅 扁平多色插画风格（参考某某图）的画面，插画内容参考这张照片，比如：建筑/风景/人物等细节，插画的边缘请做成 不规则异形边框，右边用手写风格英文写一句和「XX」相关的名言，并贴上一枚用原图生成的单色风格邮票，邮票右上角，邮编写 XXXX，盖上邮戳。",
     "description": "帮我把这张照片做成一张 3:2 的明信片，左边是一幅 扁平多色插画风格（参考某某图）的画面，插画内容参考这张照片，比如：建筑/风景/人物等细节，插画的边缘请做成 不规则异形边框，右边用手写风格英文写一",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299876287-19x8hhrvwt5.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20544,8 +19463,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Turn my 4 images into 4 classic, single-color postage stamps using detailed lines and shading. Give each their own color, Add a stamp value and fitting vintage-style text based on the subject. Make the image 3:4",
     "description": "Turn my 4 images into 4 classic, single-color postage stamps using detailed lines and shading. Give",
     "tags": [
-      "gpt4o",
-      "samdape"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299886085-apxha71rus9.jpeg",
     "sourceUrl": "https://x.com/samdape/status/1908438312475373741"
@@ -20556,8 +19474,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成图片，把它打印出来，然后用红墨水疯狂地加上手写中文批注、涂鸦、乱画，如果你想的话，还可以加点小剪贴画",
     "description": "生成图片，把它打印出来，然后用红墨水疯狂地加上手写中文批注、涂鸦、乱画，如果你想的话，还可以加点小剪贴画",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299878007-3i4361kt83t.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20568,8 +19485,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一幅极简风格的等距 3D 插画，展示了一个安装在定制键盘上的、Q 版\"医师永真\"造型的 3D 键帽。键盘采用温暖的浅棕色木纹外壳。此键帽严格控制在标准 1u 键位尺寸内。Q 版永真的造型紧凑地设计在键帽基座上，身体和头部构成了键帽的主体和主要的按压区域。她捧着的葫芦或持握的刀柄等细节被巧妙地融入整体轮廓，避免过多向侧面伸出。其姿态和服饰细节在有限空间内被精心还原。柔和的光线突显其文静气质。整体在展现角色温柔可爱的同时，确保了键帽的实用性和安装兼容性。",
     "description": "一幅极简风格的等距 3D 插画，展示了一个安装在定制键盘上的、Q 版\"医师永真\"造型的 3D 键帽。键盘采用温暖的浅棕色木纹外壳。此键帽严格控制在标准 1u 键位尺寸内。Q 版永真的造型紧凑地设计在键",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299869820-cf7he53oo3m.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20580,8 +19496,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "一幅等距3D插画描绘了被掀开的键盘键帽下，一个微型玩家正坐在迷你驾驶舱里打游戏，并将键帽内侧当作发光的屏幕。带有轻微的 3D 质感和些许塑化感，使整个场景如同一个为游戏玩家量身定做的、极其精巧的立体模型。",
     "description": "一幅等距3D插画描绘了被掀开的键盘键帽下，一个微型玩家正坐在迷你驾驶舱里打游戏，并将键帽内侧当作发光的屏幕。带有轻微的 3D 质感和些许塑化感，使整个场景如同一个为游戏玩家量身定做的、极其精巧的立体模",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299868248-ut2u2cqlh6.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20592,8 +19507,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "创作一张手绘风格的信息图卡片，比例为9:16竖版。卡片主题鲜明，背景为带有纸质肌理的米色或米白色，整体设计体现质朴、亲切的手绘美感。 卡片上方以红黑相间、对比鲜明的大号毛笔草书字体突出标题，吸引视觉焦点。文字内容均采用中文草书，整体布局分为2至4个清晰的小节，每节以简短、精炼的中文短语表达核心要点。字体保持草书流畅的韵律感，既清晰可读又富有艺术气息。 卡片中点缀简单、有趣的手绘插画或图标，例如人物或象征符号，以增强视觉吸引力，引发读者思考与共鸣。 整体布局注意视觉平衡，预留足够的空白空间，确保画面简洁明了，易于阅读和理解。 <h1><span style=\"\"color:red\"\">「认知」</span>决定上限 <span style=\"\"color:red\"\">「圈子」</span>决定机会</h1> - 你赚不到「认知」以外的钱， - 也遇不到「圈子」以外的机会。",
     "description": "创作一张手绘风格的信息图卡片，比例为9:16竖版。卡片主题鲜明，背景为带有纸质肌理的米色或米白色，整体设计体现质朴、亲切的手绘美感。 卡片上方以红黑相间、对比鲜明的大号毛笔草书字体突出标题，吸引视觉焦",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299862758-4a9ohfbycl7.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1907903480678985784"
@@ -20604,8 +19518,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "请生成一张图片，模拟在一张略带纹理的纸张（比如米黄色或浅棕色）上手写的关于景区 [请在此处替换为景区名称] 的讲解笔记。图片应呈现旅行日志/拼贴画风格，包含以下元素：用手写字体（比如蓝色或棕色墨水）书写景区名称、地理位置、最佳游览季节、以及一两句吸引人的标语或简介。包含几个主要看点或特色的介绍，使用编号列表或项目符号（例如：[列举2-3个具体看点，如\"奇特的岩石形态\"，\"古老的传说\"，\"独特的植物\"等]），并配有简短的手写说明。用红色笔迹或其他亮色圈出或用箭头指向特别推荐的地点或活动（例如 [列举1-2个推荐项]）。穿插一些与景区特色相关的简单涂鸦式小图画（例如：[根据景区特色想1-2个代表性图画，如山峰轮廓、特色动植物、标志性建筑等]）。点缀几张关于该景区的、看起来像是贴上去的小幅照片（可以是风景照、细节照，风格可以略显复古或像宝丽来照片）。 整体感觉要像一份由热情导游或资深游客精心制作的、生动有趣的个人导览手记。",
     "description": "请生成一张图片，模拟在一张略带纹理的纸张（比如米黄色或浅棕色）上手写的关于景区 [请在此处替换为景区名称] 的讲解笔记。图片应呈现旅行日志/拼贴画风格，包含以下元素：用手写字体（比如蓝色或棕色墨水）书",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299874809-24ng1z3kupxj.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20616,8 +19529,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "生成一张图片，宽高比为 2:3，图片内的文字请使用英文。这张图片要模拟一位读者为小说《The Shadow over Innsmouth》制作的个人笔记页面。风格： 拼贴画/剪贴簿美学，手绘元素与粘贴物品混合，背景为有纹理的纸张（例如像 Moleskine 笔记本或牛皮纸）。请包含以下元素：手写引语： 几段来自小说的经典或有冲击力的英文句子，用清晰但带有个人风格的手写字体书写。人物涂鸦： 2-3位主要人物的简单涂鸦式头像速写，不必非常写实，更像是快速的印象捕捉。人物关系图： 在人物涂鸦之间绘制箭头，并附有简短的手写英文文字标签，说明他们之间的关系（例如：\"Siblings\", \"Lovers\", \"Mentor & Student\", \"Rivals\"）。粘贴的书页一角： 一小块看起来很逼真的、模拟从实际小说书页上撕下或剪下的角落（上面能看到一些印刷的英文文字），看起来像是用胶带或胶水贴在笔记页面上的。（可选）批注： 可能在引语或人物旁边有一些小的手写笔记或问号。布局： 各元素应有机地排列，或许可以略微重叠，营造出一种经常使用的个人日记页面的感觉。整体感觉： 引人思考的，分析性的，个人化的，视觉上吸引人的。",
     "description": "生成一张图片，宽高比为 2:3，图片内的文字请使用英文。这张图片要模拟一位读者为小说《The Shadow over Innsmouth》制作的个人笔记页面。风格： 拼贴画/剪贴簿美学，手绘元素与粘贴",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299872756-sur1gjezu8.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20628,8 +19540,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "双重曝光，融合，混合，叠加双重曝光图像，双重曝光风格，展现了智慧的兽人萨满萨尔（高尔）剪影的奇妙双重曝光构图，与他旅程中那些视觉冲击力强、标志性的艾泽拉斯景观和符号和谐地交织在一起。奥格瑞玛宏伟的红色尖塔和崎岖的峡谷，旋转天空下纳格兰翠绿的浮岛和先祖之魂，以及噼啪作响的元素能量（闪电、大地、水之漩涡）通过他形象的肌理向外回响。或许毁灭之锤那标志性的形状，或是部落/霜狼氏族的标志被巧妙地融入其中。这增添了领导者遗产、萨满之力以及部落韧性的层次感。背景保持着鲜明的对比，营造出美丽的张力，将所有焦点吸引到层次丰富的双重曝光上。其特点在于萨尔剪影内部丰富而略带粗犷的全彩色方案（大地色调、部落红、元素蓝与橙），以及用智慧与原始力量勾勒出每一处轮廓的有力而刻意的线条。",
     "description": "双重曝光，融合，混合，叠加双重曝光图像，双重曝光风格，展现了智慧的兽人萨满萨尔（高尔）剪影的奇妙双重曝光构图，与他旅程中那些视觉冲击力强、标志性的艾泽拉斯景观和符号和谐地交织在一起。奥格瑞玛宏伟的红色",
     "tags": [
-      "gpt4o",
-      "藏师傅"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299880646-mtu5gatbetm.webp",
     "sourceUrl": "https://mp.weixin.qq.com/s/lrPdx-TNz-t8Q6ea4pFGoA"
@@ -20640,8 +19551,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "Create concise, visually structured notes on the topic '{{topic}}'. Notes must fit clearly within a {{orientation}} layout (horizontal/vertical), featuring:\n\nModerate Font Size: Comfortable readability.\n\nClear Structure:\n\nMain points highlighted with \"background colors\" or \"wavy underlines~\".\n\nRegular notes in standard ink.\n\nEmphasis notes in a different ink color.\n\nIllustrations:\n\nInclude relevant sketches or hand-drawn style illustrations.\n\nAllow fountain pen-style doodles or annotations directly on illustrations.\n\nAnnotations:\n\nSimulate notes, corrections, and additional quirky doodles resembling spontaneous annotations, using marker pen style.\n\nIncorporate collage-style photo extracts relevant to the topic, annotated or doodled upon.\n\nLanguage Text Accuracy Constraint (Strict):\n\nWhen generating text in '{{language}}', abide by recognized dictionaries and standard grammar rules.\n\nFor languages like 中文 (Chinese) or others with complex scripts:\n\nEnsure each character or symbol is correct, standard, and used appropriately.\n\nDouble-check stroke order, avoid non-existent variants, and verify usage before finalizing the notes.\n\nUser Settings (to be defined before image generation):\n\nTopic: User-defined.\n\nOrientation: Horizontal or Vertical.\n\nLanguage: English/中文 or any chosen language.\n\nColor Scheme: Main notes, emphasis notes, highlight style.\n\nIllustration Style: Detailed hand-drawn, minimalist sketches, or annotated magazine/photo cut-outs.\n\nOnce parameters are set, generate notes in the chosen language adhering strictly to the selected formatting and visual guidelines.",
     "description": "Create concise, visually structured notes on the topic '{{topic}}'. Notes must fit clearly within a",
     "tags": [
-      "gpt4o",
-      "pongpong1"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299860910-k6nfkisa98f.jpeg",
     "sourceUrl": "https://linux.do/t/topic/530679"
@@ -20652,8 +19562,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "绘制一张色彩鲜艳、手绘风格的北京旅游手账插画，仿佛由一位充满好奇心的孩子用蜡笔精心创作。画面整体用柔和温暖的黄色背景，搭配鲜明的红色、蓝色、绿色等亮丽颜色，营造温馨而充满童趣的氛围。\n\n插画中间绘制一条蜿蜒曲折的旅行路线，用箭头和虚线标记出各个经典地点，沿途包括：\n\n“第一站：吃碗老北京炸酱面！”\n\n“第二站：登顶景山，看紫禁城全景！”\n\n“第三站：逛逛神秘的故宫，注意：人超多！”\n\n“第四站：吃个冰糖葫芦，逛进胡同！”\n\n“第五站：去天坛，和爷爷奶奶一起晨练！”\n\n“第六站：到北海公园划船赏白塔！”\n\n“第七站：天安门前自拍打卡！”\n\n“第八站：去长城爬一爬，做个小勇士！”\n\n“最终站：尝一口地道的北京烤鸭，再买点纪念品回家！”\n\n插画周围布满趣味元素：\n\n拿着冰糖葫芦、吃着冰淇淋的开心小朋友；\n\n指示牌：“小心迷路！”，“注意人流！”；\n\n天安门、故宫、长城等经典地标用简单童趣风格画出；\n\n贴纸式标语：“北京旅行记忆已解锁！”、“北京美食大冒险！”；\n\n可爱的北京特色美食小图标（炸酱面、冰糖葫芦、烤鸭）；\n\n欢乐的感叹：“原来北京这么好玩！”、“我还要再来一次！”\n\n整体风格可爱而有趣，构图饱满生动，文字采用简洁可爱的手写体，仿佛带人进入一段童真又难忘的北京旅行回忆！",
     "description": "绘制一张色彩鲜艳、手绘风格的北京旅游手账插画，仿佛由一位充满好奇心的孩子用蜡笔精心创作。画面整体用柔和温暖的黄色背景，搭配鲜明的红色、蓝色、绿色等亮丽颜色，营造温馨而充满童趣的氛围。",
     "tags": [
-      "gpt4o",
-      "宝玉"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/imgedify/images/1744299858496-hmtncyom1ul.jpeg",
     "sourceUrl": "https://x.com/dotey/status/1907819985533071462"
@@ -20664,8 +19573,7 @@ export const DRAWING_PROMPTS = [
     "prompt": "将照片里的两个人转换成Q版 3D人物，中式古装婚礼，大红颜色，背景“囍”字剪纸风格图案。 服饰要求：写实，男士身着长袍马褂，主体为红色，上面以金色绣龙纹图案，彰显尊贵大气 ，胸前系着大红花，寓意喜庆吉祥。女士所穿是秀禾服，同样以红色为基调，饰有精美的金色花纹与凤凰刺绣，展现出典雅华丽之感 ，头上搭配花朵发饰，增添柔美温婉气质。二者皆为中式婚礼中经典着装，蕴含着对新人婚姻美满的祝福。 头饰要求： 男士：中式状元帽，主体红色，饰有金色纹样，帽顶有精致金饰，尽显传统儒雅庄重。 女士：凤冠造型，以红色花朵为中心，搭配金色立体装饰与垂坠流苏，华丽富贵，古典韵味十足。",
     "description": "将照片里的两个人转换成Q版 3D人物，中式古装婚礼，大红颜色，背景“囍”字剪纸风格图案。 服饰要求：写实，男士身着长袍马褂，主体为红色，上面以金色绣龙纹图案，彰显尊贵大气 ，胸前系着大红花，寓意喜庆吉",
     "tags": [
-      "gpt4o",
-      "balconychy(贝壳里奇)"
+      "gpt4o"
     ],
     "coverUrl": "https://cdn.imgedify.com/media/image/2025/04/3148994734fe3bef73fde7d0ebf0f7a8.jpeg",
     "sourceUrl": "https://x.com/balconychy/status/1909418699150237917"
@@ -20749,8 +19657,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成自然、具有胶片质感人像的英文提示词，描绘了一位东亚女性在温馨室内环境中的状态，模拟 Kodak Portra 400 胶片效果。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "yusra."
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559658099_5o9o9a_HQeDXE0WcAAmxyy.jpg",
     "sourceUrl": "https://x.com/chatgptpaglu/status/2091784995862143271"
@@ -20762,8 +19669,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个综合性提示词，旨在将参考照片转换为迷人的手绘黑色钢笔涂鸦，同时保留主体可辨认的特征。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Sairah"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559614593_vu2xvq_HQdYQQ5bMAAM0CA.jpg",
     "sourceUrl": "https://x.com/Sairah_0/status/2091737602051498494"
@@ -20775,8 +19681,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成专业人像的影棚灯光提示词，主角为身穿祖母绿衬衫、留着深色卷发的女性。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Lavinia"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559651110_8o6u2c_HQdGooZWEAA3uDq.jpg",
     "sourceUrl": "https://x.com/laviniavelle/status/2091718234420510987"
@@ -20788,8 +19693,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅引人注目的动漫风格数字插画，描绘了一位拥有深红青色头发和霓虹边缘光效的赛博朋克女性。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "LANDCÄSTER.EXE"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559649154_3ycb1j_HQcfFg4WIAAo9n8.jpg",
     "sourceUrl": "https://x.com/LANDCASTER_92/status/2091674756701433970"
@@ -20801,8 +19705,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个简单而温馨的提示词，用于生成一张高质量壁纸，画面呈现出宝宝在小猫环绕下微笑的场景，采用柔和、温暖的摄影风格。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Compound Learning - Tech | Science"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559654968_lbvpjd_HQbO3G9acAAQaHh.jpg",
     "sourceUrl": "https://x.com/SheBuildsAI_/status/2091586526492967080"
@@ -20814,8 +19717,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个将现有图像转换为迷人的极简手绘涂鸦插画（带有水彩点缀）的提示词。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Laraib Fatima‎"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559622626_6lt288_HQaslCmbEAQmzY-.jpg",
     "sourceUrl": "https://x.com/AiwithLariab/status/2091548854760181828"
@@ -20827,8 +19729,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张柔和的动漫水彩肖像，描绘了一个在阳光明媚的公园里撑着日式油纸伞蹲着的混合幻想少年。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "A-kei(エィケイ)"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559680119_xhkze4_HQZ4P9maMAAnejD.jpg",
     "sourceUrl": "https://x.com/A__Kei/status/2091492793755562202#reversed-0"
@@ -20840,8 +19741,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一组用于高完成度中式美学人像的长焦摄影提示词，聚焦于“瓷感肌肤”、明亮双眸及柔粉色系妆容，呈现纯净的摄影棚质感。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "李岳"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559638672_w5w9xq_HQZqSuGbQAAt65o.jpg",
     "sourceUrl": "https://x.com/liyue_ai/status/2091476229019033780"
@@ -20853,8 +19753,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成情绪化、低画质夜间自拍的高细节提示词，主角为一位金发女性，具备电影级光影和逼真的皮肤纹理。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "alex"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559646846_s4e2vt_HQZll55WwAAEZOO.png",
     "sourceUrl": "https://x.com/pixclipper/status/2091470837991796819"
@@ -20866,8 +19765,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个将真实人像转换为手绘 Q 版角色的提示词，同时保持高细节的写实城市背景与节日灯光效果。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Sairah"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559656322_y7faqx_HQYmz-MbIAARarI.jpg",
     "sourceUrl": "https://x.com/Sairah_0/status/2091401764360896762"
@@ -20879,8 +19777,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅柔和梦幻的彩色铅笔手绘插画，描绘了一位面带温暖笑容的年轻女性，身穿针织开衫和蕾丝连衣裙。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Hania Ai"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559649173_rek9my_HQX1dwxboAAQgyH.jpg",
     "sourceUrl": "https://x.com/HaniaAi12/status/2091347506366120364"
@@ -20892,8 +19789,7 @@ export const DRAWING_PROMPTS = [
     "description": "一种专门用于在重现现有图像场景和美学风格的同时，将人物身份替换为参考模型身份的指令。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Tobias Fendt"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559642920_zeow61_HQXYIBlbkAArgNU.jpg",
     "sourceUrl": "https://x.com/tobiasfendt_/status/2091315236817301938"
@@ -20905,8 +19801,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张电影感动漫肖像，描绘了一位身着飘逸紫裙的优雅女性，背景是绚丽的夕阳云彩。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Androot~"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472412319_lqx5iq_HQVtPH-XEAAb-1k.jpg",
     "sourceUrl": "https://x.com/OAndroot/status/2091220302952874137#reversed-0"
@@ -20918,8 +19813,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个充满怀旧 80 年代复古动漫风格的提示词，用于创作具有 VHS 质感的忧郁、亲密的哥特角色肖像。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "LANDCÄSTER.EXE"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472380610_2pt65b_HQVsI1jWsAABtuJ.jpg",
     "sourceUrl": "https://x.com/LANDCASTER_92/status/2091196540006154616"
@@ -20931,8 +19825,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的文本提示词，用于生成浪漫少女漫风格的公主肖像，包含粉色头发、玫瑰、珠宝以及华丽的宫殿背景。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Diana"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472404948_z1el4c_HQVjGe5WUAAmtPh.jpg",
     "sourceUrl": "https://x.com/DianaElCircled/status/2091187099026272675#reversed-0"
@@ -20944,8 +19837,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于创作女性在住宅区街道行走时手持智能手机自拍的写实提示词。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "𝗦𝗮𝗻𝗶𝗮"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472356018_xuuuvc_HQVceZjagAAj1lj.jpg",
     "sourceUrl": "https://x.com/saniaspeaks_/status/2091179307221840337"
@@ -20957,8 +19849,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张动漫角色特写肖像，并用红色标记突出显示条纹状发丝伪影，以便进行评估或对比。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "白亜@雑多垢"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472417009_c7q30z_HQVFSWhbgAAy3h1.jpg",
     "sourceUrl": "https://x.com/hakua7746/status/2091153787423687070#reversed-0"
@@ -20970,8 +19861,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个复杂的提示词，旨在将参考照片转换为高细节的石墨与炭笔素描，同时保留人物特征。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Hania Ai"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472357704_csui35_HQUf_8CWQAAA5xA.jpg",
     "sourceUrl": "https://x.com/HaniaAi12/status/2091112802958372892"
@@ -20983,8 +19873,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的提示词，用于创作一张超写实的电影级肖像，展现位于奢华顶层公寓办公室中年轻 CEO 的风采，强调利落的剪裁与精致的氛围。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Aatif J"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472352618_32au5b_HQUfmrOWUAEpZtw.jpg",
     "sourceUrl": "https://x.com/aatif_j/status/2091112361855709315"
@@ -20996,8 +19885,7 @@ export const DRAWING_PROMPTS = [
     "description": "一段描述女性在充满常春藤和仙女灯的奇幻卧室中进行随性镜面自拍的提示词。",
     "tags": [
       "gpt-image-2",
-      "个人资料 / 头像",
-      "Aqsa"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472357829_7622em_HQUdemtaUAA9f4v.jpg",
     "sourceUrl": "https://x.com/Aqsahere_/status/2091110022889750959"
@@ -21009,8 +19897,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张电影质感的黄金时刻情侣野餐照片，背景为雾气缭绕的山景，配有手写道具，营造出亲密自然的旅行氛围。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Ty ⟪ λ ⇆ τ/Δφ→0 ⟫"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559685839_s4gg94_HQeB5S_a0AAmMbK.jpg",
     "sourceUrl": "https://x.com/PinkSilkPham/status/2091783391226318945#reversed-0"
@@ -21022,8 +19909,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一个为 GPT Image 2 设计的创意转换提示词，可将写实照片中的人物转换为极简风格的 2D 手绘贴纸，同时保留原始背景。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Alyar AI"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559646012_x6nuey_HQdsTcgXUAAbcld.jpg",
     "sourceUrl": "https://x.com/AiwithAlyar/status/2091759663393972673"
@@ -21035,8 +19921,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一套高端生活方式摄影提示词，用于拍摄女性在温馨时尚的家中怀抱小猫的竖版人像。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "ayzalnoor"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559614608_60x5iy_HQdngDTbIAAtiPQ.jpg",
     "sourceUrl": "https://x.com/ayzalnooor24521/status/2091754416009322636"
@@ -21048,8 +19933,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张温暖而富有情绪的电影感人像提示词，描绘了一位女性在舒适的夜间咖啡馆，采用 35mm 胶片拍摄，带有柔和的焦外成像效果。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Julia"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559615085_mjolqt_HQdQ8KkXoAELP_F.jpg",
     "sourceUrl": "https://x.com/juliaevee/status/2091729566033228281"
@@ -21061,8 +19945,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的提示词，用于生成一张写实的乡村场景照片，描绘一位女性在阳光明媚的田野中采摘柠檬。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Prompt アトリエ｜AI画像プロンプト"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559656254_nfu1kl_HQGs4Bzb0AApcOF.jpg",
     "sourceUrl": "https://x.com/CyberTotal2026/status/2091728453146194251"
@@ -21074,8 +19957,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张色彩鲜艳的日式动漫风格扭蛋反应海报，包含可自定义的角色、流行语、时代标签和稀有度徽章。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "のぞむ＊AIイラスト"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559681164_ezl570_HQaZwyKbMAAq3oJ.jpg",
     "sourceUrl": "https://x.com/ArtistaNozomu/status/2091724426312024401#reversed-0"
@@ -21087,8 +19969,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成日式生鸡蛋拌饭及简约早餐桌面道具的写实微距美食摄影提示词。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "みどり🐲Midori Tatsuta"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559671891_rx9ac1_HQcvI6qbsAApsvf.jpg",
     "sourceUrl": "https://x.com/midori_tatsuta/status/2091695385228284286#reversed-0"
@@ -21100,8 +19981,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于 GPT Image 2 的提示词，旨在生成一张写实、随性的手机风格照片，画面内容为一名东亚女性正带着猫在笔记本电脑前工作。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "𝗦𝗮𝗻𝗶𝗮"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559650975_4q1zko_HQajsSPaAAAdZ_6.jpg",
     "sourceUrl": "https://x.com/saniaspeaks_/status/2091539080647778596"
@@ -21113,8 +19993,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份丰富且优雅的提示词，用于生成以“雪梅香槟珍珠”妆容为核心的传统中式美人肖像，背景设定在古典梳妆台场景中。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "李岳"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559624435_bnid3j_HQaiXwIacAAhyD4.jpg",
     "sourceUrl": "https://x.com/liyue_ai/status/2091537633352798519"
@@ -21126,8 +20005,7 @@ export const DRAWING_PROMPTS = [
     "description": "创作一张两格日式表情包风格的图片，展示一只毛茸茸的仓鼠在进行讽刺性的新闻发布会道歉。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "🐹🐹"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559678107_u7hd0x_HQaca-0acAAvkiu.jpg",
     "sourceUrl": "https://x.com/hmst_yyyy/status/2091531069548093524#reversed-0"
@@ -21139,8 +20017,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅温馨的油画风格动漫肖像，描绘了一位身着传统蓝色连衣裙、梳着辫子的年轻女子，在木制水桶旁手持长勺。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Harf_Done"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559688010_2uyyjs_HQaBW8maUAAIy7S.jpg",
     "sourceUrl": "https://x.com/half_done_yet/status/2091501502678655268#reversed-0"
@@ -21152,8 +20029,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅温馨的竖版动漫插画，描绘了一位扎着辫子的年轻女性在阳光明媚的客厅里，一边用手机，一边抚摸着怀中熟睡的虎斑猫。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Harf_Done"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559688412_6cdmlj_HQaA-2ebwAEHtYG.jpg",
     "sourceUrl": "https://x.com/half_done_yet/status/2091501162092711994#reversed-0"
@@ -21165,8 +20041,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成超写实电影感人像的提示词，描绘了一位留着凌乱波波头的女性，展现出自然的质感和柔和的灯光，呈现出时尚杂志大片的视觉效果。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Eesha"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559618950_ds7p63_HQZ5C9KboAAP9Mk.jpg",
     "sourceUrl": "https://x.com/MissDelulu9/status/2091492191772483886"
@@ -21178,8 +20053,7 @@ export const DRAWING_PROMPTS = [
     "description": "此提示词可生成一张超现实主义编辑人像，画面包含一位带有虹彩玻璃条纹效果的女性与一只虎斑猫，背景采用现代复古拼贴风格。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "Mira"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559652911_o8a7ta_HQZsSx9X0AAlF3n.jpg",
     "sourceUrl": "https://x.com/miratechtool/status/2091478153625555334"
@@ -21191,8 +20065,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个精致的提示词，用于将上传的照片转换为高端竖版海报，特色在于上半部分为写实摄影，下半部分为风格化的 3D 纸艺微缩场景。",
     "tags": [
       "gpt-image-2",
-      "社交媒体帖子",
-      "小小东"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559623733_q72dx5_HQZj-47a4AA7pHd.jpg",
     "sourceUrl": "https://x.com/xiaoxiaodong01/status/2091470045973262409"
@@ -21204,8 +20077,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个富有想象力的提示词，用于创建一张基于“欧洲歌唱大赛从未存在过”这一世界观下的欧洲政治地图。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "Generated Atlas"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559616885_o5acfo_HQbjfB1WwAAQe2w.jpg",
     "sourceUrl": "https://x.com/GeneratedAtlas/status/2091609203588632680"
@@ -21217,8 +20089,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的故事板提示词，用于创建关于闪电的专业教育信息图，包含多个场景的视觉描述、摄像机角度和旁白说明。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "𝐌"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559624271_gzwxx2_HQZGmJLbIAAoDYq.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2091436714384613713"
@@ -21230,8 +20101,7 @@ export const DRAWING_PROMPTS = [
     "description": "一种图像转换提示词，可将照片转换为分屏海报，上方为原始照片，下方为结构蓝图或技术 X 光图。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "小小东"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559626612_1ld5nh_HQYN7N5aQAAE_Fe.jpg",
     "sourceUrl": "https://x.com/xiaoxiaodong01/status/2091374796517130282"
@@ -21243,8 +20113,7 @@ export const DRAWING_PROMPTS = [
     "description": "此提示词可创建一个 16:9 艺术风格的结构化角色介绍项目，利用参考图确保角色在设计中保持一致的身份特征。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "Kōda"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559658136_y9fyf7_HQW5TLYW0AABclP.jpg",
     "sourceUrl": "https://x.com/aimikoda/status/2091281357213254024"
@@ -21256,8 +20125,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于拍摄高度细节化蜜蜂的微距摄影提示词，包含半透明翅膀和清晰可见的花粉粒。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "AlexAImaginator"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472360375_024usr_HQVqPJiXAAA06Ni.jpg",
     "sourceUrl": "https://x.com/TraffAlex/status/2091195698410615155"
@@ -21269,8 +20137,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款高端垂直营销幻灯片，展示如何利用 GPT Image 2 和 HyperFrames 将社交媒体轮播图转化为短视频。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "DSIV"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386274357_w2aiqz_HQQ5JzkaMAAzBEV.jpg",
     "sourceUrl": "https://x.com/dsivmusic/status/2091055266985103567#reversed-0"
@@ -21282,8 +20149,7 @@ export const DRAWING_PROMPTS = [
     "description": "创建一个六格摄影棚对比图，展示两名全身抠图模特在棋盘格、白色和黑色背景下的效果，用于演示透明图像生成能力。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "Alessio Pomaro"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472418581_f31fvy_HQTibb_XYAAiKmL.jpg",
     "sourceUrl": "https://x.com/alepom/status/2091045117662568926#reversed-0"
@@ -21295,8 +20161,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张 X 风格的帖子截图，宣布支持透明图像功能，并配有一个位于棋盘格背景上的可爱可打印仙人掌贴纸。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "Harold W. Chen 左尔文"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472412375_cxef11_HQTY4iHbAAAmYkC.jpg",
     "sourceUrl": "https://x.com/Harold_W_Chen/status/2091034694431490261#reversed-0"
@@ -21308,8 +20173,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个精致的提示词，将上传的图像解构为等轴测水彩研究图，呈现学术或编辑研究海报的风格。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "小小东"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386227263_gzpalq_HQTHPTLaEAAxFAE.jpg",
     "sourceUrl": "https://x.com/xiaoxiaodong01/status/2091032515318521971"
@@ -21321,8 +20185,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个复杂的设计提示词，将等轴测 3D 重构与文艺复兴风格的技术草图相结合，呈现出科学研究的美学质感。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "小小东"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472365699_so2yzb_HQS6jpxa4AAlfjB.jpg",
     "sourceUrl": "https://x.com/xiaoxiaodong01/status/2091001986519068891"
@@ -21334,8 +20197,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张高端深色编辑风格海报，展示如何利用 GPT Image 2 和 HyperFrames 将密集的信息图转化为动画讲解视频。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "DSIV"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472402873_bfh7x4_HQQ5C39bgAAKpLR.jpg",
     "sourceUrl": "https://x.com/dsivmusic/status/2090994617441288586#reversed-0"
@@ -21347,8 +20209,7 @@ export const DRAWING_PROMPTS = [
     "description": "将 OpenAI 信号检测结果为负面的截图转换为正面检测结果的 UI，同时保留原始布局和嵌入图像。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "ムーÅ"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386291401_yqiele_HQSEKXkbEAA1-kh.jpg",
     "sourceUrl": "https://x.com/_Nyoi_/status/2090941444479696994#reversed-1"
@@ -21360,8 +20221,7 @@ export const DRAWING_PROMPTS = [
     "description": "两个提示词：一个用于雷暴的扁平化设计剖面图，另一个用于黄金时刻光影下的写实风暴摄影。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "AlexAImaginator"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386216818_bw85i8_HQRaBE8XMAADWQH.jpg",
     "sourceUrl": "https://x.com/TraffAlex/status/2090895540745572706"
@@ -21373,8 +20233,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于 gpt-image-2 的高端时装设计研究提示词，旨在生成一张现代旗袍的纯白背景简洁信息图。包含全身模特展示，以及针对领口、盘扣和面料纹理等七个详细拆解模块，并配有点线标注。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "李岳"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386237294_d2fgbv_HQQZleRboAEPOzN.jpg",
     "sourceUrl": "https://x.com/liyue_ai/status/2090825188107833774"
@@ -21386,8 +20245,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张深色模式的 ChatGPT 截图，展示一张带有透明背景、酱汁飞溅的逼真披萨切片，适用于演示 Alpha 通道图像生成。",
     "tags": [
       "gpt-image-2",
-      "信息图 / 教育视觉图",
-      "とらの"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386281144_mgsgc4_HQORxwybIAA5XdA.png",
     "sourceUrl": "https://x.com/TlanoAI/status/2090677011341836296#reversed-0"
@@ -21399,8 +20257,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张霓虹合成波风格的迈阿密夜生活音乐海报，包含跳舞剪影、城市天际线双重曝光以及宣传曲目文字。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "エル💙way"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559679617_yh2m76_HP-e7bpaAAImQDR.jpg",
     "sourceUrl": "https://x.com/ellewayAI/status/2091492145685205064#reversed-0"
@@ -21412,8 +20269,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款大胆的正方形播放列表封面，特色元素包括复古丝网印刷海盗船长、骷髅旗、红月亮以及巨大的放克风格标题排版。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Sawchang"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559675556_2d5wum_HQYBZ4EaQAAVI_D.jpg",
     "sourceUrl": "https://x.com/sawchang_dsm/status/2091364582719893616#reversed-1"
@@ -21425,8 +20281,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款适用于科技评测的醒目 YouTube 缩略图模板，包含耳机特写人像、大号疑问文本及产品标签。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "BLCNYY"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386272143_4l5azu_HQRb6sXWIAA7uh3.jpg",
     "sourceUrl": "https://x.com/BLCNYY/status/2090897198351368575#reversed-1"
@@ -21438,8 +20293,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于生成具有特定光影和镜头特性的专业电影级动作大片截图的高细节提示词。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Luber"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386246236_1925oj_HQQyH6EasAALtWB.jpg",
     "sourceUrl": "https://x.com/Luber_AI/status/2090851717390926032"
@@ -21451,8 +20305,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张宽幅电影感动漫教室主视觉图，包含三位校园角色、日式宣传排版以及恋爱喜剧风格的角色注释。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "ヤノ"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787299942773_6mzcvx_HQHKuJcX0AA-4Jv.jpg",
     "sourceUrl": "https://x.com/Ryuki_Yano/status/2090380808754434220#reversed-0"
@@ -21464,8 +20317,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张电影感十足的动画教室宣传主视觉图，包含三位校园恋爱角色，配有日文标题图形和手写风格注释。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "jun"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787299954370_ustsmx_HQHKuJcX0AA-4Jv.jpg",
     "sourceUrl": "https://x.com/jun1228909/status/2090340154137551340#reversed-0"
@@ -21477,8 +20329,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张宽屏动画校园恋爱喜剧主视觉图，包含三名学生、教室道具、海报、Logo 文字以及手写角色注释。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "寝ろ"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787299939160_trj8qh_HQHKuJcX0AA-4Jv.jpg",
     "sourceUrl": "https://x.com/XRay96/status/2090303915967517093#reversed-0"
@@ -21490,8 +20341,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张充满电影感的校园动画主视觉图，包含三名学生、俏皮的日文标题，以及柔和的校园生活氛围。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "新清士@AIコンテンツ開発者"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787299941142_2p6svq_HQHKuJcX0AA-4Jv.jpg",
     "sourceUrl": "https://x.com/kiyoshi_shin/status/2090292842992488516#reversed-0"
@@ -21503,8 +20353,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张电影质感的动画校园恋爱主视觉图，包含三名学生、课桌道具以及日文宣传文字叠加。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "naisute"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787299949588_5i8rfg_HQHKuJcX0AA-4Jv.jpg",
     "sourceUrl": "https://x.com/nAI_station/status/2090276271297286271#reversed-0"
@@ -21516,8 +20365,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张宽屏动漫校园宣传场景，包含三名学生、日文标题排版以及用于恋爱喜剧主视觉图的角色注释叠加。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Mirochill"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787299936238_0xtp6v_HQHKuJcX0AA-4Jv.jpg",
     "sourceUrl": "https://x.com/mirochill/status/2090181179978944551#reversed-0"
@@ -21529,8 +20377,7 @@ export const DRAWING_PROMPTS = [
     "description": "一段关于巴黎清晨的电影感生活方式描述，讲述了一位女性走进咖啡馆并享用咖啡和牛角面包的过程。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Noor"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787213765813_rypvep_HQDsocFa4AAIYAS.jpg",
     "sourceUrl": "https://x.com/noorlewisx/status/2089930417420087621"
@@ -21542,8 +20389,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张色彩鲜艳的动漫偶像风格宣传缩略图，适用于 Skywork Video 的音乐视频教程或公告。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "萌奈のおすそわけ♥️AI動画クリエイター🩷AI & Web3 KOL🧡💛💚"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787127664752_bx5gcr_HP_5bbXaMAEmYDf.jpg",
     "sourceUrl": "https://x.com/xc5_/status/2089663052287476112#reversed-0"
@@ -21555,8 +20401,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张日本女性主播在专属直播间内对着 ASMR 麦克风说话的图像。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Cheer Cheung"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787044657410_gg2wvm_HP6knoEa0AAhhdm.jpg",
     "sourceUrl": "https://x.com/learnwithcheer/status/2089288342630445230"
@@ -21568,8 +20413,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张日式课程风格的缩略图，画面中有一位微笑的女性，并配有文字说明如何在 GPT Image 2 中使用参考图来保持角色一致性。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "千田結穂（せんだゆいほ）"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786954606372_11w537_HP1o-qmbsAEz2Jv.jpg",
     "sourceUrl": "https://x.com/jins2001jp/status/2088941289932722680#reversed-0"
@@ -21581,8 +20425,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个柔和的可爱动漫肖像提示词，用于创作拥有粉色双马尾、睡着的小猫和星星装饰的柔和色调 Q 版少女。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "河合聖人🩷"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786954604621_p9pklu_HP0f6adWUAAVuc1.jpg",
     "sourceUrl": "https://x.com/LorraineTu7cq0/status/2088860905215824302#reversed-0"
@@ -21594,8 +20437,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个受 Ralph McQuarrie 概念艺术启发的电影感景观提示词，展现了一座部分埋在风暴肆虐的火山世界山脊中的粗野主义帝国建筑。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Yeti Images"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867777227_3ibag6_HPzbLCGXcAACc7x.jpg",
     "sourceUrl": "https://x.com/Yeti_Images/status/2088785311618740708"
@@ -21607,8 +20449,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个史诗般的电影感奇幻提示词，描述了一位艺术家通过神奇的画布，将阴雨连绵的世界转变为金色黄昏的场景。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Nagarjuna Creates"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867769552_40rm7w_HPw2gBdbAAEMvnr.jpg",
     "sourceUrl": "https://x.com/nagarjuncreates/status/2088604255196434616"
@@ -21620,8 +20461,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个垂直的 3D 电影感卡通森林地面场景，画面中一个焦虑的微型男人被困在蜘蛛网中，旁边是一只巨大的蚂蚁，上方叠加了游戏记分牌。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Arzoo Ai"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867806335_ii43bz_HPwgC4bbgAE_0XF.jpg",
     "sourceUrl": "https://x.com/Arzoo12sh/status/2088581507560669207#reversed-0"
@@ -21633,8 +20473,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个忧郁的体育摄影提示词，描绘了一只穿着德国国家队球衣的橘猫，捕捉了比赛失利后感人至深的瞬间。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Compound Learning - Tech | Science"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867774073_54lsfx_HPwhzUBakAA0RHV.jpg",
     "sourceUrl": "https://x.com/SheBuildsAI_/status/2088581495741165600"
@@ -21646,8 +20485,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于创作电影级超现实奇幻肖像的综合提示词，描绘了一位女性倚靠在云端上方饱经风霜的悬浮窗前，重点在于保持面部一致性与日落光影效果。",
     "tags": [
       "gpt-image-2",
-      "YouTube 缩略图",
-      "Laraib Fatima‎"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867772425_gnvdtb_HPu-sw8aQAAUREL.jpg",
     "sourceUrl": "https://x.com/AiwithLariab/status/2088472585768210635"
@@ -21659,8 +20497,7 @@ export const DRAWING_PROMPTS = [
     "description": "为短片生成垂直布局的动画概念项目，在一张图纸上定义角色、场景及视觉开发风格。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "井上＠YouTubeオタクコンサル育成する人"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559660322_k78onu_HQd4RvAb0AAQgD2.jpg",
     "sourceUrl": "https://x.com/YouTube_AIno/status/2091773076375498942"
@@ -21672,8 +20509,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个旨在结合两张不同参考图像的美学风格，并在特定场景中创作新角色的提示词。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "That1AiGuy"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559616634_d1we6u_HQdZOhKXQAAHZ2f.jpg",
     "sourceUrl": "https://x.com/That1AiGuy/status/2091738661926625758"
@@ -21685,8 +20521,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅垂直的新古典主义奇幻三联画海报，展现了大理石鹰、海崖、帆船以及海边忧郁的女神形象。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "Dreameryanyan"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559688657_nzdu99_HQcbWV1aUAA3c4w.jpg",
     "sourceUrl": "https://x.com/yanliudreamer/status/2091673644640686201#reversed-0"
@@ -21698,8 +20533,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张宽幅动漫角色参考图，包含五种一致的视角，展示一位身着华丽蓝白花卉和服的年轻女性。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "みちゃ(micha)"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559677270_1s50tg_HQa5USza4AAjRms.jpg",
     "sourceUrl": "https://x.com/micha_ai_art/status/2091563445246480426#reversed-0"
@@ -21711,8 +20545,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于创作华丽仙侠女帝、守护龙、仙鹤、云雾和彼岸花的竖版暗黑奇幻仙侠插画提示词。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "𝟡𝟜 ᴾᴸᴬʸᶠᴼᴿᴳᴱ"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559677002_6h0ltj_HQasnPaaoAA9C7Z.jpg",
     "sourceUrl": "https://x.com/94vanAI/status/2091548888956317731#reversed-0"
@@ -21724,8 +20557,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张高对比度的黑白漫画分镜，画面中是一只压力山大的仓鼠，配有日文对话气泡，非常适合用作搞笑表情包。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "🐹🐹"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559681118_89k3gx_HQaZFbFaIAAfJUT.jpg",
     "sourceUrl": "https://x.com/hmst_yyyy/status/2091527401402736844#reversed-0"
@@ -21737,8 +20569,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个概念性提示词，描绘了警视厅机器人部队应对一台故障外国机器人的场景。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "カーブミラー"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559641136_tcps2t_HQZ9fiVbUAAnJ-I.jpg",
     "sourceUrl": "https://x.com/kabumira862571/status/2091497067818754551"
@@ -21750,8 +20581,7 @@ export const DRAWING_PROMPTS = [
     "description": "为高端饮料广告创建 8 场景的高级项目，强调电影级布光、微距液体摄影和专业展示效果。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "𝐌"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472347233_r35rwl_HQYa9tIbUAAKnxi.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2091388744599486491"
@@ -21763,8 +20593,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张精致的动漫机能风角色设计图，展示一位拥有姿势、表情、剪影及细节研究的音波赛博流行偶像。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "PixieVerse"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559689754_bmwoe3_HQX-lCGaUAAqocZ.jpg",
     "sourceUrl": "https://x.com/itsPixieVerse/status/2091360186204352728#reversed-0"
@@ -21776,8 +20605,7 @@ export const DRAWING_PROMPTS = [
     "description": "一页竖版日式漫画，描绘了一只持怀疑态度的仓鼠尝试冰奶茶后，被其美味深深震撼的场景。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "🐹🐹"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472401411_t8tqls_HQX0CunbwAAmS3Q.jpg",
     "sourceUrl": "https://x.com/hmst_yyyy/status/2091345934752022973#reversed-0"
@@ -21789,8 +20617,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张包含 8 个画面的写实风格年轻女性身份参考图，用于在生活化视觉内容中保持角色一致性。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "Elsa Ai"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559667990_x8opiw_HQXzfieawAAxZr7.jpg",
     "sourceUrl": "https://x.com/ElsaSofia__AI/status/2091345498909319528#reversed-0"
@@ -21802,8 +20629,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅明亮可爱的动漫奇幻场景，描绘了一位开朗的松鼠女孩骑着粉色巨龙穿梭在旋转的蓝天之中。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "そらいろパキラ"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472415469_9bos5f_HQWkH1OaoAAgadg.jpg",
     "sourceUrl": "https://x.com/SkyBluePachira/status/2091318753095274941#reversed-0"
@@ -21815,8 +20641,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张电影质感的动漫群像海报，展示了五位都市角色围绕着一辆黑色摩托车，背景是霓虹闪烁的东京十字路口。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "DRAGON@AIイラスト"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472415424_ay13vj_HQXOptvagAAT0Jc.jpg",
     "sourceUrl": "https://x.com/DRAGON08636282/status/2091304823148990552#reversed-0"
@@ -21828,8 +20653,7 @@ export const DRAWING_PROMPTS = [
     "description": "以参考动漫场景为基础，将主角扩展为全身姿态，并增加一名次要角色，打造视觉小说风格的游戏素材。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "🍺 イケハヤ@「月蝕綺譚」開発"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559674451_ny6rwf_HQXA2CoagAE2TEJ.jpg",
     "sourceUrl": "https://x.com/IHayato/status/2091289956472005042#reversed-0"
@@ -21841,8 +20665,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个充满电影质感的暗黑奇幻动漫风格墙面场景，三张巨大的悬赏通缉令被失踪启事包围，周围缠绕着散发诡异光芒的树根。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "Valdris Anime"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559687531_nnfyo2_HQW-r6kXkAAk_fE.jpg",
     "sourceUrl": "https://x.com/Valdris_Anime/status/2091287648128147703#reversed-0"
@@ -21854,8 +20677,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个电影感竖屏提示词，用于生成身穿破损深红色连帽斗篷、带有发光金色盔甲细节的暗黑蜘蛛侠风格义警。",
     "tags": [
       "gpt-image-2",
-      "漫画 / 故事板",
-      "LANDCÄSTER.EXE"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472411984_btaoti_HQW7IS6X0AAtebY.jpg",
     "sourceUrl": "https://x.com/LANDCASTER_92/status/2091283388124594414#reversed-0"
@@ -21867,8 +20689,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一个用于生成大胆前卫海报的提示词，旨在让超大字体元素与场景中的主体产生物理交互，而非仅仅作为背景存在。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Larus Canus"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559658299_iff7br_HQd0PqBWEAAvK4u.jpg",
     "sourceUrl": "https://x.com/MrLarus/status/2091768903831572924"
@@ -21880,8 +20701,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个复杂的专业提示词，用于生成一系列风格统一、手工质感的 3D 纸艺与黏土旅行纪念牌，涵盖全球各地。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Saul Goodman"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559622106_tany7o_HQdpHs8bcAApzZq.jpg",
     "sourceUrl": "https://x.com/Goodmanprotocol/status/2091756190183415857"
@@ -21893,8 +20713,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个充满未来感的霓虹风格 SaaS 英雄横幅，用于推广带有 TOAPIs 品牌标识的 GPT-Image-2 API，并展示发光的图像生成工作流视觉效果。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "ToAPIs"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559671325_bfry34_HQdmsbzaMAA5u5m.jpg",
     "sourceUrl": "https://x.com/toapisai/status/2091753469451641027#reversed-0"
@@ -21906,8 +20725,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张高端 Vogue 风格杂志封面，展现优雅女性的极简造型与专业影棚灯光效果。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Aijaz"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559616682_knzzys_HQdLe9raoAA0jjE.jpg",
     "sourceUrl": "https://x.com/iamsofiaijaz/status/2091723554287145464"
@@ -21919,8 +20737,7 @@ export const DRAWING_PROMPTS = [
     "description": "为角色设计或图像一致性需求，创建一张日本女高中生身着水手服的四视图摄影级工作室参考图。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "内田勉 個人でLLM開発中"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559678524_o1szlk_HQdAlPobAAANv_c.jpg",
     "sourceUrl": "https://x.com/sidodtv/status/2091711567180263564#reversed-0"
@@ -21932,8 +20749,7 @@ export const DRAWING_PROMPTS = [
     "description": "一套用于创作任何城市精致旅行艺术作品的综合模板，结合了建筑元素、自然景观和优雅的排版，呈现出画廊级的艺术美感。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Mahnoor Fatima"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559653080_1ul8es_HQc-F_qasAATWVA.jpg",
     "sourceUrl": "https://x.com/MahnoorAi12/status/2091711340666568868"
@@ -21945,8 +20761,7 @@ export const DRAWING_PROMPTS = [
     "description": "将红色尖刺面具参考图转化为包含七顶头盔和一只黑猫的写实风格废弃柜静物场景。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "ibexdream"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559685454_f0k4fr_HQbevNtXgAAD1Y0.jpg",
     "sourceUrl": "https://x.com/ibexdream/status/2091606385033126175#reversed-1"
@@ -21958,8 +20773,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张居中的写实风格奢华香水瓶素材，采用深色摄影棚质感，适用于可重复使用的产品营销视觉内容。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "TheFrenchAIGuy"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559667406_gbicyd_HQaqOJqXgAAvLBd.jpg",
     "sourceUrl": "https://x.com/TheFrenchAIGuy/status/2091546242157305862#reversed-0"
@@ -21971,8 +20785,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张置于简洁圆角视频风格边框内、以纯黑背景为衬托的现代住宅大厦高端写实 CGI 静态图。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Alina Ai"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559667425_vkx8ch_HQZjTv1a4AAKSzq.jpg",
     "sourceUrl": "https://x.com/Alina_with_Ai/status/2091469283901784073#reversed-0"
@@ -21984,8 +20797,7 @@ export const DRAWING_PROMPTS = [
     "description": "捕捉一位衣着考究的男士在现代建筑外进入黑色豪华轿车的写实电影感瞬间。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "AsmatAi"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472363857_vwlekr_HQYdjMabAAAHQ62.jpg",
     "sourceUrl": "https://x.com/AsmatAi786/status/2091391580707885380"
@@ -21997,8 +20809,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款瑞士现代主义风格的提示词，用于创作极简风格的汽车海报，包含汽车侧影、速度条纹以及象牙色背景上的极简排版。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Zayan"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559618960_udb7s7_HQYakh2boAACEpc.jpg",
     "sourceUrl": "https://x.com/HustleXR/status/2091388301328666776"
@@ -22010,8 +20821,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张逼真的摄影级工作室渲染图，展示了五个刻有浮雕的银色 Codex 代币，适用于高端加密货币风格的产品视觉呈现。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Sherlock"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559682598_w1c191_HQXvKBCakAA3Se9.jpg",
     "sourceUrl": "https://x.com/thesherlocker/status/2091340569679470947#reversed-0"
@@ -22023,8 +20833,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成 8K 全身时尚人像的精准提示词，旨在保持主体身份一致的同时，指定服装和环境细节。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "Mr. Tariq"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472348534_dk7urn_HQXsdPqaMAAlRX3.jpg",
     "sourceUrl": "https://x.com/AiWithTariq/status/2091337610941866236"
@@ -22036,8 +20845,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个治愈系设计提示词，可将照片转化为具有圆润模块化造型和柔和色彩的 3D 等轴测玩具积木雕塑。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "小小东"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559665140_drz9ue_HQVbMbMaQAA7Y7M.jpg",
     "sourceUrl": "https://x.com/xiaoxiaodong01/status/2091180646626627732"
@@ -22049,8 +20857,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个电影级产品风格的提示词，用于生成悬浮在微缩日落景观模型之上的发光机甲龙猫收藏级手办。",
     "tags": [
       "gpt-image-2",
-      "产品营销",
-      "カーブミラー"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472408527_aljjgt_HQVROZJa0AAiztV.jpg",
     "sourceUrl": "https://x.com/kabumira862571/status/2091166918866845854#reversed-0"
@@ -22062,8 +20869,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成一张简洁的多角度摄影棚风格参考图，展示一把虚构的黑色战术卡宾枪，适用于视觉概念艺术或目录式展示。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "ゴードン・シャムウェイ＠AIスロップおじさん"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787472407252_jxzaso_HQVQ8MOaoAAPdcK.jpg",
     "sourceUrl": "https://x.com/Author_COTD/status/2091166703434805296#reversed-0"
@@ -22075,8 +20881,7 @@ export const DRAWING_PROMPTS = [
     "description": "为带有极简品牌标识和银色金属质感的磨砂玻璃护肤品瓶身打造的高端产品摄影提示词。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "𝐒𝐊_𝐀𝐈"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386216345_ikhibg_HQQCzBIWwAAgwC5.jpg",
     "sourceUrl": "https://x.com/Its_Saad_kkk/status/2090799318886179047"
@@ -22088,8 +20893,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成日式炸猪排配卷心菜丝及浓郁深色酱汁的写实特写提示词。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "小泉勝志郎"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787386285360_6b4hpv_HQP59-mb0AAlY07.jpg",
     "sourceUrl": "https://x.com/koi_zoom1/status/2090789500230537702#reversed-0"
@@ -22101,8 +20905,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张照片级真实的高端厨电场景图，展示了一台在石质台面上散发着温暖光芒的现代微波炉。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "Deepanshu Sharma"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787213826998_symoib_HQGc6kIbwAAl0wk.jpg",
     "sourceUrl": "https://x.com/deepanshusharmx/status/2090135314346262623#reversed-0"
@@ -22114,8 +20917,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个虚构黄油品牌的编辑类食品广告提示词，侧重于雕塑般的质感、强烈的垂直分割构图以及高端桌面摄影的真实感。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "Loriel.AI"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787213820198_z6fcuk_HQE4irOa4AATlzx.jpg",
     "sourceUrl": "https://x.com/ou_zhen599/status/2090013891887874431"
@@ -22127,8 +20929,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张用于可食用品牌视觉效果的半透明鳄鱼形状软糖的高光 3D 产品渲染图。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "Ilia Kitchenko"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787127681236_55etp2_HP-isv1bYAA2QSP.jpg",
     "sourceUrl": "https://x.com/IliaKitchenko/status/2089567649688965354#reversed-0"
@@ -22140,8 +20941,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张用于餐厅或快餐广告的商业摄影棚食品照片，展示了堆叠的金黄鸡块及蘸酱。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "𝐌"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787127690572_13fyii_HP-CeTHawAAhxMI.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2089532222663700499#reversed-0"
@@ -22153,8 +20953,7 @@ export const DRAWING_PROMPTS = [
     "description": "一套复杂的时尚设计提示词，用于打造叠穿造型，包含一件白色蕾丝胸衣和一件天蓝色细条纹衬衫。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "MoodLock｜AI画像の惜しいを直す"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787127643096_hcaw4w_HP9gyO1awAAxXp7.jpg",
     "sourceUrl": "https://x.com/MoodLock_JP/status/2089495174292668528"
@@ -22166,8 +20965,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个结构化的提示词，用于生成包含显卡、散热风扇和极简徽标的时尚四格产品品牌拼贴画。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "احمد الجعيد"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787044667092_t9x94w_HP8I__lXQAAzZlb.jpg",
     "sourceUrl": "https://x.com/Aljuaidx/status/2089398657225224316#reversed-1"
@@ -22179,8 +20977,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一个复杂且精确的穿搭提示词，旨在利用 GPT Image 2 生成包含蕾丝束腰、裹身长裙和皮靴的详细造型。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "MoodLock｜AI画像の惜しいを直す"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787044633076_m11rfo_HP6mLQJaQAABARm.jpg",
     "sourceUrl": "https://x.com/MoodLock_JP/status/2089292255932674269"
@@ -22192,8 +20989,7 @@ export const DRAWING_PROMPTS = [
     "description": "一套灵感源自宋代美学的超写实珐琅徽章，将传统纹样与现代文创设计巧妙融合。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "DeepBlue深藍"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867804217_m3hnbf_HPz7YklaUAA5QO_.jpg",
     "sourceUrl": "https://x.com/DeepBlueAIX/status/2088820737876566230"
@@ -22205,8 +21001,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张餐厅级写实美食摄影图，展示了漆器便当盒中油光锃亮的鳗鱼饭，适用于菜单或宣传用途。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "いにしえ@AI Director / Creator / Engineer｜Will Oldgram"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867813200_f60d29_HPwmbgsbUAAiarj.jpg",
     "sourceUrl": "https://x.com/old_pgmrs_will/status/2088587919544262884#reversed-0"
@@ -22218,8 +21013,7 @@ export const DRAWING_PROMPTS = [
     "description": "为食品广告或菜单图像生成一张逼真的俯视视角意大利辣香肠披萨产品摄影图。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "𝐌"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867830666_e1lihp_HPwN7fkboAAhgyV.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2088559657899962646#reversed-0"
@@ -22231,8 +21025,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个精致的摄影棚食品摄影提示词，用于生成在纯白背景下逼真的香脆鸡肉三明治主图。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "𝐌"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786867831771_epmknr_HPvqCEPbUAADRhK.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2088520195333566877#reversed-0"
@@ -22244,8 +21037,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款电影级极简主义产品摄影提示词，旨在展示具有高端工业设计的透明无线耳机与粗犷岩石形成的对比。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "Athrix ☄️"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786781736323_1hoqmb_HPrrQyebwAATXH-.jpg",
     "sourceUrl": "https://x.com/athrix_codes/status/2088244760662458386#reversed-0"
@@ -22257,8 +21049,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张高端超写实微距产品摄影图，展示了覆盖着水珠的未来感透明耳机，适用于科技广告视觉效果。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "Athrix ☄️"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786781736126_qold2y_HPrrKeMakAAf-at.jpg",
     "sourceUrl": "https://x.com/athrix_codes/status/2088244757797687413#reversed-0"
@@ -22270,8 +21061,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的产品设计提示词，旨在将 Logo 转化为具有未来感的能量饮料品牌项目，呈现逼真的质感与光影效果。",
     "tags": [
       "gpt-image-2",
-      "电商主图",
-      "lovimg_com"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786695900647_2v304s_HPqpeKFa0AABM8R.jpg",
     "sourceUrl": "https://x.com/lovimg_com/status/2088167722605756541"
@@ -22283,8 +21073,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于未来感赛博格士兵的复杂提示词，强调重工业细节、机械模块以及带有冷色调科幻风格的戏剧性光影。",
     "tags": [
       "gpt-image-2",
-      "游戏素材",
-      "auqib"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559653920_szlll6_HQdZV0ybAAAjQKS.jpg",
     "sourceUrl": "https://x.com/auqibhabib/status/2091738873084961141"
@@ -22296,8 +21085,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于创作未来感女性战术士兵特写肖像的详细提示词，重点展示高科技装备、电影级光效以及具有绘画感的动漫艺术风格。",
     "tags": [
       "gpt-image-2",
-      "游戏素材",
-      "auqib"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787559652484_cgvwm8_HQbDeS1b0AAjvUI.jpg",
     "sourceUrl": "https://x.com/auqibhabib/status/2091574017115488685"
@@ -22417,8 +21205,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于佩戴透明眼镜、身穿街头风廓形卫衣的年轻女性的高细节摄影棚人像提示词。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Feyber | AI Creator"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552789771_xvvy4s_HQJk2h7agAAhLZw.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2091767462714884317"
@@ -22430,8 +21217,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张写实风格的竖版肖像，展示了一位身穿米色头巾和黑色上衣的东南亚女性，背景为柔和的灰色墙面。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Feyber | AI Creator"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552785582_xr3gth_HQJjX9QaUAAL9X7.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2091616465212330374"
@@ -22443,8 +21229,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个梦幻般的特写人像提示词，展现了一位留着多色调挑染长发的年轻女性，在午后温暖的窗边阳光下拍摄的效果。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Feyber | AI Creator"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552787709_3cyu90_HQEllazasAAgFM-.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2091435275108979088"
@@ -22456,8 +21241,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的提示词，用于生成一张写实风格的镜面自拍，展示一位身穿蓝黑波点套装的女性在现代家庭工作室中的场景。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "J⭕DIE"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552785019_rlg8fy_HQYAXVfb0AA7Jp2.jpg",
     "sourceUrl": "https://x.com/Jodie_Noraa/status/2091359555796205925"
@@ -22469,8 +21253,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于身穿传统印尼童子军（Pramuka）制服的东南亚年轻女孩的写实自拍提示词，包含细腻的服装细节和自然的卧室光影。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Feyber | AI Creator"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466537811_7dz3pn_HQEhq2XakAA1kPU.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2091223879658184777"
@@ -22482,8 +21265,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款用于年轻男性的戏剧性黑白影棚肖像提示词，侧重于高对比度光影和专业摄影风格。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Aatif J"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466538021_lydbtk_HQUgxs4WsAAiCwi.jpg",
     "sourceUrl": "https://x.com/aatif_j/status/2091113656532516904"
@@ -22495,8 +21277,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成时尚女性身着红色罗纹毛衣、手持松枝花束的描述性提示词，展现柔和光影与精致的节日氛围。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "dreamy digital arts"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466532934_jcaflg_HQOW3ldakAAZG_u.jpg",
     "sourceUrl": "https://x.com/dreamydigiarts/status/2091020036123312343"
@@ -22508,8 +21289,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成高对比度黑白影棚肖像的提示词，强调锐利的细节以及充满电影质感的氛围。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Duet | AI"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379853747_a6d74y_HQTIMvjacAA1fCe.jpg",
     "sourceUrl": "https://x.com/Sheldon056/status/2091016262646464620"
@@ -22521,8 +21301,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个照片级写实的自拍提示词，展现休闲美学、柔和光影以及潮流复古车辆背景。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Feyber | AI Creator"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466534325_c83xua_HQD3IFJagAAJ2cU.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2091012488963752114"
@@ -22534,8 +21313,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个专注于保持一名身穿黑色库尔塔睡衣（kurta pajama）的年轻男子在夜间户外用餐区就座时，其面部特征完全一致的提示词。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Dilshad Hussain"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466535713_8ry479_HQSd5hEaMAAH0qQ.jpg",
     "sourceUrl": "https://x.com/DilshadAI1/status/2090969752000971046"
@@ -22547,8 +21325,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于身着运动装的年轻女性的特写肖像提示词，采用室内光线和浅景深效果。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Feyber | AI Creator"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379857716_1mfytv_HQD1C9-bwAA7ycQ.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2090861495592657327"
@@ -22560,8 +21337,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张在日落时分于豪华游艇上放松的人物电影级肖像，旨在通过参考照片实现面部精准还原。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Alex Prompts"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379851823_89pbg2_HQQXSBeWoAAVWkj.jpg",
     "sourceUrl": "https://x.com/AlexPromptsAI/status/2090821930978881741"
@@ -22573,8 +21349,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个引人注目的写实肖像提示词，描绘了一位妆容精致、佩戴钻石首饰和皮革手套的女性。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "dreamy digital arts"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379854783_93ioba_HQJ2cBEa8AAveEE.jpg",
     "sourceUrl": "https://x.com/dreamydigiarts/status/2090755812822045113"
@@ -22586,8 +21361,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个编辑风格的生活方式摄影提示词，用于拍摄一位在柔和自然光下、窗边的铜红色头发女性的深思肖像。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "J⭕DIE"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293540164_et246n_HQOQyl5bQAA_--T.jpg",
     "sourceUrl": "https://x.com/Jodie_Noraa/status/2090673926628417705"
@@ -22599,8 +21373,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于东南亚女性身穿深绿色针织上衣并佩戴头巾的特写自拍提示词，呈现逼真的黄金时刻光影效果。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Feyber | AI Creator"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293552813_0ec3ay_HP_VXTibUAA6qRt.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2090529304514015335"
@@ -22612,8 +21385,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的提示词，用于生成 Madison Beer 扮演 Boa Hancock 的超写实 Cosplay 人像，场景设定在细节精致的木质海盗船船舱内。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "KeorUnreal"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293541482_yc3gvl_HQKgw6zXUAAbhGz.jpg",
     "sourceUrl": "https://x.com/KeorUnreal/status/2090409966284816559"
@@ -22625,8 +21397,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成一致且逼真的公园场景女性肖像的高度具体提示词，包含详细的身份和环境控制。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "dreamy digital arts"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293542854_n5v8zb_HQESqimbEAAH3q2.jpg",
     "sourceUrl": "https://x.com/dreamydigiarts/status/2090393407646580915"
@@ -22638,8 +21409,7 @@ export const DRAWING_PROMPTS = [
     "description": "一套以热带雨林为背景的电影感生存主题肖像提示词，旨在保持角色身份的一致性。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "Ayla | AI & Tech"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293550704_as7bni_HQJ_5sCa0AArLFR.jpg",
     "sourceUrl": "https://x.com/AylaTechAI/status/2090374480623542779"
@@ -22651,8 +21421,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于生成高质量智能手机镜面自拍人像的综合提示词，展示了一位身着饰有羽毛边饰的优雅皇家蓝缎面礼服的女性，置身于奢华的室内环境中。",
     "tags": [
       "nano-banana-pro",
-      "个人资料 / 头像",
-      "J⭕DIE"
+      "个人资料 / 头像"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293541262_dgxw87_HQI-0OvWoAAPVXp.jpg",
     "sourceUrl": "https://x.com/Jodie_Noraa/status/2090302329530581268"
@@ -22664,8 +21433,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个详细的日文提示，用于生成一个 16:9 的商业书籍风格广告，其中包含特定书籍图片和日文文案要点。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "KAWAI"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1763885539326_yao7in_G6WBYReawAAcp2x.jpg",
     "sourceUrl": "https://x.com/kawai_design/status/1992142466255114727"
@@ -22677,8 +21445,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高度精细的电影级肖像提示词，描绘了一位年轻女性向观众伸手，周围环绕着鲜艳的流体飞溅和逼真的光影效果。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "Ayushi Srivastava"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552783358_5wll3b_HQdbMO1aMAAy6DN.jpg",
     "sourceUrl": "https://x.com/punkhuri1/status/2091740825734803621"
@@ -22690,8 +21457,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一个为 Nano Banana Pro 设计的角色一致性提示词，通过上传参考照片，生成包含镜面自拍和凉亭场景的特定图像。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "Dilshad Hussain"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552795538_znoqax_HQcyrLrb0AEAKos.jpg",
     "sourceUrl": "https://x.com/DilshadAI1/status/2091696404741931204"
@@ -22703,8 +21469,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张高端生活方式时尚人像提示词，描绘了一位身穿紫色印花连衣裙的女性在日落时分郁郁葱葱的林间花园中。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "J⭕DIE"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552786989_xrfu0y_HQblso9awAAUk2o.jpg",
     "sourceUrl": "https://x.com/Jodie_Noraa/status/2091611759207764138"
@@ -22716,8 +21481,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的超写实提示词，描绘一对情侣在深夜温馨客厅里一起玩电子游戏的场景。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "Arron2006"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552791521_npfkk4_HQbPHFdaUAAdIrX.jpg",
     "sourceUrl": "https://x.com/ColorWolf2006/status/2091586811739230343"
@@ -22729,8 +21493,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张休闲球迷风格的自拍提示词，主角是一位身穿巴黎圣日耳曼球衣和毛绒泰迪熊外套的女性。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "Feyber | AI Creator"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552788285_z4v6wm_HQJi6RfaUAAkJ-H.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2091586269318975638"
@@ -22742,8 +21505,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个抓拍风格的生活方式旅行摄影提示词，主角为类似 Jenna Ortega 的人物，背景为热带白沙滩。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "Vireon"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552789593_yyasov_HQaD-yyXYAAv6lf.jpg",
     "sourceUrl": "https://x.com/VireonLab/status/2091505981117153755"
@@ -22755,8 +21517,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个时尚编辑风格的提示词，描述一位身穿宝蓝色连衣裙的女性坐在落地窗前，背景为优美的户外风景，光线自然柔和。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "J⭕DIE"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552785127_auot6b_HQaAOhmbgAA-opw.jpg",
     "sourceUrl": "https://x.com/Jodie_Noraa/status/2091500170123112744"
@@ -22768,8 +21529,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个照片级逼真的晚间肖像提示词，描绘了两位身着闪亮优雅礼服的好友在高端酒廊中放松的场景。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "J⭕DIE"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552790031_4xj9vj_HQZQ_XgXQAA4_Ij.jpg",
     "sourceUrl": "https://x.com/Jodie_Noraa/status/2091448230147969440"
@@ -22781,8 +21541,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张写实风格的街拍提示词：一名身着炭灰色西装的男子站在装饰着粉色三角梅的历史感石墙建筑前。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "Picts by AI"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552783960_pdad25_HQZMucFWgAA5fpI.jpg",
     "sourceUrl": "https://x.com/pictsbyai/status/2091443576542826856"
@@ -22794,8 +21553,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成咖啡馆内抓拍风格时尚编辑人像的超写实提示词，重点呈现特定的服装纹理与环境光影。",
     "tags": [
       "nano-banana-pro",
-      "社交媒体帖子",
-      "DaniaSafvi"
+      "社交媒体帖子"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552783340_l04tv6_HQZGy0Xb0AA9350.jpg",
     "sourceUrl": "https://x.com/DaniaSafvi/status/2091436937517342764"
@@ -22807,8 +21565,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款高端美食摄影提示词，旨在通过电影级影棚灯光，创作出令人垂涎欲滴的牛肉塔可商业视觉效果。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "𝐌"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466537773_lhlib8_HQVoTC-a0AAbNyI.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2091192289385451787"
@@ -22820,8 +21577,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款用于高端饮品的爆炸视图信息图提示词，展示了具有专业影棚灯光和质感的层叠配料。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "𝐌"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379854342_tnj7s4_HQOIyO5bMAAfMOO.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2090665058980462697"
@@ -22833,8 +21589,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个专为 Nano Banana 2 设计的野生动物摄影提示词，捕捉欧洲仓鼠在田野中进食的特写镜头。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Heather Green"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786344499918_eo7cpi_HO4FP3kXkAAl5eH.jpg",
     "sourceUrl": "https://x.com/heathergreen/status/2086241045193339116"
@@ -22846,8 +21601,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于渡渡鸟的详细动物提示词，具有自然的羽毛质感和独特的裂纹质感鸟喙，专为 Nano Banana 2 优化。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Heather Green"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786257242691_8zff74_HO4FJ_2XYAA8VPb.jpg",
     "sourceUrl": "https://x.com/heathergreen/status/2085878662017032685"
@@ -22859,8 +21613,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于生成人体工学办公椅移动端电商详情页的综合提示词。包含多角度展示、结构标注以及使用场景，整体采用简洁的蓝图风格设计。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Mr.pinecone"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1785654882513_3vc9ml_HOrtQQ_bAAAeu64.jpg",
     "sourceUrl": "https://x.com/Mrpinecone888/status/2083738681949802588"
@@ -22872,8 +21625,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于生成逼真微缩立体书城市透视模型的详细提示词，包含精细的纸艺地标和结构化纸张机械设计。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Gadgetify"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1785395942795_27fdn3_HOCZo_5WoAAiXCa.jpg",
     "sourceUrl": "https://x.com/Gdgtify/status/2082221056652443680"
@@ -22885,8 +21637,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的提示词，用于生成具有 20 世纪 70 年代图形风格的奇趣字母集，包含俏皮的圆体字、粗轮廓以及鲜艳的柔和色调装饰。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Heather Green"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1784963088586_p7yftd_HN5zRI_WAAABKw4.jpg",
     "sourceUrl": "https://x.com/heathergreen/status/2080337142606111129"
@@ -22898,8 +21649,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个创意微距摄影提示词，用于杂志内页，展示从页面中升起的 3D Voxel 或黏土模型。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Gadgetify"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1784790709051_m3gcao_HNEgWh8XsAAGxv2.jpg",
     "sourceUrl": "https://x.com/Gdgtify/status/2079934742581887010"
@@ -22911,8 +21661,7 @@ export const DRAWING_PROMPTS = [
     "description": "生成具有立体主义抽象风格和技术绘图元素的精细几何马赛克肖像。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "zayan"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1783494609811_n7jihn_HMmrkkCXkAAHuEx.jpg",
     "sourceUrl": "https://x.com/HustleXR/status/2074377759674057125"
@@ -22924,8 +21673,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成带有标签和内部细节、背景简洁的超写实技术剖面图的专业提示词。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Pierrick Chevallier | IA"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1783149741330_an29tc_HMUlkZJXYAADL8_.jpg",
     "sourceUrl": "https://x.com/CharaspowerAI/status/2073104523476828533"
@@ -22937,8 +21685,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于生成高质量 3D 信息图故事板的详细提示词，旨在呈现皮克斯风格的消防员角色。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "𝐌"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1782805352550_gwpv55_HL9UHBJbAAAj7yr.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2071466852614816182"
@@ -22950,8 +21697,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高技术含量的提示词，用于创建具有发光纤维纹理、半透明且明亮的人体解剖 3D 可视化效果。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Dera | Performance marketing Creative"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1782117036837_n3f07d_HLUol_YWoAA1ntQ.png",
     "sourceUrl": "https://x.com/Ifekaego1/status/2068607373200039956"
@@ -22963,8 +21709,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高科技提示词，用于对努沙佩尼达 (Nusa Penida) 悬崖边的风景人像进行增强现实分析，并叠加数据图层。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "NUSRAT"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1781424058640_02zl8s_HKrYUBHbMAAq3Be.jpg",
     "sourceUrl": "https://x.com/nxnusratul/status/2065701229779648666"
@@ -22976,8 +21721,7 @@ export const DRAWING_PROMPTS = [
     "description": "此 Prompt 旨在为《机动战士高达 THE ORIGIN》中的扎比家族创建信息图摘要，旨在测试模型对复杂角色信息进行可视化整理的能力。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "ファーラ@ガンプラ"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1781336389547_4ks6y9_HKmng28a8AAucIT.jpg",
     "sourceUrl": "https://x.com/Live_05/status/2065366252391113120"
@@ -22989,8 +21733,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于架空历史汽车融合的概念设计提示词，将标志性的美国汽车车型与社会主义工业美学相结合。",
     "tags": [
       "nano-banana-pro",
-      "信息图 / 教育视觉图",
-      "Riccardo"
+      "信息图 / 教育视觉图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1781251728390_576hrf_HKkCITCWMAEsNke.jpg",
     "sourceUrl": "https://x.com/Riccardo_Nero/status/2065184321514664239"
@@ -23002,8 +21745,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份用于生成逼真高中棒球决赛电视转播截图的详细提示词，包含特定的记分牌和频道文字叠加效果。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "あいめら"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379861922_ovaxu5_HQQYLCUboAAIPjs.jpg",
     "sourceUrl": "https://x.com/image__lab/status/2090876589949255789"
@@ -23015,8 +21757,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高度技术化、SQL 风格的逻辑提示词，用于创建 2x2 的排版电影海报网格，其中图像完全由文本构成。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Gadgetify"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1785568117051_2qk1u7_HOUvoOKXsAArLa_.jpg",
     "sourceUrl": "https://x.com/Gdgtify/status/2083089277542351177"
@@ -23028,8 +21769,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个幽默的模因风格提示词，将办公室咖啡机重新构想为大型科幻 Boss 战场景。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "getimg.ai"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1783494606284_z6704d_HMoGfz7XwAA46Vy.jpg",
     "sourceUrl": "https://x.com/getimg_ai/status/2074492631569301673"
@@ -23041,8 +21781,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个令人惊叹的高写实感提示词，用于生成一幅超现实场景：一位巨型女性优雅地坐在威尼斯圣马可广场的游客中间，呈现电影级光影与 8K 细节。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "HiBå🫰"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1782977585085_u39h36_HMJuxSOXcAAc3Gw.jpg",
     "sourceUrl": "https://x.com/Its_shah2i0/status/2072340606400045317"
@@ -23054,8 +21793,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个伪代码结构的提示词，用于生成具有电影质感和高端风格的体育纪录片系列主视觉图。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Gadgetify"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1782805347982_5yi9cb_HL0CqIlWsAAMFzm.jpg",
     "sourceUrl": "https://x.com/Gdgtify/status/2071629767795937759"
@@ -23067,8 +21805,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个超现实的提示词，用于创作在稀树草原上空由体积云形成的细节逼真的大象摄影作品。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "ÀBDŪLLÂH"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1779520912765_xaxki4_HI7WAKoaIAAt_AA.jpg",
     "sourceUrl": "https://x.com/itxabdullaa/status/2057817382773731346"
@@ -23080,8 +21817,7 @@ export const DRAWING_PROMPTS = [
     "description": "将木质火车站的照片或草图转换为动漫风格的插画，并提供描述性提示词。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "神根 斗九之進（Tokunoshin kamine）"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1778830082139_67t7zz_HISvS-wbkAARq_L.jpg",
     "sourceUrl": "https://x.com/ttoku1969/status/2054960699101905021"
@@ -23093,8 +21829,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张超写实的广角镜头照片，展现了憨豆先生疯狂驾驶着一辆复古 Mini Cooper，并将动画角色融入到混乱场景中的画面。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Zar⭕on"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1778830068623_58ehyo_HIRV28ybAAAfAVb.jpg",
     "sourceUrl": "https://x.com/Xaroon_x/status/2054861737506283548"
@@ -23106,8 +21841,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个精致的多帧提示词，旨在创作一张情感丰富、具有电影质感的拼贴画，展现人物在城市天台、巨大满月下的场景，侧重于氛围感和环境质感。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Professor"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1778830063254_js3sqi_HIQOJqjaQAAJP_d.jpg",
     "sourceUrl": "https://x.com/Professor_134/status/2054782899917136167"
@@ -23119,8 +21853,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张电影感的高角度人像，一位身着 Balenciaga 风格服装的女性坐在地毯上，手边放着蛋糕，正舔舐着刀刃，展现出一种随性的街头时尚氛围。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Dr. Samia"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1778743482684_foflzr_HIM-T2abYAAtTX0.jpg",
     "sourceUrl": "https://x.com/oye_samia/status/2054554374270226871"
@@ -23132,8 +21865,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款高对比度的电影感海报提示词，描绘了一位身着战术套装的蒙面义警，配有醒目的排版和粗犷的黑色电影美学。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Aijaz"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1778657221748_h4cc7u_HIG59DebMAAIM25.jpg",
     "sourceUrl": "https://x.com/iamsofiaijaz/status/2054127368365908220"
@@ -23145,8 +21877,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个复杂的 JSON 格式结构化提示词，用于生成一张女性在篮球比赛现场的转播风格图像，包含 UI 覆盖层和场馆灯光效果。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Diamond"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1778570429056_v1z0au_HIBL06KbcAASXvc.jpg",
     "sourceUrl": "https://x.com/DiamondZPetSpa/status/2053724968941416793"
@@ -23158,8 +21889,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个复杂的结构化提示词，旨在模拟 ESPN 转播画面中，一位女性身处篮球场观众席的截图。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Lipe"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1778570424885_79ec0a_HIBLNbhaIAAs2Td.jpg",
     "sourceUrl": "https://x.com/Liperoo/status/2053724136665751849"
@@ -23171,8 +21901,7 @@ export const DRAWING_PROMPTS = [
     "description": "一种富有创意的加权提示词公式，用于生成 2x2 的书籍内部奇幻立体模型网格。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Gadgetify"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1777620059461_wtbh6l_HHAk_0ZbUAAqjvu.jpg",
     "sourceUrl": "https://x.com/Gdgtify/status/2049903356987195814"
@@ -23184,8 +21913,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个通过特定歌曲名称和艺术家来生成能够代表该音乐氛围感的图像的提示词。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "一抹のFun"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1777361054866_6bdtc1_HG4yxQNbEAAQV_N.jpg",
     "sourceUrl": "https://x.com/Spoonful_of_Fun/status/2048630720738832589"
@@ -23197,8 +21925,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个关于现代工作室场景中专业播客主持人的提示词，包含温暖的重点照明和逼真的设备细节。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Taaruk"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1776495135499_o1874c_HGGCN9XbYAAdTKw.jpg",
     "sourceUrl": "https://x.com/Taaruk_/status/2045058894553354475"
@@ -23210,8 +21937,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一个为 Nano Banana Pro 设计的提示词模板，用于生成日式电视节目风格的图像。它允许 AI 根据简短的场景描述，自主构思包括字幕和采访内容在内的整体氛围。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "俺の娘たち / AIエンジニア"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1775544748808_lquxrd_HFL4N_TbQAAG5ah.jpg",
     "sourceUrl": "https://x.com/oreno_musume/status/2041122003642704015"
@@ -23223,8 +21949,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一个为 Nano Banana 2 设计的高细节、电影感、照片级真实感的提示词，用于生成 Millie Bobby Brown 在摩天轮附近的户外节日场景照片。提示词详细说明了人物外观、服装、动态姿势、光照条件（黄昏光线结合霓虹轮廓光）、相机设置（竖屏构图、长焦镜头、浅景深）以及整体氛围。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Giulia"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1775112286065_i3xthk_HE2rSFhXkAAGgfN.jpg",
     "sourceUrl": "https://x.com/Giulia_4i/status/2039474538212401240"
@@ -23236,8 +21961,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成超写实、电影感街头摄影图像的提示词，捕捉一名年轻男子踩到香蕉皮后跌倒瞬间的画面，强调动态定格效果、散落的科技产品以及震惊的面部表情。",
     "tags": [
       "nano-banana-pro",
-      "YouTube 缩略图",
-      "Taaruk"
+      "YouTube 缩略图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1775112277740_pkbnuk_HEzF5TzbgAESrQg.jpg",
     "sourceUrl": "https://x.com/Taaruk_/status/2039222333274275850"
@@ -23249,8 +21973,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅精致的 3D 风格化渲染图，描绘了一位拥有祖母绿双眸和铂金长发的卡通女孩，以梦幻般的姿态坐在石凳上。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Compound Learning - Tech | Science"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466532881_16qv2a_HQV3iYCbUAA0jWx.jpg",
     "sourceUrl": "https://x.com/SheBuildsAI_/status/2091209038126305784"
@@ -23262,8 +21985,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成 20 世纪 70 年代德黑兰政治团体历史场景的提示词，具有特定的时代美学风格。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Tokomotism News"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379856020_x8scoe_HQRp55lXMAE50GZ.jpg",
     "sourceUrl": "https://x.com/tokomotism/status/2090912732887302333"
@@ -23275,8 +21997,7 @@ export const DRAWING_PROMPTS = [
     "description": "两组用于生成可爱动物（熊和猫）在星空下水边休憩的奇幻提示词，采用柔和的动漫或卡通风格。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Viki"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293543889_1p4qb1_HQHRazNXYAAu3r1.jpg",
     "sourceUrl": "https://x.com/churvikv/status/2090182449149977021"
@@ -23288,8 +22009,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的高端有机蜂蜜商业广告项目提示词，包含微距镜头、液体质感及温暖的金色美学设计。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "𝐌"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787208876029_xmncg0_HQF19kdacAATv1I.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2090081415924982038"
@@ -23301,8 +22021,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高能量的美食广告项目提示词，专注于方便面的微距摄影和动态灯光效果。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "𝐌"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787208877458_0x85ko_HQE90xdaYAA8DRm.jpg",
     "sourceUrl": "https://x.com/Strength04_X/status/2090019696779387173"
@@ -23314,8 +22033,7 @@ export const DRAWING_PROMPTS = [
     "description": "这是一个用于 Nano Banana Pro 的电影感提示词，旨在生成一个置身于郁郁葱葱的自然草甸背景下的 Android 角色。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Kōda"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787120741335_arstps_HQAhYD6WAAAGizs.jpg",
     "sourceUrl": "https://x.com/aimikoda/status/2089707047801454941"
@@ -23327,8 +22045,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张高定时尚风格的肖像照，展现了一位身着白色套装的护士，背景是装饰着古典风格的金色锦缎奢华沙龙。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "KeorUnreal"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787120735839_aux1ho_HQAdQKNXsAAMSvQ.jpg",
     "sourceUrl": "https://x.com/KeorUnreal/status/2089702402559447530"
@@ -23340,8 +22057,7 @@ export const DRAWING_PROMPTS = [
     "description": "用于生成一幅超现实、细节丰富的黑白插画的提示词，画面描绘了一只穿着荷叶边芭蕾舞裙站在棋盘格地板上的火烈鸟。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Heather Green"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787120731915_pmg62t_HPcwmoQWcAAuU2T.jpg",
     "sourceUrl": "https://x.com/heathergreen/status/2089532739124887591"
@@ -23353,8 +22069,7 @@ export const DRAWING_PROMPTS = [
     "description": "一套精密的系统指令集，用于创建具有特定光影和关系焦点的油画质感动漫风格图像提示词。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Emily"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787120732962_omxduy_HP9a6P7bQAAMod9.jpg",
     "sourceUrl": "https://x.com/IamEmily2050/status/2089488719158161621"
@@ -23366,8 +22081,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个冷幽默提示词：一只小橘猫坐在 CEO 的椅子上，在未来派摩天大楼的办公室里面试人类。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Compound Learning - Tech | Science"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787034148281_vjkob4_HP76UENbIAEDLI7.jpg",
     "sourceUrl": "https://x.com/SheBuildsAI_/status/2089382503471874106"
@@ -23379,8 +22093,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个复杂的提示词，用于创建以中心主体为核心，周围环绕着向不同方向行走的相同克隆体的航拍高角度视图。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "H A J R A"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786861116759_bnwtjo_HPwU0KmWkAAwL5W.jpg",
     "sourceUrl": "https://x.com/codewithhajra/status/2088567218527179212"
@@ -23392,8 +22105,7 @@ export const DRAWING_PROMPTS = [
     "description": "一幅宁静的彩色铅笔风格提示词，描绘了一对情侣在日落时分漫步于蓝色矢车菊花海中的场景。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Viki"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786861122193_hdzbyd_HPvngouXMAAzl8D.jpg",
     "sourceUrl": "https://x.com/churvikv/status/2088517844535287875"
@@ -23405,8 +22117,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张写实风格的肖像照，描绘了一位身穿传统日本水手校服的东亚女性坐在阳光明媚的教室里。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Feyber | AI Creator"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786861133324_kyaunw_HPgULBkbsAACHnj.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2088415372420501993"
@@ -23418,8 +22129,7 @@ export const DRAWING_PROMPTS = [
     "description": "用于生成空灵场景的电影级提示词，涵盖冰雪大教堂中被遗忘的文明，或超现实沙漠中的机械生物。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "mini singh"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786774881858_g2xa9a_HPqJRkEaUAA2lQK.jpg",
     "sourceUrl": "https://x.com/KaminiKamini222/status/2088132331458695315"
@@ -23431,8 +22141,7 @@ export const DRAWING_PROMPTS = [
     "description": "创作一个充满奇趣的手工立体模型场景，展现一只毛毡青蛙在海滩享受美好时光，包含精细的手工艺细节。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Heather Green"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786774876094_g9umq5_HPMZUTSWYAA_zyT.jpg",
     "sourceUrl": "https://x.com/heathergreen/status/2088052992478167419"
@@ -23444,8 +22153,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个广角电影感提示词，描绘了一名提着复古行李箱的男子站在雾气缭绕的山区火车站，展现出忧郁的氛围光和耶稣光效果。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Blitzer"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787034144901_xn311t_HPmbMXHaAAAswqc.jpg",
     "sourceUrl": "https://x.com/tanzeel617919/status/2087870566950748368"
@@ -23457,8 +22165,7 @@ export const DRAWING_PROMPTS = [
     "description": "一套多画幅电影感故事提示词，描绘了一对中国情侣在欧洲历史古城中从清晨到傍晚的浪漫漫步。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "mini singh"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786690123710_56tjj0_HPmRoqiboAAN_uw.jpg",
     "sourceUrl": "https://x.com/KaminiKamini222/status/2087860073632780344"
@@ -23470,8 +22177,7 @@ export const DRAWING_PROMPTS = [
     "description": "一种精致的混合风格提示词，将图形小说写实主义与碎片化几何线条艺术相结合，并采用柔和的淡雅色调。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Zayan"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786518703948_36bhmc_HPayJmqWAAA66XF.jpg",
     "sourceUrl": "https://x.com/HustleXR/status/2087051366657380410"
@@ -23483,8 +22189,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张高分辨率编辑摄影提示词，展现未戴面具的 Gwen Stacy 的英雄姿态，突出高科技战衣质感与城市夜间灯光效果。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "Giulia"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786171693311_vej7gc_HPI0ExhWQAA7n1Y.jpg",
     "sourceUrl": "https://x.com/Giulia_4i/status/2085786864590504057"
@@ -23496,8 +22201,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个强有力的电影级提示词，描绘了一位坐在燃烧战场上的饱经风霜的奇幻战士，将古代服饰与现代武器融为一体。",
     "tags": [
       "nano-banana-pro",
-      "漫画 / 故事板",
-      "WeWant Mars"
+      "漫画 / 故事板"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786171691608_dzid2j_HPIkIBra8AMTGVM.jpg",
     "sourceUrl": "https://x.com/Madhuribhai/status/2085769307217391725"
@@ -23509,8 +22213,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个聚焦于眼部和唇部的电影感特写提示词，展现了人物躺在向日葵丛中的画面，并带有胶片颗粒质感。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "dreamy digital arts"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466539172_g91rbd_HQOYhO9aMAAPFNs.jpg",
     "sourceUrl": "https://x.com/dreamydigiarts/status/2091118193267835007"
@@ -23522,8 +22225,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张编辑风格的照片，展现了身着亚麻衬衫的地中海男性，具有高对比度的阴影和优雅的欧洲夏季氛围。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Aatif J"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466534491_ydondn_HQUb3Q0W8AAvHcE.jpg",
     "sourceUrl": "https://x.com/aatif_j/status/2091108251429421430"
@@ -23535,8 +22237,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张写实风格的生活方式肖像提示词，描绘了一位身着酒红色服装的年轻女性在黄金时刻的住宅阳台上，强调自然的皮肤质感和电影感光效。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "J⭕DIE"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787466535861_p2q93s_HQSuhmEaQAAs7Ur.jpg",
     "sourceUrl": "https://x.com/Jodie_Noraa/status/2090988104907968696"
@@ -23548,8 +22249,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个极简的图像生成提示词，用于创作高质量、细节丰富的黑色欧根纱丝带，重点展现其细腻的质感与优雅气质。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Saki H. 咲希"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379863537_o4kkad_HQSrCbNbUAAFin6.jpg",
     "sourceUrl": "https://x.com/SakiH_AI/status/2090984698629718104"
@@ -23561,8 +22261,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于生成身着传统可巴雅（kebaya）女性肖像的精美提示词，将文化底蕴与现代影棚光影巧妙融合。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Feyber | AI Creator"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379857127_pdhic8_HQD2ABPagAAbBJH.jpg",
     "sourceUrl": "https://x.com/woleswoosh/status/2090891689644700056"
@@ -23574,8 +22273,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细且结构化的酒店氛围感时尚肖像提示词，涵盖了复杂的光影、服装质感及构图要求。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Jan | AI Image Alchemist"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293551242_z0gcks_HQM7YaWXUAA8_Rr.jpg",
     "sourceUrl": "https://x.com/cashinpills/status/2090579993688457289"
@@ -23587,8 +22285,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高度精准的提示词，旨在以绝对的保真度保留主体身份，同时将其置于带有冬季主题配饰的蓬松薄纱礼服中。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Talia"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379854981_d4kctx_HQM2W3WXsAA75VL.jpg",
     "sourceUrl": "https://x.com/TaliaAariz/status/2090574438043386336"
@@ -23600,8 +22297,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高端奢华时尚杂志风格的提示词，用于创作人物在霓虹 LED 装置旁的人像，旨在实现身份精准还原。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Alex Prompts"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293547547_cipdwu_HQL7UuvW4AAap3X.jpg",
     "sourceUrl": "https://x.com/AlexPromptsAI/status/2090509645739708592"
@@ -23613,8 +22309,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个复杂且结构化的提示词，用于创作超现实的液态金属时尚社论肖像，采用偷窥视角的长焦风格。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "timedoctor.eth"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293548346_vj7r96_HQLqxb8X0AA0hUw.jpg",
     "sourceUrl": "https://x.com/timedoctor_nft/status/2090491316123615257"
@@ -23626,8 +22321,7 @@ export const DRAWING_PROMPTS = [
     "description": "一张电影质感的编辑肖像，描绘了一名男子倚靠在欧洲鹅卵石街道上的复古摩托车旁，灵感源自意大利新现实主义。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Picts by AI"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293552671_3wc6ra_HPv46wVXwAAUeHN.jpg",
     "sourceUrl": "https://x.com/pictsbyai/status/2090352638168609233"
@@ -23639,8 +22333,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个极具创意的时尚海报提示词，将肖像分为五个垂直切片，每个切片展示不同的情绪和色彩分级。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Ayushi Srivastava"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293549342_krdloa_HQJBFD2bYAAgr0I.jpg",
     "sourceUrl": "https://x.com/punkhuri1/status/2090304738881688011"
@@ -23652,8 +22345,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个结构化的提示词，用于生成一张高定时尚大片，画面为一名女子坐在维多利亚风格双人沙发上，背景为深绯红色。",
     "tags": [
       "nano-banana-pro",
-      "产品营销",
-      "Jan | AI Image Alchemist"
+      "产品营销"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787293551960_z08tqg_HQHzy8aXoAAq38e.jpg",
     "sourceUrl": "https://x.com/cashinpills/status/2090219821988241705"
@@ -23665,8 +22357,7 @@ export const DRAWING_PROMPTS = [
     "description": "一种复杂的优质巧克力广告排版，包含分层玻璃托盘、原材料以及粉色背景上的金箔包装。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Lucas AI"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787034148215_konuoa_HP5xPIWaQAAXOUa.jpg",
     "sourceUrl": "https://x.com/AiwithLucas_/status/2089231817916420518"
@@ -23678,8 +22369,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个充满趣味与超现实感的商业摄影提示词，将产品管体作为超大号卷发筒，呈现高端美妆美学。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Maddox"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786947850240_ttctun_HP0JcjGa0AASb60.jpg",
     "sourceUrl": "https://x.com/Maddox_Digital/status/2088836197498143054"
@@ -23691,8 +22381,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个商业产品摄影提示词，展示了被包裹在超写实、果汁滴落的树莓横截面中的产品。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Maddox"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786861118125_5etqo8_HPuiXwBawAAatce.jpg",
     "sourceUrl": "https://x.com/Maddox_Digital/status/2088441415907041644"
@@ -23704,8 +22393,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款专业的广告提示词，旨在将参考产品与逼真的蜘蛛网效果及极简主义摄影棚灯光相结合。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Maddox"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786518697805_jwa3cd_HPZ-iD6bMAAwf-F.jpg",
     "sourceUrl": "https://x.com/Maddox_Digital/status/2086994618517000244"
@@ -23717,8 +22405,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于比较 Grok Imagine 2.0 和 Nano Banana 2 的简单产品摄影提示词。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Tim Jayas"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786257225958_njgnpk_HPLRmraa8AAW99W.png",
     "sourceUrl": "https://x.com/TimJayas/status/2085962225886679161"
@@ -23730,8 +22417,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个专业的商业摄影提示词，适用于展示带有动态水花和高端影棚灯光效果的优质水瓶。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Maddox"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786257240981_ipqj1s_HPKntutaMAAQ3v1.jpg",
     "sourceUrl": "https://x.com/Maddox_Digital/status/2085914015390458233"
@@ -23743,8 +22429,7 @@ export const DRAWING_PROMPTS = [
     "description": "专业的护肤品产品摄影，以阳光亲吻过的海滩为背景，展示古铜色美黑精华液，伴有柔和的海浪与泡沫。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "William AI"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786171691763_363c9f_HPHD50KXkAAJfKy.jpg",
     "sourceUrl": "https://x.com/wiliam_web3/status/2085663511225516095"
@@ -23756,8 +22441,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份专业的商业产品摄影提示词，用于创建包含微距细节和影棚拍摄的三联拼贴画。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Maddox"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786171687766_k7qu58_HPFZRU2bwAE6Gdm.jpg",
     "sourceUrl": "https://x.com/Maddox_Digital/status/2085546278684065849"
@@ -23769,8 +22453,7 @@ export const DRAWING_PROMPTS = [
     "description": "此提示词可将目标对象转化为收藏级玩具，并生成包含塑料质感及吸塑零售包装的创意模型。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "WeWant Mars"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1785482583777_2nxgwf_HOhEOrOaUAAjfZj.jpg",
     "sourceUrl": "https://x.com/Madhuribhai/status/2082989921024049622"
@@ -23782,8 +22465,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个专门用于将基础产品图片转换为高端摄影棚级广告的提示词，通过提取主体并添加配料元素来实现。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Edan Harr, AICD-10"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1785395931720_sg9gkn_HObh9mRbwAA57-W.jpg",
     "sourceUrl": "https://x.com/therealedanharr/status/2082600329552818494"
@@ -23795,8 +22477,7 @@ export const DRAWING_PROMPTS = [
     "description": "一套专业级的护肤品商业摄影提示词，包含柔和的渐变色调和优雅的梳妆台道具。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Rowan"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1785395926456_zzcbo7_HOZgUU0akAAHGom.jpg",
     "sourceUrl": "https://x.com/rowanali09/status/2082457952901018006"
@@ -23808,8 +22489,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个技术提示词，用于将 3D 模型截图转换为具有特定材质和灯光的高端摄影棚产品照片。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Devaleski"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1785137836535_fenvb5_HOHI1BhbgAArJ6W.jpg",
     "sourceUrl": "https://x.com/Devaleski1/status/2081168164185063691"
@@ -23821,8 +22501,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款精致的主提示词，旨在将多个产品渲染为密集、高端且具有逼真纹理的 3D 集群。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Zazzy"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1784618418893_2imkhx_HNsCe80XMAAnUX5.jpg",
     "sourceUrl": "https://x.com/zazzygfx/status/2079258961417732263"
@@ -23834,8 +22513,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于捕捉电脑显示器像素结构、灰尘和电子表格细节的极致微距摄影提示词。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Parssa Kyanzadeh"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1784618417941_4t9wn9_HNpR2vOWQAAMeul.jpg",
     "sourceUrl": "https://x.com/ParssaKyanzadeh/status/2079064230624370810"
@@ -23847,8 +22525,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个高质量的摄影棚人像提示词，聚焦于休闲牛仔时尚，模特身穿紧身胸衣和破洞牛仔裤，背景为中性色调。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "lovimg_com"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1784445177188_2blrnj_HNfTZSia4AAgAZp.jpg",
     "sourceUrl": "https://x.com/lovimg_com/status/2078362193163411523"
@@ -23860,8 +22537,7 @@ export const DRAWING_PROMPTS = [
     "description": "为 Nano Banana Pro 设计的专业产品摄影提示词，呈现黄金时段草地山丘上的极简场景，非常适合高端编辑类摄影。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Maddox"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1784357924408_fhl7zm_HNZLbEkbYAA-sct.jpg",
     "sourceUrl": "https://x.com/Maddox_Digital/status/2077931238674096250"
@@ -23873,8 +22549,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个用于在湿润黑色板岩上拍摄产品的微距摄影提示词，包含编辑级布光和水滴效果。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "RTST.AI"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1783927794920_jsmy59_HNBkbaKbcAAhBac.jpg",
     "sourceUrl": "https://x.com/rtst_ai/status/2076332001880064135"
@@ -23886,8 +22561,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个充满活力的生活方式产品摄影提示词，展现了一位在阳光明媚的海滩上、背景为天然绿松石色海浪的快乐女性。",
     "tags": [
       "nano-banana-pro",
-      "电商主图",
-      "Maddox"
+      "电商主图"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1783409590249_8xacj1_HMjgjg2bYAAcB0u.jpg",
     "sourceUrl": "https://x.com/Maddox_Digital/status/2074154537259356554"
@@ -23899,8 +22573,7 @@ export const DRAWING_PROMPTS = [
     "description": "一种独特的风格化提示词，将光泽感 3D 渲染与扁平矢量简洁性相结合，适用于艺术肖像，呈现出鲜艳的色彩和流畅的有机元素。",
     "tags": [
       "nano-banana-pro",
-      "游戏素材",
-      "Zayan"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787552793135_75pudi_HQZ5lDnbMAAjjNN.jpg",
     "sourceUrl": "https://x.com/HustleXR/status/2091492763397411268"
@@ -23912,8 +22585,7 @@ export const DRAWING_PROMPTS = [
     "description": "两组梦幻般的景观提示词，一组描绘了色彩鲜艳的山间湖泊与柔和的倒影，另一组展现了发光的紫色树下伫立的孤独身影。",
     "tags": [
       "nano-banana-pro",
-      "游戏素材",
-      "Viki"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787379851536_v99f1l_HQQ44bQXoAAEdYz.jpg",
     "sourceUrl": "https://x.com/churvikv/status/2090858753583169966"
@@ -23925,8 +22597,7 @@ export const DRAWING_PROMPTS = [
     "description": "一份详细的 JSON 格式提示词，用于创作以 Sydney Sweeney 为主角、置身于紫色灯光人体工学环境中的专业游戏主播肖像。",
     "tags": [
       "nano-banana-pro",
-      "游戏素材",
-      "Pinodi"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1787120731463_cj0t5w_HQBN45eXcAAtoxR.jpg",
     "sourceUrl": "https://x.com/PinodiArt/status/2089755909845131739"
@@ -23938,8 +22609,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个综合性的角色转换提示词，可将上传的人物形象转变为未来感蜘蛛主题的玩家。",
     "tags": [
       "nano-banana-pro",
-      "游戏素材",
-      "H A J R A"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786774867558_66snrz_HPskDdrW0AA1KBB.jpg",
     "sourceUrl": "https://x.com/codewithhajra/status/2088302551531741484"
@@ -23951,8 +22621,7 @@ export const DRAWING_PROMPTS = [
     "description": "一个奇思妙想的微缩世界提示词，旨在渲染出一种精致发条朋克艺术风格的宏伟植物温室。",
     "tags": [
       "nano-banana-pro",
-      "游戏素材",
-      "sayobonita"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786774884248_2ixnrt_HPsVAUpbMAEn8oh.png",
     "sourceUrl": "https://x.com/sayobonito/status/2088286133390332392"
@@ -23964,8 +22633,7 @@ export const DRAWING_PROMPTS = [
     "description": "一款时尚的 3D 渲染玻璃涡轮发动机，带有薄荷色全息光轨和金属元素。",
     "tags": [
       "nano-banana-pro",
-      "游戏素材",
-      "Gargeya - Edudojo.ai"
+      "游戏素材"
     ],
     "coverUrl": "https://cms-assets.youmind.com/media/1786774873705_nwlq8t_HPrlVpcaoAADayY.jpg",
     "sourceUrl": "https://x.com/GargeyaS/status/2088233557097627959"
