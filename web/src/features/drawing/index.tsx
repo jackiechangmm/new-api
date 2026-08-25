@@ -1,5 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
 import {
+  ChevronLeft,
+  ChevronRight,
   Download,
   Loader2,
   RefreshCw,
@@ -30,6 +32,13 @@ import {
   saveDrawingHistory,
   type DrawingHistoryRecord,
 } from './storage'
+
+type PreviewSource = Blob | string
+
+type PreviewState = {
+  images: PreviewSource[]
+  index: number
+}
 
 const PAGE_SIZE = 4
 const ASPECT_RATIOS = [
@@ -95,7 +104,7 @@ export function Drawing() {
   const deferredQuery = useDeferredValue(query)
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
-  const [preview, setPreview] = useState<Blob | string>()
+  const [preview, setPreview] = useState<PreviewState>()
   const scrollRef = useRef<HTMLElement>(null)
   const [columns, setColumns] = useState(1)
 
@@ -381,7 +390,7 @@ export function Drawing() {
                   record={record}
                   onDelete={() => void remove(record.id)}
                   onDownload={download}
-                  onPreview={setPreview}
+                  onPreview={(images, index) => setPreview({ images, index })}
                   onReuse={reuse}
                 />
               ))}
@@ -412,14 +421,18 @@ export function Drawing() {
           <PromptGrid
             columns={columns}
             onSelect={selectPrompt}
-            onPreview={(url: string) => setPreview(url)}
+            onPreview={(url: string) => setPreview({ images: [url], index: 0 })}
             prompts={prompts}
             scrollElement={scrollRef}
           />
         </section>
       </div>
       {preview ? (
-        <PreviewDialog source={preview} onClose={() => setPreview(undefined)} />
+        <PreviewDialog
+          images={preview.images}
+          initialIndex={preview.index}
+          onClose={() => setPreview(undefined)}
+        />
       ) : null}
     </Main>
   )
@@ -429,22 +442,22 @@ function HistoryCard(props: {
   record: DrawingHistoryRecord
   onDelete: () => void
   onDownload: (blob: Blob, name: string) => void
-  onPreview: (blob: Blob) => void
+  onPreview: (images: Blob[], index: number) => void
   onReuse: (record: DrawingHistoryRecord) => void
 }) {
   const { t } = useTranslation()
   return (
     <article className='overflow-hidden rounded-lg border'>
-      <div
-        className={`grid gap-1 p-1 ${props.record.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}
-      >
-        {props.record.images.map((blob) => (
-          <HistoryImage
-            blob={blob}
-            key={`${props.record.id}-${blob.size}-${blob.type}`}
-            onClick={() => props.onPreview(blob)}
-          />
-        ))}
+      <div className='relative p-1'>
+        <HistoryImage
+          blob={props.record.images[0]}
+          onClick={() => props.onPreview(props.record.images, 0)}
+        />
+        {props.record.images.length > 1 ? (
+          <span className='bg-background/90 absolute top-3 right-3 rounded-full px-2 py-0.5 text-xs font-medium'>
+            {t('{{count}} images', { count: props.record.images.length })}
+          </span>
+        ) : null}
       </div>
       <div className='space-y-2 p-3'>
         <p className='line-clamp-2 text-sm'>{props.record.prompt}</p>
@@ -590,12 +603,39 @@ function PromptCard(props: {
   )
 }
 
-function PreviewDialog(props: { source: Blob | string; onClose: () => void }) {
+function PreviewDialog(props: {
+  images: PreviewSource[]
+  initialIndex: number
+  onClose: () => void
+}) {
   const { t } = useTranslation()
+  const [index, setIndex] = useState(props.initialIndex)
+  const current = props.images[index]
   const objectUrl = useBlobUrl(
-    typeof props.source === 'string' ? undefined : props.source
+    typeof current === 'string' ? undefined : current
   )
-  const url = typeof props.source === 'string' ? props.source : objectUrl
+  const url = typeof current === 'string' ? current : objectUrl
+  const hasMultiple = props.images.length > 1
+
+  useEffect(() => {
+    setIndex(props.initialIndex)
+  }, [props.initialIndex])
+
+  useEffect(() => {
+    if (!hasMultiple) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        setIndex(
+          (value) => (value - 1 + props.images.length) % props.images.length
+        )
+      } else if (event.key === 'ArrowRight') {
+        setIndex((value) => (value + 1) % props.images.length)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [hasMultiple, props.images.length])
+
   return (
     <Dialog
       open
@@ -604,15 +644,46 @@ function PreviewDialog(props: { source: Blob | string; onClose: () => void }) {
       }}
     >
       <DialogContent className='max-w-5xl bg-black/90 p-2' showCloseButton>
-        {url ? (
-          <img
-            alt={t('Image preview')}
-            className='max-h-[85vh] w-full object-contain'
-            src={url}
-          />
-        ) : (
-          <Loader2 className='mx-auto size-8 animate-spin text-white' />
-        )}
+        <div className='group relative flex min-h-[50vh] items-center justify-center'>
+          {url ? (
+            <img
+              alt={t('Image preview')}
+              className='max-h-[85vh] w-full object-contain'
+              src={url}
+            />
+          ) : (
+            <Loader2 className='mx-auto size-8 animate-spin text-white' />
+          )}
+          {hasMultiple ? (
+            <>
+              <Button
+                aria-label={t('Previous image')}
+                className='absolute left-2 opacity-0 transition-opacity group-hover:opacity-100'
+                onClick={() =>
+                  setIndex(
+                    (value) =>
+                      (value - 1 + props.images.length) % props.images.length
+                  )
+                }
+                size='icon'
+                variant='secondary'
+              >
+                <ChevronLeft />
+              </Button>
+              <Button
+                aria-label={t('Next image')}
+                className='absolute right-2 opacity-0 transition-opacity group-hover:opacity-100'
+                onClick={() =>
+                  setIndex((value) => (value + 1) % props.images.length)
+                }
+                size='icon'
+                variant='secondary'
+              >
+                <ChevronRight />
+              </Button>
+            </>
+          ) : null}
+        </div>
       </DialogContent>
     </Dialog>
   )
