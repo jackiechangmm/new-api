@@ -68,11 +68,13 @@ function HistoryImage({ blob, onClick }: { blob: Blob; onClick: () => void }) {
   const url = useBlobUrl(blob)
   return (
     <button
-      className='bg-muted aspect-square overflow-hidden rounded-md'
+      className='bg-muted aspect-square w-full overflow-hidden rounded-md'
       onClick={onClick}
       type='button'
     >
-      {url ? <img alt='' className='size-full object-cover' src={url} /> : null}
+      {url ? (
+        <img alt='' className='size-full w-full object-cover' src={url} />
+      ) : null}
     </button>
   )
 }
@@ -223,6 +225,11 @@ export function Drawing() {
     setQuality(record.quality)
     setCount(record.n)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const selectPrompt = (value: string) => {
+    setPrompt(value)
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -404,7 +411,7 @@ export function Drawing() {
           </div>
           <PromptGrid
             columns={columns}
-            onSelect={setPrompt}
+            onSelect={selectPrompt}
             onPreview={(url: string) => setPreview(url)}
             prompts={prompts}
             scrollElement={scrollRef}
