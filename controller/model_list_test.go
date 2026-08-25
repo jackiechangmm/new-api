@@ -215,6 +215,26 @@ func TestGetUserModelsFiltersByRequestedGroup(t *testing.T) {
 	require.Empty(t, decodeUserModelsResponse(t, vipRecorder))
 }
 
+func TestGetUserModelsFiltersByRequestedEndpoint(t *testing.T) {
+	db := setupModelListControllerTestDB(t)
+	require.NoError(t, db.Create(&model.User{Id: 1003, Username: "drawing-model-user", Password: "password", Group: "default", Status: common.UserStatusEnabled}).Error)
+	require.NoError(t, db.Create(&model.Channel{Id: 2, Type: constant.ChannelTypeOpenAI, Key: "test-key", Status: common.ChannelStatusEnabled, Name: "OpenAI"}).Error)
+	require.NoError(t, db.Create(&[]model.Ability{
+		{Group: "default", Model: "gpt-image-2-official", ChannelId: 2, Enabled: true},
+		{Group: "default", Model: "text-only", ChannelId: 2, Enabled: true},
+	}).Error)
+	model.InvalidatePricingCache()
+	model.InitChannelCache()
+	model.GetPricing()
+
+	recorder := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(recorder)
+	context.Request = httptest.NewRequest(http.MethodGet, "/api/user/models?group=default&endpoint=image-generation", nil)
+	context.Set("id", 1003)
+	GetUserModels(context)
+
+	assert.Equal(t, []string{"gpt-image-2-official"}, decodeUserModelsResponse(t, recorder))
+}
 func TestGetUserModelsExpandsAutoGroupsInConfiguredOrder(t *testing.T) {
 	originalAutoGroups := setting.AutoGroups2JsonString()
 	originalUsableGroups := setting.UserUsableGroups2JSONString()
