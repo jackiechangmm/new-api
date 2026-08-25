@@ -435,7 +435,9 @@ function HistoryCard(props: {
   const { t } = useTranslation()
   return (
     <article className='overflow-hidden rounded-lg border'>
-      <div className='grid grid-cols-2 gap-1 p-1'>
+      <div
+        className={`grid gap-1 p-1 ${props.record.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}
+      >
         {props.record.images.map((blob) => (
           <HistoryImage
             blob={blob}
