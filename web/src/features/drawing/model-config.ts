@@ -89,6 +89,27 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
     },
   },
   {
+    model: 'nano-banana-2',
+    requestFormat: 'gemini-generate-content',
+    textToImage: {
+      aspectRatios: NANO_BANANA_2_LITE_ASPECT_RATIOS,
+      resolutions: ['512', '1k', '2k', '4k'],
+      maxOutputs: 1,
+      outputFormats: ['png'],
+    },
+    imageToImage: {
+      aspectRatios: NANO_BANANA_2_LITE_ASPECT_RATIOS,
+      resolutions: ['512', '1k', '2k', '4k'],
+      maxOutputs: 1,
+      outputFormats: ['png'],
+      input: {
+        formats: ['image/jpeg', 'image/png'],
+        maxImages: 14,
+        maxImageBytes: 7 * 1024 * 1024,
+      },
+    },
+  },
+  {
     model: 'nano-banana-2-lite',
     requestFormat: 'gemini-generate-content',
     textToImage: {

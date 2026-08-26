@@ -71,16 +71,16 @@ export async function requestDrawingImages(
       },
       { signal, skipErrorHandler: true }
     )
-    return {
-      data: (response.data.candidates ?? []).flatMap((candidate) =>
-        (candidate.content?.parts ?? [])
-          .filter((part) => Boolean(part.inlineData?.data))
-          .map((part) => ({
-            b64_json: part.inlineData?.data,
-            mime_type: part.inlineData?.mimeType,
-          }))
-      ),
-    }
+    const images = (response.data.candidates ?? []).flatMap((candidate) =>
+      (candidate.content?.parts ?? [])
+        .filter((part) => Boolean(part.inlineData?.data))
+        .map((part) => ({
+          b64_json: part.inlineData?.data,
+          mime_type: part.inlineData?.mimeType,
+        }))
+    )
+    const finalImage = images.at(-1)
+    return { data: finalImage ? [finalImage] : [] }
   }
 
   if ('images' in payload) {
