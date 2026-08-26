@@ -85,6 +85,54 @@ func TestStandardHTTPRelayAcceptsSessionButRealtimeDoesNot(t *testing.T) {
 	assert.Equal(t, http.StatusUnauthorized, realtimeResponse.Code)
 }
 
+func TestSessionGeminiRelayUsesStandardRelayContext(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "/v1beta/models/gemini-test:generateContent", r.URL.Path)
+		assert.Equal(t, "upstream-key", r.Header.Get("x-goog-api-key"))
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"candidates":[{"content":{"parts":[{"text":"ok"}]}}]}`))
+	}))
+	defer upstream.Close()
+
+	user, _, accessToken := createRelaySession(t, "gemini-session-user")
+	setting, err := common.Marshal(dto.UserSetting{AcceptUnsetRatioModel: true})
+	require.NoError(t, err)
+	require.NoError(t, model.DB.Model(&model.User{}).Where("id = ?", user.Id).Updates(map[string]any{
+		"setting": string(setting),
+		"quota":   10_000_000,
+	}).Error)
+	baseURL := upstream.URL
+	channel := &model.Channel{
+		Type:    constant.ChannelTypeGemini,
+		Key:     "upstream-key",
+		Status:  common.ChannelStatusEnabled,
+		Name:    "gemini-session-test-channel",
+		BaseURL: &baseURL,
+		Models:  "gemini-test",
+		Group:   "default",
+		AutoBan: common.GetPointer(0),
+	}
+	require.NoError(t, model.DB.Create(channel).Error)
+	require.NoError(t, model.DB.Create(&model.Ability{
+		Group: "default", Model: "gemini-test", ChannelId: channel.Id, Enabled: true,
+	}).Error)
+
+	engine := gin.New()
+	SetRelayRouter(engine)
+	request := httptest.NewRequest(http.MethodPost, "/v1beta/models/gemini-test:generateContent", strings.NewReader(`{"contents":[{"parts":[{"text":"hello"}]}]}`))
+	request.Header.Set("Authorization", "Bearer "+accessToken)
+	request.Header.Set("Content-Type", "application/json")
+	response := httptest.NewRecorder()
+	engine.ServeHTTP(response, request)
+
+	require.Equal(t, http.StatusOK, response.Code)
+	assert.Contains(t, response.Body.String(), `"candidates"`)
+	var consumeLog model.Log
+	require.NoError(t, model.DB.Where("user_id = ? AND type = ?", user.Id, model.LogTypeConsume).Order("id DESC").First(&consumeLog).Error)
+	assert.Equal(t, "playground-default", consumeLog.TokenName)
+}
+
 func TestLegacyPlaygroundEndpointIsDisabled(t *testing.T) {
 	setupRelayRouterTestDB(t)
 	_, _, accessToken := createRelaySession(t, "legacy-playground-user")
