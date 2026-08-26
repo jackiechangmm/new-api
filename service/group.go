@@ -108,32 +108,14 @@ func GetRequestAutoGroups(c *gin.Context, userGroup string) []string {
 
 // GetGroupsEnabledModels 按 groups 顺序获取各分组启用的模型并去重
 func GetGroupsEnabledModels(groups []string) []string {
-	return GetGroupsEnabledModelsForEndpoint(groups, "")
-}
-
-// GetGroupsEnabledModelsForEndpoint 按端点筛选分组可用模型
-func GetGroupsEnabledModelsForEndpoint(groups []string, endpoint string) []string {
 	seen := make(map[string]struct{})
 	models := make([]string, 0)
 	for _, group := range groups {
 		for _, modelName := range model.GetGroupEnabledModels(group) {
-			if _, ok := seen[modelName]; ok {
-				continue
+			if _, ok := seen[modelName]; !ok {
+				seen[modelName] = struct{}{}
+				models = append(models, modelName)
 			}
-			if endpoint != "" {
-				supported := false
-				for _, endpointType := range model.GetModelSupportEndpointTypes(modelName) {
-					if string(endpointType) == endpoint {
-						supported = true
-						break
-					}
-				}
-				if !supported {
-					continue
-				}
-			}
-			seen[modelName] = struct{}{}
-			models = append(models, modelName)
 		}
 	}
 	return models

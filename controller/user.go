@@ -655,11 +655,10 @@ func GetUserModels(c *gin.Context) {
 			groupsToQuery = []string{group}
 		}
 	}
-	endpoint := c.Query("endpoint")
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
-		"data":    service.GetGroupsEnabledModelsForEndpoint(groupsToQuery, endpoint),
+		"data":    service.GetGroupsEnabledModels(groupsToQuery),
 	})
 }
 

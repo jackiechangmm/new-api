@@ -36,6 +36,11 @@ import {
   editImages,
   type ImageGenerationRequest,
 } from './api'
+import {
+  getDrawingModelConfig,
+  getFixedOrSelectedValue,
+  type DrawingOperationConfig,
+} from './model-config'
 import { filterDrawingPrompts, type DrawingPrompt } from './prompts'
 import {
   deleteDrawingHistory,
@@ -43,7 +48,7 @@ import {
   saveDrawingHistory,
   type DrawingHistoryRecord,
 } from './storage'
-import { MAX_REFERENCE_IMAGES, validateReferenceImage } from './validation'
+import { validateReferenceImage } from './validation'
 
 type PreviewSource = Blob | string
 
@@ -53,29 +58,6 @@ type PreviewState = {
 }
 
 const PAGE_SIZE = 8
-const ASPECT_RATIOS = [
-  'auto',
-  '1:1',
-  '1:3',
-  '3:1',
-  '3:2',
-  '2:3',
-  '4:3',
-  '3:4',
-  '5:4',
-  '4:5',
-  '16:9',
-  '9:16',
-  '2:1',
-  '1:2',
-  '21:9',
-  '9:21',
-]
-const RESOLUTIONS = ['1k', '2k', '4k']
-const QUALITIES = ['auto', 'low', 'medium', 'high']
-const IMAGE_MODEL_CAPABILITIES: Record<string, { edits: boolean }> = {
-  'gpt-image-2-official': { edits: true },
-}
 
 function DrawingSelect(props: {
   ariaLabel: string
@@ -198,26 +180,78 @@ export function Drawing() {
   )
   const visibleHistory = history.slice(0, historyVisibleCount)
   const hasMoreHistory = historyVisibleCount < history.length
+  const modelConfig = getDrawingModelConfig(model)
+  const referenceInput = modelConfig?.imageToImage?.input
+  const hasEditModel = Boolean(referenceInput)
+  const activeOperation: DrawingOperationConfig | undefined =
+    referenceImages.length > 0
+      ? modelConfig?.imageToImage
+      : modelConfig?.textToImage
+
+  useEffect(() => {
+    const nextAspectRatio = getFixedOrSelectedValue(
+      activeOperation?.aspectRatios,
+      aspectRatio
+    )
+    const nextResolution = getFixedOrSelectedValue(
+      activeOperation?.resolutions,
+      resolution
+    )
+    const nextQuality = getFixedOrSelectedValue(
+      activeOperation?.qualities,
+      quality
+    )
+    setAspectRatio(nextAspectRatio ?? '')
+    setResolution(nextResolution ?? '')
+    setQuality(nextQuality ?? '')
+    setCount((current) =>
+      activeOperation
+        ? Math.min(Math.max(current, 1), activeOperation.maxOutputs)
+        : 1
+    )
+  }, [activeOperation, aspectRatio, quality, resolution])
+
+  useEffect(() => {
+    if (model && !hasEditModel && referenceImages.length > 0) {
+      setReferenceImages([])
+      setReferenceError('')
+    }
+  }, [hasEditModel, model, referenceImages.length])
 
   const submit = async () => {
     if (
       !prompt.trim() ||
       !model ||
       !group ||
+      !activeOperation ||
       (referenceImages.length > 0 && !hasEditModel)
     ) {
       return
     }
     setError('')
     setIsGenerating(true)
+    const aspect = getFixedOrSelectedValue(
+      activeOperation?.aspectRatios,
+      aspectRatio
+    )
+    const resolutionValue = getFixedOrSelectedValue(
+      activeOperation?.resolutions,
+      resolution
+    )
+    const size =
+      aspect && resolutionValue ? `${aspect} ${resolutionValue}` : undefined
+    const qualityValue = getFixedOrSelectedValue(
+      activeOperation?.qualities,
+      quality
+    )
     const payload: ImageGenerationRequest = {
       model,
       group,
       prompt: prompt.trim(),
-      size: `${aspectRatio} ${resolution}`,
-      quality,
       n: count,
       response_format: 'b64_json',
+      ...(size ? { size } : {}),
+      ...(qualityValue ? { quality: qualityValue } : {}),
     }
     try {
       const response = referenceImages.length
@@ -240,8 +274,8 @@ export function Drawing() {
         prompt: payload.prompt,
         model,
         group,
-        size: payload.size,
-        quality,
+        size: payload.size ?? '',
+        quality: payload.quality ?? '',
         n: count,
         images,
         referenceImages: [...referenceImages],
@@ -298,7 +332,6 @@ export function Drawing() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const hasEditModel = Boolean(model && IMAGE_MODEL_CAPABILITIES[model]?.edits)
   const referenceBytes = referenceImages.reduce(
     (total, file) => total + file.size,
     0
@@ -312,7 +345,8 @@ export function Drawing() {
       const errorKey = await validateReferenceImage(
         file,
         nextFiles.length,
-        nextFiles.reduce((total, item) => total + item.size, 0)
+        nextFiles.reduce((total, item) => total + item.size, 0),
+        referenceInput
       )
       if (errorKey) {
         nextError = t(
@@ -356,7 +390,7 @@ export function Drawing() {
           }}
         />
         <div
-          className='absolute left-1/2 top-[18vh] size-[180vw] -translate-x-1/2 rounded-full'
+          className='absolute top-[18vh] left-1/2 size-[180vw] -translate-x-1/2 rounded-full'
           style={{
             background:
               'radial-gradient(circle at 50% 0%, rgba(13, 19, 32, 0.9) 0%, rgba(18, 18, 18, 0) 65%)',
@@ -370,7 +404,7 @@ export function Drawing() {
           <div className='mb-5'>
             <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
           </div>
-          <div className='bg-background relative mx-auto flex h-[160px] w-full flex-col rounded-lg border p-3 transition-colors focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/15'>
+          <div className='bg-background focus-within:border-primary/50 focus-within:ring-primary/15 relative mx-auto flex h-[160px] w-full flex-col rounded-lg border p-3 transition-colors focus-within:ring-2'>
             <textarea
               aria-label={t('Prompt word')}
               className='min-h-0 flex-1 resize-none overflow-y-auto bg-transparent outline-none'
@@ -381,7 +415,7 @@ export function Drawing() {
               value={prompt}
             />
             <input
-              accept='.jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp'
+              accept={referenceInput?.formats.join(',')}
               className='hidden'
               multiple
               onChange={(event) => {
@@ -399,7 +433,8 @@ export function Drawing() {
                   disabled={
                     !hasEditModel ||
                     isGenerating ||
-                    referenceImages.length >= MAX_REFERENCE_IMAGES
+                    !referenceInput ||
+                    referenceImages.length >= referenceInput.maxImages
                   }
                   onClick={() => fileInputRef.current?.click()}
                   size='icon'
@@ -428,6 +463,7 @@ export function Drawing() {
                   isGenerating ||
                   !model ||
                   !group ||
+                  !activeOperation ||
                   !prompt.trim() ||
                   (referenceImages.length > 0 && !hasEditModel)
                 }
@@ -459,42 +495,57 @@ export function Drawing() {
                 value={model}
               />
             </label>
-            <label className='space-y-1 text-sm'>
-              <span>{t('Aspect ratio')}</span>
-              <DrawingSelect
-                ariaLabel={t('Aspect ratio')}
-                onChange={setAspectRatio}
-                options={ASPECT_RATIOS}
-                value={aspectRatio}
-              />
-            </label>
-            <label className='space-y-1 text-sm'>
-              <span>{t('Resolution')}</span>
-              <DrawingSelect
-                ariaLabel={t('Resolution')}
-                onChange={setResolution}
-                options={RESOLUTIONS}
-                value={resolution}
-              />
-            </label>
-            <label className='space-y-1 text-sm'>
-              <span>{t('Quality')}</span>
-              <DrawingSelect
-                ariaLabel={t('Quality')}
-                onChange={setQuality}
-                options={QUALITIES}
-                value={quality}
-              />
-            </label>
-            <label className='space-y-1 text-sm'>
-              <span>{t('Images')}</span>
-              <DrawingSelect
-                ariaLabel={t('Images')}
-                onChange={(value) => setCount(Number(value))}
-                options={['1', '2', '3', '4']}
-                value={String(count)}
-              />
-            </label>
+            {activeOperation?.aspectRatios?.length ? (
+              <label className='space-y-1 text-sm'>
+                <span>{t('Aspect ratio')}</span>
+                <DrawingSelect
+                  ariaLabel={t('Aspect ratio')}
+                  disabled={activeOperation.aspectRatios.length === 1}
+                  onChange={setAspectRatio}
+                  options={activeOperation.aspectRatios}
+                  value={aspectRatio}
+                />
+              </label>
+            ) : null}
+            {activeOperation?.resolutions?.length ? (
+              <label className='space-y-1 text-sm'>
+                <span>{t('Resolution')}</span>
+                <DrawingSelect
+                  ariaLabel={t('Resolution')}
+                  disabled={activeOperation.resolutions.length === 1}
+                  onChange={setResolution}
+                  options={activeOperation.resolutions}
+                  value={resolution}
+                />
+              </label>
+            ) : null}
+            {activeOperation?.qualities?.length ? (
+              <label className='space-y-1 text-sm'>
+                <span>{t('Quality')}</span>
+                <DrawingSelect
+                  ariaLabel={t('Quality')}
+                  disabled={activeOperation.qualities.length === 1}
+                  onChange={setQuality}
+                  options={activeOperation.qualities}
+                  value={quality}
+                />
+              </label>
+            ) : null}
+            {activeOperation ? (
+              <label className='space-y-1 text-sm'>
+                <span>{t('Images')}</span>
+                <DrawingSelect
+                  ariaLabel={t('Images')}
+                  disabled={activeOperation.maxOutputs === 1}
+                  onChange={(value) => setCount(Number(value))}
+                  options={Array.from(
+                    { length: activeOperation.maxOutputs },
+                    (_, index) => String(index + 1)
+                  )}
+                  value={String(count)}
+                />
+              </label>
+            ) : null}
           </div>
           {error ? (
             <p className='text-destructive mt-3 text-sm' role='alert'>

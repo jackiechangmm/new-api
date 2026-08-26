@@ -1,11 +1,13 @@
 import { api } from '@/lib/api'
 
+import { filterDrawingModels } from './model-config'
+
 export interface ImageGenerationRequest {
   model: string
   group: string
   prompt: string
-  size: string
-  quality: string
+  size?: string
+  quality?: string
   n: number
   response_format: 'b64_json'
 }
@@ -14,8 +16,8 @@ export interface ImageEditRequest {
   model: string
   group: string
   prompt: string
-  size: string
-  quality: string
+  size?: string
+  quality?: string
   n: number
   response_format: 'b64_json'
   images: File[]
@@ -44,8 +46,8 @@ export async function editImages(
   formData.append('model', payload.model)
   formData.append('group', payload.group)
   formData.append('prompt', payload.prompt)
-  formData.append('size', payload.size)
-  formData.append('quality', payload.quality)
+  if (payload.size) formData.append('size', payload.size)
+  if (payload.quality) formData.append('quality', payload.quality)
   formData.append('n', String(payload.n))
   formData.append('response_format', payload.response_format)
   for (const image of payload.images) {
@@ -61,10 +63,10 @@ export async function editImages(
 
 export async function getDrawingModels(group: string): Promise<string[]> {
   const response = await api.get('/api/user/models', {
-    params: { group, endpoint: 'image-generation' },
+    params: { group },
   })
   return response.data?.success && Array.isArray(response.data.data)
-    ? response.data.data
+    ? filterDrawingModels(response.data.data)
     : []
 }
 

@@ -1,11 +1,20 @@
-export const MAX_REFERENCE_IMAGES = 4
-export const MAX_REFERENCE_BYTES = 20 * 1024 * 1024
-export const MAX_REFERENCE_DIMENSION = 4096
-export const REFERENCE_IMAGE_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-])
+import type { DrawingInputConfig } from './model-config'
+
+export const DEFAULT_REFERENCE_INPUT_CONFIG: DrawingInputConfig = {
+  formats: ['image/jpeg', 'image/png', 'image/webp'],
+  maxImages: 4,
+  maxImageBytes: 20 * 1024 * 1024,
+  maxTotalBytes: 20 * 1024 * 1024,
+  maxWidth: 4096,
+  maxHeight: 4096,
+}
+
+export const MAX_REFERENCE_IMAGES = DEFAULT_REFERENCE_INPUT_CONFIG.maxImages
+export const MAX_REFERENCE_BYTES = DEFAULT_REFERENCE_INPUT_CONFIG.maxTotalBytes
+export const MAX_REFERENCE_DIMENSION = DEFAULT_REFERENCE_INPUT_CONFIG.maxWidth
+export const REFERENCE_IMAGE_TYPES = new Set(
+  DEFAULT_REFERENCE_INPUT_CONFIG.formats
+)
 
 export type ReferenceImageError =
   | 'unsupported'
@@ -16,26 +25,31 @@ export type ReferenceImageError =
 export async function validateReferenceImage(
   file: File,
   currentCount: number,
-  currentBytes: number
+  currentBytes: number,
+  config: DrawingInputConfig = DEFAULT_REFERENCE_INPUT_CONFIG
 ): Promise<ReferenceImageError | undefined> {
-  if (!REFERENCE_IMAGE_TYPES.has(file.type)) return 'unsupported'
-  if (currentCount >= MAX_REFERENCE_IMAGES) return 'too-many'
-  if (currentBytes + file.size > MAX_REFERENCE_BYTES) return 'too-large'
+  if (!config.formats.includes(file.type)) return 'unsupported'
+  if (currentCount >= config.maxImages) return 'too-many'
+  if (file.size > config.maxImageBytes) return 'too-large'
+  if (currentBytes + file.size > config.maxTotalBytes) return 'too-large'
 
   const url = URL.createObjectURL(file)
   try {
     const dimensions = await new Promise<{ width: number; height: number }>(
       (resolve, reject) => {
         const image = new Image()
-        image.onload = () =>
+        image.addEventListener('load', () =>
           resolve({ width: image.width, height: image.height })
-        image.onerror = () => reject(new Error('Invalid image'))
+        )
+        image.addEventListener('error', () =>
+          reject(new Error('Invalid image'))
+        )
         image.src = url
       }
     )
     if (
-      dimensions.width > MAX_REFERENCE_DIMENSION ||
-      dimensions.height > MAX_REFERENCE_DIMENSION
+      dimensions.width > config.maxWidth ||
+      dimensions.height > config.maxHeight
     ) {
       return 'too-wide'
     }
