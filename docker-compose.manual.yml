@@ -1,13 +1,30 @@
 name: new-api-manual
 
 services:
+  caddy:
+    image: caddy:2.10.2-alpine@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d
+    ports:
+      - "127.0.0.1:${MANUAL_PORT:-5174}:80"
+    volumes:
+      - ./Caddyfile.manual:/etc/caddy/Caddyfile:ro
+      - ./.cache/drawing-covers:/srv/drawing-covers:ro
+    depends_on:
+      new-api:
+        condition: service_healthy
+    networks:
+      - manual-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://localhost/api/status | grep -o '\"success\":\\s*true' || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
   new-api:
     build:
       context: .
       dockerfile: Dockerfile
     image: new-api-manual:local
-    ports:
-      - "127.0.0.1:${MANUAL_PORT:-5174}:3000"
     volumes:
       - manual_data:/data
     env_file:
