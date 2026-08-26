@@ -197,13 +197,6 @@ export function Drawing() {
     )
   }, [activeOperation, aspectRatio, quality, resolution])
 
-  useEffect(() => {
-    if (model && !hasEditModel && referenceImages.length > 0) {
-      setReferenceImages([])
-      setReferenceError('')
-    }
-  }, [hasEditModel, model, referenceImages.length])
-
   const submit = async () => {
     if (
       !prompt.trim() ||
