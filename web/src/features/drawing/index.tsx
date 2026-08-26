@@ -879,12 +879,15 @@ function PreviewDialog(props: {
         if (!open) props.onClose()
       }}
     >
-      <DialogContent className='max-w-5xl bg-black/90 p-2' showCloseButton>
-        <div className='group relative flex min-h-[50vh] items-center justify-center'>
+      <DialogContent
+        className='w-fit max-w-[calc(100vw-2rem)] bg-black/90 p-2 sm:max-w-[calc(100vw-2rem)]'
+        showCloseButton
+      >
+        <div className='group relative flex max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] items-center justify-center'>
           {url ? (
             <img
               alt={t('Image preview')}
-              className='max-h-[85vh] w-full object-contain'
+              className='h-auto max-h-[calc(100vh-2rem)] w-auto max-w-[calc(100vw-2rem)] object-contain'
               src={url}
             />
           ) : (
