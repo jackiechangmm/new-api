@@ -3,7 +3,7 @@ export interface DrawingHistoryRecord {
   createdAt: number
   prompt: string
   model: string
-  group: string
+  group?: string
   size: string
   quality: string
   n: number

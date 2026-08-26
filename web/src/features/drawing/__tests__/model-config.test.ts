@@ -35,6 +35,7 @@ test('keeps text-to-image and image-to-image configuration independent', () => {
 test('configures Nano Banana Lite for one 1K output and JPEG/PNG edits', () => {
   const config = getDrawingModelConfig('nano-banana-2-lite')
 
+  assert.equal(config?.requestFormat, 'gemini-generate-content')
   assert.deepEqual(config?.textToImage?.resolutions, ['1k'])
   assert.equal(config?.textToImage?.qualities, undefined)
   assert.equal(config?.textToImage?.maxOutputs, 1)

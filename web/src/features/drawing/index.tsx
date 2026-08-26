@@ -30,10 +30,8 @@ import {
 } from '@/components/ui/select'
 
 import {
-  generateImages,
-  getDrawingGroups,
   getDrawingModels,
-  editImages,
+  requestDrawingImages,
   type ImageGenerationRequest,
 } from './api'
 import {
@@ -118,7 +116,6 @@ function HistoryImage({ blob, onClick }: { blob: Blob; onClick: () => void }) {
 export function Drawing() {
   const { t } = useTranslation()
   const [models, setModels] = useState<string[]>([])
-  const [group, setGroup] = useState('')
   const [model, setModel] = useState('')
   const [prompt, setPrompt] = useState('')
   const [aspectRatio, setAspectRatio] = useState('auto')
@@ -154,32 +151,14 @@ export function Drawing() {
   }, [])
 
   useEffect(() => {
-    void Promise.all([getDrawingGroups(), listDrawingHistory()])
-      .then(([nextGroups, records]) => {
+    void Promise.all([getDrawingModels(), listDrawingHistory()])
+      .then(([nextModels, records]) => {
         setHistory(records)
-        if (nextGroups[0]) setGroup(nextGroups[0].value)
+        setModels(nextModels)
+        setModel(nextModels[0] ?? '')
       })
       .catch(() => setError(t('Failed to load drawing data')))
   }, [t])
-
-  useEffect(() => {
-    if (!group) return
-    void getDrawingModels(group)
-      .then((nextModels) => {
-        setModels(nextModels)
-        setModel((current) => {
-          const nextModel = nextModels.includes(current)
-            ? current
-            : (nextModels[0] ?? '')
-          if (nextModel !== current) {
-            setReferenceImages([])
-            setReferenceError('')
-          }
-          return nextModel
-        })
-      })
-      .catch(() => setError(t('Failed to load image models')))
-  }, [group, t])
 
   const prompts = useMemo(
     () => filterDrawingPrompts(deferredQuery, ''),
@@ -229,7 +208,7 @@ export function Drawing() {
     if (
       !prompt.trim() ||
       !model ||
-      !group ||
+      !modelConfig ||
       !activeOperation ||
       (referenceImages.length > 0 && !hasEditModel)
     ) {
@@ -253,7 +232,6 @@ export function Drawing() {
     )
     const payload: ImageGenerationRequest = {
       model,
-      group,
       prompt: prompt.trim(),
       n: count,
       response_format: 'b64_json',
@@ -261,16 +239,18 @@ export function Drawing() {
       ...(qualityValue ? { quality: qualityValue } : {}),
     }
     try {
-      const response = referenceImages.length
-        ? await editImages({ ...payload, images: referenceImages })
-        : await generateImages(payload)
+      const response = await requestDrawingImages(
+        modelConfig.requestFormat,
+        referenceImages.length
+          ? { ...payload, images: referenceImages }
+          : payload
+      )
       const images = (response.data ?? [])
-        .map((item) => item.b64_json)
-        .filter((value): value is string => Boolean(value))
-        .map((value) => {
-          const binary = atob(value)
+        .filter((item) => Boolean(item.b64_json))
+        .map((item) => {
+          const binary = atob(item.b64_json as string)
           const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
-          return new Blob([bytes], { type: 'image/png' })
+          return new Blob([bytes], { type: item.mime_type || 'image/png' })
         })
       if (!images.length) {
         throw new Error(t('The image response did not contain an image'))
@@ -280,7 +260,6 @@ export function Drawing() {
         createdAt: Date.now(),
         prompt: payload.prompt,
         model,
-        group,
         size: payload.size ?? '',
         quality: payload.quality ?? '',
         n: count,
@@ -323,7 +302,6 @@ export function Drawing() {
   const reuse = (record: DrawingHistoryRecord) => {
     setPrompt(record.prompt)
     setModel(record.model)
-    setGroup(record.group)
     const savedSize = record.size.split(' ')
     setAspectRatio(savedSize.length === 2 ? savedSize[0] : 'auto')
     setResolution(savedSize.length === 2 ? savedSize[1] : '1k')
@@ -470,7 +448,6 @@ export function Drawing() {
                 disabled={
                   isGenerating ||
                   !model ||
-                  !group ||
                   !activeOperation ||
                   !prompt.trim() ||
                   (referenceImages.length > 0 && !hasEditModel)

@@ -16,8 +16,11 @@ export type DrawingOperationConfig = {
   input?: DrawingInputConfig
 }
 
+export type DrawingRequestFormat = 'openai-image' | 'gemini-generate-content'
+
 export type DrawingModelConfig = {
   model: string
+  requestFormat: DrawingRequestFormat
   textToImage?: DrawingOperationConfig
   imageToImage?: DrawingOperationConfig
 }
@@ -68,6 +71,7 @@ const NANO_BANANA_2_LITE_ASPECT_RATIOS = [
 export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
   {
     model: 'gpt-image-2-official',
+    requestFormat: 'openai-image',
     textToImage: {
       aspectRatios: GPT_IMAGE_2_ASPECT_RATIOS,
       resolutions: ['1k', '2k', '4k'],
@@ -86,6 +90,7 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
   },
   {
     model: 'nano-banana-2-lite',
+    requestFormat: 'gemini-generate-content',
     textToImage: {
       aspectRatios: NANO_BANANA_2_LITE_ASPECT_RATIOS,
       resolutions: ['1k'],
