@@ -10,14 +10,19 @@ export interface DrawingPrompt {
   sourceUrl?: string
 }
 
-export const DRAWING_PROMPTS: DrawingPrompt[] = collectedPrompts.map((item) => ({
-  ...item,
-  tags: [...item.tags],
-  coverUrl: item.coverUrl || undefined,
-  sourceUrl: item.sourceUrl || undefined,
-}))
+export const DRAWING_PROMPTS: DrawingPrompt[] = collectedPrompts.map(
+  (item) => ({
+    ...item,
+    tags: [...item.tags],
+    coverUrl: item.coverUrl || undefined,
+    sourceUrl: item.sourceUrl || undefined,
+  })
+)
 
-export function filterDrawingPrompts(query: string, tag: string): DrawingPrompt[] {
+export function filterDrawingPrompts(
+  query: string,
+  tag: string
+): DrawingPrompt[] {
   const normalized = query.trim().toLowerCase()
   return DRAWING_PROMPTS.filter((item) => {
     const searchable = [
@@ -27,7 +32,9 @@ export function filterDrawingPrompts(query: string, tag: string): DrawingPrompt[
       ...item.tags,
       item.coverUrl ?? '',
       item.sourceUrl ?? '',
-    ].join(' ').toLowerCase()
+    ]
+      .join(' ')
+      .toLowerCase()
     return (
       !searchable.includes('nsfw') &&
       (!tag || item.tags.includes(tag)) &&
