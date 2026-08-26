@@ -12,16 +12,16 @@ test('filters available models through the drawing whitelist', () => {
   assert.deepEqual(
     filterDrawingModels([
       'text-only',
-      'gpt-image-2-official',
+      'gpt-image-2',
       'nano-banana-2-lite',
       'unconfigured-image-model',
     ]),
-    ['gpt-image-2-official', 'nano-banana-2-lite']
+    ['gpt-image-2', 'nano-banana-2-lite']
   )
 })
 
 test('keeps text-to-image and image-to-image configuration independent', () => {
-  const config = getDrawingModelConfig('gpt-image-2-official')
+  const config = getDrawingModelConfig('gpt-image-2')
 
   assert.equal(config, DRAWING_MODEL_CONFIGS[0])
   assert.equal(config?.textToImage?.input, undefined)

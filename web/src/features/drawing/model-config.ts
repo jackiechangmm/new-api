@@ -70,7 +70,7 @@ const NANO_BANANA_2_LITE_ASPECT_RATIOS = [
 
 export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
   {
-    model: 'gpt-image-2-official',
+    model: 'gpt-image-2',
     requestFormat: 'openai-image',
     textToImage: {
       aspectRatios: GPT_IMAGE_2_ASPECT_RATIOS,
