@@ -406,7 +406,9 @@ func getModelRequest(c *gin.Context) (*ModelRequest, bool, error) {
 		if err != nil {
 			return nil, false, err
 		}
-		modelRequest.Model = req.Model
+		if req.Model != "" {
+			modelRequest.Model = req.Model
+		}
 		modelRequest.Group = req.Group
 		if req.Group != "" {
 			common.SetContextKey(c, constant.ContextKeyTokenGroup, req.Group)

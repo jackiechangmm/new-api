@@ -11,7 +11,7 @@ MANUAL_COMPOSE_FILE = docker-compose.manual.yml
 MANUAL_COMPOSE = docker compose -f $(MANUAL_COMPOSE_FILE)
 MANUAL_BUILD_STAMP = .cache/manual-build.hash
 
-.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web manual-up manual-down manual-reset manual-logs reset-setup test
+.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web manual-up manual-down manual-reset manual-redis-reset manual-logs reset-setup test
 
 all: build-all-web start-api
 
@@ -64,6 +64,10 @@ manual-down:
 manual-reset:
 	@$(MANUAL_COMPOSE) down -v --remove-orphans
 	@$(MAKE) manual-up
+
+manual-redis-reset:
+	@echo "清空人工测试环境 Redis..."
+	@$(MANUAL_COMPOSE) exec -T redis redis-cli FLUSHALL
 
 manual-logs:
 	@$(MANUAL_COMPOSE) logs -f new-api
