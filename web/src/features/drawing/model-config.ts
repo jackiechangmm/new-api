@@ -1,10 +1,10 @@
 export type DrawingInputConfig = {
   formats: string[]
-  maxImages: number
-  maxImageBytes: number
-  maxTotalBytes: number
-  maxWidth: number
-  maxHeight: number
+  maxImages?: number
+  maxImageBytes?: number
+  maxTotalBytes?: number
+  maxWidth?: number
+  maxHeight?: number
 }
 
 export type DrawingOperationConfig = {
@@ -48,6 +48,22 @@ const GPT_IMAGE_2_INPUT: DrawingInputConfig = {
   maxWidth: 4096,
   maxHeight: 4096,
 }
+const NANO_BANANA_2_LITE_ASPECT_RATIOS = [
+  '1:1',
+  '1:4',
+  '4:1',
+  '1:8',
+  '8:1',
+  '2:3',
+  '3:2',
+  '3:4',
+  '4:3',
+  '4:5',
+  '5:4',
+  '9:16',
+  '16:9',
+  '21:9',
+]
 
 export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
   {
@@ -66,6 +82,24 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
       maxOutputs: 4,
       outputFormats: ['png'],
       input: GPT_IMAGE_2_INPUT,
+    },
+  },
+  {
+    model: 'nano-banana-2-lite',
+    textToImage: {
+      aspectRatios: NANO_BANANA_2_LITE_ASPECT_RATIOS,
+      resolutions: ['1k'],
+      maxOutputs: 1,
+      outputFormats: ['png'],
+    },
+    imageToImage: {
+      aspectRatios: NANO_BANANA_2_LITE_ASPECT_RATIOS,
+      resolutions: ['1k'],
+      maxOutputs: 1,
+      outputFormats: ['png'],
+      input: {
+        formats: ['image/jpeg', 'image/png'],
+      },
     },
   },
 ]

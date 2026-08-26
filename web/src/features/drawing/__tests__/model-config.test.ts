@@ -13,9 +13,10 @@ test('filters available models through the drawing whitelist', () => {
     filterDrawingModels([
       'text-only',
       'gpt-image-2-official',
+      'nano-banana-2-lite',
       'unconfigured-image-model',
     ]),
-    ['gpt-image-2-official']
+    ['gpt-image-2-official', 'nano-banana-2-lite']
   )
 })
 
@@ -29,6 +30,19 @@ test('keeps text-to-image and image-to-image configuration independent', () => {
     'image/png',
     'image/webp',
   ])
+})
+
+test('configures Nano Banana Lite for one 1K output and JPEG/PNG edits', () => {
+  const config = getDrawingModelConfig('nano-banana-2-lite')
+
+  assert.deepEqual(config?.textToImage?.resolutions, ['1k'])
+  assert.equal(config?.textToImage?.qualities, undefined)
+  assert.equal(config?.textToImage?.maxOutputs, 1)
+  assert.deepEqual(config?.imageToImage?.input?.formats, [
+    'image/jpeg',
+    'image/png',
+  ])
+  assert.equal(config?.imageToImage?.input?.maxImages, undefined)
 })
 
 test('uses a single option as a fixed value and rejects unsupported values', () => {

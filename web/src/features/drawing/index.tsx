@@ -167,9 +167,16 @@ export function Drawing() {
     void getDrawingModels(group)
       .then((nextModels) => {
         setModels(nextModels)
-        setModel((current) =>
-          nextModels.includes(current) ? current : (nextModels[0] ?? '')
-        )
+        setModel((current) => {
+          const nextModel = nextModels.includes(current)
+            ? current
+            : (nextModels[0] ?? '')
+          if (nextModel !== current) {
+            setReferenceImages([])
+            setReferenceError('')
+          }
+          return nextModel
+        })
       })
       .catch(() => setError(t('Failed to load image models')))
   }, [group, t])
@@ -434,7 +441,8 @@ export function Drawing() {
                     !hasEditModel ||
                     isGenerating ||
                     !referenceInput ||
-                    referenceImages.length >= referenceInput.maxImages
+                    referenceImages.length >=
+                      (referenceInput.maxImages ?? Infinity)
                   }
                   onClick={() => fileInputRef.current?.click()}
                   size='icon'
@@ -490,7 +498,11 @@ export function Drawing() {
               <DrawingSelect
                 ariaLabel={t('Image model')}
                 disabled={!models.length}
-                onChange={setModel}
+                onChange={(nextModel) => {
+                  setModel(nextModel)
+                  setReferenceImages([])
+                  setReferenceError('')
+                }}
                 options={models}
                 value={model}
               />

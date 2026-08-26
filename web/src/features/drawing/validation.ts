@@ -9,12 +9,14 @@ export const DEFAULT_REFERENCE_INPUT_CONFIG: DrawingInputConfig = {
   maxHeight: 4096,
 }
 
-export const MAX_REFERENCE_IMAGES = DEFAULT_REFERENCE_INPUT_CONFIG.maxImages
-export const MAX_REFERENCE_BYTES = DEFAULT_REFERENCE_INPUT_CONFIG.maxTotalBytes
-export const MAX_REFERENCE_DIMENSION = DEFAULT_REFERENCE_INPUT_CONFIG.maxWidth
-export const REFERENCE_IMAGE_TYPES = new Set(
-  DEFAULT_REFERENCE_INPUT_CONFIG.formats
-)
+export const MAX_REFERENCE_IMAGES = 4
+export const MAX_REFERENCE_BYTES = 20 * 1024 * 1024
+export const MAX_REFERENCE_DIMENSION = 4096
+export const REFERENCE_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+])
 
 export type ReferenceImageError =
   | 'unsupported'
@@ -29,9 +31,18 @@ export async function validateReferenceImage(
   config: DrawingInputConfig = DEFAULT_REFERENCE_INPUT_CONFIG
 ): Promise<ReferenceImageError | undefined> {
   if (!config.formats.includes(file.type)) return 'unsupported'
-  if (currentCount >= config.maxImages) return 'too-many'
-  if (file.size > config.maxImageBytes) return 'too-large'
-  if (currentBytes + file.size > config.maxTotalBytes) return 'too-large'
+  if (config.maxImages !== undefined && currentCount >= config.maxImages) {
+    return 'too-many'
+  }
+  if (config.maxImageBytes !== undefined && file.size > config.maxImageBytes) {
+    return 'too-large'
+  }
+  if (
+    config.maxTotalBytes !== undefined &&
+    currentBytes + file.size > config.maxTotalBytes
+  ) {
+    return 'too-large'
+  }
 
   const url = URL.createObjectURL(file)
   try {
@@ -48,8 +59,8 @@ export async function validateReferenceImage(
       }
     )
     if (
-      dimensions.width > config.maxWidth ||
-      dimensions.height > config.maxHeight
+      dimensions.width > (config.maxWidth ?? Number.POSITIVE_INFINITY) ||
+      dimensions.height > (config.maxHeight ?? Number.POSITIVE_INFINITY)
     ) {
       return 'too-wide'
     }
