@@ -129,9 +129,7 @@ function Hero() {
           Bululu
         </h1>
         <p className='max-w-3xl text-base leading-relaxed text-[#282825]/80 sm:text-lg dark:text-[#E9E7DF]/80'>
-          {t(
-            'Bululu 以统一协议中转为起点，聚合全球算力与高可用上游，无缝打通商业级实拍渲染与非线性多模态编排，让每一次创作迸发直接沉淀为可用资产。'
-          )}
+          {t('让每一次创作迸发直接沉淀为可用资产')}
         </p>
         <div className='flex flex-wrap items-center justify-center gap-3 font-sans text-sm font-bold'>
           <a
