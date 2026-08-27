@@ -31,7 +31,6 @@ import {
   type KeyboardEvent,
   type PointerEvent,
   type ReactNode,
-  useEffect,
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -118,44 +117,31 @@ function SectionHeading(props: {
 
 function Hero() {
   const { t } = useTranslation()
-  const text = t('大模型智能中转与数字资产生成的原力枢纽。')
-  const [typed, setTyped] = useState('')
-
-  useEffect(() => {
-    setTyped('')
-    let index = 0
-    const timer = window.setInterval(() => {
-      index += 1
-      setTyped(text.slice(0, index))
-      if (index >= text.length) window.clearInterval(timer)
-    }, 45)
-    return () => window.clearInterval(timer)
-  }, [text])
 
   return (
     <section className='bululu-home-hero'>
-      <div className='bululu-home-hero-content space-y-8 px-6 py-10 sm:px-12 sm:py-16 lg:px-20 lg:py-20'>
-        <div className='flex flex-wrap items-center justify-between gap-4'>
-          <div className='bululu-home-outline inline-flex items-center gap-2 bg-[#FAF9F5] px-3 py-2 font-mono text-xs font-bold text-[#282825] dark:bg-[#282826] dark:text-[#E9E7DF]'>
-            <span className='size-2 bg-[#E85F1A]' aria-hidden='true' />
-            {t('NEXT-GEN AI ASSET ENGINE')}
-          </div>
+      <div className='bululu-home-hero-content flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center space-y-8 px-6 py-16 text-center sm:px-12 sm:py-24 lg:px-20 lg:py-28'>
+        <div className='bululu-home-outline inline-flex items-center gap-2 bg-[#FAF9F5] px-3 py-2 font-mono text-xs font-bold text-[#282825] dark:bg-[#282826] dark:text-[#E9E7DF]'>
+          <span className='size-2 bg-[#E85F1A]' aria-hidden='true' />
+          {t('NEXT-GEN AI ASSET ENGINE')}
         </div>
-        <h1 className='min-h-32 max-w-5xl text-[clamp(2.25rem,6vw,4rem)] leading-[1.08] font-bold text-[#282825] dark:text-[#E9E7DF]'>
-          {typed}
-          <span
-            className='ml-1 inline-block h-[1em] w-1 animate-pulse bg-[#E85F1A] align-[-0.12em]'
-            aria-hidden='true'
-          />
+        <h1 className='text-[clamp(2.5rem,8vw,5.5rem)] font-bold tracking-tight text-[#282825] dark:text-[#E9E7DF]'>
+          Bululu
         </h1>
-        <p className='max-w-3xl text-base leading-relaxed text-[#282825]/80 dark:text-[#E9E7DF]/80'>
+        <p className='max-w-3xl text-base leading-relaxed text-[#282825]/80 sm:text-lg dark:text-[#E9E7DF]/80'>
           {t(
             'Bululu 以统一协议中转为起点，聚合全球算力与高可用上游，无缝打通商业级实拍渲染与非线性多模态编排，让每一次创作迸发直接沉淀为可用资产。'
           )}
         </p>
-        <div className='flex flex-wrap gap-3 font-sans text-sm font-bold'>
+        <div className='flex flex-wrap items-center justify-center gap-3 font-sans text-sm font-bold'>
           <a
             href='#section-api'
+            onClick={(event) => {
+              event.preventDefault()
+              document
+                .getElementById('section-api')
+                ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }}
             className='inline-flex h-11 items-center gap-2 bg-[#282825] px-5 text-[#E9E7DF] transition-colors hover:bg-[#E85F1A]'
           >
             {t('探索核心能力矩阵')} <ArrowDown size={16} aria-hidden='true' />
@@ -198,7 +184,7 @@ function Marquee() {
 function RoutingSection() {
   const { t } = useTranslation()
   return (
-    <section id='section-api' className='bululu-home-section'>
+    <section id='section-api' className='bululu-home-section scroll-mt-16'>
       <SectionHeading
         eyebrow='[CAPABILITY 01 // MULTI-UPSTREAM INTELLIGENT ROUTING]'
         title='模型自动路由到最佳上游 · 零感秒级容灾'

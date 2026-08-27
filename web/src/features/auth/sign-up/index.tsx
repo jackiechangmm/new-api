@@ -50,6 +50,12 @@ export function SignUp() {
 
         <SignUpForm />
 
+        <p className='text-destructive text-xs leading-relaxed sm:text-sm'>
+          {t(
+            'This website does not provide OpenAI, Anthropic, or Google services to users in mainland China. Users in mainland China must stop accessing this website.'
+          )}
+        </p>
+
         <TermsFooter
           variant='sign-up'
           status={status}
