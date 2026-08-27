@@ -142,21 +142,46 @@ func (a *Adaptor) DoRequest(c *gin.Context, info *relaycommon.RelayInfo, body io
 	return channel.DoApiRequest(a, c, info, body)
 }
 
+func (r submitResponse) taskID() (string, error) {
+	var task submitTask
+	switch common.GetJsonType(r.Data) {
+	case "object":
+		if err := common.Unmarshal(r.Data, &task); err != nil {
+			return "", err
+		}
+	case "array":
+		var tasks []submitTask
+		if err := common.Unmarshal(r.Data, &tasks); err != nil {
+			return "", err
+		}
+		if len(tasks) == 0 {
+			return "", errors.New("APIMart task submission returned no task")
+		}
+		task = tasks[0]
+	default:
+		return "", errors.New("APIMart task submission returned invalid data")
+	}
+	if task.ID != "" {
+		return task.ID, nil
+	}
+	if task.TaskID != "" {
+		return task.TaskID, nil
+	}
+	return "", errors.New("APIMart task submission returned no task ID")
+}
+
 func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (any, *types.NewAPIError) {
 	defer service.CloseResponseBodyGracefully(resp)
 	var submitted submitResponse
 	if err := common.DecodeJson(resp.Body, &submitted); err != nil {
 		return nil, types.NewError(err, types.ErrorCodeBadResponseBody)
 	}
-	if submitted.Error != nil || len(submitted.Data) == 0 {
+	if submitted.Error != nil {
 		return nil, upstreamError("APIMart task submission failed", submitted.Error)
 	}
-	taskID := submitted.Data[0].ID
-	if taskID == "" {
-		taskID = submitted.Data[0].TaskID
-	}
-	if taskID == "" {
-		return nil, upstreamError("APIMart task submission returned no task ID", nil)
+	taskID, err := submitted.taskID()
+	if err != nil {
+		return nil, types.NewError(err, types.ErrorCodeBadResponseBody)
 	}
 	deadline := time.NewTimer(pollTimeout)
 	defer deadline.Stop()

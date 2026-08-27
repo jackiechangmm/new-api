@@ -1,5 +1,7 @@
 package apimart
 
+import "encoding/json"
+
 type imageRequest struct {
 	Model             string   `json:"model"`
 	Prompt            string   `json:"prompt"`
@@ -17,12 +19,14 @@ type imageRequest struct {
 }
 
 type submitResponse struct {
-	Code int `json:"code"`
-	Data []struct {
-		ID     string `json:"id"`
-		TaskID string `json:"task_id"`
-	} `json:"data"`
-	Error *apiError `json:"error"`
+	Code  int             `json:"code"`
+	Data  json.RawMessage `json:"data"`
+	Error *apiError       `json:"error"`
+}
+
+type submitTask struct {
+	ID     string `json:"id"`
+	TaskID string `json:"task_id"`
 }
 
 type taskResponse struct {

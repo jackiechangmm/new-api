@@ -19,6 +19,26 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestSubmitResponseTaskIDSupportsGPTAndGrokEnvelopes(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want string
+	}{
+		{name: "GPT array", body: `{"code":200,"data":[{"task_id":"task-gpt"}]}`, want: "task-gpt"},
+		{name: "Grok object", body: `{"code":202,"data":{"id":"task-grok","status":"pending"}}`, want: "task-grok"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var response submitResponse
+			require.NoError(t, common.Unmarshal([]byte(tt.body), &response))
+			taskID, err := response.taskID()
+			require.NoError(t, err)
+			assert.Equal(t, tt.want, taskID)
+		})
+	}
+}
+
 func TestConvertGrokImagineRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())
