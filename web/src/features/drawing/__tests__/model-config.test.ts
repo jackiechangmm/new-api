@@ -18,7 +18,12 @@ test('filters available models through the drawing whitelist', () => {
       'nano-banana-2-lite',
       'unconfigured-image-model',
     ]),
-    ['grok-imagine-image-2.0', 'gpt-image-2', 'nano-banana-2', 'nano-banana-2-lite']
+    [
+      'gpt-image-2',
+      'nano-banana-2',
+      'nano-banana-2-lite',
+      'grok-imagine-image-2.0',
+    ]
   )
 })
 
@@ -35,7 +40,7 @@ test('configures Grok Imagine 2 for generation and up to three reference images'
 test('keeps text-to-image and image-to-image configuration independent', () => {
   const config = getDrawingModelConfig('gpt-image-2')
 
-  assert.equal(config, DRAWING_MODEL_CONFIGS[1])
+  assert.equal(config, DRAWING_MODEL_CONFIGS[0])
   assert.equal(config?.textToImage?.input, undefined)
   assert.deepEqual(config?.imageToImage?.input?.formats, [
     'image/jpeg',

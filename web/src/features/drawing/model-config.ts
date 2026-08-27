@@ -93,24 +93,6 @@ const NANO_BANANA_2_LITE_ASPECT_RATIOS = [
 
 export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
   {
-    model: 'grok-imagine-image-2.0',
-    requestFormat: 'openai-image',
-    textToImage: {
-      aspectRatios: GROK_IMAGINE_2_ASPECT_RATIOS,
-      resolutions: ['1k', '2k'],
-      qualities: ['low', 'medium'],
-      maxOutputs: 10,
-      outputFormats: ['png'],
-    },
-    imageToImage: {
-      aspectRatios: GROK_IMAGINE_2_ASPECT_RATIOS,
-      resolutions: ['1k', '2k'],
-      maxOutputs: 10,
-      outputFormats: ['png'],
-      input: GROK_IMAGINE_2_INPUT,
-    },
-  },
-  {
     model: 'gpt-image-2',
     requestFormat: 'openai-image',
     textToImage: {
@@ -167,6 +149,24 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
       input: {
         formats: ['image/jpeg', 'image/png'],
       },
+    },
+  },
+  {
+    model: 'grok-imagine-image-2.0',
+    requestFormat: 'openai-image',
+    textToImage: {
+      aspectRatios: GROK_IMAGINE_2_ASPECT_RATIOS,
+      resolutions: ['1k', '2k'],
+      qualities: ['low', 'medium'],
+      maxOutputs: 10,
+      outputFormats: ['png'],
+    },
+    imageToImage: {
+      aspectRatios: GROK_IMAGINE_2_ASPECT_RATIOS,
+      resolutions: ['1k', '2k'],
+      maxOutputs: 10,
+      outputFormats: ['png'],
+      input: GROK_IMAGINE_2_INPUT,
     },
   },
 ]
