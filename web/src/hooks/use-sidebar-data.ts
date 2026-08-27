@@ -34,6 +34,7 @@ import {
   Users,
   Video,
   Wallet,
+  WandSparkles,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
@@ -59,6 +60,11 @@ export function useSidebarData(): SidebarData {
             title: t('Conversation'),
             url: '/playground/chat',
             icon: FlaskConical,
+          },
+          {
+            title: t('Drawing Plaza'),
+            url: '/playground/drawing',
+            icon: WandSparkles,
           },
           {
             title: t('External Chat'),

@@ -96,7 +96,7 @@ Do NOT directly import or call `encoding/json` in business code. `json.RawMessag
 
 - 标准同步 HTTP Relay 路由使用 `TokenOrUserAuth`，同时支持 API token 和有效的面板 Access Token。
 - 会话请求通过 `SetupSessionRelayContext` 使用不落库的虚拟 Token 上下文，计费来自用户钱包或订阅，真实 API token 额度不变；会话 JWT 在进入上游前移除。
-- `/v1/realtime`、模型发现、直接 `/v1beta`、异步任务提交/查询、Suno、Midjourney 和未实现兼容接口保持 `TokenAuth`；`/v1/videos/:task_id/content` 的媒体下载另支持用户会话。
+- `/v1/realtime`、模型发现、异步任务提交/查询、Suno、Midjourney 和未实现兼容接口保持 `TokenAuth`；原生 Gemini `/v1beta/models/*` 同步 Relay 与标准 `/v1` HTTP Relay 一样支持用户会话；`/v1/videos/:task_id/content` 的媒体下载另支持用户会话。
 - 会话 Relay 的请求体 `group` 必须属于用户可用分组；Playground 使用 `/v1/chat/completions`，旧 `/pg/chat/completions` 已停用。
 
 - When implementing a new channel, confirm whether the provider supports `StreamOptions`; if supported, add the channel to `streamSupportedChannels`.
@@ -170,7 +170,7 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 - 后端测试：`make test`。
 - 前端构建与预览：`make build-web`；在 `web/` 执行 `bun run preview`。
 - 开发服务：`make dev-api-rebuild`、`make dev-web`。
-- 人工测试：`make manual-up`（启动或更新，http://127.0.0.1:5174）；`make manual-down`、`make manual-reset`、`make manual-logs`。
+- 人工测试：`make manual-up`（启动或更新，http://127.0.0.1:5174）；`make manual-down`、`make manual-reset`、`make manual-redis-reset`、`make manual-logs`。
 
 ### Bululu Rules
 - 本节是本 fork 的最高优先级规则；与继承的环境兼容性要求冲突时，以本节为准。

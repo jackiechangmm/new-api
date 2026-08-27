@@ -11,7 +11,7 @@ MANUAL_COMPOSE_FILE = docker-compose.manual.yml
 MANUAL_COMPOSE = docker compose -f $(MANUAL_COMPOSE_FILE)
 MANUAL_BUILD_STAMP = .cache/manual-build.hash
 
-.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web manual-up manual-down manual-reset manual-logs reset-setup test
+.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web manual-up manual-down manual-reset manual-redis-reset manual-logs reset-setup test
 
 all: build-all-web start-api
 
@@ -43,6 +43,10 @@ dev-web:
 dev: dev-api dev-web
 
 manual-up:
+	@test -n "$$(find .cache/drawing-covers -maxdepth 1 -type f -print -quit 2>/dev/null)" || { \
+		echo "人工测试封面缓存为空，请先执行：cd web && bun run drawing:collect"; \
+		exit 1; \
+	}
 	@set -e; \
 	mkdir -p .cache; \
 	source_hash="$$(git ls-files -co --exclude-standard -z -- . ':(exclude)*.md' ':(exclude).github/**' ':(exclude)docs/**' ':(exclude)Makefile' ':(exclude)makefile' ':(exclude)docker-compose*.yml' ':(exclude).env.manual*' | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | awk '{print $$1}')"; \
@@ -64,6 +68,10 @@ manual-down:
 manual-reset:
 	@$(MANUAL_COMPOSE) down -v --remove-orphans
 	@$(MAKE) manual-up
+
+manual-redis-reset:
+	@echo "清空人工测试环境 Redis..."
+	@$(MANUAL_COMPOSE) exec -T redis redis-cli FLUSHALL
 
 manual-logs:
 	@$(MANUAL_COMPOSE) logs -f new-api

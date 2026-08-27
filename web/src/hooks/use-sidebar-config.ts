@@ -40,6 +40,7 @@ const DEFAULT_SIDEBAR_MODULES: SidebarModulesAdminConfig = {
   chat: {
     enabled: true,
     playground: true,
+    drawing: true,
     chat: true,
     'digital-human': true,
   },
@@ -97,6 +98,7 @@ const mergeWithDefaultSidebarModules = (
  */
 const URL_TO_CONFIG_MAP: Record<string, { section: string; module: string }> = {
   '/playground/chat': { section: 'chat', module: 'playground' },
+  '/playground/drawing': { section: 'chat', module: 'drawing' },
   '/playground': { section: 'chat', module: 'playground' },
   '/digital-human': { section: 'chat', module: 'digital-human' },
   '/dashboard': { section: 'console', module: 'detail' },
