@@ -71,6 +71,11 @@ export function SidebarModulesCard() {
           title: t('External Chat'),
           description: t('Redirect to a configured external chat client'),
         },
+        {
+          key: 'digital-human',
+          title: t('数字人口播'),
+          description: t('上传数字人素材并输入文案生成口播视频。'),
+        },
       ],
     },
     {
