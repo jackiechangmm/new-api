@@ -153,7 +153,7 @@ export function RechargeFormCard({
             {/* Preset Amounts Skeleton */}
             <div className='space-y-3'>
               <Skeleton className='h-3 w-16' />
-              <div className='grid grid-cols-2 gap-3 sm:grid-cols-4'>
+              <div className='grid grid-cols-2 gap-3'>
                 {Array.from({ length: 8 }, (_, index) => `preset-${index}`).map(
                   (key) => (
                     <Skeleton key={key} className='h-[72px] rounded-lg' />
@@ -224,7 +224,7 @@ export function RechargeFormCard({
                   <Label className='text-muted-foreground text-xs font-medium tracking-wider uppercase'>
                     {t('Amount')}
                   </Label>
-                  <div className='grid grid-cols-2 gap-1.5 sm:gap-3 md:grid-cols-4'>
+                  <div className='grid grid-cols-2 gap-1.5 sm:gap-3'>
                     {presetAmounts.map((preset) => {
                       const discount =
                         preset.discount ||
