@@ -315,14 +315,12 @@ func uploadEditImages(c *gin.Context, info *relaycommon.RelayInfo) ([]string, st
 	if len(files) == 0 {
 		return nil, "", invalidRequest(errors.New("APIMart image edits require at least one image"))
 	}
-	if len(files) > 16 {
-		maxImages := 16
-		if request, ok := info.Request.(*dto.ImageRequest); ok && request.Model == dto.APIMartGrokImagineModel {
-			maxImages = 3
-		}
-		if len(files) > maxImages {
-			return nil, "", invalidRequest(fmt.Errorf("APIMart image edits allow at most %d images", maxImages))
-		}
+	maxImages := 16
+	if request, ok := info.Request.(*dto.ImageRequest); ok && request.Model == dto.APIMartGrokImagineModel {
+		maxImages = 3
+	}
+	if len(files) > maxImages {
+		return nil, "", invalidRequest(fmt.Errorf("APIMart image edits allow at most %d images", maxImages))
 	}
 	urls := make([]string, 0, len(files))
 	for _, file := range files {

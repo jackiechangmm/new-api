@@ -116,6 +116,26 @@ func TestDoResponseHonorsCancelledRequestContext(t *testing.T) {
 	assert.Equal(t, http.StatusGatewayTimeout, apiErr.StatusCode)
 }
 
+func TestUploadEditImagesRejectsFourthGrokReference(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request = httptest.NewRequest(http.MethodPost, "/v1/images/edits", nil)
+	c.Request.MultipartForm = &multipart.Form{File: map[string][]*multipart.FileHeader{
+		"image": {
+			{Filename: "one.png"},
+			{Filename: "two.png"},
+			{Filename: "three.png"},
+			{Filename: "four.png"},
+		},
+	}}
+	request := &dto.ImageRequest{Model: dto.APIMartGrokImagineModel}
+
+	_, _, err := uploadEditImages(c, &relaycommon.RelayInfo{Request: request})
+
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "at most 3 images")
+}
+
 func TestSelectImageFilesHonorsFieldPriorityAndIndexOrder(t *testing.T) {
 	form := &multipart.Form{File: map[string][]*multipart.FileHeader{
 		"image[10]": {{Filename: "ten.png"}},
