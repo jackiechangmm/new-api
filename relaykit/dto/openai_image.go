@@ -16,9 +16,15 @@ import (
 const MaxImageN = 128
 
 const APIMartImageModel = "gpt-image-2-official"
+const APIMartGrokImagineModel = "grok-imagine-image-2.0"
+
+func IsAPIMartImageModel(model string) bool {
+	return model == APIMartImageModel || model == APIMartGrokImagineModel
+}
 
 type APIMartImageOptions struct {
 	Size         string
+	AspectRatio  string
 	Resolution   string
 	Quality      string
 	OutputTokens int
@@ -61,6 +67,12 @@ var apimartPixelSizes = map[string][2]string{
 }
 
 func (i ImageRequest) ValidateAPIMartImageRequest() error {
+	if !IsAPIMartImageModel(i.Model) {
+		return fmt.Errorf("unsupported APIMart image model %q", i.Model)
+	}
+	if i.Model == APIMartGrokImagineModel {
+		return i.validateAPIMartGrokImagineRequest()
+	}
 	if _, err := i.APIMartImageOptions(); err != nil {
 		return err
 	}
@@ -100,7 +112,64 @@ func (i ImageRequest) ValidateAPIMartImageRequest() error {
 	return nil
 }
 
+func (i ImageRequest) validateAPIMartGrokImagineRequest() error {
+	prompt := strings.TrimSpace(i.Prompt)
+	if prompt == "" || len(prompt) > 8000 {
+		return fmt.Errorf("APIMart prompt must be between 1 and 8000 characters")
+	}
+	if i.Stream != nil && *i.Stream {
+		return fmt.Errorf("APIMart does not support image streaming")
+	}
+	if i.ResponseFormat != "" && i.ResponseFormat != "url" && i.ResponseFormat != "b64_json" {
+		return fmt.Errorf("invalid APIMart response_format")
+	}
+	if i.N != nil && (*i.N < 1 || *i.N > 10) {
+		return fmt.Errorf("APIMart n must be an integer between 1 and 10")
+	}
+	if i.Quality != "" && i.Quality != "low" && i.Quality != "medium" {
+		return fmt.Errorf("invalid APIMart quality %q", i.Quality)
+	}
+	options, err := i.APIMartImageOptions()
+	if err != nil {
+		return err
+	}
+	if options.Resolution != "1k" && options.Resolution != "2k" {
+		return fmt.Errorf("invalid APIMart resolution %q", options.Resolution)
+	}
+	return nil
+}
+
 func (i ImageRequest) APIMartImageOptions() (APIMartImageOptions, error) {
+	if i.Model == APIMartGrokImagineModel {
+		aspectRatio := strings.ToLower(strings.TrimSpace(i.Size))
+		outputResolution := "1k"
+		if parts := strings.Fields(aspectRatio); len(parts) > 0 {
+			if len(parts) > 2 || (len(parts) == 2 && parts[1] != "1k" && parts[1] != "2k") {
+				return APIMartImageOptions{}, fmt.Errorf("invalid APIMart resolution in size %q", i.Size)
+			}
+			aspectRatio = parts[0]
+			if len(parts) == 2 {
+				outputResolution = parts[1]
+			}
+		}
+		if aspectRatio == "" {
+			aspectRatio = "auto"
+		}
+		validRatios := map[string]bool{
+			"auto": true, "1:1": true, "3:4": true, "4:3": true, "9:16": true, "16:9": true,
+			"2:3": true, "3:2": true, "9:19.5": true, "19.5:9": true, "9:20": true, "20:9": true,
+			"1:2": true, "2:1": true,
+		}
+		if !validRatios[aspectRatio] {
+			return APIMartImageOptions{}, fmt.Errorf("invalid APIMart aspect ratio %q", i.Size)
+		}
+		n := uint(1)
+		if i.N != nil {
+			n = *i.N
+		}
+		return APIMartImageOptions{AspectRatio: aspectRatio, Resolution: outputResolution, Quality: strings.ToLower(strings.TrimSpace(i.Quality)), OutputTokens: 1584 * int(n)}, nil
+	}
+
 	size := strings.ToLower(strings.TrimSpace(i.Size))
 	resolution := "1k"
 	if size == "" {

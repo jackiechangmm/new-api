@@ -301,7 +301,7 @@ func GetAndValidOpenAIImageRequest(c *gin.Context, relayMode int) (*dto.ImageReq
 		}
 	}
 
-	if imageRequest.Model == dto.APIMartImageModel {
+	if dto.IsAPIMartImageModel(imageRequest.Model) {
 		if relayMode == relayconstant.RelayModeImagesEdits && !strings.Contains(c.GetHeader("Content-Type"), "multipart/form-data") {
 			return nil, errors.New("APIMart image edits require multipart/form-data")
 		}

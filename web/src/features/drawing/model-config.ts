@@ -51,6 +51,29 @@ const GPT_IMAGE_2_INPUT: DrawingInputConfig = {
   maxWidth: 4096,
   maxHeight: 4096,
 }
+const GROK_IMAGINE_2_ASPECT_RATIOS = [
+  'auto',
+  '1:1',
+  '3:4',
+  '4:3',
+  '9:16',
+  '16:9',
+  '2:3',
+  '3:2',
+  '9:19.5',
+  '19.5:9',
+  '9:20',
+  '20:9',
+  '1:2',
+  '2:1',
+]
+const GROK_IMAGINE_2_INPUT: DrawingInputConfig = {
+  formats: ['image/jpeg', 'image/png', 'image/webp'],
+  maxImages: 3,
+  maxImageBytes: 20 * 1024 * 1024,
+  maxTotalBytes: 20 * 1024 * 1024,
+}
+
 const NANO_BANANA_2_LITE_ASPECT_RATIOS = [
   '1:1',
   '1:4',
@@ -126,6 +149,24 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
       input: {
         formats: ['image/jpeg', 'image/png'],
       },
+    },
+  },
+  {
+    model: 'grok-imagine-image-2.0',
+    requestFormat: 'openai-image',
+    textToImage: {
+      aspectRatios: GROK_IMAGINE_2_ASPECT_RATIOS,
+      resolutions: ['1k', '2k'],
+      qualities: ['low', 'medium'],
+      maxOutputs: 10,
+      outputFormats: ['png'],
+    },
+    imageToImage: {
+      aspectRatios: GROK_IMAGINE_2_ASPECT_RATIOS,
+      resolutions: ['1k', '2k'],
+      maxOutputs: 10,
+      outputFormats: ['png'],
+      input: GROK_IMAGINE_2_INPUT,
     },
   },
 ]

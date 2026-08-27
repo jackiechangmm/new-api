@@ -19,6 +19,45 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestSubmitResponseTaskIDSupportsGPTAndGrokEnvelopes(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want string
+	}{
+		{name: "GPT array", body: `{"code":200,"data":[{"task_id":"task-gpt"}]}`, want: "task-gpt"},
+		{name: "Grok object", body: `{"code":202,"data":{"id":"task-grok","status":"pending"}}`, want: "task-grok"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var response submitResponse
+			require.NoError(t, common.Unmarshal([]byte(tt.body), &response))
+			taskID, err := response.taskID()
+			require.NoError(t, err)
+			assert.Equal(t, tt.want, taskID)
+		})
+	}
+}
+
+func TestConvertGrokImagineRequest(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request = httptest.NewRequest(http.MethodPost, "/v1/images/generations", nil)
+	n := uint(10)
+	request := dto.ImageRequest{Model: dto.APIMartGrokImagineModel, Prompt: "a poster", Size: "16:9 2k", Quality: "medium", N: &n}
+
+	info := &relaycommon.RelayInfo{ChannelMeta: &relaycommon.ChannelMeta{UpstreamModelName: dto.APIMartGrokImagineModel}}
+	converted, err := (&Adaptor{}).ConvertImageRequest(c, info, request)
+	require.NoError(t, err)
+	body, ok := converted.(*imageRequest)
+	require.True(t, ok)
+	assert.Equal(t, dto.APIMartGrokImagineModel, body.Model)
+	assert.Equal(t, "16:9", body.AspectRatio)
+	assert.Equal(t, "2k", body.Resolution)
+	assert.Equal(t, "medium", body.Quality)
+	assert.Equal(t, uint(10), *body.N)
+}
+
 func TestConvertImageRequestUsesControlledSize(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())

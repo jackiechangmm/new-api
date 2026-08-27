@@ -98,10 +98,13 @@ func ImageHelper(c *gin.Context, info *relaycommon.RelayInfo) (newAPIError *type
 		httpResp = resp.(*http.Response)
 		info.IsStream = info.IsStream || strings.HasPrefix(httpResp.Header.Get("Content-Type"), "text/event-stream")
 		if httpResp.StatusCode != http.StatusOK {
-			if httpResp.StatusCode == http.StatusCreated && info.ApiType == constant.APITypeReplicate {
+			switch {
+			case httpResp.StatusCode == http.StatusAccepted && info.ApiType == constant.APITypeAPIMart:
+				// APIMart 异步图片提交返回 202，Adapter 会继续轮询到终态。
+			case httpResp.StatusCode == http.StatusCreated && info.ApiType == constant.APITypeReplicate:
 				// replicate channel returns 201 Created when using Prefer: wait, treat it as success.
 				httpResp.StatusCode = http.StatusOK
-			} else {
+			default:
 				newAPIError = service.RelayErrorHandler(c.Request.Context(), httpResp, false)
 				// reset status code 重置状态码
 				service.ResetStatusCode(newAPIError, statusCodeMappingStr)

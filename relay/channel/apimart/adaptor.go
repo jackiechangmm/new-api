@@ -24,6 +24,7 @@ import (
 	"github.com/QuantumNous/new-api/relaykit/dto"
 	"github.com/QuantumNous/new-api/relaykit/types"
 	"github.com/QuantumNous/new-api/service"
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,6 +57,16 @@ func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Header, info *rel
 	req.Set("Authorization", "Bearer "+info.ApiKey)
 	req.Set("Content-Type", "application/json")
 	req.Set("Accept", "application/json")
+	model := info.UpstreamModelName
+	if model == "" {
+		if request, ok := info.Request.(*dto.ImageRequest); ok {
+			model = request.Model
+		}
+	}
+	if model == dto.APIMartGrokImagineModel {
+		req.Set("X-APIMart-Response-Version", "2026-07-27")
+		req.Set("Idempotency-Key", uuid.NewString())
+	}
 	return nil
 }
 
@@ -77,7 +88,7 @@ func (a *Adaptor) ConvertImageRequest(c *gin.Context, info *relaycommon.RelayInf
 	if model == "" {
 		model = request.Model
 	}
-	result := &imageRequest{Model: model, Prompt: request.Prompt, Size: options.Size, Resolution: options.Resolution, N: request.N}
+	result := &imageRequest{Model: model, Prompt: request.Prompt, Size: options.Size, AspectRatio: options.AspectRatio, Resolution: options.Resolution, N: request.N}
 	if request.Quality != "" {
 		quality := request.Quality
 		result.Quality = quality
@@ -92,6 +103,9 @@ func (a *Adaptor) ConvertImageRequest(c *gin.Context, info *relaycommon.RelayInf
 		}
 		result.ImageURLs = images
 		result.MaskURL = mask
+		if model == dto.APIMartGrokImagineModel {
+			result.Quality = ""
+		}
 	}
 	return result, nil
 }
@@ -128,17 +142,47 @@ func (a *Adaptor) DoRequest(c *gin.Context, info *relaycommon.RelayInfo, body io
 	return channel.DoApiRequest(a, c, info, body)
 }
 
+func (r submitResponse) taskID() (string, error) {
+	var task submitTask
+	switch common.GetJsonType(r.Data) {
+	case "object":
+		if err := common.Unmarshal(r.Data, &task); err != nil {
+			return "", err
+		}
+	case "array":
+		var tasks []submitTask
+		if err := common.Unmarshal(r.Data, &tasks); err != nil {
+			return "", err
+		}
+		if len(tasks) == 0 {
+			return "", errors.New("APIMart task submission returned no task")
+		}
+		task = tasks[0]
+	default:
+		return "", errors.New("APIMart task submission returned invalid data")
+	}
+	if task.ID != "" {
+		return task.ID, nil
+	}
+	if task.TaskID != "" {
+		return task.TaskID, nil
+	}
+	return "", errors.New("APIMart task submission returned no task ID")
+}
+
 func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (any, *types.NewAPIError) {
 	defer service.CloseResponseBodyGracefully(resp)
 	var submitted submitResponse
 	if err := common.DecodeJson(resp.Body, &submitted); err != nil {
 		return nil, types.NewError(err, types.ErrorCodeBadResponseBody)
 	}
-	if submitted.Error != nil || len(submitted.Data) == 0 || submitted.Data[0].TaskID == "" {
+	if submitted.Error != nil {
 		return nil, upstreamError("APIMart task submission failed", submitted.Error)
 	}
-	taskID := submitted.Data[0].TaskID
-
+	taskID, err := submitted.taskID()
+	if err != nil {
+		return nil, types.NewError(err, types.ErrorCodeBadResponseBody)
+	}
 	deadline := time.NewTimer(pollTimeout)
 	defer deadline.Stop()
 	if err := waitFor(c, 2*time.Second, deadline.C); err != nil {
@@ -272,7 +316,13 @@ func uploadEditImages(c *gin.Context, info *relaycommon.RelayInfo) ([]string, st
 		return nil, "", invalidRequest(errors.New("APIMart image edits require at least one image"))
 	}
 	if len(files) > 16 {
-		return nil, "", invalidRequest(errors.New("APIMart image edits allow at most 16 images"))
+		maxImages := 16
+		if request, ok := info.Request.(*dto.ImageRequest); ok && request.Model == dto.APIMartGrokImagineModel {
+			maxImages = 3
+		}
+		if len(files) > maxImages {
+			return nil, "", invalidRequest(fmt.Errorf("APIMart image edits allow at most %d images", maxImages))
+		}
 	}
 	urls := make([]string, 0, len(files))
 	for _, file := range files {
