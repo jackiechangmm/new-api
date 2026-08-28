@@ -1,18 +1,27 @@
-import { useVirtualizer } from '@tanstack/react-virtual'
 import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Download,
+  ExternalLink,
   Loader2,
   Plus,
   RefreshCw,
   Search,
+  Sparkles,
   Trash2,
+  Undo2,
   WandSparkles,
   X,
 } from 'lucide-react'
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useDeferredValue,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
@@ -31,6 +40,7 @@ import {
 
 import {
   getDrawingModels,
+  polishDrawingPrompt,
   requestDrawingImages,
   type ImageGenerationRequest,
 } from './api'
@@ -39,7 +49,13 @@ import {
   getFixedOrSelectedValue,
   type DrawingOperationConfig,
 } from './model-config'
-import { filterDrawingPrompts, type DrawingPrompt } from './prompts'
+import {
+  DRAWING_PROMPT_CATEGORIES,
+  DRAWING_PROMPT_SCENES,
+  DRAWING_PROMPT_STYLES,
+  filterDrawingPrompts,
+  type DrawingPrompt,
+} from './prompts'
 import {
   deleteDrawingHistory,
   listDrawingHistory,
@@ -56,6 +72,58 @@ type PreviewState = {
 }
 
 const PAGE_SIZE = 8
+const PROMPTS_PER_PAGE = 12
+
+const PROMPT_CATEGORY_LABELS: Record<string, string> = {
+  'Architecture & Spaces': '建筑与空间',
+  'Brand & Logos': '品牌与标志',
+  'Characters & People': '角色与人物',
+  'Charts & Infographics': '图表与信息图',
+  'Documents & Publishing': '文档与出版',
+  'History & Classical Themes': '历史与古典主题',
+  'Illustration & Art': '插画与艺术',
+  'Other Use Cases': '其他用途',
+  'Photography & Realism': '摄影与写实',
+  'Posters & Typography': '海报与字体设计',
+  'Products & E-commerce': '产品与电商',
+  'Scenes & Storytelling': '场景与叙事',
+  'UI & Interfaces': 'UI 与界面',
+}
+
+const PROMPT_STYLE_LABELS: Record<string, string> = {
+  '3D': '3D',
+  Architecture: '建筑',
+  Brand: '品牌',
+  Character: '角色',
+  Characters: '人物角色',
+  Charts: '图表',
+  Classical: '古典',
+  Documents: '文档',
+  History: '历史',
+  Illustration: '插画',
+  Infographic: '信息图',
+  'Other Use Cases': '其他用途',
+  Photography: '摄影',
+  Poster: '海报',
+  Product: '产品',
+  Products: '商品',
+  Realistic: '写实',
+  Scenes: '场景',
+  UI: 'UI',
+}
+
+const PROMPT_SCENE_LABELS: Record<string, string> = {
+  Commerce: '商业',
+  Creative: '创意',
+  Education: '教育',
+  Fashion: '时尚',
+  Food: '美食',
+  History: '历史',
+  Social: '社交',
+  Story: '故事',
+  Tech: '科技',
+  Travel: '旅行',
+}
 
 function DrawingSelect(props: {
   ariaLabel: string
@@ -87,6 +155,41 @@ function DrawingSelect(props: {
     </Select>
   )
 }
+function PromptFilterSelect(props: {
+  allLabel: string
+  ariaLabel: string
+  onChange: (value: string) => void
+  options: { label: string; value: string }[]
+  value: string
+}) {
+  const allValue = '__all__'
+  const selectedLabel =
+    props.options.find((option) => option.value === props.value)?.label ??
+    props.allLabel
+  return (
+    <Select
+      onValueChange={(value) => {
+        if (value) props.onChange(value === allValue ? '' : value)
+      }}
+      value={props.value || allValue}
+    >
+      <SelectTrigger aria-label={props.ariaLabel} className='w-full'>
+        <SelectValue>{selectedLabel}</SelectValue>
+      </SelectTrigger>
+      <SelectContent alignItemWithTrigger={false}>
+        <SelectGroup>
+          <SelectItem value={allValue}>{props.allLabel}</SelectItem>
+          {props.options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  )
+}
+
 function useBlobUrl(blob: Blob | undefined): string | undefined {
   const [url, setUrl] = useState<string>()
   useEffect(() => {
@@ -128,27 +231,19 @@ export function Drawing() {
   const [history, setHistory] = useState<DrawingHistoryRecord[]>([])
   const [historyVisibleCount, setHistoryVisibleCount] = useState(PAGE_SIZE)
   const [query, setQuery] = useState('')
+  const [promptCategory, setPromptCategory] = useState('')
+  const [promptStyle, setPromptStyle] = useState('')
+  const [promptScene, setPromptScene] = useState('')
+  const [promptPage, setPromptPage] = useState(1)
   const deferredQuery = useDeferredValue(query)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isPolishing, setIsPolishing] = useState(false)
+  const [undoPrompt, setUndoPrompt] = useState<string>()
+  const polishControllerRef = useRef<AbortController>(null)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
   const scrollRef = useRef<HTMLElement>(null)
-  const [columns, setColumns] = useState(1)
-
-  useEffect(() => {
-    const updateColumns = () => {
-      if (window.innerWidth >= 1024) {
-        setColumns(3)
-      } else if (window.innerWidth >= 640) {
-        setColumns(2)
-      } else {
-        setColumns(1)
-      }
-    }
-    updateColumns()
-    window.addEventListener('resize', updateColumns)
-    return () => window.removeEventListener('resize', updateColumns)
-  }, [])
+  const promptLibraryRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     void Promise.all([getDrawingModels(), listDrawingHistory()])
@@ -161,8 +256,21 @@ export function Drawing() {
   }, [t])
 
   const prompts = useMemo(
-    () => filterDrawingPrompts(deferredQuery, ''),
-    [deferredQuery]
+    () =>
+      filterDrawingPrompts(deferredQuery, {
+        category: promptCategory,
+        style: promptStyle,
+        scene: promptScene,
+      }),
+    [deferredQuery, promptCategory, promptScene, promptStyle]
+  )
+  const promptPageCount = Math.max(
+    1,
+    Math.ceil(prompts.length / PROMPTS_PER_PAGE)
+  )
+  const visiblePrompts = prompts.slice(
+    (promptPage - 1) * PROMPTS_PER_PAGE,
+    promptPage * PROMPTS_PER_PAGE
   )
   const visibleHistory = history.slice(0, historyVisibleCount)
   const hasMoreHistory = historyVisibleCount < history.length
@@ -196,6 +304,58 @@ export function Drawing() {
         : 1
     )
   }, [activeOperation, aspectRatio, quality, resolution])
+
+  useEffect(() => {
+    return () => polishControllerRef.current?.abort()
+  }, [])
+
+  const invalidatePromptPolish = () => {
+    polishControllerRef.current?.abort()
+    polishControllerRef.current = null
+    setIsPolishing(false)
+    setUndoPrompt(undefined)
+  }
+
+  const changePromptInput = (value: string) => {
+    invalidatePromptPolish()
+    setPrompt(value)
+  }
+
+  const polishPrompt = async () => {
+    const originalPrompt = prompt.trim()
+    if (!originalPrompt || isPolishing) return
+
+    const controller = new AbortController()
+    invalidatePromptPolish()
+    polishControllerRef.current = controller
+    setError('')
+    setIsPolishing(true)
+    try {
+      const polishedPrompt = await polishDrawingPrompt(
+        {
+          prompt: originalPrompt,
+          aspectRatio,
+          referenceImages,
+        },
+        controller.signal
+      )
+      if (controller.signal.aborted) return
+      setUndoPrompt(originalPrompt)
+      setPrompt(polishedPrompt)
+    } catch (requestError) {
+      if (controller.signal.aborted) return
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : t('Prompt polishing failed')
+      )
+    } finally {
+      if (polishControllerRef.current === controller) {
+        polishControllerRef.current = null
+        setIsPolishing(false)
+      }
+    }
+  }
 
   const submit = async () => {
     if (
@@ -293,6 +453,7 @@ export function Drawing() {
   }
 
   const reuse = (record: DrawingHistoryRecord) => {
+    invalidatePromptPolish()
     setPrompt(record.prompt)
     setModel(record.model)
     const savedSize = record.size.split(' ')
@@ -317,6 +478,7 @@ export function Drawing() {
 
   const addReferenceImages = async (files: FileList | null) => {
     if (!files) return
+    invalidatePromptPolish()
     const nextFiles = [...referenceImages]
     let nextError = ''
     for (const file of files) {
@@ -346,10 +508,23 @@ export function Drawing() {
 
   const promptInputRef = useRef<HTMLTextAreaElement>(null)
 
+  useLayoutEffect(() => {
+    const textarea = promptInputRef.current
+    if (!textarea) return
+    textarea.style.height = 'auto'
+    textarea.style.height = `${textarea.scrollHeight}px`
+  }, [prompt])
+
   const selectPrompt = (value: string) => {
+    invalidatePromptPolish()
     setPrompt(value)
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     requestAnimationFrame(() => promptInputRef.current?.focus())
+  }
+
+  const changePromptPage = (page: number) => {
+    setPromptPage(page)
+    promptLibraryRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -382,12 +557,12 @@ export function Drawing() {
           <div className='mb-5'>
             <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
           </div>
-          <div className='bg-background focus-within:border-primary/50 focus-within:ring-primary/15 relative mx-auto flex h-[160px] w-full flex-col rounded-lg border p-3 transition-colors focus-within:ring-2'>
+          <div className='bg-background focus-within:border-primary/50 focus-within:ring-primary/15 relative mx-auto flex min-h-[160px] w-full flex-col rounded-lg border p-3 transition-colors focus-within:ring-2'>
             <textarea
               aria-label={t('Prompt word')}
-              className='min-h-0 flex-1 resize-none overflow-y-auto bg-transparent outline-none'
+              className='max-h-[45dvh] min-h-[104px] w-full resize-none overflow-y-auto bg-transparent outline-none'
               disabled={isGenerating}
-              onChange={(event) => setPrompt(event.target.value)}
+              onChange={(event) => changePromptInput(event.target.value)}
               placeholder={t('Describe the image you want to create')}
               ref={promptInputRef}
               value={prompt}
@@ -403,7 +578,7 @@ export function Drawing() {
               ref={fileInputRef}
               type='file'
             />
-            <div className='mt-2 flex min-h-10 items-end justify-between gap-3 pt-2'>
+            <div className='mt-2 flex min-h-10 flex-wrap items-end justify-between gap-3 pt-2'>
               <div className='flex min-w-0 flex-wrap items-center gap-2'>
                 <Button
                   aria-label={t('Add reference images')}
@@ -426,35 +601,67 @@ export function Drawing() {
                   <ReferenceImage
                     file={file}
                     key={`${file.name}-${file.lastModified}-${file.size}`}
-                    onDelete={() =>
+                    onDelete={() => {
+                      invalidatePromptPolish()
                       setReferenceImages((current) =>
                         current.filter((_, itemIndex) => itemIndex !== index)
                       )
-                    }
+                    }}
                     onPreview={() => setPreview({ images: [file], index: 0 })}
                   />
                 ))}
               </div>
-              <Button
-                aria-label={isGenerating ? t('Generating...') : t('Generate')}
-                className='size-11 shrink-0 rounded-full'
-                disabled={
-                  isGenerating ||
-                  !model ||
-                  !activeOperation ||
-                  !prompt.trim() ||
-                  (referenceImages.length > 0 && !hasEditModel)
-                }
-                onClick={() => void submit()}
-                size='icon'
-                type='button'
-              >
-                {isGenerating ? (
-                  <Loader2 className='animate-spin' />
-                ) : (
-                  <WandSparkles />
-                )}
-              </Button>
+              <div className='flex shrink-0 items-center gap-2'>
+                {undoPrompt !== undefined ? (
+                  <Button
+                    onClick={() => {
+                      setPrompt(undoPrompt)
+                      setUndoPrompt(undefined)
+                    }}
+                    size='sm'
+                    type='button'
+                    variant='ghost'
+                  >
+                    <Undo2 />
+                    {t('Undo polish')}
+                  </Button>
+                ) : null}
+                <Button
+                  disabled={!prompt.trim() || isGenerating || isPolishing}
+                  onClick={() => void polishPrompt()}
+                  size='sm'
+                  type='button'
+                  variant='ghost'
+                >
+                  {isPolishing ? (
+                    <Loader2 className='animate-spin' />
+                  ) : (
+                    <Sparkles />
+                  )}
+                  {isPolishing ? t('Polishing...') : t('Polish')}
+                </Button>
+                <Button
+                  aria-label={isGenerating ? t('Generating...') : t('Generate')}
+                  className='size-11 shrink-0 rounded-full'
+                  disabled={
+                    isGenerating ||
+                    isPolishing ||
+                    !model ||
+                    !activeOperation ||
+                    !prompt.trim() ||
+                    (referenceImages.length > 0 && !hasEditModel)
+                  }
+                  onClick={() => void submit()}
+                  size='icon'
+                  type='button'
+                >
+                  {isGenerating ? (
+                    <Loader2 className='animate-spin' />
+                  ) : (
+                    <WandSparkles />
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
           {referenceError ? (
@@ -463,12 +670,13 @@ export function Drawing() {
             </p>
           ) : null}
           <div className='mt-4 grid gap-4 sm:grid-cols-5'>
-            <label className='space-y-1 text-sm'>
+            <label className='space-y-1.5 text-sm'>
               <span>{t('Image model')}</span>
               <DrawingSelect
                 ariaLabel={t('Image model')}
                 disabled={!models.length}
                 onChange={(nextModel) => {
+                  invalidatePromptPolish()
                   setModel(nextModel)
                   setReferenceImages([])
                   setReferenceError('')
@@ -478,19 +686,22 @@ export function Drawing() {
               />
             </label>
             {activeOperation?.aspectRatios?.length ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Aspect ratio')}</span>
                 <DrawingSelect
                   ariaLabel={t('Aspect ratio')}
                   disabled={activeOperation.aspectRatios.length === 1}
-                  onChange={setAspectRatio}
+                  onChange={(value) => {
+                    invalidatePromptPolish()
+                    setAspectRatio(value)
+                  }}
                   options={activeOperation.aspectRatios}
                   value={aspectRatio}
                 />
               </label>
             ) : null}
             {activeOperation?.resolutions?.length ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Resolution')}</span>
                 <DrawingSelect
                   ariaLabel={t('Resolution')}
@@ -502,7 +713,7 @@ export function Drawing() {
               </label>
             ) : null}
             {activeOperation?.qualities?.length ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Quality')}</span>
                 <DrawingSelect
                   ariaLabel={t('Quality')}
@@ -514,7 +725,7 @@ export function Drawing() {
               </label>
             ) : null}
             {activeOperation ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Images')}</span>
                 <DrawingSelect
                   ariaLabel={t('Images')}
@@ -607,29 +818,94 @@ export function Drawing() {
           ) : null}
         </section>
 
-        <section className='pt-6'>
-          <div className='mb-4 flex flex-wrap items-end justify-between gap-3'>
-            <div>
-              <h2 className='text-lg font-semibold'>{t('Prompt library')}</h2>
-            </div>
-            <div className='relative'>
-              <Search className='text-muted-foreground absolute top-2 left-2 size-4' />
-              <Input
-                aria-label={t('Search prompts')}
-                className='w-52 pl-8'
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={t('Search prompts')}
-                value={query}
+        <section className='pt-6' ref={promptLibraryRef}>
+          <div className='mb-4 flex flex-col gap-3'>
+            <h2 className='text-lg font-semibold'>{t('Prompt library')}</h2>
+            <div className='grid gap-2 sm:grid-cols-2 lg:grid-cols-4'>
+              <div className='relative'>
+                <Search className='text-muted-foreground absolute top-2 left-2 size-4' />
+                <Input
+                  aria-label={t('Search prompts')}
+                  className='w-full pl-8'
+                  onChange={(event) => {
+                    setQuery(event.target.value)
+                    setPromptPage(1)
+                  }}
+                  placeholder={t('Search prompts')}
+                  value={query}
+                />
+              </div>
+              <PromptFilterSelect
+                allLabel='全部分类'
+                ariaLabel='分类'
+                onChange={(value) => {
+                  setPromptCategory(value)
+                  setPromptPage(1)
+                }}
+                options={DRAWING_PROMPT_CATEGORIES.map((value) => ({
+                  label: PROMPT_CATEGORY_LABELS[value] ?? value,
+                  value,
+                }))}
+                value={promptCategory}
+              />
+              <PromptFilterSelect
+                allLabel='全部风格'
+                ariaLabel='风格'
+                onChange={(value) => {
+                  setPromptStyle(value)
+                  setPromptPage(1)
+                }}
+                options={DRAWING_PROMPT_STYLES.map((value) => ({
+                  label: PROMPT_STYLE_LABELS[value] ?? value,
+                  value,
+                }))}
+                value={promptStyle}
+              />
+              <PromptFilterSelect
+                allLabel='全部场景'
+                ariaLabel='场景'
+                onChange={(value) => {
+                  setPromptScene(value)
+                  setPromptPage(1)
+                }}
+                options={DRAWING_PROMPT_SCENES.map((value) => ({
+                  label: PROMPT_SCENE_LABELS[value] ?? value,
+                  value,
+                }))}
+                value={promptScene}
               />
             </div>
           </div>
           <PromptGrid
-            columns={columns}
             onSelect={selectPrompt}
             onPreview={(url: string) => setPreview({ images: [url], index: 0 })}
-            prompts={prompts}
-            scrollElement={scrollRef}
+            prompts={visiblePrompts}
           />
+          {prompts.length > PROMPTS_PER_PAGE ? (
+            <div className='mt-5 flex items-center justify-center gap-3'>
+              <Button
+                aria-label={t('Previous page')}
+                disabled={promptPage === 1}
+                onClick={() => changePromptPage(promptPage - 1)}
+                size='icon-sm'
+                variant='outline'
+              >
+                <ChevronLeft />
+              </Button>
+              <span className='text-muted-foreground min-w-16 text-center text-sm tabular-nums'>
+                {promptPage} / {promptPageCount}
+              </span>
+              <Button
+                aria-label={t('Next page')}
+                disabled={promptPage === promptPageCount}
+                onClick={() => changePromptPage(promptPage + 1)}
+                size='icon-sm'
+                variant='outline'
+              >
+                <ChevronRight />
+              </Button>
+            </div>
+          ) : null}
         </section>
       </div>
       {preview ? (
@@ -734,48 +1010,19 @@ function HistoryCard(props: {
 }
 
 function PromptGrid(props: {
-  columns: number
   prompts: DrawingPrompt[]
   onSelect: (prompt: string) => void
   onPreview: (url: string) => void
-  scrollElement: React.RefObject<HTMLElement | null>
 }) {
-  const rows = useMemo(() => {
-    const result: DrawingPrompt[][] = []
-    for (let index = 0; index < props.prompts.length; index += props.columns) {
-      result.push(props.prompts.slice(index, index + props.columns))
-    }
-    return result
-  }, [props.columns, props.prompts])
-  const virtualizer = useVirtualizer({
-    count: rows.length,
-    estimateSize: () => 370,
-    getScrollElement: () => props.scrollElement.current,
-    overscan: 6,
-  })
-
   return (
-    <div
-      className='relative w-full'
-      style={{ height: `${virtualizer.getTotalSize()}px` }}
-    >
-      {virtualizer.getVirtualItems().map((virtualRow) => (
-        <div
-          className='absolute top-0 left-0 grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3'
-          data-index={virtualRow.index}
-          key={virtualRow.key}
-          ref={virtualizer.measureElement}
-          style={{ transform: `translateY(${virtualRow.start}px)` }}
-        >
-          {rows[virtualRow.index].map((item) => (
-            <PromptCard
-              key={item.id}
-              item={item}
-              onPreview={props.onPreview}
-              onSelect={props.onSelect}
-            />
-          ))}
-        </div>
+    <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+      {props.prompts.map((item) => (
+        <PromptCard
+          key={item.id}
+          item={item}
+          onPreview={props.onPreview}
+          onSelect={props.onSelect}
+        />
       ))}
     </div>
   )
@@ -813,17 +1060,39 @@ function PromptCard(props: {
           </div>
         )}
       </div>
-      <h3 className='line-clamp-2 min-h-12 font-medium'>{props.item.title}</h3>
+      <div className='flex min-h-12 items-start justify-between gap-2'>
+        <h3 className='line-clamp-2 font-medium'>{props.item.title}</h3>
+        <a
+          aria-label={`${props.item.sourceLabel}: ${props.item.title}`}
+          className='text-muted-foreground hover:text-foreground shrink-0'
+          href={props.item.sourceUrl || props.item.githubUrl}
+          rel='noreferrer'
+          target='_blank'
+        >
+          <ExternalLink className='size-4' />
+        </a>
+      </div>
       <p className='text-muted-foreground mt-1 line-clamp-3 min-h-15 text-sm'>
         {props.item.description || props.item.prompt}
       </p>
       <div className='mt-3 flex max-h-7 min-h-7 flex-wrap gap-1 overflow-hidden'>
-        {props.item.tags.map((tag) => (
+        <span className='bg-muted inline-flex h-6 items-center rounded px-2 text-xs'>
+          {PROMPT_CATEGORY_LABELS[props.item.category] ?? props.item.category}
+        </span>
+        {props.item.styles.map((style) => (
           <span
             className='bg-muted inline-flex h-6 items-center rounded px-2 text-xs'
-            key={tag}
+            key={`style:${style}`}
           >
-            {tag}
+            {PROMPT_STYLE_LABELS[style] ?? style}
+          </span>
+        ))}
+        {props.item.scenes.map((scene) => (
+          <span
+            className='bg-muted inline-flex h-6 items-center rounded px-2 text-xs'
+            key={`scene:${scene}`}
+          >
+            {PROMPT_SCENE_LABELS[scene] ?? scene}
           </span>
         ))}
       </div>

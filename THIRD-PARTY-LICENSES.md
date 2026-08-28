@@ -6,6 +6,12 @@ It is an engineering compliance artifact and should be kept with Docker images, 
 Scope: direct dependencies from `go.mod`, `web/package.json`, and `electron/package.json`.
 Transitive dependencies should be audited before a final external release.
 
+## 内容数据
+
+图片提示词库包含
+[`freestylefly/awesome-gpt-image-2`](https://github.com/freestylefly/awesome-gpt-image-2)
+的静态快照，按 MIT License 使用。Copyright (c) 2026 freestylefly。
+
 ## Dependency Inventory
 
 | Area        | Scope       | Ecosystem | Dependency                                            | Version                              | License                                            |

@@ -1,6 +1,8 @@
 import { api } from '@/lib/api'
 
 import { filterDrawingModels, type DrawingRequestFormat } from './model-config'
+import { DRAWING_PROMPT_TEMPLATES } from './prompt-style-data'
+import { DRAWING_PROMPTS } from './prompts-data'
 
 export interface ImageGenerationRequest {
   model: string
@@ -34,6 +36,133 @@ async function fileToBase64(file: File): Promise<string> {
   let binary = ''
   for (const byte of bytes) binary += String.fromCharCode(byte)
   return btoa(binary)
+}
+
+type ChatCompletionResponse = {
+  choices?: Array<{ message?: { content?: string } }>
+}
+
+export interface DrawingPromptPolishInput {
+  prompt: string
+  aspectRatio: string
+  referenceImages: File[]
+}
+
+const DRAWING_PROMPT_POLISH_MODEL = 'gpt-5.6-terra'
+
+function parseJsonResponse(content: string): Record<string, unknown> {
+  const json = content.match(/\{[\s\S]*\}/)?.[0]
+  if (!json) throw new Error('Invalid prompt polishing response')
+
+  const parsed: unknown = JSON.parse(json)
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error('Invalid prompt polishing response')
+  }
+  return parsed as Record<string, unknown>
+}
+
+async function buildPolishUserContent(
+  text: string,
+  images: File[]
+): Promise<
+  Array<
+    | { type: 'text'; text: string }
+    | { type: 'image_url'; image_url: { url: string } }
+  >
+> {
+  return [
+    { type: 'text', text },
+    ...(await Promise.all(
+      images.map(async (image) => ({
+        type: 'image_url' as const,
+        image_url: {
+          url: `data:${image.type};base64,${await fileToBase64(image)}`,
+        },
+      }))
+    )),
+  ]
+}
+
+async function requestPromptPolishStage(
+  system: string,
+  user: string,
+  referenceImages: File[],
+  signal?: AbortSignal
+): Promise<Record<string, unknown>> {
+  const response = await api.post<ChatCompletionResponse>(
+    '/v1/chat/completions',
+    {
+      model: DRAWING_PROMPT_POLISH_MODEL,
+      stream: false,
+      messages: [
+        { role: 'system', content: system },
+        {
+          role: 'user',
+          content: await buildPolishUserContent(user, referenceImages),
+        },
+      ],
+    },
+    { signal, skipErrorHandler: true }
+  )
+  const content = response.data.choices?.[0]?.message?.content
+  if (!content) throw new Error('Prompt polishing returned an empty response')
+  return parseJsonResponse(content)
+}
+
+export async function polishDrawingPrompt(
+  input: DrawingPromptPolishInput,
+  signal?: AbortSignal
+): Promise<string> {
+  const templateIndex = DRAWING_PROMPT_TEMPLATES.map((template) => ({
+    id: template.id,
+    title: template.title,
+    category: template.category,
+    styles: template.styles,
+    scenes: template.scenes,
+    tags: template.tags,
+    useWhen: template.useWhen,
+    exampleCases: template.exampleCases,
+  }))
+  const classification = await requestPromptPolishStage(
+    '根据用户的图片生成需求，从提供的模板列表中选择最匹配的一个模板。匹配时依次考虑模板类别、视觉风格、使用场景和示例案例。只能选择一个模板。只输出 JSON，格式为 {"template_id":"template-id"}。',
+    JSON.stringify({
+      original_prompt: input.prompt,
+      aspect_ratio: input.aspectRatio,
+      template_index: templateIndex,
+    }),
+    input.referenceImages,
+    signal
+  )
+  signal?.throwIfAborted()
+  const templateId = classification.template_id
+  const template = DRAWING_PROMPT_TEMPLATES.find(
+    (candidate) => candidate.id === templateId
+  )
+  if (!template) throw new Error(`Unknown template: ${String(templateId)}`)
+
+  const exampleCaseIds = new Set(template.exampleCases.map(String))
+  const examples = DRAWING_PROMPTS.filter((prompt) =>
+    exampleCaseIds.has(prompt.id)
+  ).map((prompt) => ({
+    id: prompt.id,
+    title: prompt.title,
+    prompt: prompt.prompt,
+  }))
+  const generated = await requestPromptPolishStage(
+    'Use the supplied selected template and relevant example cases to turn the user\'s image-generation intent into a production-ready image-generation prompt.\n\nBuild the final prompt with these blocks:\n- subject and task\n- composition and layout\n- visual style and materials\n- text and label requirements\n- constraints and negative details\n\nKeep constraints concrete: exact text, readable labels, layout hierarchy, and avoided artifacts.\n\nFor Chinese requests, write the final prompt in Chinese unless the user asks for English.\nFor English requests, write the final prompt in English unless the user asks for Chinese.\nWhen the user asks for multiple concepts, reuse one template and vary the subject, composition, palette, and scene.\n\nReturn only JSON in this format:\n{\n  "prompt": "final copyable prompt",\n  "template_name": "selected template name",\n  "example_case_ids": [345, 5]\n}\n\nPut the template name and example case IDs in the corresponding JSON fields. Do not put them at the beginning or end of the prompt value.',
+    JSON.stringify({
+      original_prompt: input.prompt,
+      aspect_ratio: input.aspectRatio,
+      selected_template: template,
+      example_cases: examples,
+    }),
+    input.referenceImages,
+    signal
+  )
+  if (typeof generated.prompt !== 'string' || !generated.prompt.trim()) {
+    throw new Error('Prompt polishing returned an empty prompt')
+  }
+  return generated.prompt.trim()
 }
 
 export async function requestDrawingImages(
