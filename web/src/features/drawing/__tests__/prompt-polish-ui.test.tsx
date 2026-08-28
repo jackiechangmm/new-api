@@ -192,6 +192,21 @@ afterEach(() => {
   client.post = originalPost
 })
 
+test('long prompt expands the editor until its viewport height limit', async () => {
+  const rendered = await renderDrawing()
+  const textarea = rendered.container.querySelector('textarea')
+  assert.ok(textarea instanceof HTMLTextAreaElement)
+  Object.defineProperty(textarea, 'scrollHeight', {
+    configurable: true,
+    value: 480,
+  })
+
+  await enterPrompt(rendered.container, 'long prompt')
+
+  assert.equal(textarea.style.height, '480px')
+  await act(async () => rendered.root.unmount())
+})
+
 test('editing during prompt polishing cancels the stale result and keeps generation blocked', async () => {
   let resolveClassification: (value: { data: unknown }) => void = () =>
     undefined

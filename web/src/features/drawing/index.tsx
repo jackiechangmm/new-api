@@ -14,7 +14,14 @@ import {
   WandSparkles,
   X,
 } from 'lucide-react'
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useDeferredValue,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
@@ -501,6 +508,13 @@ export function Drawing() {
 
   const promptInputRef = useRef<HTMLTextAreaElement>(null)
 
+  useLayoutEffect(() => {
+    const textarea = promptInputRef.current
+    if (!textarea) return
+    textarea.style.height = 'auto'
+    textarea.style.height = `${textarea.scrollHeight}px`
+  }, [prompt])
+
   const selectPrompt = (value: string) => {
     invalidatePromptPolish()
     setPrompt(value)
@@ -543,10 +557,10 @@ export function Drawing() {
           <div className='mb-5'>
             <h1 className='text-2xl font-semibold'>{t('Drawing Plaza')}</h1>
           </div>
-          <div className='bg-background focus-within:border-primary/50 focus-within:ring-primary/15 relative mx-auto flex h-[160px] w-full flex-col rounded-lg border p-3 transition-colors focus-within:ring-2'>
+          <div className='bg-background focus-within:border-primary/50 focus-within:ring-primary/15 relative mx-auto flex min-h-[160px] w-full flex-col rounded-lg border p-3 transition-colors focus-within:ring-2'>
             <textarea
               aria-label={t('Prompt word')}
-              className='min-h-0 flex-1 resize-none overflow-y-auto bg-transparent outline-none'
+              className='max-h-[45dvh] min-h-[104px] w-full resize-none overflow-y-auto bg-transparent outline-none'
               disabled={isGenerating}
               onChange={(event) => changePromptInput(event.target.value)}
               placeholder={t('Describe the image you want to create')}
