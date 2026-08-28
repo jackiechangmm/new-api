@@ -631,14 +631,14 @@ export function Drawing() {
                   onClick={() => void polishPrompt()}
                   size='sm'
                   type='button'
-                  variant='outline'
+                  variant='ghost'
                 >
                   {isPolishing ? (
                     <Loader2 className='animate-spin' />
                   ) : (
                     <Sparkles />
                   )}
-                  {isPolishing ? t('Polishing...') : t('Polish prompt')}
+                  {isPolishing ? t('Polishing...') : t('Polish')}
                 </Button>
                 <Button
                   aria-label={isGenerating ? t('Generating...') : t('Generate')}
@@ -670,7 +670,7 @@ export function Drawing() {
             </p>
           ) : null}
           <div className='mt-4 grid gap-4 sm:grid-cols-5'>
-            <label className='space-y-1 text-sm'>
+            <label className='space-y-1.5 text-sm'>
               <span>{t('Image model')}</span>
               <DrawingSelect
                 ariaLabel={t('Image model')}
@@ -686,7 +686,7 @@ export function Drawing() {
               />
             </label>
             {activeOperation?.aspectRatios?.length ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Aspect ratio')}</span>
                 <DrawingSelect
                   ariaLabel={t('Aspect ratio')}
@@ -701,7 +701,7 @@ export function Drawing() {
               </label>
             ) : null}
             {activeOperation?.resolutions?.length ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Resolution')}</span>
                 <DrawingSelect
                   ariaLabel={t('Resolution')}
@@ -713,7 +713,7 @@ export function Drawing() {
               </label>
             ) : null}
             {activeOperation?.qualities?.length ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Quality')}</span>
                 <DrawingSelect
                   ariaLabel={t('Quality')}
@@ -725,7 +725,7 @@ export function Drawing() {
               </label>
             ) : null}
             {activeOperation ? (
-              <label className='space-y-1 text-sm'>
+              <label className='space-y-1.5 text-sm'>
                 <span>{t('Images')}</span>
                 <DrawingSelect
                   ariaLabel={t('Images')}

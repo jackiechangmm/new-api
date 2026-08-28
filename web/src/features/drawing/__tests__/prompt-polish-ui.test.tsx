@@ -87,7 +87,7 @@ await i18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
-        'Polish prompt': 'Polish prompt',
+        Polish: 'Polish',
         'Polishing...': 'Polishing...',
         'Undo polish': 'Undo polish',
       },
@@ -215,10 +215,11 @@ test('editing during prompt polishing cancels the stale result and keeps generat
       resolveClassification = resolve
     })
   const rendered = await renderDrawing()
-  assert.equal(findButton(rendered.container, 'Polish prompt').disabled, true)
+  assert.equal(findButton(rendered.container, 'Polish').disabled, true)
 
   const textarea = await enterPrompt(rendered.container, 'original prompt')
-  const polishButton = findButton(rendered.container, 'Polish prompt')
+  const polishButton = findButton(rendered.container, 'Polish')
+  assert.equal(polishButton.classList.contains('bg-background'), false)
   assert.equal(polishButton.disabled, false)
   await act(async () => polishButton.click())
 
@@ -251,7 +252,7 @@ test('successful prompt polishing replaces the input and supports one undo', asy
   const rendered = await renderDrawing()
   const textarea = await enterPrompt(rendered.container, 'original prompt')
 
-  await act(async () => findButton(rendered.container, 'Polish prompt').click())
+  await act(async () => findButton(rendered.container, 'Polish').click())
   assert.equal(chatCalls, 2)
   assert.equal(textarea.value, 'polished prompt')
 
