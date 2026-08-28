@@ -1,10 +1,7 @@
 import { api } from '@/lib/api'
 
 import { filterDrawingModels, type DrawingRequestFormat } from './model-config'
-import {
-  DRAWING_PROMPT_SKILL,
-  DRAWING_PROMPT_TEMPLATES,
-} from './prompt-style-data'
+import { DRAWING_PROMPT_TEMPLATES } from './prompt-style-data'
 import { DRAWING_PROMPTS } from './prompts-data'
 
 export interface ImageGenerationRequest {
@@ -152,7 +149,7 @@ export async function polishDrawingPrompt(
     prompt: prompt.prompt,
   }))
   const generated = await requestPromptPolishStage(
-    `${DRAWING_PROMPT_SKILL}\n\nFor this second stage, continue workflow steps 5-6 using the supplied selected template and example cases. Return only valid JSON in this shape: {"prompt":"final copyable prompt"}.`,
+    'Use the supplied selected template and relevant example cases to turn the user\'s image-generation intent into a production-ready image-generation prompt.\n\nBuild the final prompt with these blocks:\n- subject and task\n- composition and layout\n- visual style and materials\n- text and label requirements\n- constraints and negative details\n\nKeep constraints concrete: exact text, readable labels, layout hierarchy, and avoided artifacts.\n\nFor Chinese requests, write the final prompt in Chinese unless the user asks for English.\nFor English requests, write the final prompt in English unless the user asks for Chinese.\nWhen the user asks for multiple concepts, reuse one template and vary the subject, composition, palette, and scene.\n\nReturn only JSON in this format:\n{\n  "prompt": "final copyable prompt",\n  "template_name": "selected template name",\n  "example_case_ids": [345, 5]\n}\n\nPut the template name and example case IDs in the corresponding JSON fields. Do not put them at the beginning or end of the prompt value.',
     JSON.stringify({
       original_prompt: input.prompt,
       aspect_ratio: input.aspectRatio,

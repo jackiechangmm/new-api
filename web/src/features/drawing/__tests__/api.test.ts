@@ -157,7 +157,7 @@ test('drawing prompt polishing uses the selected upstream template in two multim
           {
             message: {
               content:
-                '最终提示词：\n{"prompt":"A finished premium launch poster"}\n',
+                '最终提示词：\n{"prompt":"A finished premium launch poster","template_name":"Poster Layout System","example_case_ids":[345,5]}\n',
             },
           },
         ],
@@ -227,6 +227,26 @@ test('drawing prompt polishing uses the selected upstream template in two multim
   assert.match(
     JSON.stringify((requests[0].data as { messages: unknown }).messages),
     /poster-layout-system/
+  )
+  assert.doesNotMatch(
+    String(
+      (
+        requests[1].data as {
+          messages: Array<{ role: string; content: string }>
+        }
+      ).messages[0]?.content
+    ),
+    /gpt-image-2-style-library|second stage|aspect ratio|output format/i
+  )
+  assert.match(
+    String(
+      (
+        requests[1].data as {
+          messages: Array<{ role: string; content: string }>
+        }
+      ).messages[0]?.content
+    ),
+    /subject and task.*composition and layout.*visual style and materials/s
   )
   assert.match(
     JSON.stringify((requests[1].data as { messages: unknown }).messages),
