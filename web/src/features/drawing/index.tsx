@@ -8,7 +8,9 @@ import {
   Plus,
   RefreshCw,
   Search,
+  Sparkles,
   Trash2,
+  Undo2,
   WandSparkles,
   X,
 } from 'lucide-react'
@@ -31,6 +33,7 @@ import {
 
 import {
   getDrawingModels,
+  polishDrawingPrompt,
   requestDrawingImages,
   type ImageGenerationRequest,
 } from './api'
@@ -227,6 +230,9 @@ export function Drawing() {
   const [promptPage, setPromptPage] = useState(1)
   const deferredQuery = useDeferredValue(query)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isPolishing, setIsPolishing] = useState(false)
+  const [undoPrompt, setUndoPrompt] = useState<string>()
+  const polishControllerRef = useRef<AbortController>(null)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
   const scrollRef = useRef<HTMLElement>(null)
@@ -291,6 +297,58 @@ export function Drawing() {
         : 1
     )
   }, [activeOperation, aspectRatio, quality, resolution])
+
+  useEffect(() => {
+    return () => polishControllerRef.current?.abort()
+  }, [])
+
+  const invalidatePromptPolish = () => {
+    polishControllerRef.current?.abort()
+    polishControllerRef.current = null
+    setIsPolishing(false)
+    setUndoPrompt(undefined)
+  }
+
+  const changePromptInput = (value: string) => {
+    invalidatePromptPolish()
+    setPrompt(value)
+  }
+
+  const polishPrompt = async () => {
+    const originalPrompt = prompt.trim()
+    if (!originalPrompt || isPolishing) return
+
+    const controller = new AbortController()
+    invalidatePromptPolish()
+    polishControllerRef.current = controller
+    setError('')
+    setIsPolishing(true)
+    try {
+      const polishedPrompt = await polishDrawingPrompt(
+        {
+          prompt: originalPrompt,
+          aspectRatio,
+          referenceImages,
+        },
+        controller.signal
+      )
+      if (controller.signal.aborted) return
+      setUndoPrompt(originalPrompt)
+      setPrompt(polishedPrompt)
+    } catch (requestError) {
+      if (controller.signal.aborted) return
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : t('Prompt polishing failed')
+      )
+    } finally {
+      if (polishControllerRef.current === controller) {
+        polishControllerRef.current = null
+        setIsPolishing(false)
+      }
+    }
+  }
 
   const submit = async () => {
     if (
@@ -388,6 +446,7 @@ export function Drawing() {
   }
 
   const reuse = (record: DrawingHistoryRecord) => {
+    invalidatePromptPolish()
     setPrompt(record.prompt)
     setModel(record.model)
     const savedSize = record.size.split(' ')
@@ -412,6 +471,7 @@ export function Drawing() {
 
   const addReferenceImages = async (files: FileList | null) => {
     if (!files) return
+    invalidatePromptPolish()
     const nextFiles = [...referenceImages]
     let nextError = ''
     for (const file of files) {
@@ -442,6 +502,7 @@ export function Drawing() {
   const promptInputRef = useRef<HTMLTextAreaElement>(null)
 
   const selectPrompt = (value: string) => {
+    invalidatePromptPolish()
     setPrompt(value)
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     requestAnimationFrame(() => promptInputRef.current?.focus())
@@ -487,7 +548,7 @@ export function Drawing() {
               aria-label={t('Prompt word')}
               className='min-h-0 flex-1 resize-none overflow-y-auto bg-transparent outline-none'
               disabled={isGenerating}
-              onChange={(event) => setPrompt(event.target.value)}
+              onChange={(event) => changePromptInput(event.target.value)}
               placeholder={t('Describe the image you want to create')}
               ref={promptInputRef}
               value={prompt}
@@ -503,7 +564,7 @@ export function Drawing() {
               ref={fileInputRef}
               type='file'
             />
-            <div className='mt-2 flex min-h-10 items-end justify-between gap-3 pt-2'>
+            <div className='mt-2 flex min-h-10 flex-wrap items-end justify-between gap-3 pt-2'>
               <div className='flex min-w-0 flex-wrap items-center gap-2'>
                 <Button
                   aria-label={t('Add reference images')}
@@ -526,35 +587,67 @@ export function Drawing() {
                   <ReferenceImage
                     file={file}
                     key={`${file.name}-${file.lastModified}-${file.size}`}
-                    onDelete={() =>
+                    onDelete={() => {
+                      invalidatePromptPolish()
                       setReferenceImages((current) =>
                         current.filter((_, itemIndex) => itemIndex !== index)
                       )
-                    }
+                    }}
                     onPreview={() => setPreview({ images: [file], index: 0 })}
                   />
                 ))}
               </div>
-              <Button
-                aria-label={isGenerating ? t('Generating...') : t('Generate')}
-                className='size-11 shrink-0 rounded-full'
-                disabled={
-                  isGenerating ||
-                  !model ||
-                  !activeOperation ||
-                  !prompt.trim() ||
-                  (referenceImages.length > 0 && !hasEditModel)
-                }
-                onClick={() => void submit()}
-                size='icon'
-                type='button'
-              >
-                {isGenerating ? (
-                  <Loader2 className='animate-spin' />
-                ) : (
-                  <WandSparkles />
-                )}
-              </Button>
+              <div className='flex shrink-0 items-center gap-2'>
+                {undoPrompt !== undefined ? (
+                  <Button
+                    onClick={() => {
+                      setPrompt(undoPrompt)
+                      setUndoPrompt(undefined)
+                    }}
+                    size='sm'
+                    type='button'
+                    variant='ghost'
+                  >
+                    <Undo2 />
+                    {t('Undo polish')}
+                  </Button>
+                ) : null}
+                <Button
+                  disabled={!prompt.trim() || isGenerating || isPolishing}
+                  onClick={() => void polishPrompt()}
+                  size='sm'
+                  type='button'
+                  variant='outline'
+                >
+                  {isPolishing ? (
+                    <Loader2 className='animate-spin' />
+                  ) : (
+                    <Sparkles />
+                  )}
+                  {isPolishing ? t('Polishing...') : t('Polish prompt')}
+                </Button>
+                <Button
+                  aria-label={isGenerating ? t('Generating...') : t('Generate')}
+                  className='size-11 shrink-0 rounded-full'
+                  disabled={
+                    isGenerating ||
+                    isPolishing ||
+                    !model ||
+                    !activeOperation ||
+                    !prompt.trim() ||
+                    (referenceImages.length > 0 && !hasEditModel)
+                  }
+                  onClick={() => void submit()}
+                  size='icon'
+                  type='button'
+                >
+                  {isGenerating ? (
+                    <Loader2 className='animate-spin' />
+                  ) : (
+                    <WandSparkles />
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
           {referenceError ? (
@@ -569,6 +662,7 @@ export function Drawing() {
                 ariaLabel={t('Image model')}
                 disabled={!models.length}
                 onChange={(nextModel) => {
+                  invalidatePromptPolish()
                   setModel(nextModel)
                   setReferenceImages([])
                   setReferenceError('')
@@ -583,7 +677,10 @@ export function Drawing() {
                 <DrawingSelect
                   ariaLabel={t('Aspect ratio')}
                   disabled={activeOperation.aspectRatios.length === 1}
-                  onChange={setAspectRatio}
+                  onChange={(value) => {
+                    invalidatePromptPolish()
+                    setAspectRatio(value)
+                  }}
                   options={activeOperation.aspectRatios}
                   value={aspectRatio}
                 />

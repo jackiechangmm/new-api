@@ -2,6 +2,10 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {
+  DRAWING_PROMPT_SKILL,
+  DRAWING_PROMPT_TEMPLATES,
+} from '../prompt-style-data'
+import {
   DRAWING_PROMPTS,
   DRAWING_PROMPT_CATEGORIES,
   DRAWING_PROMPT_SCENES,
@@ -26,6 +30,25 @@ test('loads valid prompt cases from the configured upstream source', () => {
         item.category &&
         Array.isArray(item.styles) &&
         Array.isArray(item.scenes)
+    )
+  )
+})
+
+test('loads the upstream prompt skill and templates with valid example cases', () => {
+  const promptIds = new Set(DRAWING_PROMPTS.map((prompt) => prompt.id))
+  assert.match(DRAWING_PROMPT_SKILL, /name: gpt-image-2-style-library/)
+  assert.ok(DRAWING_PROMPT_TEMPLATES.length > 0)
+  assert.equal(
+    new Set(DRAWING_PROMPT_TEMPLATES.map((template) => template.id)).size,
+    DRAWING_PROMPT_TEMPLATES.length
+  )
+  assert.ok(
+    DRAWING_PROMPT_TEMPLATES.every(
+      (template) =>
+        template.id &&
+        template.title.en &&
+        template.category &&
+        template.exampleCases.every((id) => promptIds.has(String(id)))
     )
   )
 })
