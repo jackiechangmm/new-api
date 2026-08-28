@@ -54,11 +54,10 @@ export interface DrawingPromptPolishInput {
 const DRAWING_PROMPT_POLISH_MODEL = 'gpt-5.6-terra'
 
 function parseJsonResponse(content: string): Record<string, unknown> {
-  const normalized = content
-    .trim()
-    .replace(/^```(?:json)?\s*/i, '')
-    .replace(/\s*```$/, '')
-  const parsed: unknown = JSON.parse(normalized)
+  const json = content.match(/\{[\s\S]*\}/)?.[0]
+  if (!json) throw new Error('Invalid prompt polishing response')
+
+  const parsed: unknown = JSON.parse(json)
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error('Invalid prompt polishing response')
   }
@@ -128,7 +127,7 @@ export async function polishDrawingPrompt(
     exampleCases: template.exampleCases,
   }))
   const classification = await requestPromptPolishStage(
-    `${DRAWING_PROMPT_SKILL}\n\nFor this first stage, execute only workflow steps 1-4. Select exactly one strongest template from the supplied template index. Return only valid JSON in this shape: {"template_id":"template-id"}.`,
+    '根据用户的图片生成需求，从提供的模板列表中选择最匹配的一个模板。匹配时依次考虑模板类别、视觉风格、使用场景和示例案例。只能选择一个模板。只输出 JSON，格式为 {"template_id":"template-id"}。',
     JSON.stringify({
       original_prompt: input.prompt,
       aspect_ratio: input.aspectRatio,
