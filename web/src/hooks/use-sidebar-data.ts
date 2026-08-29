@@ -23,6 +23,7 @@ import {
   Eraser,
   FileText,
   FlaskConical,
+  Image,
   Key,
   LayoutDashboard,
   ListTodo,
@@ -67,9 +68,15 @@ export function useSidebarData(): SidebarData {
             icon: WandSparkles,
           },
           {
-            title: t('Remove Watermark'),
-            url: '/playground/watermark-removal',
-            icon: Eraser,
+            title: t('Image Toolkit'),
+            icon: Image,
+            items: [
+              {
+                title: t('Remove Watermark'),
+                url: '/playground/watermark-removal',
+                icon: Eraser,
+              },
+            ],
           },
           {
             title: t('External Chat'),
