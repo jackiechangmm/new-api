@@ -51,7 +51,10 @@ async function cacheModel(model: ArrayBuffer): Promise<void> {
 }
 
 async function downloadModel(onProgress: (progress: number) => void) {
-  const download = async (response: Response, report: (bytes: number) => void) => {
+  const download = async (
+    response: Response,
+    report: (bytes: number) => void
+  ) => {
     if (!response.ok || !response.body) throw new Error('model-download-failed')
     const reader = response.body.getReader()
     const chunks: Uint8Array[] = []
@@ -85,12 +88,15 @@ async function downloadModel(onProgress: (progress: number) => void) {
       const parts = await Promise.all(
         Array.from({ length: MODEL_DOWNLOAD_PARTS }, async (_, index) => {
           const start = Math.floor((total * index) / MODEL_DOWNLOAD_PARTS)
-          const end = Math.floor((total * (index + 1)) / MODEL_DOWNLOAD_PARTS) - 1
+          const end =
+            Math.floor((total * (index + 1)) / MODEL_DOWNLOAD_PARTS) - 1
           const response = await fetch(MODEL_URL, {
             headers: { Range: `bytes=${start}-${end}` },
             signal: controller.signal,
           })
-          if (response.status !== 206) throw new Error('range-download-unavailable')
+          if (response.status !== 206) {
+            throw new Error('range-download-unavailable')
+          }
           const part = await download(response, (bytes) => {
             downloaded += bytes
             onProgress(Math.round((downloaded / total) * 100))

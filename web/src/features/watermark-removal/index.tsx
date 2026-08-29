@@ -16,7 +16,10 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Slider } from '@/components/ui/slider'
 
-import { validateImageFile, type ImageValidationError } from './image-validation'
+import {
+  validateImageFile,
+  type ImageValidationError,
+} from './image-validation'
 
 type Point = { x: number; y: number }
 
@@ -200,7 +203,9 @@ export function WatermarkRemoval() {
     const maskCanvas = maskCanvasRef.current
     if (!previous || !imageCanvas || !maskCanvas) return
     await drawBlob(imageCanvas, previous)
-    maskCanvas.getContext('2d')?.clearRect(0, 0, maskCanvas.width, maskCanvas.height)
+    maskCanvas
+      .getContext('2d')
+      ?.clearRect(0, 0, maskCanvas.width, maskCanvas.height)
     const nextHistory = history.slice(0, -1)
     setHistory(nextHistory)
     setHasResult(nextHistory.length > 0)
@@ -229,7 +234,9 @@ export function WatermarkRemoval() {
     <Main className='flex min-h-0 flex-1 flex-col gap-4 overflow-hidden px-3 pt-3 pb-3 sm:px-4 sm:pt-5 sm:pb-4'>
       <header className='flex items-center justify-between gap-3'>
         <div className='min-w-0'>
-          <h1 className='truncate text-xl font-semibold'>{t('Remove Watermark')}</h1>
+          <h1 className='truncate text-xl font-semibold'>
+            {t('Remove Watermark')}
+          </h1>
           <p className='text-muted-foreground text-sm'>
             {t('Paint over a watermark to remove it locally in your browser.')}
           </p>
@@ -247,7 +254,7 @@ export function WatermarkRemoval() {
         }}
       />
 
-      <div className='relative flex min-h-0 flex-1 items-center justify-center overflow-hidden bg-muted/30'>
+      <div className='bg-muted/30 relative flex min-h-0 flex-1 items-center justify-center overflow-hidden'>
         {!file && (
           <button
             type='button'
@@ -260,7 +267,10 @@ export function WatermarkRemoval() {
               if (selected) void openImage(selected)
             }}
           >
-            <Upload className='text-muted-foreground size-8' aria-hidden='true' />
+            <Upload
+              className='text-muted-foreground size-8'
+              aria-hidden='true'
+            />
             <span className='font-medium'>{t('Choose or drop an image')}</span>
             <span className='text-muted-foreground text-sm'>
               {t('PNG, JPEG, or WebP up to 25 MB and 4096 x 4096 pixels')}
@@ -300,12 +310,16 @@ export function WatermarkRemoval() {
             }}
             onPointerMove={(event) => {
               moveBrushPreview(event)
-              if (!event.currentTarget.hasPointerCapture(event.pointerId)) return
+              if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+                return
+              }
               const previous = lastPointRef.current
               if (previous) drawStroke(event, previous)
             }}
             onPointerUp={(event) => {
-              if (!event.currentTarget.hasPointerCapture(event.pointerId)) return
+              if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+                return
+              }
               event.currentTarget.releasePointerCapture(event.pointerId)
               lastPointRef.current = undefined
               void processStroke()
@@ -360,7 +374,10 @@ export function WatermarkRemoval() {
             <Undo2 aria-hidden='true' />
             {t('Undo')}
           </Button>
-          <Button onClick={() => void download()} disabled={processing || !hasResult}>
+          <Button
+            onClick={() => void download()}
+            disabled={processing || !hasResult}
+          >
             <Download aria-hidden='true' />
             {t('Download')}
           </Button>
