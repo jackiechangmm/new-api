@@ -1,10 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-import {
-  restoreReferenceImage,
-  validateReferenceImages,
-} from '../validation'
+import { restoreReferenceImage, validateReferenceImages } from '../validation'
 
 test('restores historical JPEG and WebP blobs with matching file metadata', () => {
   const jpeg = restoreReferenceImage(
