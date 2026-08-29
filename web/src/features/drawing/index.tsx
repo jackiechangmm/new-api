@@ -47,6 +47,7 @@ import {
 import {
   getDrawingModelConfig,
   getFixedOrSelectedValue,
+  type DrawingInputConfig,
   type DrawingOperationConfig,
 } from './model-config'
 import {
@@ -62,7 +63,11 @@ import {
   saveDrawingHistory,
   type DrawingHistoryRecord,
 } from './storage'
-import { validateReferenceImage } from './validation'
+import {
+  restoreReferenceImage,
+  validateReferenceImage,
+  validateReferenceImages,
+} from './validation'
 
 type PreviewSource = Blob | string
 
@@ -227,6 +232,9 @@ export function Drawing() {
   const [count, setCount] = useState(1)
   const [referenceImages, setReferenceImages] = useState<File[]>([])
   const [referenceError, setReferenceError] = useState('')
+  const [referenceValidationPending, setReferenceValidationPending] =
+    useState(false)
+  const referenceValidationId = useRef(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [history, setHistory] = useState<DrawingHistoryRecord[]>([])
   const [historyVisibleCount, setHistoryVisibleCount] = useState(PAGE_SIZE)
@@ -363,6 +371,8 @@ export function Drawing() {
       !model ||
       !modelConfig ||
       !activeOperation ||
+      referenceValidationPending ||
+      referenceError ||
       (referenceImages.length > 0 && !hasEditModel)
     ) {
       return
@@ -461,21 +471,44 @@ export function Drawing() {
     setResolution(savedSize.length === 2 ? savedSize[1] : '1k')
     setQuality(record.quality)
     setCount(record.n)
-    setReferenceImages(
-      (record.referenceImages ?? []).map((blob, index) => {
-        const extension =
-          blob.type === 'image/jpeg'
-            ? 'jpg'
-            : blob.type === 'image/webp'
-              ? 'webp'
-              : 'png'
-        return new File([blob], `reference-${index}.${extension}`, {
-          type: blob.type || `image/${extension}`,
-        })
-      })
-    )
+    const files = (record.referenceImages ?? []).map(restoreReferenceImage)
+    setReferenceImages(files)
     setReferenceError('')
+    void validateReferences(
+      files,
+      getDrawingModelConfig(record.model)?.imageToImage?.input
+    )
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const validateReferences = async (
+    files: File[],
+    config: DrawingInputConfig | undefined
+  ) => {
+    const validationId = ++referenceValidationId.current
+    if (!files.length) {
+      setReferenceValidationPending(false)
+      setReferenceError('')
+      return
+    }
+    setReferenceValidationPending(true)
+    setReferenceError('')
+    const errorKey = await validateReferenceImages(files, config)
+    if (validationId !== referenceValidationId.current) return
+    setReferenceValidationPending(false)
+    if (errorKey) {
+      setReferenceError(
+        t(
+          {
+            unsupported: 'Reference image format is not supported.',
+            'too-many': 'You can select up to 4 reference images.',
+            'too-large': 'Reference images must be 20 MB or smaller in total.',
+            'too-wide':
+              'Reference image dimensions must be 4096 pixels or smaller.',
+          }[errorKey]
+        )
+      )
+    }
   }
 
   const referenceBytes = referenceImages.reduce(
@@ -653,6 +686,8 @@ export function Drawing() {
                   disabled={
                     isGenerating ||
                     isPolishing ||
+                    referenceValidationPending ||
+                    Boolean(referenceError) ||
                     !model ||
                     !activeOperation ||
                     !prompt.trim() ||
@@ -685,8 +720,11 @@ export function Drawing() {
                 onChange={(nextModel) => {
                   invalidatePromptPolish()
                   setModel(nextModel)
-                  setReferenceImages([])
                   setReferenceError('')
+                  void validateReferences(
+                    referenceImages,
+                    getDrawingModelConfig(nextModel)?.imageToImage?.input
+                  )
                 }}
                 options={models}
                 value={model}
