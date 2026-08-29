@@ -1,10 +1,6 @@
 /*
 Copyright (C) 2023-2026 QuantumNous
 
-This file includes adapted work from inpaint-web:
-https://github.com/lxfater/inpaint-web
-Copyright (C) lxfater and contributors, licensed under GPL-3.0.
-
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or (at your option)
@@ -328,7 +324,7 @@ export function WatermarkRemoval() {
             <div className='bg-background/85 absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 backdrop-blur-sm'>
               <span className='text-sm font-medium'>
                 {progress < 100
-                  ? t('Downloading model... {{progress}}%', { progress })
+                  ? t('Loading model... {{progress}}%', { progress })
                   : t('Removing watermark...')}
               </span>
               <Progress className='w-full max-w-72' value={progress} />
@@ -338,7 +334,7 @@ export function WatermarkRemoval() {
       </div>
 
       {file && (
-        <div className='border-border flex shrink-0 flex-wrap items-center gap-2 border-t pt-3'>
+        <div className='flex shrink-0 flex-wrap items-center justify-center gap-2'>
           <Button variant='outline' onClick={startNew} disabled={processing}>
             <X aria-hidden='true' />
             {t('Start new')}
@@ -370,27 +366,6 @@ export function WatermarkRemoval() {
           </Button>
         </div>
       )}
-
-      <footer className='text-muted-foreground shrink-0 text-center text-xs'>
-        {t('Based on')}{' '}
-        <a
-          className='underline underline-offset-2'
-          href='https://github.com/lxfater/inpaint-web'
-          target='_blank'
-          rel='noreferrer'
-        >
-          inpaint-web
-        </a>{' '}
-        ·{' '}
-        <a
-          className='underline underline-offset-2'
-          href='https://github.com/lxfater/inpaint-web/blob/main/LICENSE'
-          target='_blank'
-          rel='noreferrer'
-        >
-          GPL-3.0
-        </a>
-      </footer>
     </Main>
   )
 }

@@ -1,10 +1,6 @@
 /*
 Copyright (C) 2023-2026 QuantumNous
 
-This file includes adapted work from inpaint-web:
-https://github.com/lxfater/inpaint-web
-Copyright (C) lxfater and contributors, licensed under GPL-3.0.
-
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or (at your option)
