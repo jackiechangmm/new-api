@@ -46,6 +46,7 @@ export function WatermarkRemoval() {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null)
   const maskCanvasRef = useRef<HTMLCanvasElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const brushPreviewRef = useRef<HTMLDivElement>(null)
   const lastPointRef = useRef<Point | undefined>(undefined)
   const [file, setFile] = useState<File>()
   const [brushSize, setBrushSize] = useState(40)
@@ -53,6 +54,7 @@ export function WatermarkRemoval() {
   const [processing, setProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
   const [hasResult, setHasResult] = useState(false)
+  const [showBrush, setShowBrush] = useState(false)
 
   const validationMessage = (error: ImageValidationError) => {
     if (error === 'format') return t('Use a PNG, JPEG, or WebP image.')
@@ -163,6 +165,13 @@ export function WatermarkRemoval() {
     }
   }
 
+  const moveBrushPreview = (event: React.PointerEvent<HTMLCanvasElement>) => {
+    const preview = brushPreviewRef.current
+    if (!preview) return
+    const bounds = event.currentTarget.getBoundingClientRect()
+    preview.style.transform = `translate3d(${event.clientX - bounds.left - brushSize / 2}px, ${event.clientY - bounds.top - brushSize / 2}px, 0)`
+  }
+
   const drawStroke = (
     event: React.PointerEvent<HTMLCanvasElement>,
     start: Point
@@ -221,7 +230,7 @@ export function WatermarkRemoval() {
   }
 
   return (
-    <Main className='flex min-h-0 flex-1 flex-col gap-4 overflow-hidden'>
+    <Main className='flex min-h-0 flex-1 flex-col gap-4 overflow-hidden px-3 pt-3 pb-3 sm:px-4 sm:pt-5 sm:pb-4'>
       <header className='flex items-center justify-between gap-3'>
         <div className='min-w-0'>
           <h1 className='truncate text-xl font-semibold'>{t('Remove Watermark')}</h1>
@@ -280,7 +289,12 @@ export function WatermarkRemoval() {
           <canvas
             ref={maskCanvasRef}
             aria-label={t('Watermark painting area')}
-            className='absolute inset-0 size-full touch-none'
+            className='absolute inset-0 size-full cursor-none touch-none'
+            onPointerEnter={(event) => {
+              moveBrushPreview(event)
+              setShowBrush(true)
+            }}
+            onPointerLeave={() => setShowBrush(false)}
             onPointerDown={(event) => {
               if (processing) return
               event.currentTarget.setPointerCapture(event.pointerId)
@@ -289,6 +303,7 @@ export function WatermarkRemoval() {
               drawStroke(event, point)
             }}
             onPointerMove={(event) => {
+              moveBrushPreview(event)
               if (!event.currentTarget.hasPointerCapture(event.pointerId)) return
               const previous = lastPointRef.current
               if (previous) drawStroke(event, previous)
@@ -299,6 +314,15 @@ export function WatermarkRemoval() {
               lastPointRef.current = undefined
               void processStroke()
             }}
+          />
+          <div
+            ref={brushPreviewRef}
+            className={`pointer-events-none absolute top-0 left-0 rounded-full border border-white/80 bg-red-500/35 shadow-sm ${showBrush && !processing ? '' : 'hidden'}`}
+            style={{
+              width: brushSize,
+              height: brushSize,
+            }}
+            aria-hidden='true'
           />
           {processing && (
             <div className='bg-background/85 absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 backdrop-blur-sm'>
@@ -319,7 +343,7 @@ export function WatermarkRemoval() {
             <X aria-hidden='true' />
             {t('Start new')}
           </Button>
-          <label className='flex min-w-40 flex-1 items-center gap-3 px-2 text-sm'>
+          <label className='flex w-64 shrink-0 items-center gap-3 px-2 text-sm'>
             <span className='shrink-0'>{t('Brush size')}</span>
             <Slider
               aria-label={t('Brush size')}
