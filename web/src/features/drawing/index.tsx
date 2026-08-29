@@ -462,10 +462,17 @@ export function Drawing() {
     setQuality(record.quality)
     setCount(record.n)
     setReferenceImages(
-      (record.referenceImages ?? []).map(
-        (blob, index) =>
-          new File([blob], `reference-${index}.png`, { type: blob.type })
-      )
+      (record.referenceImages ?? []).map((blob, index) => {
+        const extension =
+          blob.type === 'image/jpeg'
+            ? 'jpg'
+            : blob.type === 'image/webp'
+              ? 'webp'
+              : 'png'
+        return new File([blob], `reference-${index}.${extension}`, {
+          type: blob.type || `image/${extension}`,
+        })
+      })
     )
     setReferenceError('')
     window.scrollTo({ top: 0, behavior: 'smooth' })
