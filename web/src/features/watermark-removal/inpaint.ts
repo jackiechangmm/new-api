@@ -9,10 +9,9 @@ any later version.
 import type * as ortType from 'onnxruntime-web'
 
 const MODEL_URL =
-  'https://gh-proxy.org/https://raw.githubusercontent.com/Rootport-AI/MI-GAN-Eraser/main/migan_pipeline_v2.onnx'
-const MODEL_DOWNLOAD_PARTS = 8
+  'https://bululu-assets.cn-nb1.rains3.com/playground/models/migan_pipeline_v2.onnx'
 const DATABASE_NAME = 'watermark-removal'
-const MODEL_KEY = 'migan-pipeline-v2'
+const MODEL_KEY = 'migan-pipeline-v2-rains3'
 
 let session: ortType.InferenceSession | undefined
 
@@ -51,83 +50,29 @@ async function cacheModel(model: ArrayBuffer): Promise<void> {
 }
 
 async function downloadModel(onProgress: (progress: number) => void) {
-  const download = async (
-    response: Response,
-    report: (bytes: number) => void
-  ) => {
-    if (!response.ok || !response.body) throw new Error('model-download-failed')
-    const reader = response.body.getReader()
-    const chunks: Uint8Array[] = []
-    let downloaded = 0
+  const response = await fetch(MODEL_URL)
+  if (!response.ok || !response.body) throw new Error('model-download-failed')
 
-    while (true) {
-      const result = await reader.read()
-      if (result.done) break
-      chunks.push(result.value)
-      downloaded += result.value.byteLength
-      report(result.value.byteLength)
-    }
+  const total = Number(response.headers.get('content-length'))
+  const reader = response.body.getReader()
+  const chunks: Uint8Array[] = []
+  let downloaded = 0
 
-    const data = new Uint8Array(downloaded)
-    let offset = 0
-    for (const chunk of chunks) {
-      data.set(chunk, offset)
-      offset += chunk.byteLength
-    }
-    return data
+  while (true) {
+    const result = await reader.read()
+    if (result.done) break
+    chunks.push(result.value)
+    downloaded += result.value.byteLength
+    if (total) onProgress(Math.round((downloaded / total) * 100))
   }
 
-  try {
-    const metadata = await fetch(MODEL_URL, { method: 'HEAD' })
-    const total = Number(metadata.headers.get('content-length'))
-    if (!metadata.ok || !total) throw new Error('range-download-unavailable')
-
-    const controller = new AbortController()
-    let downloaded = 0
-    try {
-      const parts = await Promise.all(
-        Array.from({ length: MODEL_DOWNLOAD_PARTS }, async (_, index) => {
-          const start = Math.floor((total * index) / MODEL_DOWNLOAD_PARTS)
-          const end =
-            Math.floor((total * (index + 1)) / MODEL_DOWNLOAD_PARTS) - 1
-          const response = await fetch(MODEL_URL, {
-            headers: { Range: `bytes=${start}-${end}` },
-            signal: controller.signal,
-          })
-          if (response.status !== 206) {
-            throw new Error('range-download-unavailable')
-          }
-          const part = await download(response, (bytes) => {
-            downloaded += bytes
-            onProgress(Math.round((downloaded / total) * 100))
-          })
-          if (part.byteLength !== end - start + 1) {
-            throw new Error('range-download-incomplete')
-          }
-          return part
-        })
-      )
-      const model = new Uint8Array(total)
-      let offset = 0
-      for (const part of parts) {
-        model.set(part, offset)
-        offset += part.byteLength
-      }
-      return model.buffer
-    } catch (error) {
-      controller.abort()
-      throw error
-    }
-  } catch {
-    let downloaded = 0
-    const response = await fetch(MODEL_URL)
-    const total = Number(response.headers.get('content-length'))
-    const model = await download(response, (bytes) => {
-      downloaded += bytes
-      if (total) onProgress(Math.round((downloaded / total) * 100))
-    })
-    return model.buffer
+  const model = new Uint8Array(downloaded)
+  let offset = 0
+  for (const chunk of chunks) {
+    model.set(chunk, offset)
+    offset += chunk.byteLength
   }
+  return model.buffer
 }
 
 async function loadModel(onProgress: (progress: number) => void) {
