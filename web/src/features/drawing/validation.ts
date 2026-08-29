@@ -24,6 +24,31 @@ export type ReferenceImageError =
   | 'too-large'
   | 'too-wide'
 
+export function restoreReferenceImage(blob: Blob, index: number): File {
+  let extension = 'png'
+  if (blob.type === 'image/jpeg') extension = 'jpg'
+  if (blob.type === 'image/webp') extension = 'webp'
+  return new File([blob], `reference-${index}.${extension}`, {
+    type: blob.type || `image/${extension}`,
+  })
+}
+
+export async function validateReferenceImages(
+  files: File[],
+  config?: DrawingInputConfig
+): Promise<ReferenceImageError | undefined> {
+  for (const [index, file] of files.entries()) {
+    const error = await validateReferenceImage(
+      file,
+      index,
+      files.slice(0, index).reduce((total, item) => total + item.size, 0),
+      config
+    )
+    if (error) return error
+  }
+  return undefined
+}
+
 export async function validateReferenceImage(
   file: File,
   currentCount: number,
