@@ -45,6 +45,7 @@ import { Route as AuthenticatedModelsSectionRouteImport } from './routes/_authen
 import { Route as AuthenticatedPlaygroundIndexRouteImport } from './routes/_authenticated/playground/index'
 import { Route as AuthenticatedPlaygroundChatRouteImport } from './routes/_authenticated/playground/chat'
 import { Route as AuthenticatedPlaygroundDrawingRouteImport } from './routes/_authenticated/playground/drawing'
+import { Route as AuthenticatedPlaygroundWatermarkRemovalRouteImport } from './routes/_authenticated/playground/watermark-removal'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile/index'
 import { Route as AuthenticatedRedemptionCodesIndexRouteImport } from './routes/_authenticated/redemption-codes/index'
 import { Route as AuthenticatedSubscriptionsIndexRouteImport } from './routes/_authenticated/subscriptions/index'
@@ -258,6 +259,12 @@ const AuthenticatedPlaygroundDrawingRoute =
     path: '/playground/drawing',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPlaygroundWatermarkRemovalRoute =
+  AuthenticatedPlaygroundWatermarkRemovalRouteImport.update({
+    id: '/playground/watermark-removal',
+    path: '/playground/watermark-removal',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProfileIndexRoute =
   AuthenticatedProfileIndexRouteImport.update({
     id: '/profile/',
@@ -431,6 +438,7 @@ export interface FileRoutesByFullPath {
   '/models/$section': typeof AuthenticatedModelsSectionRoute
   '/playground/chat': typeof AuthenticatedPlaygroundChatRoute
   '/playground/drawing': typeof AuthenticatedPlaygroundDrawingRoute
+  '/playground/watermark-removal': typeof AuthenticatedPlaygroundWatermarkRemovalRoute
   '/usage-logs/$section': typeof AuthenticatedUsageLogsSectionRoute
   '/channels/': typeof AuthenticatedChannelsIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -490,6 +498,7 @@ export interface FileRoutesByTo {
   '/models/$section': typeof AuthenticatedModelsSectionRoute
   '/playground/chat': typeof AuthenticatedPlaygroundChatRoute
   '/playground/drawing': typeof AuthenticatedPlaygroundDrawingRoute
+  '/playground/watermark-removal': typeof AuthenticatedPlaygroundWatermarkRemovalRoute
   '/usage-logs/$section': typeof AuthenticatedUsageLogsSectionRoute
   '/channels': typeof AuthenticatedChannelsIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
@@ -553,6 +562,7 @@ export interface FileRoutesById {
   '/_authenticated/models/$section': typeof AuthenticatedModelsSectionRoute
   '/_authenticated/playground/chat': typeof AuthenticatedPlaygroundChatRoute
   '/_authenticated/playground/drawing': typeof AuthenticatedPlaygroundDrawingRoute
+  '/_authenticated/playground/watermark-removal': typeof AuthenticatedPlaygroundWatermarkRemovalRoute
   '/_authenticated/usage-logs/$section': typeof AuthenticatedUsageLogsSectionRoute
   '/_authenticated/channels/': typeof AuthenticatedChannelsIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -615,6 +625,7 @@ export interface FileRouteTypes {
     | '/models/$section'
     | '/playground/chat'
     | '/playground/drawing'
+    | '/playground/watermark-removal'
     | '/usage-logs/$section'
     | '/channels/'
     | '/dashboard/'
@@ -674,6 +685,7 @@ export interface FileRouteTypes {
     | '/models/$section'
     | '/playground/chat'
     | '/playground/drawing'
+    | '/playground/watermark-removal'
     | '/usage-logs/$section'
     | '/channels'
     | '/dashboard'
@@ -736,6 +748,7 @@ export interface FileRouteTypes {
     | '/_authenticated/models/$section'
     | '/_authenticated/playground/chat'
     | '/_authenticated/playground/drawing'
+    | '/_authenticated/playground/watermark-removal'
     | '/_authenticated/usage-logs/$section'
     | '/_authenticated/channels/'
     | '/_authenticated/dashboard/'
@@ -1040,6 +1053,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlaygroundDrawingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/playground/watermark-removal': {
+      id: '/_authenticated/playground/watermark-removal'
+      path: '/playground/watermark-removal'
+      fullPath: '/playground/watermark-removal'
+      preLoaderRoute: typeof AuthenticatedPlaygroundWatermarkRemovalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile/': {
       id: '/_authenticated/profile/'
       path: '/profile'
@@ -1303,6 +1323,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedModelsSectionRoute: typeof AuthenticatedModelsSectionRoute
   AuthenticatedPlaygroundChatRoute: typeof AuthenticatedPlaygroundChatRoute
   AuthenticatedPlaygroundDrawingRoute: typeof AuthenticatedPlaygroundDrawingRoute
+  AuthenticatedPlaygroundWatermarkRemovalRoute: typeof AuthenticatedPlaygroundWatermarkRemovalRoute
   AuthenticatedUsageLogsSectionRoute: typeof AuthenticatedUsageLogsSectionRoute
   AuthenticatedChannelsIndexRoute: typeof AuthenticatedChannelsIndexRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
@@ -1328,6 +1349,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedModelsSectionRoute: AuthenticatedModelsSectionRoute,
   AuthenticatedPlaygroundChatRoute: AuthenticatedPlaygroundChatRoute,
   AuthenticatedPlaygroundDrawingRoute: AuthenticatedPlaygroundDrawingRoute,
+  AuthenticatedPlaygroundWatermarkRemovalRoute:
+    AuthenticatedPlaygroundWatermarkRemovalRoute,
   AuthenticatedUsageLogsSectionRoute: AuthenticatedUsageLogsSectionRoute,
   AuthenticatedChannelsIndexRoute: AuthenticatedChannelsIndexRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,

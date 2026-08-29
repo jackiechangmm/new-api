@@ -20,6 +20,7 @@ import {
   Activity,
   Box,
   CreditCard,
+  Eraser,
   FileText,
   FlaskConical,
   Key,
@@ -64,6 +65,11 @@ export function useSidebarData(): SidebarData {
             title: t('Drawing Plaza'),
             url: '/playground/drawing',
             icon: WandSparkles,
+          },
+          {
+            title: t('Remove Watermark'),
+            url: '/playground/watermark-removal',
+            icon: Eraser,
           },
           {
             title: t('External Chat'),

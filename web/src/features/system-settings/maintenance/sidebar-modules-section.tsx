@@ -92,6 +92,10 @@ export function SidebarModulesSection({
         title: t('Conversation'),
         description: t('Use prompts and models for simple conversations.'),
       },
+      watermarkRemoval: {
+        title: t('Remove Watermark'),
+        description: t('Remove watermarks locally in your browser'),
+      },
       chat: {
         title: t('External Chat'),
         description: t('Redirect to a configured external chat client'),
