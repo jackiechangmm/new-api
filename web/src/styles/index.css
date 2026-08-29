@@ -751,6 +751,38 @@ For commercial licensing, please contact support@quantumnous.com
   contain-intrinsic-size: 0 80px;
 }
 
+/* Newly generated drawing highlight */
+@keyframes history-sweep {
+  from {
+    transform: translateX(-160%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(360%) skewX(-18deg);
+  }
+}
+
+.history-sweep {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  z-index: 10;
+  width: 40%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 65%),
+    transparent
+  );
+  animation: history-sweep 850ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .history-sweep {
+    display: none;
+  }
+}
+
 /* ── Hero terminal demo animations ── */
 @keyframes terminal-demo-blink {
   0%,

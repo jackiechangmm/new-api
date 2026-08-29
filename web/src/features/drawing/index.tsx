@@ -250,7 +250,9 @@ export function Drawing() {
   const polishControllerRef = useRef<AbortController>(null)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
+  const [highlightHistoryId, setHighlightHistoryId] = useState<string>()
   const scrollRef = useRef<HTMLElement>(null)
+  const historyRef = useRef<HTMLElement>(null)
   const promptLibraryRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -434,6 +436,13 @@ export function Drawing() {
       if (!(await saveDrawingHistory(record))) {
         toast.warning(t('This result could not be saved in local history'))
       }
+      requestAnimationFrame(() => {
+        historyRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+        window.setTimeout(() => setHighlightHistoryId(record.id), 450)
+      })
     } catch (requestError) {
       const message =
         requestError instanceof Error
@@ -812,7 +821,7 @@ export function Drawing() {
           </div>
         </section>
 
-        <section>
+        <section ref={historyRef}>
           <div className='mb-4 flex items-end justify-between gap-3'>
             <div>
               <h2 className='text-lg font-semibold'>{t('Drawing history')}</h2>
@@ -832,6 +841,7 @@ export function Drawing() {
             <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
               {visibleHistory.map((record) => (
                 <HistoryCard
+                  highlight={record.id === highlightHistoryId}
                   key={record.id}
                   record={record}
                   onDelete={() => void remove(record.id)}
@@ -997,6 +1007,7 @@ function ReferenceImage(props: {
 
 function HistoryCard(props: {
   record: DrawingHistoryRecord
+  highlight?: boolean
   onDelete: () => void
   onDownload: (blob: Blob, name: string) => void
   onPreview: (images: Blob[], index: number) => void
@@ -1005,7 +1016,10 @@ function HistoryCard(props: {
   const { t } = useTranslation()
   return (
     <article className='overflow-hidden rounded-lg border'>
-      <div className='relative p-1'>
+      <div className='relative overflow-hidden p-1'>
+        {props.highlight ? (
+          <span aria-hidden='true' className='history-sweep' />
+        ) : null}
         <HistoryImage
           blob={props.record.images[0]}
           onClick={() => props.onPreview(props.record.images, 0)}
