@@ -67,6 +67,11 @@ export function SidebarModulesCard() {
           description: t('Use prompts and models for simple conversations'),
         },
         {
+          key: 'watermarkRemoval',
+          title: t('Remove Watermark'),
+          description: t('Remove watermarks locally in your browser'),
+        },
+        {
           key: 'chat',
           title: t('External Chat'),
           description: t('Redirect to a configured external chat client'),
