@@ -416,6 +416,17 @@ For commercial licensing, please contact support@quantumnous.com
 
 /* Launch UI Animations and Effects - Matching Template Exactly */
 @layer utilities {
+  .transparency-grid {
+    background-color: var(--background);
+    background-image: conic-gradient(
+      var(--muted) 25%,
+      var(--background) 0 50%,
+      var(--muted) 0 75%,
+      var(--background) 0
+    );
+    background-size: 16px 16px;
+  }
+
   /* Gradient utilities */
   .bg-radial {
     background-image: radial-gradient(var(--tw-gradient-stops));

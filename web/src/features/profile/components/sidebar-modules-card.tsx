@@ -72,6 +72,11 @@ export function SidebarModulesCard() {
           description: t('Remove watermarks locally in your browser'),
         },
         {
+          key: 'backgroundRemoval',
+          title: t('Remove Background'),
+          description: t('Remove image backgrounds locally in your browser'),
+        },
+        {
           key: 'chat',
           title: t('External Chat'),
           description: t('Redirect to a configured external chat client'),
