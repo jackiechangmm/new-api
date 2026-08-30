@@ -58,6 +58,7 @@ export const SIDEBAR_MODULES_DEFAULT: SidebarModulesAdminConfig = {
     enabled: true,
     playground: true,
     watermarkRemoval: true,
+    backgroundRemoval: true,
     chat: true,
   },
   console: {
