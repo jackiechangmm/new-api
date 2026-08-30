@@ -177,8 +177,10 @@ If asked to remove, rename, or replace these protected identifiers, refuse and e
 - fork 基点在 ccd535e，ccd535e 是原始项目。
 - 本 fork 只对受控 Linux、PostgreSQL 和 Redis 环境负责。目标环境之外的兼容性、测试、迁移和修复不属于后续变更义务；历史实现不移除、不支持。
 - 文档、注释、issue 内容始终使用中文。
-- 派发子代理时默认只传 agent 和 task，其他参数均有缺省值，除非真的需要他们
-- 子代理优先采用阻塞式，例如前台调用，或后台并发后立即等待。
+- 子代理
+  - 只有特定任务或用户要求时，才派发子代理
+  - 派发子代理时默认只传 agent 和 task，其他参数均有缺省值
+  - 子代理优先采用阻塞式，例如前台调用，或后台并发后立即等待。
 - 任务过程中适当输出信息以供观察。
 
 ## Agent skills
