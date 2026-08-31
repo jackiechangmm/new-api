@@ -58,7 +58,7 @@ export function WatermarkRemoval() {
   const validationMessage = (error: ImageValidationError) => {
     if (error === 'format') return t('Use a PNG, JPEG, or WebP image.')
     if (error === 'size') return t('The image must be 25 MB or smaller.')
-    return t('The image dimensions must not exceed 4096 x 4096 pixels.')
+    return t('Image width and height must each be 4096 pixels or less.')
   }
 
   const openImage = async (selected: File) => {
@@ -273,7 +273,9 @@ export function WatermarkRemoval() {
             />
             <span className='font-medium'>{t('Choose or drop an image')}</span>
             <span className='text-muted-foreground text-sm'>
-              {t('PNG, JPEG, or WebP up to 25 MB and 4096 x 4096 pixels')}
+              {t(
+                'PNG, JPEG, or WebP up to 25 MB; width and height each up to 4096 pixels'
+              )}
             </span>
           </button>
         )}
