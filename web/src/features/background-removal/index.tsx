@@ -228,7 +228,7 @@ export function BackgroundRemoval() {
         </div>
       )}
 
-      <p className='text-muted-foreground shrink-0 text-center text-xs'>
+      <p className='text-muted-foreground/20 shrink-0 text-center text-xs'>
         <a
           className='underline-offset-4 hover:underline'
           href='https://www.rembg.com'

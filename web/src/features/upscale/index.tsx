@@ -271,16 +271,6 @@ export function Upscale() {
         </div>
       )}
 
-      <p className='text-muted-foreground shrink-0 text-center text-xs'>
-        <a
-          className='underline-offset-4 hover:underline'
-          href='https://github.com/xinntao/Real-ESRGAN'
-          target='_blank'
-          rel='noreferrer'
-        >
-          {t('Powered by Real-ESRGAN')}
-        </a>
-      </p>
     </Main>
   )
 }
