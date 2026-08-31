@@ -68,7 +68,7 @@ var apimartPixelSizes = map[string][2]string{
 
 func (i ImageRequest) ValidateAPIMartImageRequest() error {
 	if !IsAPIMartImageModel(i.Model) {
-		return fmt.Errorf("unsupported APIMart image model %q", i.Model)
+		return fmt.Errorf("unsupported image model %q", i.Model)
 	}
 	if i.Model == APIMartGrokImagineModel {
 		return i.validateAPIMartGrokImagineRequest()
@@ -77,10 +77,10 @@ func (i ImageRequest) ValidateAPIMartImageRequest() error {
 		return err
 	}
 	if i.Stream != nil && *i.Stream {
-		return fmt.Errorf("APIMart does not support image streaming")
+		return fmt.Errorf("image streaming is not supported")
 	}
 	if i.ResponseFormat != "" && i.ResponseFormat != "url" && i.ResponseFormat != "b64_json" {
-		return fmt.Errorf("invalid APIMart response_format")
+		return fmt.Errorf("invalid image response_format")
 	}
 	for _, field := range []struct {
 		name   string
@@ -96,17 +96,17 @@ func (i ImageRequest) ValidateAPIMartImageRequest() error {
 		}
 		var value string
 		if err := kitutil.Unmarshal(field.raw, &value); err != nil || !field.values[value] {
-			return fmt.Errorf("invalid APIMart %s", field.name)
+			return fmt.Errorf("invalid image %s", field.name)
 		}
 	}
 	if len(i.OutputCompression) != 0 {
 		var compression int
 		if err := kitutil.Unmarshal(i.OutputCompression, &compression); err != nil || compression < 0 || compression > 100 {
-			return fmt.Errorf("APIMart output_compression must be an integer between 0 and 100")
+			return fmt.Errorf("output_compression must be an integer between 0 and 100")
 		}
 		var format string
 		if err := kitutil.Unmarshal(i.OutputFormat, &format); err != nil || (format != "jpeg" && format != "webp") {
-			return fmt.Errorf("APIMart output_compression requires jpeg or webp output_format")
+			return fmt.Errorf("output_compression requires jpeg or webp output_format")
 		}
 	}
 	return nil
@@ -115,26 +115,26 @@ func (i ImageRequest) ValidateAPIMartImageRequest() error {
 func (i ImageRequest) validateAPIMartGrokImagineRequest() error {
 	prompt := strings.TrimSpace(i.Prompt)
 	if prompt == "" || len(prompt) > 8000 {
-		return fmt.Errorf("APIMart prompt must be between 1 and 8000 characters")
+		return fmt.Errorf("prompt must be between 1 and 8000 characters")
 	}
 	if i.Stream != nil && *i.Stream {
-		return fmt.Errorf("APIMart does not support image streaming")
+		return fmt.Errorf("image streaming is not supported")
 	}
 	if i.ResponseFormat != "" && i.ResponseFormat != "url" && i.ResponseFormat != "b64_json" {
-		return fmt.Errorf("invalid APIMart response_format")
+		return fmt.Errorf("invalid image response_format")
 	}
 	if i.N != nil && (*i.N < 1 || *i.N > 10) {
-		return fmt.Errorf("APIMart n must be an integer between 1 and 10")
+		return fmt.Errorf("n must be an integer between 1 and 10")
 	}
 	if i.Quality != "" && i.Quality != "low" && i.Quality != "medium" {
-		return fmt.Errorf("invalid APIMart quality %q", i.Quality)
+		return fmt.Errorf("invalid image quality %q", i.Quality)
 	}
 	options, err := i.APIMartImageOptions()
 	if err != nil {
 		return err
 	}
 	if options.Resolution != "1k" && options.Resolution != "2k" {
-		return fmt.Errorf("invalid APIMart resolution %q", options.Resolution)
+		return fmt.Errorf("invalid image resolution %q", options.Resolution)
 	}
 	return nil
 }
@@ -145,7 +145,7 @@ func (i ImageRequest) APIMartImageOptions() (APIMartImageOptions, error) {
 		outputResolution := "1k"
 		if parts := strings.Fields(aspectRatio); len(parts) > 0 {
 			if len(parts) > 2 || (len(parts) == 2 && parts[1] != "1k" && parts[1] != "2k") {
-				return APIMartImageOptions{}, fmt.Errorf("invalid APIMart resolution in size %q", i.Size)
+				return APIMartImageOptions{}, fmt.Errorf("invalid image resolution in size %q", i.Size)
 			}
 			aspectRatio = parts[0]
 			if len(parts) == 2 {
@@ -161,7 +161,7 @@ func (i ImageRequest) APIMartImageOptions() (APIMartImageOptions, error) {
 			"1:2": true, "2:1": true,
 		}
 		if !validRatios[aspectRatio] {
-			return APIMartImageOptions{}, fmt.Errorf("invalid APIMart aspect ratio %q", i.Size)
+			return APIMartImageOptions{}, fmt.Errorf("invalid image aspect ratio %q", i.Size)
 		}
 		n := uint(1)
 		if i.N != nil {
@@ -179,7 +179,7 @@ func (i ImageRequest) APIMartImageOptions() (APIMartImageOptions, error) {
 	} else {
 		parts := strings.Fields(size)
 		if len(parts) > 2 || len(parts) == 0 {
-			return APIMartImageOptions{}, fmt.Errorf("invalid APIMart size %q", i.Size)
+			return APIMartImageOptions{}, fmt.Errorf("invalid image size %q", i.Size)
 		}
 		size = parts[0]
 		if len(parts) == 2 {
@@ -188,14 +188,14 @@ func (i ImageRequest) APIMartImageOptions() (APIMartImageOptions, error) {
 	}
 	if size != "auto" {
 		if _, ok := apimartImageTokens[size]; !ok {
-			return APIMartImageOptions{}, fmt.Errorf("invalid APIMart size %q", i.Size)
+			return APIMartImageOptions{}, fmt.Errorf("invalid image size %q", i.Size)
 		}
 	} else if resolution == "1k" {
 		// APIMart 会为 auto 选择最终比例，计费按 1:1 预估。
 	}
 	resolutionIndex := map[string]int{"1k": 0, "2k": 1, "4k": 2}[resolution]
 	if _, ok := map[string]int{"1k": 0, "2k": 1, "4k": 2}[resolution]; !ok {
-		return APIMartImageOptions{}, fmt.Errorf("invalid APIMart resolution %q", resolution)
+		return APIMartImageOptions{}, fmt.Errorf("invalid image resolution %q", resolution)
 	}
 	quality := strings.ToLower(strings.TrimSpace(i.Quality))
 	if quality == "" || quality == "auto" {
@@ -203,7 +203,7 @@ func (i ImageRequest) APIMartImageOptions() (APIMartImageOptions, error) {
 	}
 	qualityIndex, ok := map[string]int{"low": 0, "medium": 1, "high": 2}[quality]
 	if !ok {
-		return APIMartImageOptions{}, fmt.Errorf("invalid APIMart quality %q", i.Quality)
+		return APIMartImageOptions{}, fmt.Errorf("invalid image quality %q", i.Quality)
 	}
 	billingSize := size
 	if billingSize == "auto" {
@@ -214,7 +214,7 @@ func (i ImageRequest) APIMartImageOptions() (APIMartImageOptions, error) {
 		n = *i.N
 	}
 	if n < 1 || n > 4 {
-		return APIMartImageOptions{}, fmt.Errorf("APIMart n must be an integer between 1 and 4")
+		return APIMartImageOptions{}, fmt.Errorf("n must be an integer between 1 and 4")
 	}
 	return APIMartImageOptions{Size: size, Resolution: resolution, Quality: quality, OutputTokens: apimartImageTokens[billingSize][resolutionIndex][qualityIndex] * int(n)}, nil
 }

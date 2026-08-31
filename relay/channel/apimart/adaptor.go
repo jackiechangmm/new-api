@@ -41,7 +41,7 @@ func (a *Adaptor) Init(*relaycommon.RelayInfo) {}
 
 func (a *Adaptor) GetRequestURL(info *relaycommon.RelayInfo) (string, error) {
 	if info == nil {
-		return "", errors.New("APIMart adaptor: relay info is nil")
+		return "", errors.New("relay information is required")
 	}
 	if info.ChannelBaseUrl == "" {
 		info.ChannelBaseUrl = constant.ChannelBaseURLs[constant.ChannelTypeAPIMart]
@@ -51,7 +51,7 @@ func (a *Adaptor) GetRequestURL(info *relaycommon.RelayInfo) (string, error) {
 
 func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Header, info *relaycommon.RelayInfo) error {
 	if info == nil || info.ApiKey == "" {
-		return errors.New("APIMart adaptor: api key is required")
+		return errors.New("channel API key is required")
 	}
 	channel.SetupApiRequestHeader(info, c, req)
 	req.Set("Authorization", "Bearer "+info.ApiKey)
@@ -72,13 +72,13 @@ func (a *Adaptor) SetupRequestHeader(c *gin.Context, req *http.Header, info *rel
 
 func (a *Adaptor) ConvertImageRequest(c *gin.Context, info *relaycommon.RelayInfo, request dto.ImageRequest) (any, error) {
 	if info == nil {
-		return nil, errors.New("APIMart adaptor: relay info is nil")
+		return nil, errors.New("relay information is required")
 	}
 	if err := request.ValidateAPIMartImageRequest(); err != nil {
 		return nil, invalidRequest(err)
 	}
 	if info.RelayMode == relayconstant.RelayModeImagesEdits && !strings.Contains(c.GetHeader("Content-Type"), "multipart/form-data") {
-		return nil, invalidRequest(errors.New("APIMart image edits require multipart/form-data"))
+		return nil, invalidRequest(errors.New("image edits require multipart/form-data"))
 	}
 	options, err := request.APIMartImageOptions()
 	if err != nil {
@@ -155,11 +155,11 @@ func (r submitResponse) taskID() (string, error) {
 			return "", err
 		}
 		if len(tasks) == 0 {
-			return "", errors.New("APIMart task submission returned no task")
+			return "", errors.New("image generation task submission returned no task")
 		}
 		task = tasks[0]
 	default:
-		return "", errors.New("APIMart task submission returned invalid data")
+		return "", errors.New("image generation task submission returned invalid data")
 	}
 	if task.ID != "" {
 		return task.ID, nil
@@ -167,7 +167,7 @@ func (r submitResponse) taskID() (string, error) {
 	if task.TaskID != "" {
 		return task.TaskID, nil
 	}
-	return "", errors.New("APIMart task submission returned no task ID")
+	return "", errors.New("image generation task submission returned no task ID")
 }
 
 func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (any, *types.NewAPIError) {
@@ -177,7 +177,7 @@ func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycom
 		return nil, types.NewError(err, types.ErrorCodeBadResponseBody)
 	}
 	if submitted.Error != nil {
-		return nil, upstreamError("APIMart task submission failed", submitted.Error)
+		return nil, upstreamError("image generation task submission failed", submitted.Error)
 	}
 	taskID, err := submitted.taskID()
 	if err != nil {
@@ -201,9 +201,9 @@ func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycom
 		case "completed":
 			return writeImageResponse(c, info, task)
 		case "failed", "cancelled":
-			return nil, upstreamError("APIMart image task "+task.Status, task.Error)
+			return nil, upstreamError("image generation task "+task.Status, task.Error)
 		default:
-			return nil, types.NewError(fmt.Errorf("APIMart image task returned invalid status %q", task.Status), types.ErrorCodeBadResponse)
+			return nil, types.NewError(fmt.Errorf("image generation task returned invalid status %q", task.Status), types.ErrorCodeBadResponse)
 		}
 	}
 }
@@ -215,7 +215,7 @@ func waitFor(c *gin.Context, delay time.Duration, timeout <-chan time.Time) erro
 	case <-c.Request.Context().Done():
 		return c.Request.Context().Err()
 	case <-timeout:
-		return errors.New("APIMart image task timed out")
+		return errors.New("image generation task timed out")
 	case <-timer.C:
 		return nil
 	}
@@ -242,14 +242,14 @@ func fetchTask(c *gin.Context, info *relaycommon.RelayInfo, taskID string) (*tas
 	}
 	defer service.CloseResponseBodyGracefully(resp)
 	if resp.StatusCode != http.StatusOK {
-		return nil, types.NewError(fmt.Errorf("APIMart task query returned status %d", resp.StatusCode), types.ErrorCodeBadResponse)
+		return nil, types.NewError(fmt.Errorf("image generation task query returned status %d", resp.StatusCode), types.ErrorCodeBadResponse)
 	}
 	var result taskResponse
 	if err := common.DecodeJson(resp.Body, &result); err != nil {
 		return nil, types.NewError(err, types.ErrorCodeBadResponseBody)
 	}
 	if result.Error != nil {
-		return nil, upstreamError("APIMart task query failed", result.Error)
+		return nil, upstreamError("image generation task query failed", result.Error)
 	}
 	return &result.Data, nil
 }
@@ -264,7 +264,7 @@ func writeImageResponse(c *gin.Context, info *relaycommon.RelayInfo, task *taskD
 		}
 	}
 	if len(urls) == 0 {
-		return nil, types.NewError(errors.New("APIMart completed task returned no image URLs"), types.ErrorCodeBadResponseBody)
+		return nil, types.NewError(errors.New("completed image generation task returned no image URLs"), types.ErrorCodeBadResponseBody)
 	}
 	response := dto.ImageResponse{Created: common.GetTimestamp(), Data: make([]dto.ImageData, 0, len(urls))}
 	request, _ := info.Request.(*dto.ImageRequest)
@@ -309,18 +309,18 @@ func writeImageResponse(c *gin.Context, info *relaycommon.RelayInfo, task *taskD
 func uploadEditImages(c *gin.Context, info *relaycommon.RelayInfo) ([]string, string, error) {
 	form := c.Request.MultipartForm
 	if form == nil {
-		return nil, "", errors.New("APIMart image edits require multipart/form-data")
+		return nil, "", errors.New("image edits require multipart/form-data")
 	}
 	files := selectImageFiles(form)
 	if len(files) == 0 {
-		return nil, "", invalidRequest(errors.New("APIMart image edits require at least one image"))
+		return nil, "", invalidRequest(errors.New("image edits require at least one image"))
 	}
 	maxImages := 16
 	if request, ok := info.Request.(*dto.ImageRequest); ok && request.Model == dto.APIMartGrokImagineModel {
 		maxImages = 3
 	}
 	if len(files) > maxImages {
-		return nil, "", invalidRequest(fmt.Errorf("APIMart image edits allow at most %d images", maxImages))
+		return nil, "", invalidRequest(fmt.Errorf("image edits allow at most %d images", maxImages))
 	}
 	urls := make([]string, 0, len(files))
 	for _, file := range files {
@@ -377,7 +377,7 @@ func selectImageFiles(form *multipart.Form) []*multipart.FileHeader {
 
 func uploadImage(c *gin.Context, info *relaycommon.RelayInfo, header *multipart.FileHeader) (string, error) {
 	if header.Size > maxUploadImageBytes {
-		return "", invalidRequest(fmt.Errorf("APIMart image %q exceeds 20 MiB", header.Filename))
+		return "", invalidRequest(fmt.Errorf("image %q exceeds 20 MiB", header.Filename))
 	}
 	file, err := header.Open()
 	if err != nil {
@@ -389,7 +389,7 @@ func uploadImage(c *gin.Context, info *relaycommon.RelayInfo, header *multipart.
 		return "", err
 	}
 	if len(data) > maxUploadImageBytes || !isSupportedImage(data) {
-		return "", invalidRequest(fmt.Errorf("APIMart image %q must be JPEG, PNG, GIF, or WebP and at most 20 MiB", header.Filename))
+		return "", invalidRequest(fmt.Errorf("image %q must be JPEG, PNG, GIF, or WebP and at most 20 MiB", header.Filename))
 	}
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -417,14 +417,14 @@ func uploadImage(c *gin.Context, info *relaycommon.RelayInfo, header *multipart.
 	}
 	defer service.CloseResponseBodyGracefully(resp)
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return "", fmt.Errorf("APIMart image upload returned status %d", resp.StatusCode)
+		return "", fmt.Errorf("image upload returned status %d", resp.StatusCode)
 	}
 	var uploaded uploadResponse
 	if err := common.DecodeJson(resp.Body, &uploaded); err != nil {
 		return "", err
 	}
 	if uploaded.Error != nil || uploaded.URL == "" {
-		return "", fmt.Errorf("APIMart image upload failed: %s", errorMessage(uploaded.Error))
+		return "", errors.New("image upload failed")
 	}
 	return uploaded.URL, nil
 }
@@ -447,14 +447,14 @@ func downloadImageBase64(c *gin.Context, info *relaycommon.RelayInfo, url string
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK || !strings.HasPrefix(strings.ToLower(resp.Header.Get("Content-Type")), "image/") {
-		return "", errors.New("APIMart image download did not return image content")
+		return "", errors.New("image download did not return image content")
 	}
 	if resp.ContentLength > maxDownloadImageBytes {
-		return "", errors.New("APIMart image download exceeds 50 MiB")
+		return "", errors.New("image download exceeds 50 MiB")
 	}
 	data, err := io.ReadAll(io.LimitReader(resp.Body, maxDownloadImageBytes+1))
 	if err != nil || len(data) > maxDownloadImageBytes {
-		return "", errors.New("APIMart image download exceeds 50 MiB")
+		return "", errors.New("image download exceeds 50 MiB")
 	}
 	return base64.StdEncoding.EncodeToString(data), nil
 }
@@ -463,37 +463,30 @@ func invalidRequest(err error) *types.NewAPIError {
 	return types.NewErrorWithStatusCode(err, types.ErrorCodeInvalidRequest, http.StatusBadRequest, types.ErrOptionWithSkipRetry())
 }
 
-func upstreamError(prefix string, apiErr *apiError) *types.NewAPIError {
-	return types.NewError(fmt.Errorf("%s: %s", prefix, errorMessage(apiErr)), types.ErrorCodeBadResponse)
-}
-
-func errorMessage(apiErr *apiError) string {
-	if apiErr != nil && apiErr.Message != "" {
-		return apiErr.Message
-	}
-	return "upstream returned an invalid response"
+func upstreamError(_ string, _ *apiError) *types.NewAPIError {
+	return types.NewError(errors.New("image generation request failed"), types.ErrorCodeBadResponse)
 }
 
 func (a *Adaptor) GetModelList() []string { return ModelList }
 func (a *Adaptor) GetChannelName() string { return ChannelName }
 func (a *Adaptor) ConvertOpenAIRequest(*gin.Context, *relaycommon.RelayInfo, *dto.GeneralOpenAIRequest) (any, error) {
-	return nil, errors.New("APIMart only supports images")
+	return nil, errors.New("this channel only supports image generation")
 }
 func (a *Adaptor) ConvertRerankRequest(*gin.Context, int, dto.RerankRequest) (any, error) {
-	return nil, errors.New("APIMart only supports images")
+	return nil, errors.New("this channel only supports image generation")
 }
 func (a *Adaptor) ConvertEmbeddingRequest(*gin.Context, *relaycommon.RelayInfo, dto.EmbeddingRequest) (any, error) {
-	return nil, errors.New("APIMart only supports images")
+	return nil, errors.New("this channel only supports image generation")
 }
 func (a *Adaptor) ConvertAudioRequest(*gin.Context, *relaycommon.RelayInfo, dto.AudioRequest) (io.Reader, error) {
-	return nil, errors.New("APIMart only supports images")
+	return nil, errors.New("this channel only supports image generation")
 }
 func (a *Adaptor) ConvertOpenAIResponsesRequest(*gin.Context, *relaycommon.RelayInfo, dto.OpenAIResponsesRequest) (any, error) {
-	return nil, errors.New("APIMart only supports images")
+	return nil, errors.New("this channel only supports image generation")
 }
 func (a *Adaptor) ConvertClaudeRequest(*gin.Context, *relaycommon.RelayInfo, *dto.ClaudeRequest) (any, error) {
-	return nil, errors.New("APIMart only supports images")
+	return nil, errors.New("this channel only supports image generation")
 }
 func (a *Adaptor) ConvertGeminiRequest(*gin.Context, *relaycommon.RelayInfo, *dto.GeminiChatRequest) (any, error) {
-	return nil, errors.New("APIMart only supports images")
+	return nil, errors.New("this channel only supports image generation")
 }
