@@ -6,7 +6,7 @@ it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or (at your option)
 any later version.
 */
-import { Download, Upload, X } from 'lucide-react'
+import { Download, Eye, Upload, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -14,32 +14,37 @@ import { toast } from 'sonner'
 import { Main } from '@/components/layout'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+
 import {
   validateImageFile,
   type ImageValidationError,
-} from '@/features/watermark-removal/image-validation'
+} from './image-validation'
+import { upscaleImage, type UpscaleProgress } from './super-resolution'
 
-import { removeImageBackground } from './remove-background'
+type UpscaleResult = Awaited<ReturnType<typeof upscaleImage>>
 
-type RemovalResult = Awaited<ReturnType<typeof removeImageBackground>>
-
-export function BackgroundRemoval() {
+export function Upscale() {
   const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const abortControllerRef = useRef<AbortController | undefined>(undefined)
   const sourceUrlRef = useRef<string | undefined>(undefined)
-  const resultRef = useRef<RemovalResult | undefined>(undefined)
+  const resultRef = useRef<UpscaleResult | undefined>(undefined)
   const [file, setFile] = useState<File>()
   const [sourceUrl, setSourceUrl] = useState<string>()
-  const [result, setResult] = useState<RemovalResult>()
+  const [result, setResult] = useState<UpscaleResult>()
   const [processing, setProcessing] = useState(false)
-  const [progress, setProgress] = useState(0)
+  const [comparing, setComparing] = useState(false)
+  const [progress, setProgress] = useState<UpscaleProgress>({
+    phase: 'loading-model',
+    progress: 0,
+  })
 
   useEffect(
     () => () => {
+      abortControllerRef.current?.abort()
       if (sourceUrlRef.current) URL.revokeObjectURL(sourceUrlRef.current)
       if (resultRef.current) {
         URL.revokeObjectURL(resultRef.current.blobUrl)
-        URL.revokeObjectURL(resultRef.current.previewUrl)
       }
     },
     []
@@ -48,24 +53,30 @@ export function BackgroundRemoval() {
   const validationMessage = (error: ImageValidationError) => {
     if (error === 'format') return t('Use a PNG, JPEG, or WebP image.')
     if (error === 'size') return t('The image must be 25 MB or smaller.')
-    return t('Image width and height must each be 4096 pixels or less.')
+    return t('The image long edge must not exceed 1024 pixels.')
   }
 
   const processImage = async (url: string) => {
+    abortControllerRef.current?.abort()
+    const controller = new AbortController()
+    abortControllerRef.current = controller
     setProcessing(true)
-    setProgress(0)
+    setProgress({ phase: 'loading-model', progress: 0 })
     try {
-      const nextResult = await removeImageBackground(url, setProgress)
+      const nextResult = await upscaleImage(url, setProgress, controller.signal)
+      if (controller.signal.aborted) return
       resultRef.current = nextResult
       setResult(nextResult)
-      setProgress(100)
+      setComparing(false)
+      setProgress({ phase: 'upscaling', progress: 100 })
     } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') return
       const unsupported =
         error instanceof Error && error.message === 'browser-unsupported'
       toast.error(
         unsupported
           ? t('This browser does not support WebGPU or WebAssembly.')
-          : t('Background removal failed.'),
+          : t('Upscaling failed.'),
         unsupported
           ? undefined
           : {
@@ -76,7 +87,10 @@ export function BackgroundRemoval() {
             }
       )
     } finally {
-      setProcessing(false)
+      if (abortControllerRef.current === controller) {
+        abortControllerRef.current = undefined
+        setProcessing(false)
+      }
     }
   }
 
@@ -99,7 +113,6 @@ export function BackgroundRemoval() {
       if (sourceUrlRef.current) URL.revokeObjectURL(sourceUrlRef.current)
       if (resultRef.current) {
         URL.revokeObjectURL(resultRef.current.blobUrl)
-        URL.revokeObjectURL(resultRef.current.previewUrl)
         resultRef.current = undefined
       }
       const nextSourceUrl = URL.createObjectURL(selected)
@@ -107,6 +120,7 @@ export function BackgroundRemoval() {
       setFile(selected)
       setSourceUrl(nextSourceUrl)
       setResult(undefined)
+      setComparing(false)
       void processImage(nextSourceUrl)
     } catch {
       toast.error(t('The image could not be opened.'))
@@ -114,19 +128,21 @@ export function BackgroundRemoval() {
   }
 
   const startNew = () => {
+    abortControllerRef.current?.abort()
+    abortControllerRef.current = undefined
     if (sourceUrlRef.current) {
       URL.revokeObjectURL(sourceUrlRef.current)
       sourceUrlRef.current = undefined
     }
     if (resultRef.current) {
       URL.revokeObjectURL(resultRef.current.blobUrl)
-      URL.revokeObjectURL(resultRef.current.previewUrl)
       resultRef.current = undefined
     }
     setFile(undefined)
     setSourceUrl(undefined)
     setResult(undefined)
-    setProgress(0)
+    setComparing(false)
+    setProgress({ phase: 'loading-model', progress: 0 })
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -134,18 +150,16 @@ export function BackgroundRemoval() {
     if (!file || !result) return
     const link = document.createElement('a')
     link.href = result.blobUrl
-    link.download = `${file.name.replace(/\.[^.]+$/, '')}-background-removed.png`
+    link.download = `${file.name.replace(/\.[^.]+$/, '')}-upscaled-4x.png`
     link.click()
   }
 
   return (
     <Main className='flex min-h-0 flex-1 flex-col gap-4 overflow-hidden px-3 pt-3 pb-3 sm:px-4 sm:pt-5 sm:pb-4'>
       <header className='min-w-0'>
-        <h1 className='truncate text-xl font-semibold'>
-          {t('Remove Background')}
-        </h1>
+        <h1 className='truncate text-xl font-semibold'>{t('Upscale Image')}</h1>
         <p className='text-muted-foreground text-sm'>
-          {t('Remove an image background locally in your browser.')}
+          {t('Upscale an image 4x locally in your browser using AI.')}
         </p>
       </header>
 
@@ -180,7 +194,7 @@ export function BackgroundRemoval() {
             <span className='font-medium'>{t('Choose or drop an image')}</span>
             <span className='text-muted-foreground text-sm'>
               {t(
-                'PNG, JPEG, or WebP up to 25 MB; width and height each up to 4096 pixels'
+                'PNG, JPEG, or WebP up to 25 MB with a maximum long edge of 1024 pixels'
               )}
             </span>
           </button>
@@ -189,26 +203,55 @@ export function BackgroundRemoval() {
         {file && sourceUrl && (
           <div className='relative flex size-full min-h-0 items-center justify-center'>
             <img
-              className='transparency-grid max-h-full max-w-full object-contain'
+              className='max-h-full max-w-full object-contain'
               src={result?.blobUrl ?? sourceUrl}
               width={result?.width}
               height={result?.height}
-              alt={
-                result
-                  ? t('Image with background removed')
-                  : t('Selected image')
-              }
+              alt={result ? t('Upscaled image') : t('Selected image')}
             />
+            {result && comparing && (
+              <img
+                className='absolute inset-0 size-full object-contain'
+                src={sourceUrl}
+                alt={t('Original image')}
+              />
+            )}
+            {result && (
+              <>
+                <span
+                  key={result.blobUrl}
+                  className='history-sweep'
+                  aria-hidden='true'
+                />
+                <Button
+                  className='absolute top-3 right-3 z-20 shadow-sm'
+                  size='sm'
+                  variant='secondary'
+                  onMouseEnter={() => setComparing(true)}
+                  onMouseLeave={() => setComparing(false)}
+                  onFocus={() => setComparing(true)}
+                  onBlur={() => setComparing(false)}
+                >
+                  <Eye aria-hidden='true' />
+                  {t('Compare')}
+                </Button>
+              </>
+            )}
             {processing && (
               <div className='bg-background/85 absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 backdrop-blur-sm'>
                 <span className='text-sm font-medium'>
-                  {progress < 100
+                  {progress.phase === 'loading-model'
                     ? t('Loading model... {{progress}}%', {
-                        progress: Math.round(progress),
+                        progress: Math.round(progress.progress),
                       })
-                    : t('Removing background...')}
+                    : t('Upscaling image... {{progress}}%', {
+                        progress: Math.round(progress.progress),
+                      })}
                 </span>
-                <Progress className='w-full max-w-72' value={progress} />
+                <Progress
+                  className='w-full max-w-72'
+                  value={progress.progress}
+                />
               </div>
             )}
           </div>
@@ -231,11 +274,11 @@ export function BackgroundRemoval() {
       <p className='text-muted-foreground shrink-0 text-center text-xs'>
         <a
           className='underline-offset-4 hover:underline'
-          href='https://www.rembg.com'
+          href='https://github.com/xinntao/Real-ESRGAN'
           target='_blank'
           rel='noreferrer'
         >
-          {t('Background Removal Library provided by www.rembg.com')}
+          {t('Powered by Real-ESRGAN')}
         </a>
       </p>
     </Main>
