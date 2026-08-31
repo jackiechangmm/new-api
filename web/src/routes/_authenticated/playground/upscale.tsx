@@ -11,9 +11,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { Upscale } from '@/features/upscale'
 import { isSidebarModuleEnabled } from '@/lib/nav-modules'
 
-export const Route = createFileRoute(
-  '/_authenticated/playground/upscale'
-)({
+export const Route = createFileRoute('/_authenticated/playground/upscale')({
   beforeLoad: () => {
     if (!isSidebarModuleEnabled('chat', 'upscale')) {
       throw redirect({ to: '/dashboard' })
