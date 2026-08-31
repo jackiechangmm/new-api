@@ -16,7 +16,7 @@ any later version.
 export type ImageValidationError = 'format' | 'size' | 'dimensions'
 
 export const MAX_IMAGE_BYTES = 25 * 1024 * 1024 // 25 MB
-export const MAX_IMAGE_PIXELS = 1024 * 1024
+export const MAX_IMAGE_LONG_EDGE = 1024
 
 export function validateImageFile(
   file: File,
@@ -31,7 +31,7 @@ export function validateImageFile(
     return 'size'
   }
 
-  if (bitmap && bitmap.width * bitmap.height > MAX_IMAGE_PIXELS) {
+  if (bitmap && Math.max(bitmap.width, bitmap.height) > MAX_IMAGE_LONG_EDGE) {
     return 'dimensions'
   }
 

@@ -11,7 +11,7 @@ import { describe, test } from 'node:test'
 
 import {
   MAX_IMAGE_BYTES,
-  MAX_IMAGE_PIXELS,
+  MAX_IMAGE_LONG_EDGE,
   validateImageFile,
   type ImageValidationError,
 } from '../image-validation'
@@ -21,12 +21,12 @@ function imageBitmap(width: number, height: number): ImageBitmap {
 }
 
 describe('validateImageFile', () => {
-  test('accepts a supported image at the file-size and pixel limits', () => {
+  test('accepts a supported image at the file-size and long-edge limits', () => {
     const file = new File([new Uint8Array(MAX_IMAGE_BYTES)], 'image.png', {
       type: 'image/png',
     })
 
-    assert.equal(validateImageFile(file, imageBitmap(2048, 512)), undefined)
+    assert.equal(validateImageFile(file, imageBitmap(1024, 512)), undefined)
   })
 
   const invalidInputs: Array<{
@@ -46,12 +46,12 @@ describe('validateImageFile', () => {
     },
     {
       file: new File(['image'], 'image.webp', { type: 'image/webp' }),
-      bitmap: imageBitmap(MAX_IMAGE_PIXELS + 1, 1),
+      bitmap: imageBitmap(MAX_IMAGE_LONG_EDGE + 1, 1),
       expected: 'dimensions',
     },
     {
       file: new File(['image'], 'image.webp', { type: 'image/webp' }),
-      bitmap: imageBitmap(1025, 1024),
+      bitmap: imageBitmap(512, 1025),
       expected: 'dimensions',
     },
   ]

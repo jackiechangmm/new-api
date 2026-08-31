@@ -6,7 +6,7 @@ it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or (at your option)
 any later version.
 */
-import { Download, Upload, X } from 'lucide-react'
+import { Download, Eye, Upload, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -33,6 +33,7 @@ export function Upscale() {
   const [sourceUrl, setSourceUrl] = useState<string>()
   const [result, setResult] = useState<UpscaleResult>()
   const [processing, setProcessing] = useState(false)
+  const [comparing, setComparing] = useState(false)
   const [progress, setProgress] = useState<UpscaleProgress>({
     phase: 'loading-model',
     progress: 0,
@@ -52,7 +53,7 @@ export function Upscale() {
   const validationMessage = (error: ImageValidationError) => {
     if (error === 'format') return t('Use a PNG, JPEG, or WebP image.')
     if (error === 'size') return t('The image must be 25 MB or smaller.')
-    return t('The image must not exceed 1,048,576 pixels.')
+    return t('The image long edge must not exceed 1024 pixels.')
   }
 
   const processImage = async (url: string) => {
@@ -66,6 +67,7 @@ export function Upscale() {
       if (controller.signal.aborted) return
       resultRef.current = nextResult
       setResult(nextResult)
+      setComparing(false)
       setProgress({ phase: 'upscaling', progress: 100 })
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') return
@@ -118,6 +120,7 @@ export function Upscale() {
       setFile(selected)
       setSourceUrl(nextSourceUrl)
       setResult(undefined)
+      setComparing(false)
       void processImage(nextSourceUrl)
     } catch {
       toast.error(t('The image could not be opened.'))
@@ -138,6 +141,7 @@ export function Upscale() {
     setFile(undefined)
     setSourceUrl(undefined)
     setResult(undefined)
+    setComparing(false)
     setProgress({ phase: 'loading-model', progress: 0 })
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
@@ -189,7 +193,9 @@ export function Upscale() {
             />
             <span className='font-medium'>{t('Choose or drop an image')}</span>
             <span className='text-muted-foreground text-sm'>
-              {t('PNG, JPEG, or WebP up to 25 MB and 4096 x 4096 pixels')}
+              {t(
+                'PNG, JPEG, or WebP up to 25 MB with a maximum long edge of 1024 pixels'
+              )}
             </span>
           </button>
         )}
@@ -203,6 +209,34 @@ export function Upscale() {
               height={result?.height}
               alt={result ? t('Upscaled image') : t('Selected image')}
             />
+            {result && comparing && (
+              <img
+                className='absolute inset-0 size-full object-contain'
+                src={sourceUrl}
+                alt={t('Original image')}
+              />
+            )}
+            {result && (
+              <>
+                <span
+                  key={result.blobUrl}
+                  className='history-sweep'
+                  aria-hidden='true'
+                />
+                <Button
+                  className='absolute top-3 right-3 z-20 shadow-sm'
+                  size='sm'
+                  variant='secondary'
+                  onMouseEnter={() => setComparing(true)}
+                  onMouseLeave={() => setComparing(false)}
+                  onFocus={() => setComparing(true)}
+                  onBlur={() => setComparing(false)}
+                >
+                  <Eye aria-hidden='true' />
+                  {t('Compare')}
+                </Button>
+              </>
+            )}
             {processing && (
               <div className='bg-background/85 absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 backdrop-blur-sm'>
                 <span className='text-sm font-medium'>
