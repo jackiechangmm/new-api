@@ -3,9 +3,11 @@ import {
   Eye,
   ImagePlus,
   Loader2,
+  Plus,
   RotateCcw,
   Trash2,
   WandSparkles,
+  X,
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -259,43 +261,61 @@ function UploadField(props: {
 }) {
   const { t } = useTranslation()
   const id = `ecommerce-${props.role}`
+  const inputRef = useRef<HTMLInputElement>(null)
+  const previewUrl = useBlobUrl(props.file ?? undefined)
   return (
     <div className='grid gap-1.5'>
-      <label className='text-sm font-medium' htmlFor={id}>
+      <span className='text-sm font-medium'>
         {t(REFERENCE_LABELS[props.role])}
-      </label>
+      </span>
+      <input
+        accept='image/jpeg,image/png,image/webp'
+        aria-invalid={Boolean(props.error)}
+        className='hidden'
+        disabled={props.disabled}
+        id={id}
+        onChange={(event) => {
+          const file = event.target.files?.[0] ?? null
+          void props.onFile(props.role, file)
+          event.target.value = ''
+        }}
+        ref={inputRef}
+        type='file'
+      />
       <div className='flex min-w-0 items-center gap-2'>
-        <Input
-          accept='image/jpeg,image/png,image/webp'
-          aria-invalid={Boolean(props.error)}
-          className='rounded-none'
+        <Button
+          aria-label={t('Add reference images')}
+          className='size-10 rounded-none'
           disabled={props.disabled}
-          id={id}
-          onChange={(event) => {
-            const file = event.target.files?.[0] ?? null
-            void props.onFile(props.role, file)
-            event.target.value = ''
-          }}
-          type='file'
-        />
+          onClick={() => inputRef.current?.click()}
+          size='icon'
+          type='button'
+          variant='outline'
+        >
+          <Plus />
+        </Button>
         {props.file ? (
-          <Button
-            aria-label={t('移除图片')}
-            className='rounded-none'
-            onClick={() => props.onFile(props.role, null)}
-            size='icon'
-            type='button'
-            variant='outline'
-          >
-            <Trash2 />
-          </Button>
+          <div className='relative size-10 shrink-0'>
+            <div className='size-full overflow-hidden border'>
+              {previewUrl ? (
+                <img
+                  alt=''
+                  className='size-full object-cover'
+                  src={previewUrl}
+                />
+              ) : null}
+            </div>
+            <button
+              aria-label={t('移除图片')}
+              className='bg-background absolute -top-2 -right-2 rounded-full border p-0.5'
+              onClick={() => props.onFile(props.role, null)}
+              type='button'
+            >
+              <X className='size-3' />
+            </button>
+          </div>
         ) : null}
       </div>
-      {props.file ? (
-        <p className='text-muted-foreground truncate text-xs'>
-          {props.file.name}
-        </p>
-      ) : null}
       <FieldError message={props.error} />
     </div>
   )

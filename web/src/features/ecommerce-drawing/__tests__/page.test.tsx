@@ -137,6 +137,13 @@ test('page progressively unlocks steps and sends the fixed image contract', asyn
     container.textContent ?? '',
     /未上传商品图，将根据文字描述生成概念商品图/
   )
+  const productImageInput = container.querySelector<HTMLInputElement>(
+    '#ecommerce-productImage'
+  )
+  assert.ok(productImageInput)
+  assert.equal(productImageInput.type, 'file')
+  assert.equal(productImageInput.classList.contains('hidden'), true)
+  assert.doesNotMatch(container.textContent ?? '', /未选择任何文件/)
 
   const name = container.querySelector<HTMLInputElement>('#ecommerce-name')
   assert.ok(name)
