@@ -194,6 +194,22 @@ test('page progressively unlocks steps and sends the fixed image contract', asyn
   })
   assert.match(container.textContent ?? '', /绘图历史/)
 
+  await act(async () => {
+    const valueSetter = Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      'value'
+    )?.set
+    assert.ok(valueSetter)
+    valueSetter.call(name, '临时修改')
+    name.dispatchEvent(new Event('input', { bubbles: true }))
+  })
+  const reuseButton = container.querySelector<HTMLButtonElement>(
+    'button[aria-label="Reuse"]'
+  )
+  assert.ok(reuseButton)
+  await act(async () => reuseButton.click())
+  assert.equal(name.value, '通勤包')
+
   const previewButton = container.querySelector<HTMLButtonElement>(
     'button[aria-label="查看大图"]'
   )

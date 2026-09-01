@@ -21,6 +21,14 @@ function history(id: string, createdAt: number): EcommerceHistoryRecord {
     id,
     createdAt,
     images: [new Blob([id], { type: 'image/png' })],
+    draft: {
+      ...createDefaultDraft(),
+      name: id,
+      productImage: new File([`${id}-product`], `${id}.webp`, {
+        type: 'image/webp',
+      }),
+    },
+    settings: { aspectRatio: '4:5', resolution: '2k', quality: 'high' },
   }
 }
 
@@ -38,7 +46,7 @@ afterEach(() => {
   })
 })
 
-test('ecommerce history is newest first and stores only display fields', async () => {
+test('ecommerce history preserves generation inputs and reference images', async () => {
   await saveEcommerceHistory(history('older', 10))
   await saveEcommerceHistory(history('newer', 20))
 
@@ -50,9 +58,14 @@ test('ecommerce history is newest first and stores only display fields', async (
   )
   assert.deepEqual(Object.keys(records[0] ?? {}).sort(), [
     'createdAt',
+    'draft',
     'id',
     'images',
+    'settings',
   ])
+  assert.equal(records[0]?.draft.name, 'newer')
+  assert.equal(records[0]?.settings.aspectRatio, '4:5')
+  assert.equal(await records[0]?.draft.productImage?.text(), 'newer-product')
   assert.equal(await records[0]?.images[0]?.text(), 'newer')
 })
 

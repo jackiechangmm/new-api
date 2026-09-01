@@ -4,6 +4,8 @@ export interface EcommerceHistoryRecord {
   id: string
   createdAt: number
   images: Blob[]
+  draft: EcommerceDraft
+  settings: GenerationSettings
 }
 
 export interface EcommerceDraftRecord {

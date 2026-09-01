@@ -4,6 +4,7 @@ import {
   ImagePlus,
   Loader2,
   Plus,
+  RefreshCw,
   RotateCcw,
   Trash2,
   WandSparkles,
@@ -373,6 +374,7 @@ export function EcommerceDrawing() {
   const [requestError, setRequestError] = useState('')
   const [hydrated, setHydrated] = useState(false)
   const historyRef = useRef<HTMLElement>(null)
+  const workspaceRef = useRef<HTMLElement>(null)
   const referenceValidationId = useRef(0)
   const draftRef = useRef(draft)
   draftRef.current = draft
@@ -406,13 +408,7 @@ export function EcommerceDrawing() {
         } else {
           setDraft(savedDraft.draft)
           setUnlockedStep(savedDraft.unlockedStep)
-          setSettings({
-            ...savedDraft.settings,
-            quality:
-              savedDraft.settings.quality === 'auto'
-                ? 'low'
-                : savedDraft.settings.quality,
-          })
+          setSettings(savedDraft.settings)
           toast.info(t('已恢复上次草稿'))
         }
       }
@@ -532,6 +528,8 @@ export function EcommerceDrawing() {
         id: crypto.randomUUID(),
         createdAt: Date.now(),
         images,
+        draft: { ...draft },
+        settings: { ...settings },
       }
       setHistory((current) => [record, ...current])
       setHighlightId(record.id)
@@ -560,6 +558,24 @@ export function EcommerceDrawing() {
     setHistory((current) => current.filter((record) => record.id !== id))
   }
 
+  const reuseHistory = async (record: EcommerceHistoryRecord) => {
+    const validationError = await validateReferenceImages(
+      getReferenceImages(record.draft),
+      modelConfig?.imageToImage?.input
+    )
+    setDraft(record.draft)
+    setSettings(record.settings)
+    setUnlockedStep(5)
+    setErrors({})
+    setRequestError('')
+    setReferenceErrors(
+      validationError
+        ? { productImage: REFERENCE_ERROR_TEXT[validationError] }
+        : {}
+    )
+    workspaceRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const download = (blob: Blob, id: string, index: number) => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -583,7 +599,10 @@ export function EcommerceDrawing() {
   }
 
   return (
-    <Main className='relative overflow-y-auto p-4 pb-24 md:p-6 md:pb-6'>
+    <Main
+      className='relative overflow-y-auto p-4 pb-24 md:p-6 md:pb-6'
+      ref={workspaceRef}
+    >
       <div className='mx-auto w-full max-w-7xl'>
         <header className='mb-6'>
           <div className='flex flex-wrap items-center justify-between gap-3'>
@@ -964,6 +983,16 @@ export function EcommerceDrawing() {
                       {new Date(record.createdAt).toLocaleString()}
                     </time>
                     <div className='flex gap-1'>
+                      <Button
+                        aria-label={t('Reuse')}
+                        className='rounded-none'
+                        onClick={() => void reuseHistory(record)}
+                        size='icon-sm'
+                        type='button'
+                        variant='ghost'
+                      >
+                        <RefreshCw />
+                      </Button>
                       <Button
                         aria-label={t('查看大图')}
                         className='rounded-none'
