@@ -194,5 +194,23 @@ test('page progressively unlocks steps and sends the fixed image contract', asyn
   })
   assert.match(container.textContent ?? '', /绘图历史/)
 
+  const previewButton = container.querySelector<HTMLButtonElement>(
+    'button[aria-label="查看大图"]'
+  )
+  assert.ok(previewButton)
+  await act(async () => previewButton.click())
+  const previewImage = document.querySelector<HTMLImageElement>(
+    'img[alt="Image preview"]'
+  )
+  assert.ok(previewImage)
+  assert.equal(
+    previewImage.classList.contains('max-h-[calc(100vh-2rem)]'),
+    true
+  )
+  assert.equal(
+    previewImage.classList.contains('max-w-[calc(100vw-2rem)]'),
+    true
+  )
+
   await act(async () => root.unmount())
 })

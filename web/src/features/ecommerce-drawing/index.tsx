@@ -15,7 +15,6 @@ import { toast } from 'sonner'
 
 import { Main } from '@/components/layout'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -38,6 +37,7 @@ import {
   requestDrawingImages,
   type ImageGenerationRequest,
 } from '@/features/drawing/api'
+import { ImagePreviewDialog } from '@/features/drawing/image-preview-dialog'
 import { getDrawingModelConfig } from '@/features/drawing/model-config'
 import { validateReferenceImages } from '@/features/drawing/validation'
 import { cn } from '@/lib/utils'
@@ -350,25 +350,6 @@ function HistoryImage(props: { blob: Blob; onPreview: () => void }) {
         />
       ) : null}
     </button>
-  )
-}
-
-function PreviewDialog(props: { preview: PreviewState; onClose: () => void }) {
-  const { t } = useTranslation()
-  const url = useBlobUrl(props.preview.blob)
-  return (
-    <Dialog onOpenChange={(open) => !open && props.onClose()} open>
-      <DialogContent className='max-h-[92dvh] max-w-4xl rounded-none'>
-        <DialogTitle>{t('图片预览')}</DialogTitle>
-        {url ? (
-          <img
-            alt={t('生成的电商图片')}
-            className='max-h-[78dvh] w-full object-contain'
-            src={url}
-          />
-        ) : null}
-      </DialogContent>
-    </Dialog>
   )
 }
 
@@ -1059,9 +1040,10 @@ export function EcommerceDrawing() {
       </div>
 
       {preview ? (
-        <PreviewDialog
+        <ImagePreviewDialog
+          images={[preview.blob]}
+          initialIndex={preview.index}
           onClose={() => setPreview(undefined)}
-          preview={preview}
         />
       ) : null}
     </Main>
