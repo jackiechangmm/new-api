@@ -125,13 +125,13 @@ test('page progressively unlocks steps and sends the fixed image contract', asyn
     )
   })
 
-  assert.match(container.textContent ?? '', /1\. 图片目的/)
+  assert.match(container.textContent ?? '', /1\. 这张图主要要帮顾客完成什么？/)
   assert.doesNotMatch(container.textContent ?? '', /2\. 商品信息/)
   assert.equal(container.querySelector('#desktop-ecommerce-prompt'), null)
   assert.equal(button(container, '生成图片').disabled, true)
 
   await act(async () => button(container, '下一步').click())
-  assert.match(container.textContent ?? '', /1\. 图片目的/)
+  assert.match(container.textContent ?? '', /1\. 这张图主要要帮顾客完成什么？/)
   assert.match(container.textContent ?? '', /2\. 商品信息/)
 
   const name = container.querySelector<HTMLInputElement>('#ecommerce-name')
@@ -150,14 +150,17 @@ test('page progressively unlocks steps and sends the fixed image contract', asyn
   }
   assert.match(container.textContent ?? '', /5\. 风格与构图/)
 
-  const quality = container.querySelector<HTMLSelectElement>(
+  const quality = container.querySelector<HTMLButtonElement>(
     '#desktop-ecommerce-quality'
   )
   assert.ok(quality)
-  await act(async () => {
-    quality.value = 'low'
-    quality.dispatchEvent(new Event('change', { bubbles: true }))
-  })
+  assert.match(quality.textContent ?? '', /中等质量/)
+  await act(async () => quality.click())
+  const lowQuality = [
+    ...document.querySelectorAll<HTMLElement>('[role="option"]'),
+  ].find((option) => option.textContent?.includes('低质量'))
+  assert.ok(lowQuality)
+  await act(async () => lowQuality.click())
   assert.match(container.textContent ?? '', /低质量模式建议仅用作预览/)
 
   const prompt = container.querySelector<HTMLTextAreaElement>(

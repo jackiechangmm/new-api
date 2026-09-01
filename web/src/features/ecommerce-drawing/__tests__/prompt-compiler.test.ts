@@ -6,7 +6,6 @@ import {
   applyPurposeChange,
   compileEcommercePrompt,
   createDefaultDraft,
-  summarizeDraft,
   validateStep,
 } from '../prompt-compiler'
 
@@ -56,7 +55,7 @@ test('branch validation requires only the active conditional field', () => {
   })
 })
 
-test('summary and prompt preserve the same selected facts and original Chinese input', () => {
+test('prompt preserves selected facts and original Chinese input', () => {
   const draft = {
     ...createDefaultDraft(),
     purpose: 'detail' as const,
@@ -71,12 +70,8 @@ test('summary and prompt preserve the same selected facts and original Chinese i
     copy: '轻装出发',
   }
 
-  const summary = summarizeDraft(draft)
   const prompt = compileEcommercePrompt(draft)
 
-  assert.match(summary, /理解一个具体卖点/)
-  assert.match(summary, /“自重仅 400 克”/)
-  assert.match(summary, /文字“轻装出发”/)
   assert.match(prompt, /Create an ecommerce image for 轻量通勤包, a 包\./)
   assert.match(
     prompt,

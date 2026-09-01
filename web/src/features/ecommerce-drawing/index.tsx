@@ -17,6 +17,13 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -54,7 +61,6 @@ import {
   SCENE_OPTIONS,
   SET_SCOPE_OPTIONS,
   STYLE_OPTIONS,
-  summarizeDraft,
   validateStep,
 } from './prompt-compiler'
 import {
@@ -81,22 +87,28 @@ const MODEL = 'gpt-image-2'
 const DEFAULT_SETTINGS: GenerationSettings = {
   aspectRatio: '1:1',
   resolution: '1k',
-  quality: 'high',
+  quality: 'medium',
 }
 const STEP_TITLES = [
-  '图片目的',
+  '这张图主要要帮顾客完成什么？',
   '商品信息',
-  '呈现方式',
-  '视觉重点',
+  '你希望商品怎么出现？',
+  '这张图最想突出什么？',
   '风格与构图',
 ] as const
+const REQUIRED_STEPS = new Set<StepNumber>([1, 3, 4, 5])
 const REFERENCE_LABELS: Record<ReferenceRole, string> = {
-  productImage: '商品图（可选）',
-  sceneImage: '场景参考图（可选）',
-  personImage: '人物参考图（可选）',
-  personSceneImage: '人物场景参考图（可选）',
-  styleImage: '风格参考图（可选）',
+  productImage: '商品图',
+  sceneImage: '场景参考图',
+  personImage: '人物参考图',
+  personSceneImage: '人物场景参考图',
+  styleImage: '风格参考图',
 }
+const QUALITY_OPTIONS: Option<string>[] = [
+  { value: 'low', label: '低质量' },
+  { value: 'medium', label: '中等质量' },
+  { value: 'high', label: '高质量' },
+]
 const REFERENCE_ERROR_TEXT = {
   unsupported: '图片格式或内容不受支持',
   'too-many': '参考图数量超过上限',
@@ -116,6 +128,14 @@ const COPY_LANGUAGE_LABELS: Record<CopyLanguage, string> = {
 
 type PreviewState = { blob: Blob; index: number; recordId: string }
 
+function RequiredMark() {
+  return (
+    <span aria-hidden='true' className='text-destructive ml-0.5'>
+      *
+    </span>
+  )
+}
+
 function SelectField<T extends string>(props: {
   id?: string
   label: string
@@ -125,23 +145,31 @@ function SelectField<T extends string>(props: {
   disabled?: boolean
 }) {
   const { t } = useTranslation()
+  const selectedLabel =
+    props.options.find((option) => option.value === props.value)?.label ??
+    props.value
   return (
-    <label className='grid gap-1.5 text-sm'>
-      <span className='font-medium'>{t(props.label)}</span>
-      <select
-        className='border-input bg-background focus-visible:border-primary h-9 w-full rounded-none border px-3 outline-none focus-visible:ring-2'
+    <div className='grid gap-1.5 text-sm'>
+      <label className='font-medium' htmlFor={props.id}>
+        {t(props.label)}
+      </label>
+      <Select
         disabled={props.disabled}
-        id={props.id}
-        onChange={(event) => props.onChange(event.target.value as T)}
+        onValueChange={(value) => value && props.onChange(value as T)}
         value={props.value}
       >
-        {props.options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {t(option.label)}
-          </option>
-        ))}
-      </select>
-    </label>
+        <SelectTrigger className='w-full rounded-none' id={props.id}>
+          <SelectValue>{t(selectedLabel)}</SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {props.options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {t(option.label)}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   )
 }
 
@@ -196,7 +224,6 @@ function FieldError(props: { message?: string }) {
 function StepSection(props: {
   number: StepNumber
   unlockedStep: StepNumber
-  summary: string
   onNext: () => void
   children: React.ReactNode
 }) {
@@ -208,21 +235,19 @@ function StepSection(props: {
       className='bg-background border'
       data-step={props.number}
     >
-      <div className='border-b p-4'>
+      <div className='p-4'>
         <div className='flex items-center justify-between gap-3'>
           <h2
             className='text-base font-semibold'
             id={`ecommerce-step-${props.number}`}
           >
             {props.number}. {t(STEP_TITLES[props.number - 1])}
+            {REQUIRED_STEPS.has(props.number) ? <RequiredMark /> : null}
           </h2>
           <span className='text-muted-foreground text-xs'>
             {completed ? t('已完成') : t('进行中')}
           </span>
         </div>
-        {completed ? (
-          <p className='text-muted-foreground mt-2 text-sm'>{props.summary}</p>
-        ) : null}
       </div>
       <div className='grid gap-4 p-4'>{props.children}</div>
       {props.number < 5 && props.number === props.unlockedStep ? (
@@ -368,7 +393,6 @@ export function EcommerceDrawing() {
   draftRef.current = draft
 
   const prompt = useMemo(() => compileEcommercePrompt(draft), [draft])
-  const summary = useMemo(() => summarizeDraft(draft), [draft])
   const modelConfig = getDrawingModelConfig(MODEL)
   const operation = getReferenceImages(draft).length
     ? modelConfig?.imageToImage
@@ -397,7 +421,13 @@ export function EcommerceDrawing() {
         } else {
           setDraft(savedDraft.draft)
           setUnlockedStep(savedDraft.unlockedStep)
-          setSettings(savedDraft.settings)
+          setSettings({
+            ...savedDraft.settings,
+            quality:
+              savedDraft.settings.quality === 'auto'
+                ? 'medium'
+                : savedDraft.settings.quality,
+          })
           toast.info(t('已恢复上次草稿'))
         }
       }
@@ -609,14 +639,9 @@ export function EcommerceDrawing() {
   return (
     <Main className='relative overflow-y-auto p-4 pb-24 md:p-6 md:pb-6'>
       <div className='mx-auto w-full max-w-7xl'>
-        <header className='mb-6 border-b pb-4'>
-          <div className='flex flex-wrap items-end justify-between gap-3'>
-            <div>
-              <h1 className='text-2xl font-bold'>{t('电商作图')}</h1>
-              <p className='text-muted-foreground mt-1 text-sm'>
-                {t('从商品事实出发，逐步组织一张可直接生成的电商图片')}
-              </p>
-            </div>
+        <header className='mb-6'>
+          <div className='flex flex-wrap items-center justify-between gap-3'>
+            <h1 className='text-2xl font-bold'>{t('电商作图')}</h1>
             <Button
               className='rounded-none'
               onClick={() => void reset()}
@@ -634,11 +659,10 @@ export function EcommerceDrawing() {
             <StepSection
               number={1}
               onNext={() => unlockNext(1)}
-              summary={summary}
               unlockedStep={unlockedStep}
             >
               <ChoiceGrid
-                legend='图片目的'
+                legend='这张图主要要帮顾客完成什么？'
                 name='ecommerce-purpose'
                 onChange={(purpose) => {
                   setDraft((current) => applyPurposeChange(current, purpose))
@@ -651,6 +675,7 @@ export function EcommerceDrawing() {
                 <label className='grid gap-1.5 text-sm'>
                   <span className='font-medium'>
                     {t('用一句话说说你想表达什么')}
+                    <RequiredMark />
                   </span>
                   <Input
                     aria-invalid={Boolean(errors.customPurpose)}
@@ -670,12 +695,14 @@ export function EcommerceDrawing() {
               <StepSection
                 number={2}
                 onNext={() => unlockNext(2)}
-                summary={summary}
                 unlockedStep={unlockedStep}
               >
                 <div className='grid gap-4 sm:grid-cols-2'>
                   <label className='grid gap-1.5 text-sm'>
-                    <span className='font-medium'>{t('商品名称')}</span>
+                    <span className='font-medium'>
+                      {t('商品名称')}
+                      <RequiredMark />
+                    </span>
                     <Input
                       aria-invalid={Boolean(errors.name)}
                       className='rounded-none'
@@ -688,7 +715,7 @@ export function EcommerceDrawing() {
                     <FieldError message={errors.name} />
                   </label>
                   <label className='grid gap-1.5 text-sm'>
-                    <span className='font-medium'>{t('商品类别（可选）')}</span>
+                    <span className='font-medium'>{t('商品类别')}</span>
                     <Input
                       className='rounded-none'
                       onChange={(event) =>
@@ -708,9 +735,7 @@ export function EcommerceDrawing() {
                   role='productImage'
                 />
                 <label className='grid gap-1.5 text-sm'>
-                  <span className='font-medium'>
-                    {t('已知商品事实（可选）')}
-                  </span>
+                  <span className='font-medium'>{t('已知商品事实')}</span>
                   <Textarea
                     className='min-h-24 rounded-none'
                     onChange={(event) =>
@@ -732,11 +757,10 @@ export function EcommerceDrawing() {
               <StepSection
                 number={3}
                 onNext={() => unlockNext(3)}
-                summary={summary}
                 unlockedStep={unlockedStep}
               >
                 <ChoiceGrid
-                  legend='呈现方式'
+                  legend='你希望商品怎么出现？'
                   name='ecommerce-presentation'
                   onChange={(presentation) =>
                     updateDraft('presentation', presentation)
@@ -819,6 +843,7 @@ export function EcommerceDrawing() {
                       <label className='grid gap-1.5 text-sm'>
                         <span className='font-medium'>
                           {t('请写出指定配件')}
+                          <RequiredMark />
                         </span>
                         <Input
                           aria-invalid={Boolean(errors.namedAccessory)}
@@ -841,11 +866,10 @@ export function EcommerceDrawing() {
               <StepSection
                 number={4}
                 onNext={() => unlockNext(4)}
-                summary={summary}
                 unlockedStep={unlockedStep}
               >
                 <ChoiceGrid
-                  legend='视觉重点'
+                  legend='这张图最想突出什么？'
                   name='ecommerce-focus'
                   onChange={(focus) => updateDraft('focus', focus)}
                   options={FOCUS_OPTIONS.filter((option) =>
@@ -857,6 +881,7 @@ export function EcommerceDrawing() {
                   <label className='grid gap-1.5 text-sm'>
                     <span className='font-medium'>
                       {t('请用一句话写出卖点')}
+                      <RequiredMark />
                     </span>
                     <Input
                       aria-invalid={Boolean(errors.sellingPoint)}
@@ -885,7 +910,6 @@ export function EcommerceDrawing() {
               <StepSection
                 number={5}
                 onNext={() => undefined}
-                summary={summary}
                 unlockedStep={unlockedStep}
               >
                 <div className='grid gap-4 sm:grid-cols-2'>
@@ -938,7 +962,7 @@ export function EcommerceDrawing() {
                   </p>
                 ) : null}
                 <label className='grid gap-1.5 text-sm'>
-                  <span className='font-medium'>{t('画面文字（可选）')}</span>
+                  <span className='font-medium'>{t('画面文字')}</span>
                   <Input
                     className='rounded-none'
                     onChange={(event) =>
@@ -957,7 +981,10 @@ export function EcommerceDrawing() {
                   />
                   {draft.copyLanguage === 'custom' ? (
                     <label className='grid gap-1.5 text-sm'>
-                      <span className='font-medium'>{t('请输入语种')}</span>
+                      <span className='font-medium'>
+                        {t('请输入语种')}
+                        <RequiredMark />
+                      </span>
                       <Input
                         aria-invalid={Boolean(errors.customLanguage)}
                         className='rounded-none'
@@ -1153,9 +1180,8 @@ function GenerationPanel(props: {
       className='bg-background border'
       aria-label={t('提示词与生成控制')}
     >
-      <div className='border-b p-4'>
+      <div className='p-4'>
         <h2 className='text-base font-semibold'>{t('提示词预览')}</h2>
-        <p className='text-muted-foreground mt-1 font-mono text-xs'>{MODEL}</p>
       </div>
       <div className='grid gap-4 p-4'>
         {props.promptVisible ? (
@@ -1195,10 +1221,7 @@ function GenerationPanel(props: {
             onChange={(quality) =>
               props.onSettings((current) => ({ ...current, quality }))
             }
-            options={(config?.qualities ?? ['high']).map((value) => ({
-              value,
-              label: value,
-            }))}
+            options={QUALITY_OPTIONS}
             value={props.settings.quality}
           />
         </div>

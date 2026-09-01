@@ -155,10 +155,6 @@ const detailEnglish: Record<DetailType, string> = {
   before_after: 'visible before-and-after state',
 }
 
-function labelOf<T extends string>(options: Option<T>[], value: T): string {
-  return options.find((option) => option.value === value)?.label ?? value
-}
-
 export function createDefaultDraft(): EcommerceDraft {
   return {
     purpose: 'main',
@@ -251,43 +247,6 @@ export function validateStep(
     errors.customLanguage = '请输入语种'
   }
   return errors
-}
-
-export function summarizeDraft(draft: EcommerceDraft): string {
-  const parts = [
-    draft.purpose === 'custom'
-      ? draft.customPurpose.trim() || '其他想法'
-      : labelOf(PURPOSE_OPTIONS, draft.purpose),
-    labelOf(PRESENTATION_OPTIONS, draft.presentation),
-    `突出${labelOf(FOCUS_OPTIONS, draft.focus)}`,
-  ]
-  if (draft.presentation === 'scene') {
-    parts.push(labelOf(SCENE_OPTIONS, draft.sceneType))
-  }
-  if (draft.presentation === 'person') {
-    parts.push(
-      draft.personScene
-        ? labelOf(PERSON_SCENE_OPTIONS, draft.personSceneType)
-        : '简洁背景'
-    )
-  }
-  if (draft.presentation === 'set') {
-    if (draft.setScope === 'named') {
-      const accessory = draft.namedAccessory.trim()
-      parts.push(accessory ? `指定配件：${accessory}` : '指定配件')
-    } else {
-      parts.push(labelOf(SET_SCOPE_OPTIONS, draft.setScope))
-    }
-  }
-  if (draft.focus === 'selling' && draft.sellingPoint.trim()) {
-    parts.push(`“${draft.sellingPoint.trim()}”`)
-  }
-  if (draft.style !== 'none') parts.push(labelOf(STYLE_OPTIONS, draft.style))
-  if (draft.styleImage) parts.push('风格参考图')
-  parts.push(labelOf(COMPOSITION_OPTIONS, draft.composition))
-  parts.push(labelOf(CHANNEL_OPTIONS, draft.channel))
-  if (draft.copy.trim()) parts.push(`文字“${draft.copy.trim()}”`)
-  return `将生成：${parts.join('｜')}`
 }
 
 export function getReferenceImages(draft: EcommerceDraft): File[] {
