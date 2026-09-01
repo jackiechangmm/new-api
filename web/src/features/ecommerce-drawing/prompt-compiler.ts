@@ -1,7 +1,6 @@
 import type {
   Channel,
   Composition,
-  CopyLanguage,
   DetailType,
   DraftErrors,
   EcommerceDraft,
@@ -90,17 +89,6 @@ export const CHANNEL_OPTIONS: Option<Channel>[] = [
   { value: 'detail', label: '商品详情页' },
   { value: 'social', label: '社媒 / 短视频封面' },
 ]
-export const COPY_LANGUAGE_OPTIONS: Option<CopyLanguage>[] = [
-  { value: 'input', label: '以输入框为准' },
-  { value: 'zh', label: '中文' },
-  { value: 'en', label: '英文' },
-  { value: 'ko', label: '韩文' },
-  { value: 'ja', label: '日文' },
-  { value: 'ru', label: '俄语' },
-  { value: 'ar', label: '阿拉伯语' },
-  { value: 'custom', label: '自定义语种' },
-]
-
 const purposePresentation: Partial<Record<Purpose, Presentation>> = {
   main: 'alone',
   use: 'scene',
@@ -181,9 +169,6 @@ export function createDefaultDraft(): EcommerceDraft {
     composition: 'center',
     channel: 'listing',
     copy: '',
-    copyLanguage: 'input',
-    customLanguage: '',
-    previousCopy: null,
   }
 }
 
@@ -238,13 +223,6 @@ export function validateStep(
   }
   if (step === 4 && draft.focus === 'selling' && !draft.sellingPoint.trim()) {
     errors.sellingPoint = '请写出具体卖点'
-  }
-  if (
-    step === 5 &&
-    draft.copyLanguage === 'custom' &&
-    !draft.customLanguage.trim()
-  ) {
-    errors.customLanguage = '请输入语种'
   }
   return errors
 }

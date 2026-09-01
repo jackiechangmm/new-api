@@ -4,7 +4,6 @@ import {
   ImagePlus,
   Loader2,
   RotateCcw,
-  Sparkles,
   Trash2,
   WandSparkles,
 } from 'lucide-react'
@@ -41,14 +40,12 @@ import { getDrawingModelConfig } from '@/features/drawing/model-config'
 import { validateReferenceImages } from '@/features/drawing/validation'
 import { cn } from '@/lib/utils'
 
-import { generateEcommerceCopy } from './api'
 import {
   applyCategoryChange,
   applyPurposeChange,
   CHANNEL_OPTIONS,
   compileEcommercePrompt,
   COMPOSITION_OPTIONS,
-  COPY_LANGUAGE_OPTIONS,
   createDefaultDraft,
   DETAIL_OPTIONS,
   FOCUS_OPTIONS,
@@ -73,7 +70,6 @@ import {
   type EcommerceHistoryRecord,
 } from './storage'
 import type {
-  CopyLanguage,
   DraftErrors,
   EcommerceDraft,
   GenerationSettings,
@@ -115,17 +111,6 @@ const REFERENCE_ERROR_TEXT = {
   'too-large': '图片文件大小超过上限',
   'too-wide': '图片像素尺寸超过上限',
 } as const
-const COPY_LANGUAGE_LABELS: Record<CopyLanguage, string> = {
-  input: '输入内容所用语言',
-  zh: '中文',
-  en: '英文',
-  ko: '韩文',
-  ja: '日文',
-  ru: '俄语',
-  ar: '阿拉伯语',
-  custom: '自定义语种',
-}
-
 type PreviewState = { blob: Blob; index: number; recordId: string }
 
 function RequiredMark() {
@@ -384,7 +369,6 @@ export function EcommerceDrawing() {
   const [preview, setPreview] = useState<PreviewState>()
   const [highlightId, setHighlightId] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
-  const [isGeneratingCopy, setIsGeneratingCopy] = useState(false)
   const [requestError, setRequestError] = useState('')
   const [hydrated, setHydrated] = useState(false)
   const historyRef = useRef<HTMLElement>(null)
@@ -425,7 +409,7 @@ export function EcommerceDrawing() {
             ...savedDraft.settings,
             quality:
               savedDraft.settings.quality === 'auto'
-                ? 'medium'
+                ? 'low'
                 : savedDraft.settings.quality,
           })
           toast.info(t('已恢复上次草稿'))
@@ -498,45 +482,6 @@ export function EcommerceDrawing() {
     setErrors({})
     setReferenceErrors({})
     setRequestError('')
-  }
-
-  const generateCopy = async () => {
-    if (isGeneratingCopy) return
-    if (draft.copyLanguage === 'custom' && !draft.customLanguage.trim()) {
-      setErrors((current) => ({ ...current, customLanguage: '请输入语种' }))
-      return
-    }
-    setIsGeneratingCopy(true)
-    setRequestError('')
-    const previousCopy = draft.copy
-    try {
-      const purpose =
-        PURPOSE_OPTIONS.find((option) => option.value === draft.purpose)
-          ?.label ?? draft.purpose
-      const focus =
-        FOCUS_OPTIONS.find((option) => option.value === draft.focus)?.label ??
-        draft.focus
-      const copy = await generateEcommerceCopy({
-        productName: draft.name,
-        category: draft.category,
-        facts: draft.facts,
-        purpose,
-        customPurpose: draft.customPurpose,
-        focus,
-        sellingPoint: draft.sellingPoint,
-        targetLanguage:
-          draft.copyLanguage === 'custom'
-            ? draft.customLanguage
-            : COPY_LANGUAGE_LABELS[draft.copyLanguage],
-      })
-      setDraft((current) => ({ ...current, copy, previousCopy }))
-    } catch (error) {
-      setRequestError(
-        error instanceof Error ? error.message : t('AI 画面文案生成失败')
-      )
-    } finally {
-      setIsGeneratingCopy(false)
-    }
   }
 
   const generate = async () => {
@@ -734,6 +679,11 @@ export function EcommerceDrawing() {
                   onFile={changeFile}
                   role='productImage'
                 />
+                {!draft.productImage ? (
+                  <p className='text-warning text-sm' role='status'>
+                    {t('未上传商品图，将根据文字描述生成概念商品图')}
+                  </p>
+                ) : null}
                 <label className='grid gap-1.5 text-sm'>
                   <span className='font-medium'>{t('已知商品事实')}</span>
                   <Textarea
@@ -746,9 +696,6 @@ export function EcommerceDrawing() {
                     )}
                     value={draft.facts}
                   />
-                  <span className='text-muted-foreground text-xs'>
-                    {t('只填写你确定的信息；不确定的内容可以留空')}
-                  </span>
                 </label>
               </StepSection>
             ) : null}
@@ -972,65 +919,6 @@ export function EcommerceDrawing() {
                     value={draft.copy}
                   />
                 </label>
-                <div className='grid gap-4 sm:grid-cols-2'>
-                  <SelectField
-                    label='文案输出语言'
-                    onChange={(value) => updateDraft('copyLanguage', value)}
-                    options={COPY_LANGUAGE_OPTIONS}
-                    value={draft.copyLanguage}
-                  />
-                  {draft.copyLanguage === 'custom' ? (
-                    <label className='grid gap-1.5 text-sm'>
-                      <span className='font-medium'>
-                        {t('请输入语种')}
-                        <RequiredMark />
-                      </span>
-                      <Input
-                        aria-invalid={Boolean(errors.customLanguage)}
-                        className='rounded-none'
-                        onChange={(event) =>
-                          updateDraft('customLanguage', event.target.value)
-                        }
-                        placeholder={t('如：法语')}
-                        value={draft.customLanguage}
-                      />
-                      <FieldError message={errors.customLanguage} />
-                    </label>
-                  ) : null}
-                </div>
-                <div className='flex flex-wrap gap-2'>
-                  <Button
-                    className='rounded-none'
-                    disabled={isGeneratingCopy}
-                    onClick={() => void generateCopy()}
-                    type='button'
-                    variant='outline'
-                  >
-                    {isGeneratingCopy ? (
-                      <Loader2 className='animate-spin' />
-                    ) : (
-                      <Sparkles />
-                    )}
-                    {isGeneratingCopy ? t('生成中') : t('AI 生成文案')}
-                  </Button>
-                  {draft.previousCopy !== null ? (
-                    <Button
-                      className='rounded-none'
-                      onClick={() =>
-                        setDraft((current) => ({
-                          ...current,
-                          copy: current.previousCopy ?? '',
-                          previousCopy: null,
-                        }))
-                      }
-                      type='button'
-                      variant='ghost'
-                    >
-                      <RotateCcw />
-                      {t('恢复生成前文案')}
-                    </Button>
-                  ) : null}
-                </div>
               </StepSection>
             ) : null}
           </div>

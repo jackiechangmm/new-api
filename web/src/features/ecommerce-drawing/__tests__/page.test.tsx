@@ -133,6 +133,10 @@ test('page progressively unlocks steps and sends the fixed image contract', asyn
   await act(async () => button(container, '下一步').click())
   assert.match(container.textContent ?? '', /1\. 这张图主要要帮顾客完成什么？/)
   assert.match(container.textContent ?? '', /2\. 商品信息/)
+  assert.match(
+    container.textContent ?? '',
+    /未上传商品图，将根据文字描述生成概念商品图/
+  )
 
   const name = container.querySelector<HTMLInputElement>('#ecommerce-name')
   assert.ok(name)
@@ -149,6 +153,7 @@ test('page progressively unlocks steps and sends the fixed image contract', asyn
     await act(async () => button(container, '下一步').click())
   }
   assert.match(container.textContent ?? '', /5\. 风格与构图/)
+  assert.doesNotMatch(container.textContent ?? '', /AI 生成文案|文案输出语言/)
 
   const quality = container.querySelector<HTMLButtonElement>(
     '#desktop-ecommerce-quality'

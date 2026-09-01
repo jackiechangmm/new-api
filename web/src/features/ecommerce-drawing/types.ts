@@ -30,16 +30,6 @@ export type VisualStyle =
   | 'editorial'
 export type Composition = 'center' | 'left' | 'right'
 export type Channel = 'listing' | 'detail' | 'social'
-export type CopyLanguage =
-  | 'input'
-  | 'zh'
-  | 'en'
-  | 'ko'
-  | 'ja'
-  | 'ru'
-  | 'ar'
-  | 'custom'
-
 export type ReferenceRole =
   | 'productImage'
   | 'sceneImage'
@@ -72,9 +62,6 @@ export interface EcommerceDraft {
   composition: Composition
   channel: Channel
   copy: string
-  copyLanguage: CopyLanguage
-  customLanguage: string
-  previousCopy: string | null
 }
 
 export interface GenerationSettings {
