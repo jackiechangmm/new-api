@@ -391,9 +391,13 @@ func uploadImage(c *gin.Context, info *relaycommon.RelayInfo, header *multipart.
 	if len(data) > maxUploadImageBytes || !isSupportedImage(data) {
 		return "", invalidRequest(fmt.Errorf("image %q must be JPEG, PNG, GIF, or WebP and at most 20 MiB", header.Filename))
 	}
+	return uploadImageData(c, info, header.Filename, data)
+}
+
+func uploadImageData(c *gin.Context, info *relaycommon.RelayInfo, filename string, data []byte) (string, error) {
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
-	part, err := writer.CreateFormFile("file", filepath.Base(header.Filename))
+	part, err := writer.CreateFormFile("file", filepath.Base(filename))
 	if err != nil {
 		return "", err
 	}

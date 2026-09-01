@@ -1,0 +1,24 @@
+{
+  "code": 200,
+  "data": {
+    "task_id": "mj-task-sample",
+    "status": "SUCCESS",
+    "progress": "100%",
+    "result": {
+      "grid_image_url": "https://example.test/mj-grid.png",
+      "image_urls": [
+        "https://example.test/mj-1.png",
+        "https://example.test/mj-2.png"
+      ],
+      "buttons": [
+        {
+          "custom_id": "MJ::JOB::upsample::1::mj-task-sample",
+          "emoji": "1",
+          "label": "U1",
+          "type": 2,
+          "style": 1
+        }
+      ]
+    }
+  }
+}

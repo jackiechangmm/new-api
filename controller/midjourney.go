@@ -6,12 +6,15 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/QuantumNous/new-api/common"
+	"github.com/QuantumNous/new-api/constant"
 	"github.com/QuantumNous/new-api/dto"
 	"github.com/QuantumNous/new-api/logger"
 	"github.com/QuantumNous/new-api/model"
+	"github.com/QuantumNous/new-api/relay/channel/apimart"
 	"github.com/QuantumNous/new-api/service"
 	"github.com/QuantumNous/new-api/setting"
 	"github.com/QuantumNous/new-api/setting/system_setting"
@@ -100,55 +103,91 @@ func runMidjourneyTaskUpdateOnce(ctx context.Context, report func(processed, tot
 			}
 			continue
 		}
-		requestUrl := fmt.Sprintf("%s/mj/task/list-by-condition", *midjourneyChannel.BaseURL)
-
-		body, err := common.Marshal(map[string]any{
-			"ids": taskIds,
-		})
-		if err != nil {
-			logger.LogError(ctx, fmt.Sprintf("Get Task marshal body error: %v", err))
-			continue
-		}
-		timeout := time.Second * 15
-		requestCtx, cancel := context.WithTimeout(ctx, timeout)
-		req, err := http.NewRequestWithContext(requestCtx, "POST", requestUrl, bytes.NewBuffer(body))
-		if err != nil {
-			cancel()
-			logger.LogError(ctx, fmt.Sprintf("Get Task error: %v", err))
-			continue
-		}
-		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("mj-api-secret", midjourneyChannel.Key)
-		resp, err := service.GetHttpClient().Do(req)
-		if err != nil {
-			logger.LogError(ctx, fmt.Sprintf("Get Task Do req error: %v", err))
-			cancel()
-			continue
-		}
-		if resp.StatusCode != http.StatusOK {
-			logger.LogError(ctx, fmt.Sprintf("Get Task status code: %d", resp.StatusCode))
-			resp.Body.Close()
-			cancel()
-			continue
-		}
-		responseBody, err := io.ReadAll(resp.Body)
-		if err != nil {
-			logger.LogError(ctx, fmt.Sprintf("Get Mjp Task parse body error: %v", err))
-			resp.Body.Close()
-			cancel()
-			continue
-		}
 		var responseItems []dto.MidjourneyDto
-		err = common.Unmarshal(responseBody, &responseItems)
-		if err != nil {
-			logger.LogError(ctx, fmt.Sprintf("Get Mjp Task parse body error2: %v, body: %s", err, string(responseBody)))
+		if midjourneyChannel.Type == constant.ChannelTypeAPIMart {
+			for _, taskID := range taskIds {
+				task := taskM[taskID]
+				if task == nil {
+					continue
+				}
+				if isAPIMartMidjourneyTaskTimedOut(task, time.Now()) {
+					responseItems = append(responseItems, dto.MidjourneyDto{
+						MjId:       taskID,
+						Progress:   "100%",
+						Status:     "FAILURE",
+						FailReason: "midjourney_task_timeout",
+						SubmitTime: task.SubmitTime,
+						StartTime:  task.StartTime,
+						FinishTime: task.FinishTime,
+						ImageUrl:   task.ImageUrl,
+					})
+					continue
+				}
+				requestCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+				result, err := apimart.FetchMidjourneyTask(requestCtx, midjourneyChannel.GetBaseURL(), midjourneyChannel.Key, taskID)
+				cancel()
+				if err != nil {
+					logger.LogError(ctx, fmt.Sprintf("查询 Midjourney 任务 %s 失败: %v", taskID, err))
+					continue
+				}
+				item, ok := mapAPIMartMidjourneyTask(task, result)
+				if !ok {
+					logger.LogWarn(ctx, fmt.Sprintf("Midjourney 任务 %s 返回未知状态", taskID))
+					continue
+				}
+				responseItems = append(responseItems, item)
+			}
+		} else {
+			requestUrl := fmt.Sprintf("%s/mj/task/list-by-condition", *midjourneyChannel.BaseURL)
+
+			body, err := common.Marshal(map[string]any{
+				"ids": taskIds,
+			})
+			if err != nil {
+				logger.LogError(ctx, fmt.Sprintf("Get Task marshal body error: %v", err))
+				continue
+			}
+			timeout := time.Second * 15
+			requestCtx, cancel := context.WithTimeout(ctx, timeout)
+			req, err := http.NewRequestWithContext(requestCtx, "POST", requestUrl, bytes.NewBuffer(body))
+			if err != nil {
+				cancel()
+				logger.LogError(ctx, fmt.Sprintf("Get Task error: %v", err))
+				continue
+			}
+			req.Header.Set("Content-Type", "application/json")
+			req.Header.Set("mj-api-secret", midjourneyChannel.Key)
+			resp, err := service.GetHttpClient().Do(req)
+			if err != nil {
+				logger.LogError(ctx, fmt.Sprintf("Get Task Do req error: %v", err))
+				cancel()
+				continue
+			}
+			if resp.StatusCode != http.StatusOK {
+				logger.LogError(ctx, fmt.Sprintf("Get Task status code: %d", resp.StatusCode))
+				resp.Body.Close()
+				cancel()
+				continue
+			}
+			responseBody, err := io.ReadAll(resp.Body)
+			if err != nil {
+				logger.LogError(ctx, fmt.Sprintf("Get Mjp Task parse body error: %v", err))
+				resp.Body.Close()
+				cancel()
+				continue
+			}
+			responseItems = []dto.MidjourneyDto{}
+			err = common.Unmarshal(responseBody, &responseItems)
+			if err != nil {
+				logger.LogError(ctx, fmt.Sprintf("Get Mjp Task parse body error2: %v, body: %s", err, string(responseBody)))
+				resp.Body.Close()
+				cancel()
+				continue
+			}
 			resp.Body.Close()
+			req.Body.Close()
 			cancel()
-			continue
 		}
-		resp.Body.Close()
-		req.Body.Close()
-		cancel()
 
 		for _, responseItem := range responseItems {
 			task := taskM[responseItem.MjId]
@@ -158,9 +197,14 @@ func runMidjourneyTaskUpdateOnce(ctx context.Context, report func(processed, tot
 			}
 
 			useTime := (time.Now().UnixNano() / int64(time.Millisecond)) - task.SubmitTime
-			// 如果时间超过一小时，且进度不是100%，则认为任务失败
-			if useTime > 3600000 && task.Progress != "100%" {
-				responseItem.FailReason = "上游任务超时（超过1小时）"
+			timeoutMilliseconds := int64(3600000)
+			timeoutReason := "上游任务超时（超过1小时）"
+			if midjourneyChannel.Type == constant.ChannelTypeAPIMart {
+				timeoutMilliseconds = int64(30 * time.Minute / time.Millisecond)
+				timeoutReason = "midjourney_task_timeout"
+			}
+			if useTime > timeoutMilliseconds && task.Progress != "100%" {
+				responseItem.FailReason = timeoutReason
 				responseItem.Status = "FAILURE"
 			}
 			if !checkMjTaskNeedUpdate(task, responseItem) {
@@ -236,6 +280,52 @@ func runMidjourneyTaskUpdateOnce(ctx context.Context, report func(processed, tot
 		report(totalChannels, totalChannels)
 	}
 	return summary
+}
+
+func isAPIMartMidjourneyTaskTimedOut(task *model.Midjourney, now time.Time) bool {
+	if task.Progress == "100%" {
+		return false
+	}
+	return now.UnixMilli()-task.SubmitTime > int64(30*time.Minute/time.Millisecond)
+}
+
+func mapAPIMartMidjourneyTask(task *model.Midjourney, result *apimart.MidjourneyTask) (dto.MidjourneyDto, bool) {
+	item := dto.MidjourneyDto{
+		MjId:       task.MjId,
+		Progress:   result.Progress,
+		Status:     strings.ToUpper(result.Status),
+		SubmitTime: task.SubmitTime,
+		StartTime:  task.StartTime,
+		FinishTime: task.FinishTime,
+		ImageUrl:   task.ImageUrl,
+		Buttons:    result.Buttons,
+	}
+	if item.Progress == "" {
+		item.Progress = task.Progress
+	}
+	switch item.Status {
+	case "SUBMITTED", "IN_PROGRESS":
+	case "SUCCESS":
+		item.Progress = "100%"
+		item.ImageUrl = result.GridImageURL
+		if item.ImageUrl == "" {
+			item.Status = "FAILURE"
+			item.FailReason = "midjourney_task_failed"
+		}
+	case "FAILURE", "CANCELLED", "MODAL":
+		item.Status = "FAILURE"
+		item.Progress = "100%"
+		item.FailReason = "midjourney_task_failed"
+	default:
+		return dto.MidjourneyDto{}, false
+	}
+	if len(result.ImageURLs) > 0 {
+		item.VideoUrls = make([]dto.ImgUrls, 0, len(result.ImageURLs))
+		for _, imageURL := range result.ImageURLs {
+			item.VideoUrls = append(item.VideoUrls, dto.ImgUrls{Url: imageURL})
+		}
+	}
+	return item, true
 }
 
 func checkMjTaskNeedUpdate(oldTask *model.Midjourney, newTask dto.MidjourneyDto) bool {

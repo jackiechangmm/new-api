@@ -16,6 +16,7 @@ import (
 	"github.com/QuantumNous/new-api/dto"
 	"github.com/QuantumNous/new-api/logger"
 	"github.com/QuantumNous/new-api/model"
+	"github.com/QuantumNous/new-api/relay/channel/apimart"
 	relaycommon "github.com/QuantumNous/new-api/relay/common"
 	relayconstant "github.com/QuantumNous/new-api/relay/constant"
 	"github.com/QuantumNous/new-api/relay/helper"
@@ -399,6 +400,81 @@ func RelayMidjourneySubmit(c *gin.Context, relayInfo *relaycommon.RelayInfo) *dt
 	}
 
 	relayInfo.InitChannelMeta(c)
+
+	if relayInfo.ChannelType == constant.ChannelTypeAPIMart {
+		if relayInfo.RelayMode != relayconstant.RelayModeMidjourneyImagine {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, "unsupported_action")
+		}
+		var options struct {
+			Speed json.RawMessage `json:"speed"`
+		}
+		if err := common.UnmarshalBodyReusable(c, &options); err != nil {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, "bind_request_body_failed")
+		}
+		speed := ""
+		if common.GetJsonType(options.Speed) == "string" {
+			_ = common.Unmarshal(options.Speed, &speed)
+		}
+		if err := apimart.ValidateMidjourneyImagine(midjRequest.Prompt, speed, len(midjRequest.Base64Array)); err != nil {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, err.Error())
+		}
+		midjRequest.Action = constant.MjActionImagine
+		priceData, err := helper.ModelPriceHelperPerCall(c, relayInfo)
+		if err != nil {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, err.Error())
+		}
+		userQuota, err := model.GetUserQuota(relayInfo.UserId, false)
+		if err != nil {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, err.Error())
+		}
+		if userQuota-priceData.Quota < 0 {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, "quota_not_enough")
+		}
+		taskID, err := apimart.SubmitMidjourneyImagine(c, relayInfo, midjRequest.Prompt, midjRequest.Base64Array)
+		if err != nil {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, err.Error())
+		}
+		response := dto.MidjourneyResponse{
+			Code:        1,
+			Description: "Submit success",
+			Result:      taskID,
+		}
+		task := &model.Midjourney{
+			UserId:      relayInfo.UserId,
+			Code:        response.Code,
+			Action:      midjRequest.Action,
+			MjId:        taskID,
+			Prompt:      midjRequest.Prompt,
+			Description: response.Description,
+			SubmitTime:  time.Now().UnixNano() / int64(time.Millisecond),
+			Progress:    "0%",
+			ChannelId:   relayInfo.ChannelId,
+			Quota:       priceData.Quota,
+		}
+		if err := task.Insert(); err != nil {
+			return service.MidjourneyErrorWrapper(constant.MjRequestError, "insert_midjourney_task_failed")
+		}
+		if err := service.PostConsumeQuota(relayInfo, priceData.Quota, 0, true); err != nil {
+			common.SysLog("error consuming token remain quota: " + err.Error())
+		}
+		tokenName := c.GetString("token_name")
+		logContent := fmt.Sprintf("模型固定价格 %.2f，分组倍率 %.2f，操作 %s，ID %s", priceData.ModelPrice, priceData.GroupRatioInfo.GroupRatio, midjRequest.Action, taskID)
+		other := service.GenerateMjOtherInfo(relayInfo, priceData)
+		model.RecordConsumeLog(c, relayInfo.UserId, model.RecordConsumeLogParams{
+			ChannelId: relayInfo.ChannelId,
+			ModelName: service.CovertMjpActionToModelName(midjRequest.Action),
+			TokenName: tokenName,
+			Quota:     priceData.Quota,
+			Content:   logContent,
+			TokenId:   relayInfo.TokenId,
+			Group:     relayInfo.UsingGroup,
+			Other:     other,
+		})
+		model.UpdateUserUsedQuotaAndRequestCount(relayInfo.UserId, priceData.Quota)
+		model.UpdateChannelUsedQuota(relayInfo.ChannelId, priceData.Quota)
+		c.JSON(http.StatusOK, response)
+		return nil
+	}
 
 	if relayInfo.RelayMode == relayconstant.RelayModeMidjourneyAction { // midjourney plus，需要从customId中获取任务信息
 		mjErr := service.CoverPlusActionToNormalAction(&midjRequest)
