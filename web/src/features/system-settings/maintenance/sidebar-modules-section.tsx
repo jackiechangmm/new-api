@@ -92,6 +92,12 @@ export function SidebarModulesSection({
         title: t('Conversation'),
         description: t('Use prompts and models for simple conversations.'),
       },
+      ecommerceDrawing: {
+        title: t('Ecommerce Drawing'),
+        description: t(
+          'Create ecommerce images from structured product information.'
+        ),
+      },
       watermarkRemoval: {
         title: t('Remove Watermark'),
         description: t('Remove watermarks locally in your browser'),

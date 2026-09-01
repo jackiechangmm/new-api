@@ -41,6 +41,7 @@ const DEFAULT_SIDEBAR_MODULES: SidebarModulesAdminConfig = {
     enabled: true,
     playground: true,
     drawing: true,
+    ecommerceDrawing: true,
     watermarkRemoval: true,
     backgroundRemoval: true,
     chat: true,
@@ -100,6 +101,10 @@ const mergeWithDefaultSidebarModules = (
 const URL_TO_CONFIG_MAP: Record<string, { section: string; module: string }> = {
   '/playground/chat': { section: 'chat', module: 'playground' },
   '/playground/drawing': { section: 'chat', module: 'drawing' },
+  '/playground/ecommerce-drawing': {
+    section: 'chat',
+    module: 'ecommerceDrawing',
+  },
   '/playground/watermark-removal': {
     section: 'chat',
     module: 'watermarkRemoval',

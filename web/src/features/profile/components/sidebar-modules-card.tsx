@@ -67,6 +67,13 @@ export function SidebarModulesCard() {
           description: t('Use prompts and models for simple conversations'),
         },
         {
+          key: 'ecommerceDrawing',
+          title: t('Ecommerce Drawing'),
+          description: t(
+            'Create ecommerce images from structured product information'
+          ),
+        },
+        {
           key: 'watermarkRemoval',
           title: t('Remove Watermark'),
           description: t('Remove watermarks locally in your browser'),
