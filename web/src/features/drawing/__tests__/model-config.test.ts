@@ -2,7 +2,6 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {
-  DRAWING_MODEL_CONFIGS,
   filterDrawingModels,
   getDrawingModelConfig,
   getFixedOrSelectedValue,
@@ -12,6 +11,7 @@ test('filters available models through the drawing whitelist', () => {
   assert.deepEqual(
     filterDrawingModels([
       'text-only',
+      'mj_imagine',
       'gpt-image-2',
       'grok-imagine-image-2.0',
       'nano-banana-2',
@@ -23,8 +23,24 @@ test('filters available models through the drawing whitelist', () => {
       'nano-banana-2',
       'nano-banana-2-lite',
       'grok-imagine-image-2.0',
+      'mj_imagine',
     ]
   )
+})
+
+test('configures Midjourney Imagine as an asynchronous single-image model', () => {
+  const config = getDrawingModelConfig('mj_imagine')
+
+  assert.equal(config?.requestFormat, 'midjourney')
+  assert.equal(config?.textToImage?.maxOutputs, 1)
+  assert.equal(config?.imageToImage?.maxOutputs, 1)
+  assert.deepEqual(config?.imageToImage?.input?.formats, [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+  ])
+  assert.equal(config?.imageToImage?.input?.maxImages, 16)
 })
 
 test('configures Grok Imagine 2 for generation and up to three reference images', () => {
@@ -40,7 +56,7 @@ test('configures Grok Imagine 2 for generation and up to three reference images'
 test('keeps text-to-image and image-to-image configuration independent', () => {
   const config = getDrawingModelConfig('gpt-image-2')
 
-  assert.equal(config, DRAWING_MODEL_CONFIGS[0])
+  assert.equal(config, getDrawingModelConfig('gpt-image-2'))
   assert.equal(config?.textToImage?.input, undefined)
   assert.deepEqual(config?.imageToImage?.input?.formats, [
     'image/jpeg',

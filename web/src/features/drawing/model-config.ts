@@ -16,7 +16,10 @@ export type DrawingOperationConfig = {
   input?: DrawingInputConfig
 }
 
-export type DrawingRequestFormat = 'openai-image' | 'gemini-generate-content'
+export type DrawingRequestFormat =
+  | 'openai-image'
+  | 'gemini-generate-content'
+  | 'midjourney'
 
 export type DrawingModelConfig = {
   model: string
@@ -167,6 +170,13 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
       maxOutputs: 10,
       outputFormats: ['png'],
       input: GROK_IMAGINE_2_INPUT,
+    },
+  },
+  {
+    model: 'mj_imagine',
+    requestFormat: 'midjourney',
+    textToImage: {
+      maxOutputs: 1,
     },
   },
 ]

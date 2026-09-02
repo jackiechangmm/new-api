@@ -7,6 +7,7 @@ import {
   getDrawingModels,
   polishDrawingPrompt,
   requestDrawingImages,
+  requestMidjourneyImage,
 } from '../api'
 
 type ApiResponse = Promise<{ data: unknown }>
@@ -22,6 +23,212 @@ const originalPost = client.post
 afterEach(() => {
   client.get = originalGet
   client.post = originalPost
+})
+
+test('Midjourney drawing prefers the individual upstream images', async () => {
+  const requests: Array<{ method: string; url: string; data: unknown }> = []
+  const image = new Blob(['image'], { type: 'image/png' })
+  client.post = async (url, data) => {
+    requests.push({ method: 'POST', url, data })
+    return { data: { code: 1, result: 'mj-task-1' } }
+  }
+  let taskPolls = 0
+  client.get = async (url, config) => {
+    requests.push({ method: 'GET', url, data: config })
+    if (url.includes('/fetch')) {
+      taskPolls++
+      return {
+        data: {
+          id: 'mj-task-1',
+          status: taskPolls === 1 ? 'IN_PROGRESS' : 'SUCCESS',
+          progress: taskPolls === 1 ? '50%' : '100%',
+          imageUrl: 'https://upstream.example/grid.png',
+          videoUrls: [
+            { url: 'https://upstream.example/image-1.png' },
+            { url: 'https://upstream.example/image-2.png' },
+          ],
+        },
+      }
+    }
+    return { data: image }
+  }
+  const progress: string[] = []
+  const reference = new File(['reference'], 'reference.png', {
+    type: 'image/png',
+  })
+
+  const result = await requestMidjourneyImage(
+    'draw a lighthouse',
+    [reference],
+    {
+      pollIntervalMs: 0,
+      onProgress: (value) => progress.push(value),
+    }
+  )
+
+  assert.deepEqual(requests[0], {
+    method: 'POST',
+    url: '/mj/submit/imagine',
+    data: {
+      prompt: 'draw a lighthouse',
+      base64Array: ['data:image/png;base64,cmVmZXJlbmNl'],
+    },
+  })
+  assert.deepEqual(progress, ['50%', '100%'])
+  assert.equal(result.taskId, 'mj-task-1')
+  assert.deepEqual(result.images, [image, image])
+  assert.equal(result.usedOriginalGrid, false)
+  assert.equal(requests[3]?.url, '/mj/image/mj-task-1?index=0')
+  assert.equal(requests[4]?.url, '/mj/image/mj-task-1?index=1')
+  assert.deepEqual(requests[3]?.data, {
+    signal: undefined,
+    responseType: 'blob',
+    skipErrorHandler: true,
+    disableDuplicate: true,
+  })
+})
+
+test('Midjourney drawing keeps the original grid when splitting fails', async () => {
+  const originalCreateImageBitmap = Object.getOwnPropertyDescriptor(
+    globalThis,
+    'createImageBitmap'
+  )
+  Object.defineProperty(globalThis, 'createImageBitmap', {
+    configurable: true,
+    value: async () => {
+      throw new Error('decode failed')
+    },
+  })
+  const grid = new Blob(['grid'], { type: 'image/png' })
+  client.post = async () => ({ data: { code: 1, result: 'mj-grid-task' } })
+  client.get = async (url) => {
+    if (url.includes('/fetch')) {
+      return {
+        data: {
+          id: 'mj-grid-task',
+          status: 'SUCCESS',
+          progress: '100%',
+          imageUrl: 'https://upstream.example/grid.png',
+        },
+      }
+    }
+    return { data: grid }
+  }
+
+  try {
+    const result = await requestMidjourneyImage('draw four scenes', [], {
+      pollIntervalMs: 0,
+    })
+
+    assert.deepEqual(result.images, [grid])
+    assert.equal(result.usedOriginalGrid, true)
+  } finally {
+    if (originalCreateImageBitmap) {
+      Object.defineProperty(
+        globalThis,
+        'createImageBitmap',
+        originalCreateImageBitmap
+      )
+    } else {
+      Reflect.deleteProperty(globalThis, 'createImageBitmap')
+    }
+  }
+})
+
+test('Midjourney drawing preserves failed task response details', async () => {
+  client.post = async () => ({
+    data: { code: 1, result: 'mj-failed-task' },
+  })
+  client.get = async () => ({
+    data: {
+      id: 'mj-failed-task',
+      status: 'FAILURE',
+      progress: '100%',
+      failReason: 'provider internal error',
+    },
+  })
+
+  await assert.rejects(
+    requestMidjourneyImage('draw a lighthouse', [], { pollIntervalMs: 0 }),
+    (error) => {
+      assert.deepEqual(error, {
+        id: 'mj-failed-task',
+        status: 'FAILURE',
+        progress: '100%',
+        failReason: 'provider internal error',
+      })
+      return true
+    }
+  )
+})
+
+test('Midjourney drawing accepts successful submit responses without a code', async () => {
+  const image = new Blob(['image'], { type: 'image/png' })
+  client.post = async () => ({ data: { result: 'mj-task-without-code' } })
+  client.get = async (url) => {
+    if (url.includes('/fetch')) {
+      return {
+        data: {
+          id: 'mj-task-without-code',
+          status: 'SUCCESS',
+          progress: '100%',
+          imageUrl: 'https://upstream.example/grid.png',
+        },
+      }
+    }
+    return { data: image }
+  }
+
+  const result = await requestMidjourneyImage('draw a lighthouse', [], {
+    pollIntervalMs: 0,
+  })
+
+  assert.equal(result.taskId, 'mj-task-without-code')
+  assert.deepEqual(result.images, [image])
+})
+
+test('Midjourney drawing preserves HTTP request errors', async () => {
+  const requestError = {
+    isAxiosError: true,
+    response: {
+      status: 400,
+      data: {
+        code: 4,
+        description: 'quota_not_enough',
+        type: 'upstream_error',
+      },
+    },
+  }
+  client.post = async () => {
+    throw requestError
+  }
+
+  await assert.rejects(
+    requestMidjourneyImage('draw a lighthouse', []),
+    (error) => error === requestError
+  )
+})
+
+test('Midjourney drawing preserves structured submit failure response', async () => {
+  client.post = async () => ({
+    data: {
+      code: 4,
+      description: 'quota_not_enough',
+      type: 'upstream_error',
+    },
+  })
+
+  await assert.rejects(
+    requestMidjourneyImage('draw a lighthouse', []),
+    (error) => {
+      assert.deepEqual(error, {
+        code: 4,
+        description: 'quota_not_enough',
+        type: 'upstream_error',
+      })
+      return true
+    }
+  )
 })
 
 test('text drawing sends the OpenAI image generation contract', async () => {

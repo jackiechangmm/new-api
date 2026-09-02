@@ -15,6 +15,8 @@ import (
 	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/relaykit/dto"
 	"github.com/QuantumNous/new-api/service"
+	"github.com/QuantumNous/new-api/setting"
+	"github.com/QuantumNous/new-api/setting/ratio_setting"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -131,6 +133,164 @@ func TestSessionGeminiRelayUsesStandardRelayContext(t *testing.T) {
 	var consumeLog model.Log
 	require.NoError(t, model.DB.Where("user_id = ? AND type = ?", user.Id, model.LogTypeConsume).Order("id DESC").First(&consumeLog).Error)
 	assert.Equal(t, "playground-default", consumeLog.TokenName)
+}
+
+func TestCanonicalMidjourneyImagineAcceptsSessionAndAPIToken(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	originalUsableGroups := setting.UserUsableGroups2JSONString()
+	originalGroupRatios := ratio_setting.GroupRatio2JSONString()
+	require.NoError(t, setting.UpdateUserUsableGroupsByJSONString(`{"default":"Default","vip":"VIP"}`))
+	require.NoError(t, ratio_setting.UpdateGroupRatioByJSONString(`{"default":1,"vip":1}`))
+	t.Cleanup(func() {
+		require.NoError(t, setting.UpdateUserUsableGroupsByJSONString(originalUsableGroups))
+		require.NoError(t, ratio_setting.UpdateGroupRatioByJSONString(originalGroupRatios))
+	})
+	const initialUserQuota = 100_000
+	const initialTokenQuota = 80_000
+	const taskID = "session-mj-task"
+
+	var upstreamAuthorization string
+	upstreamCalls := 0
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		upstreamCalls++
+		upstreamAuthorization = r.Header.Get("Authorization")
+		assert.Equal(t, "/v1/midjourney/generations", r.URL.Path)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = fmt.Fprintf(w, `{"code":200,"data":{"task_id":"%s-%d"}}`, taskID, upstreamCalls)
+	}))
+	defer upstream.Close()
+
+	user, _, accessToken := createRelaySession(t, "midjourney-submit-session-user")
+	require.NoError(t, model.DB.Model(&model.User{}).Where("id = ?", user.Id).Update("quota", initialUserQuota).Error)
+	realToken := &model.Token{
+		UserId: user.Id, Name: "api-token", Key: "mjcanonicaltoken", Group: "vip", Status: common.TokenStatusEnabled,
+		ExpiredTime: -1, RemainQuota: initialTokenQuota,
+	}
+	require.NoError(t, model.DB.Create(realToken).Error)
+	baseURL := upstream.URL
+	channel := &model.Channel{
+		Type: constant.ChannelTypeAPIMart, Key: "upstream-channel-key", Status: common.ChannelStatusEnabled,
+		Name: "session-midjourney-channel", BaseURL: &baseURL, Models: "mj_imagine", Group: "vip",
+		AutoBan: common.GetPointer(0),
+	}
+	require.NoError(t, model.DB.Create(channel).Error)
+	require.NoError(t, model.DB.Create(&model.Ability{
+		Group: "vip", Model: "mj_imagine", ChannelId: channel.Id, Enabled: true,
+	}).Error)
+
+	engine := gin.New()
+	SetRelayRouter(engine)
+	request := httptest.NewRequest(http.MethodPost, "/mj/submit/imagine", strings.NewReader(`{"prompt":"draw a lighthouse","group":"vip"}`))
+	request.Header.Set("Authorization", "Bearer "+accessToken)
+	request.Header.Set("Content-Type", "application/json")
+	response := httptest.NewRecorder()
+
+	engine.ServeHTTP(response, request)
+
+	require.Equal(t, http.StatusOK, response.Code, response.Body.String())
+	assert.Equal(t, "Bearer upstream-channel-key", upstreamAuthorization)
+	assert.NotContains(t, upstreamAuthorization, accessToken)
+	var task model.Midjourney
+	require.NoError(t, model.DB.Where("user_id = ? AND mj_id = ?", user.Id, taskID+"-1").First(&task).Error)
+	assert.Equal(t, 50_000, task.Quota)
+	var updatedUser model.User
+	require.NoError(t, model.DB.First(&updatedUser, user.Id).Error)
+	assert.Equal(t, initialUserQuota-task.Quota, updatedUser.Quota)
+	updatedToken, err := model.GetTokenById(realToken.Id)
+	require.NoError(t, err)
+	assert.Equal(t, initialTokenQuota, updatedToken.RemainQuota)
+	var consumeLog model.Log
+	require.NoError(t, model.DB.Where("user_id = ? AND type = ?", user.Id, model.LogTypeConsume).First(&consumeLog).Error)
+	assert.Equal(t, "playground-vip", consumeLog.TokenName)
+	assert.Zero(t, consumeLog.TokenId)
+
+	apiTokenRequest := httptest.NewRequest(http.MethodPost, "/mj/submit/imagine", strings.NewReader(`{"prompt":"draw a harbor"}`))
+	apiTokenRequest.Header.Set("Authorization", "Bearer mjcanonicaltoken")
+	apiTokenRequest.Header.Set("Content-Type", "application/json")
+	apiTokenResponse := httptest.NewRecorder()
+	engine.ServeHTTP(apiTokenResponse, apiTokenRequest)
+
+	require.Equal(t, http.StatusOK, apiTokenResponse.Code, apiTokenResponse.Body.String())
+	var apiTokenTask model.Midjourney
+	require.NoError(t, model.DB.Where("user_id = ? AND mj_id = ?", user.Id, taskID+"-2").First(&apiTokenTask).Error)
+	updatedToken, err = model.GetTokenById(realToken.Id)
+	require.NoError(t, err)
+	assert.Equal(t, initialTokenQuota-apiTokenTask.Quota, updatedToken.RemainQuota)
+}
+
+func TestCanonicalMidjourneyTaskFetchAcceptsSessionAndAPIToken(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	user, _, accessToken := createRelaySession(t, "midjourney-fetch-session-user")
+	require.NoError(t, model.DB.Create(&model.Midjourney{
+		UserId: user.Id, MjId: "owned-task", Action: "IMAGINE", Status: "SUCCESS", Progress: "100%",
+	}).Error)
+	require.NoError(t, model.DB.Create(&model.Midjourney{
+		UserId: user.Id + 1, MjId: "other-task", Action: "IMAGINE", Status: "SUCCESS", Progress: "100%",
+	}).Error)
+	require.NoError(t, model.DB.Create(&model.Token{
+		UserId: user.Id, Name: "mj-api-token", Key: "mjapitoken", Status: common.TokenStatusEnabled,
+		ExpiredTime: -1, UnlimitedQuota: true,
+	}).Error)
+
+	engine := gin.New()
+	SetRelayRouter(engine)
+	for _, credential := range []string{accessToken, "mjapitoken"} {
+		singleRequest := httptest.NewRequest(http.MethodGet, "/mj/task/owned-task/fetch", nil)
+		singleRequest.Header.Set("Authorization", "Bearer "+credential)
+		singleResponse := httptest.NewRecorder()
+		engine.ServeHTTP(singleResponse, singleRequest)
+		require.Equal(t, http.StatusOK, singleResponse.Code)
+		assert.Contains(t, singleResponse.Body.String(), `"id":"owned-task"`)
+
+		batchRequest := httptest.NewRequest(http.MethodPost, "/mj/task/list-by-condition", strings.NewReader(`{"ids":["owned-task","other-task"]}`))
+		batchRequest.Header.Set("Authorization", "Bearer "+credential)
+		batchRequest.Header.Set("Content-Type", "application/json")
+		batchResponse := httptest.NewRecorder()
+		engine.ServeHTTP(batchResponse, batchRequest)
+		require.Equal(t, http.StatusOK, batchResponse.Code)
+		assert.Contains(t, batchResponse.Body.String(), `"id":"owned-task"`)
+		assert.NotContains(t, batchResponse.Body.String(), "other-task")
+	}
+
+	otherTaskRequest := httptest.NewRequest(http.MethodGet, "/mj/task/other-task/fetch", nil)
+	otherTaskRequest.Header.Set("Authorization", "Bearer "+accessToken)
+	otherTaskResponse := httptest.NewRecorder()
+	engine.ServeHTTP(otherTaskResponse, otherTaskRequest)
+	assert.Equal(t, http.StatusBadRequest, otherTaskResponse.Code)
+	assert.Contains(t, otherTaskResponse.Body.String(), "task_no_found")
+}
+
+func TestSessionMidjourneyImagineRejectsUnavailableGroup(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	_, _, accessToken := createRelaySession(t, "midjourney-group-session-user")
+	engine := gin.New()
+	SetRelayRouter(engine)
+	request := httptest.NewRequest(http.MethodPost, "/mj/submit/imagine", strings.NewReader(`{"prompt":"draw a lighthouse","group":"forbidden"}`))
+	request.Header.Set("Authorization", "Bearer "+accessToken)
+	request.Header.Set("Content-Type", "application/json")
+	response := httptest.NewRecorder()
+
+	engine.ServeHTTP(response, request)
+
+	assert.Equal(t, http.StatusForbidden, response.Code)
+}
+
+func TestSessionMidjourneyCannotAccessTokenOnlyRoutes(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	_, _, accessToken := createRelaySession(t, "midjourney-token-only-session-user")
+	engine := gin.New()
+	SetRelayRouter(engine)
+
+	for _, endpoint := range []string{"/mj/submit/action", "/v1/mj/submit/imagine"} {
+		request := httptest.NewRequest(http.MethodPost, endpoint, strings.NewReader(`{"prompt":"draw a lighthouse"}`))
+		request.Header.Set("Authorization", "Bearer "+accessToken)
+		request.Header.Set("Content-Type", "application/json")
+		response := httptest.NewRecorder()
+
+		engine.ServeHTTP(response, request)
+
+		assert.Equal(t, http.StatusUnauthorized, response.Code)
+	}
 }
 
 func TestLegacyPlaygroundEndpointIsDisabled(t *testing.T) {
@@ -250,14 +410,25 @@ func TestSessionRelayRejectsInvalidSessions(t *testing.T) {
 			user, session, accessToken := createRelaySession(t, "invalid-"+strings.ReplaceAll(test.name, " ", "-"))
 			test.mutate(t, user, session)
 
-			request := httptest.NewRequest(http.MethodPost, "/v1/chat/completions", strings.NewReader(`{"model":"gpt-test","messages":[]}`))
-			request.Header.Set("Authorization", "Bearer "+accessToken)
-			request.Header.Set("Content-Type", "application/json")
-			response := httptest.NewRecorder()
-			engine.ServeHTTP(response, request)
+			for _, endpoint := range []struct {
+				name string
+				path string
+				body string
+			}{
+				{name: "standard relay", path: "/v1/chat/completions", body: `{"model":"gpt-test","messages":[]}`},
+				{name: "midjourney imagine", path: "/mj/submit/imagine", body: `{"prompt":"draw a lighthouse"}`},
+			} {
+				t.Run(endpoint.name, func(t *testing.T) {
+					request := httptest.NewRequest(http.MethodPost, endpoint.path, strings.NewReader(endpoint.body))
+					request.Header.Set("Authorization", "Bearer "+accessToken)
+					request.Header.Set("Content-Type", "application/json")
+					response := httptest.NewRecorder()
+					engine.ServeHTTP(response, request)
 
-			assert.Equal(t, http.StatusUnauthorized, response.Code)
-			assert.Contains(t, response.Body.String(), "AUTH_SESSION_REVOKED")
+					assert.Equal(t, http.StatusUnauthorized, response.Code)
+					assert.Contains(t, response.Body.String(), "AUTH_SESSION_REVOKED")
+				})
+			}
 		})
 	}
 }
@@ -382,7 +553,7 @@ func setupRelayRouterTestDB(t *testing.T) {
 	require.NoError(t, os.Setenv("SQL_DSN", "local"))
 	require.NoError(t, model.InitDB())
 	model.LOG_DB = model.DB
-	require.NoError(t, model.DB.AutoMigrate(&model.User{}, &model.Token{}, &model.Ability{}, &model.Channel{}, &model.Log{}, &model.UserSubscription{}, &model.UserSession{}))
+	require.NoError(t, model.DB.AutoMigrate(&model.User{}, &model.Token{}, &model.Ability{}, &model.Channel{}, &model.Log{}, &model.Midjourney{}, &model.UserSubscription{}, &model.UserSession{}))
 
 	t.Cleanup(func() {
 		if sqlDB, err := model.DB.DB(); err == nil {

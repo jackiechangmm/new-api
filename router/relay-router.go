@@ -173,12 +173,12 @@ func SetRelayRouter(router *gin.Engine) {
 	relayMjRouter := router.Group("/mj")
 	relayMjRouter.Use(middleware.RouteTag("relay"))
 	relayMjRouter.Use(middleware.SystemPerformanceCheck())
-	registerMjRouterGroup(relayMjRouter)
+	registerCanonicalMjRouterGroup(relayMjRouter)
 
 	relayMjModeRouter := router.Group("/:mode/mj")
 	relayMjModeRouter.Use(middleware.RouteTag("relay"))
 	relayMjModeRouter.Use(middleware.SystemPerformanceCheck())
-	registerMjRouterGroup(relayMjModeRouter)
+	registerTokenOnlyMjRouterGroup(relayMjModeRouter)
 	//relayMjRouter.Use()
 
 	relaySunoRouter := router.Group("/suno")
@@ -206,25 +206,42 @@ func SetRelayRouter(router *gin.Engine) {
 	}
 }
 
-func registerMjRouterGroup(relayMjRouter *gin.RouterGroup) {
+func registerCanonicalMjRouterGroup(relayMjRouter *gin.RouterGroup) {
 	relayMjRouter.GET("/image/:id", relay.RelayMidjourneyImage)
-	relayMjRouter.Use(middleware.TokenAuth(), middleware.Distribute())
-	{
-		relayMjRouter.POST("/submit/action", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/shorten", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/modal", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/imagine", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/change", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/simple-change", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/describe", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/blend", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/edits", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/video", controller.RelayMidjourney)
-		//relayMjRouter.POST("/notify", controller.RelayMidjourney)
-		relayMjRouter.GET("/task/:id/fetch", controller.RelayMidjourney)
-		relayMjRouter.GET("/task/:id/image-seed", controller.RelayMidjourney)
-		relayMjRouter.POST("/task/list-by-condition", controller.RelayMidjourney)
-		relayMjRouter.POST("/insight-face/swap", controller.RelayMidjourney)
-		relayMjRouter.POST("/submit/upload-discord-images", controller.RelayMidjourney)
-	}
+
+	sessionRouter := relayMjRouter.Group("")
+	sessionRouter.Use(middleware.TokenOrUserAuth(), middleware.SetupSessionRelayContext(), middleware.Distribute())
+	sessionRouter.POST("/submit/imagine", controller.RelayMidjourney)
+	sessionRouter.GET("/task/:id/fetch", controller.RelayMidjourney)
+	sessionRouter.POST("/task/list-by-condition", controller.RelayMidjourney)
+
+	tokenRouter := relayMjRouter.Group("")
+	tokenRouter.Use(middleware.TokenAuth(), middleware.Distribute())
+	registerMidjourneyActionRoutes(tokenRouter)
+}
+
+func registerTokenOnlyMjRouterGroup(relayMjRouter *gin.RouterGroup) {
+	relayMjRouter.GET("/image/:id", relay.RelayMidjourneyImage)
+
+	tokenRouter := relayMjRouter.Group("")
+	tokenRouter.Use(middleware.TokenAuth(), middleware.Distribute())
+	tokenRouter.POST("/submit/imagine", controller.RelayMidjourney)
+	tokenRouter.GET("/task/:id/fetch", controller.RelayMidjourney)
+	tokenRouter.POST("/task/list-by-condition", controller.RelayMidjourney)
+	registerMidjourneyActionRoutes(tokenRouter)
+}
+
+func registerMidjourneyActionRoutes(tokenRouter *gin.RouterGroup) {
+	tokenRouter.POST("/submit/action", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/shorten", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/modal", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/change", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/simple-change", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/describe", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/blend", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/edits", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/video", controller.RelayMidjourney)
+	tokenRouter.GET("/task/:id/image-seed", controller.RelayMidjourney)
+	tokenRouter.POST("/insight-face/swap", controller.RelayMidjourney)
+	tokenRouter.POST("/submit/upload-discord-images", controller.RelayMidjourney)
 }

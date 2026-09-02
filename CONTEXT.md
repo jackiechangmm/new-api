@@ -29,3 +29,4 @@
 - **用户会话调用**：用户通过已登录的用户会话调用标准同步 `/v1` Relay；其授权主体是用户，而不是某个 API token。会话请求使用不落库的虚拟 Token 上下文，计费来自用户钱包或订阅，真实 API token 额度不变。
 - **API token 调用**：调用方通过 API token 发起的模型请求；其模型、分组、额度和网络限制由该 token 的配置决定。
 - **会话 Relay 分组**：默认使用用户分组，也可在请求体中选择用户可用分组；日志中的虚拟 Token 名称为 `playground-<实际分组>`，`token_id` 为 `0`。
+- **Midjourney 会话调用**：已登录用户使用用户会话调用 canonical Midjourney Imagine 提交、单任务查询和批量查询；请求复用不落库的虚拟 Token 上下文、现有 Midjourney 分发与任务链路，沿用 Midjourney 的钱包计费和失败退款语义，不调整真实 API token 额度。其他 Midjourney 动作和兼容路径仍只接受 API token。

@@ -1,5 +1,6 @@
 import { api } from '@/lib/api'
 
+import { splitMidjourneyGrid } from './image-grid'
 import { filterDrawingModels, type DrawingRequestFormat } from './model-config'
 import { DRAWING_PROMPT_TEMPLATES } from './prompt-style-data'
 import { DRAWING_PROMPTS } from './prompts-data'
@@ -20,6 +21,36 @@ export interface ImageEditRequest extends ImageGenerationRequest {
 export interface ImageGenerationResponse {
   data?: Array<{ b64_json?: string; mime_type?: string; url?: string }>
 }
+
+export interface MidjourneyTaskResponse {
+  id?: string
+  status?: string
+  progress?: string
+  imageUrl?: string
+  videoUrls?: Array<{ url?: string }>
+  failReason?: string
+}
+
+export interface MidjourneyGenerationResult {
+  taskId: string
+  images: Blob[]
+  usedOriginalGrid: boolean
+}
+
+type MidjourneySubmitResponse = {
+  code?: number
+  description?: string
+  type?: string
+  result?: string
+}
+
+export type MidjourneyProgressHandler = (
+  progress: string,
+  status: string
+) => void
+
+const MIDJOURNEY_POLL_INTERVAL_MS = 1000
+const MIDJOURNEY_POLL_TIMEOUT_MS = 30 * 60 * 1000
 
 type GeminiGenerateContentResponse = {
   candidates?: Array<{
@@ -46,9 +77,30 @@ export interface DrawingPromptPolishInput {
   prompt: string
   aspectRatio: string
   referenceImages: File[]
+  isMidjourney?: boolean
 }
 
 const DRAWING_PROMPT_POLISH_MODEL = 'gpt-5.6-terra'
+
+const MIDJOURNEY_POLISH_TEMPLATE = `任务：
+将用户提供的提示词，改写为专业的Midjourney英文提示词
+
+可选参数：
+--niji：Niji 开关
+--ar：画面比例，1:1 / 16:9 / 2:3 / 9:16 等
+--q：渲染质量，0.25 / 0.5 / 1 / 2
+--hd：HD 高清
+--style：风格：“raw”等
+--s：风格化强度，0–1000
+--c：混乱度，0–100
+--w：怪异度，0–3000
+--iw：图片权重，0–3
+--cw：角色权重，0–100
+--sw：风格权重，0–1000
+--seed：固定种子
+
+用户输入：
+<input>`
 
 function parseJsonResponse(content: string): Record<string, unknown> {
   const json = content.match(/\{[\s\S]*\}/)?.[0]
@@ -113,6 +165,23 @@ export async function polishDrawingPrompt(
   input: DrawingPromptPolishInput,
   signal?: AbortSignal
 ): Promise<string> {
+  if (input.isMidjourney) {
+    const generated = await requestPromptPolishStage(
+      'Use the supplied Midjourney prompt template to rewrite the user input as a professional Midjourney English prompt. Replace the <input> placeholder with the rewritten prompt. Preserve the template structure and include only parameters that are appropriate for the user\'s request. Return only JSON in this format: {"prompt":"final prompt"}.',
+      JSON.stringify({
+        original_prompt: input.prompt,
+        aspect_ratio: input.aspectRatio,
+        template: MIDJOURNEY_POLISH_TEMPLATE,
+      }),
+      input.referenceImages,
+      signal
+    )
+    if (typeof generated.prompt !== 'string' || !generated.prompt.trim()) {
+      throw new Error('Prompt polishing returned an empty prompt')
+    }
+    return generated.prompt.trim()
+  }
+
   const templateIndex = DRAWING_PROMPT_TEMPLATES.map((template) => ({
     id: template.id,
     title: template.title,
@@ -165,6 +234,132 @@ export async function polishDrawingPrompt(
   return generated.prompt.trim()
 }
 
+async function fileToDataUrl(file: File): Promise<string> {
+  return `data:${file.type};base64,${await fileToBase64(file)}`
+}
+
+export async function requestMidjourneyImage(
+  prompt: string,
+  referenceImages: File[],
+  options: {
+    signal?: AbortSignal
+    onProgress?: MidjourneyProgressHandler
+    pollIntervalMs?: number
+  } = {}
+): Promise<MidjourneyGenerationResult> {
+  const base64Array = await Promise.all(
+    referenceImages.map((image) => fileToDataUrl(image))
+  )
+  const response = await api.post<MidjourneySubmitResponse>(
+    '/mj/submit/imagine',
+    {
+      prompt,
+      ...(base64Array.length ? { base64Array } : {}),
+    },
+    { signal: options.signal, skipErrorHandler: true }
+  )
+  const taskId = response.data.result
+  if (
+    (response.data.code !== undefined && response.data.code !== 1) ||
+    !taskId
+  ) {
+    throw response.data
+  }
+
+  const deadline = Date.now() + MIDJOURNEY_POLL_TIMEOUT_MS
+  const pollIntervalMs = options.pollIntervalMs ?? MIDJOURNEY_POLL_INTERVAL_MS
+  while (Date.now() < deadline) {
+    const taskResponse = await api.get<MidjourneyTaskResponse>(
+      `/mj/task/${encodeURIComponent(taskId)}/fetch`,
+      {
+        signal: options.signal,
+        skipErrorHandler: true,
+        disableDuplicate: true,
+      }
+    )
+    const task = taskResponse.data
+    const status = task.status?.toUpperCase() ?? ''
+    options.onProgress?.(task.progress ?? '', status)
+    if (status === 'SUCCESS') {
+      if (!task.imageUrl) throw task
+
+      const individualImageIndexes = (task.videoUrls ?? []).flatMap(
+        (image, index) => (image.url ? [index] : [])
+      )
+      if (individualImageIndexes.length > 0) {
+        try {
+          const responses = await Promise.all(
+            individualImageIndexes.map((index) =>
+              api.get<Blob>(
+                `/mj/image/${encodeURIComponent(taskId)}?index=${index}`,
+                {
+                  signal: options.signal,
+                  responseType: 'blob',
+                  skipErrorHandler: true,
+                  disableDuplicate: true,
+                }
+              )
+            )
+          )
+          const images = responses.map((item) => item.data)
+          if (images.every((image) => image.type.startsWith('image/'))) {
+            return { taskId, images, usedOriginalGrid: false }
+          }
+        } catch (error) {
+          if (options.signal?.aborted) throw error
+        }
+      }
+
+      const imageResponse = await api.get<Blob>(
+        `/mj/image/${encodeURIComponent(taskId)}`,
+        {
+          signal: options.signal,
+          responseType: 'blob',
+          skipErrorHandler: true,
+          disableDuplicate: true,
+        }
+      )
+      if (!imageResponse.data.type.startsWith('image/')) {
+        throw new Error('Image generation failed')
+      }
+      try {
+        const images = await splitMidjourneyGrid(imageResponse.data)
+        return { taskId, images, usedOriginalGrid: false }
+      } catch {
+        return {
+          taskId,
+          images: [imageResponse.data],
+          usedOriginalGrid: true,
+        }
+      }
+    }
+    if (status === 'FAILURE' || status === 'CANCELLED') {
+      throw task
+    }
+    await waitForMidjourneyPoll(pollIntervalMs, options.signal)
+  }
+  throw new Error('Image generation failed')
+}
+
+function waitForMidjourneyPoll(
+  delayMs: number,
+  signal?: AbortSignal
+): Promise<void> {
+  if (signal?.aborted) {
+    return Promise.reject(new DOMException('Aborted', 'AbortError'))
+  }
+  return new Promise((resolve, reject) => {
+    const onAbort = () => {
+      globalThis.clearTimeout(timer)
+      reject(new DOMException('Aborted', 'AbortError'))
+    }
+    const timer = globalThis.setTimeout(() => {
+      signal?.removeEventListener('abort', onAbort)
+      resolve()
+    }, delayMs)
+    signal?.addEventListener('abort', onAbort, { once: true })
+  })
+}
 export async function requestDrawingImages(
   requestFormat: DrawingRequestFormat,
   payload: ImageGenerationRequest | ImageEditRequest,

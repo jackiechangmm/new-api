@@ -4,6 +4,7 @@ import {
   ChevronRight,
   Download,
   ExternalLink,
+  Info,
   Loader2,
   Plus,
   RefreshCw,
@@ -37,13 +38,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { FormNavigationGuard } from '@/features/system-settings/components/form-navigation-guard'
 
 import {
   getDrawingModels,
   polishDrawingPrompt,
   requestDrawingImages,
+  requestMidjourneyImage,
   type ImageGenerationRequest,
 } from './api'
+import { getDrawingErrorMessage } from './error-message'
 import {
   getDrawingModelConfig,
   getFixedOrSelectedValue,
@@ -248,6 +258,7 @@ export function Drawing() {
   const [isPolishing, setIsPolishing] = useState(false)
   const [undoPrompt, setUndoPrompt] = useState<string>()
   const polishControllerRef = useRef<AbortController>(null)
+  const generationControllerRef = useRef<AbortController>(null)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
   const [highlightHistoryId, setHighlightHistoryId] = useState<string>()
@@ -285,6 +296,7 @@ export function Drawing() {
   const visibleHistory = history.slice(0, historyVisibleCount)
   const hasMoreHistory = historyVisibleCount < history.length
   const modelConfig = getDrawingModelConfig(model)
+  const isMidjourneyModel = modelConfig?.requestFormat === 'midjourney'
   const referenceInput = modelConfig?.imageToImage?.input
   const hasEditModel = Boolean(referenceInput)
   const activeOperation: DrawingOperationConfig | undefined =
@@ -316,7 +328,10 @@ export function Drawing() {
   }, [activeOperation, aspectRatio, quality, resolution])
 
   useEffect(() => {
-    return () => polishControllerRef.current?.abort()
+    return () => {
+      polishControllerRef.current?.abort()
+      generationControllerRef.current?.abort()
+    }
   }, [])
 
   const invalidatePromptPolish = () => {
@@ -346,6 +361,7 @@ export function Drawing() {
           prompt: originalPrompt,
           aspectRatio,
           referenceImages,
+          isMidjourney: isMidjourneyModel,
         },
         controller.signal
       )
@@ -381,18 +397,20 @@ export function Drawing() {
     }
     setError('')
     setIsGenerating(true)
+    const controller = new AbortController()
+    generationControllerRef.current = controller
     const aspect = getFixedOrSelectedValue(
-      activeOperation?.aspectRatios,
+      activeOperation.aspectRatios,
       aspectRatio
     )
     const resolutionValue = getFixedOrSelectedValue(
-      activeOperation?.resolutions,
+      activeOperation.resolutions,
       resolution
     )
     const size =
       aspect && resolutionValue ? `${aspect} ${resolutionValue}` : undefined
     const qualityValue = getFixedOrSelectedValue(
-      activeOperation?.qualities,
+      activeOperation.qualities,
       quality
     )
     const payload: ImageGenerationRequest = {
@@ -404,19 +422,40 @@ export function Drawing() {
       ...(qualityValue ? { quality: qualityValue } : {}),
     }
     try {
-      const response = await requestDrawingImages(
-        modelConfig.requestFormat,
-        referenceImages.length
-          ? { ...payload, images: referenceImages }
-          : payload
-      )
-      const images = (response.data ?? [])
-        .filter((item) => Boolean(item.b64_json))
-        .map((item) => {
-          const binary = atob(item.b64_json as string)
-          const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
-          return new Blob([bytes], { type: item.mime_type || 'image/png' })
-        })
+      let images: Blob[]
+      if (modelConfig.requestFormat === 'midjourney') {
+        const result = await requestMidjourneyImage(
+          payload.prompt,
+          referenceImages,
+          {
+            signal: controller.signal,
+          }
+        )
+        images = result.images
+        if (result.usedOriginalGrid) {
+          toast.warning(
+            t(
+              'Image splitting failed. The original Midjourney grid was saved instead.'
+            )
+          )
+        }
+      } else {
+        const response = await requestDrawingImages(
+          modelConfig.requestFormat,
+          referenceImages.length
+            ? { ...payload, images: referenceImages }
+            : payload,
+          controller.signal
+        )
+        images = (response.data ?? [])
+          .filter((item) => Boolean(item.b64_json))
+          .map((item) => {
+            const binary = atob(item.b64_json as string)
+            const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
+            return new Blob([bytes], { type: item.mime_type || 'image/png' })
+          })
+      }
+      if (controller.signal.aborted) return
       if (!images.length) {
         throw new Error(t('The image response did not contain an image'))
       }
@@ -427,7 +466,7 @@ export function Drawing() {
         model,
         size: payload.size ?? '',
         quality: payload.quality ?? '',
-        n: count,
+        n: images.length,
         images,
         referenceImages: [...referenceImages],
       }
@@ -444,13 +483,13 @@ export function Drawing() {
         window.setTimeout(() => setHighlightHistoryId(record.id), 450)
       })
     } catch (requestError) {
-      const message =
-        requestError instanceof Error
-          ? requestError.message
-          : t('Image generation failed')
-      setError(message)
+      if (controller.signal.aborted) return
+      setError(getDrawingErrorMessage(requestError, t))
     } finally {
-      setIsGenerating(false)
+      if (generationControllerRef.current === controller) {
+        generationControllerRef.current = null
+        setIsGenerating(false)
+      }
     }
   }
 
@@ -462,13 +501,22 @@ export function Drawing() {
     )
   }
 
-  const download = (blob: Blob, name: string) => {
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = name
-    link.click()
-    URL.revokeObjectURL(url)
+  const download = (images: Blob[], id: string) => {
+    images.forEach((blob, index) => {
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      const subtype = blob.type.split('/')[1]?.toLowerCase()
+      let extension = 'png'
+      if (subtype === 'jpeg') {
+        extension = 'jpg'
+      } else if (subtype && ['png', 'webp', 'gif'].includes(subtype)) {
+        extension = subtype
+      }
+      link.href = url
+      link.download = `${id}-${index + 1}.${extension}`
+      link.click()
+      window.setTimeout(() => URL.revokeObjectURL(url), 0)
+    })
   }
 
   const reuse = (record: DrawingHistoryRecord) => {
@@ -578,6 +626,13 @@ export function Drawing() {
 
   return (
     <Main ref={scrollRef} className='relative overflow-y-auto p-4 md:p-6'>
+      <FormNavigationGuard
+        message={t(
+          'A drawing task is still running. Leaving this page may cause the task result to be lost. Are you sure you want to leave?'
+        )}
+        title={t('Drawing generation in progress')}
+        when={isGenerating}
+      />
       <div
         aria-hidden='true'
         className='pointer-events-none absolute inset-x-0 top-0 z-0 h-[35vh] overflow-hidden [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] opacity-70'
@@ -781,19 +836,65 @@ export function Drawing() {
             {activeOperation ? (
               <label className='space-y-1.5 text-sm'>
                 <span>{t('Images')}</span>
-                <DrawingSelect
-                  ariaLabel={t('Images')}
-                  disabled={activeOperation.maxOutputs === 1}
-                  onChange={(value) => setCount(Number(value))}
-                  options={Array.from(
-                    { length: activeOperation.maxOutputs },
-                    (_, index) => String(index + 1)
-                  )}
-                  value={String(count)}
-                />
+                {isMidjourneyModel ? (
+                  <DrawingSelect
+                    ariaLabel={t('Images')}
+                    disabled
+                    onChange={() => {}}
+                    options={[t('One set (4 images)')]}
+                    value={t('One set (4 images)')}
+                  />
+                ) : (
+                  <DrawingSelect
+                    ariaLabel={t('Images')}
+                    disabled={activeOperation.maxOutputs === 1}
+                    onChange={(value) => setCount(Number(value))}
+                    options={Array.from(
+                      { length: activeOperation.maxOutputs },
+                      (_, index) => String(index + 1)
+                    )}
+                    value={String(count)}
+                  />
+                )}
               </label>
             ) : null}
           </div>
+          {isMidjourneyModel ? (
+            <p className='text-destructive mt-3 flex items-center gap-1 text-sm'>
+              <span>MJ模型新手慎用。所有参数体现在提示词中</span>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <button
+                        aria-label='查看 MJ 参数说明'
+                        className='inline-flex size-5 shrink-0 cursor-help items-center justify-center rounded-full'
+                        type='button'
+                      />
+                    }
+                  >
+                    <Info className='size-4' />
+                  </TooltipTrigger>
+                  <TooltipContent
+                    align='start'
+                    className='max-w-sm whitespace-pre-line'
+                  >
+                    {'--v：模型版本，7 / 8.1 / 8.2\n--ar：画面比例，1:1 / 16:9 / 2:3 / 9:16 等\n--q：渲染质量，0.25 / 0.5 / 1 / 2\n--hd：HD 高清（仅 v8.1 / v8.2）\n--style：风格：“raw”等\n--s：风格化强度，0–1000\n--c：混乱度，0–100\n--w：怪异度，0–3000\n--iw：图片权重，0–3\n--cw：角色权重，0–100\n--sw：风格权重，0–1000\n--seed：固定种子'}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </p>
+          ) : null}
+          {isGenerating ? (
+            <p
+              className='text-destructive mt-3 text-sm motion-safe:animate-pulse'
+              role='status'
+            >
+              {t(
+                'A task is in progress. Do not refresh or close this page, or the task will be cancelled and charged normally.'
+              )}
+            </p>
+          ) : null}
           {error ? (
             <p className='text-destructive mt-3 text-sm' role='alert'>
               {error}
@@ -1009,7 +1110,7 @@ function HistoryCard(props: {
   record: DrawingHistoryRecord
   highlight?: boolean
   onDelete: () => void
-  onDownload: (blob: Blob, name: string) => void
+  onDownload: (images: Blob[], id: string) => void
   onPreview: (images: Blob[], index: number) => void
   onReuse: (record: DrawingHistoryRecord) => void
 }) {
@@ -1047,7 +1148,7 @@ function HistoryCard(props: {
           <Button
             aria-label={t('Download')}
             onClick={() =>
-              props.onDownload(props.record.images[0], `${props.record.id}.png`)
+              props.onDownload(props.record.images, props.record.id)
             }
             size='icon-sm'
             variant='ghost'
