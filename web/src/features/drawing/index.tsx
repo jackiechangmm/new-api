@@ -288,6 +288,7 @@ export function Drawing() {
   const visibleHistory = history.slice(0, historyVisibleCount)
   const hasMoreHistory = historyVisibleCount < history.length
   const modelConfig = getDrawingModelConfig(model)
+  const isMidjourneyModel = modelConfig?.requestFormat === 'midjourney'
   const referenceInput = modelConfig?.imageToImage?.input
   const hasEditModel = Boolean(referenceInput)
   const activeOperation: DrawingOperationConfig | undefined =
@@ -830,16 +831,26 @@ export function Drawing() {
             {activeOperation ? (
               <label className='space-y-1.5 text-sm'>
                 <span>{t('Images')}</span>
-                <DrawingSelect
-                  ariaLabel={t('Images')}
-                  disabled={activeOperation.maxOutputs === 1}
-                  onChange={(value) => setCount(Number(value))}
-                  options={Array.from(
-                    { length: activeOperation.maxOutputs },
-                    (_, index) => String(index + 1)
-                  )}
-                  value={String(count)}
-                />
+                {isMidjourneyModel ? (
+                  <DrawingSelect
+                    ariaLabel={t('Images')}
+                    disabled
+                    onChange={() => {}}
+                    options={[t('One set (4 images)')]}
+                    value={t('One set (4 images)')}
+                  />
+                ) : (
+                  <DrawingSelect
+                    ariaLabel={t('Images')}
+                    disabled={activeOperation.maxOutputs === 1}
+                    onChange={(value) => setCount(Number(value))}
+                    options={Array.from(
+                      { length: activeOperation.maxOutputs },
+                      (_, index) => String(index + 1)
+                    )}
+                    value={String(count)}
+                  />
+                )}
               </label>
             ) : null}
           </div>
