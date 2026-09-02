@@ -50,6 +50,8 @@ test('keeps text-to-image and image-to-image configuration independent', () => {
   const config = getDrawingModelConfig('gpt-image-2')
 
   assert.equal(config, getDrawingModelConfig('gpt-image-2'))
+  assert.deepEqual(config?.textToImage?.qualities, ['low', 'medium'])
+  assert.deepEqual(config?.imageToImage?.qualities, ['low', 'medium'])
   assert.equal(config?.textToImage?.input, undefined)
   assert.deepEqual(config?.imageToImage?.input?.formats, [
     'image/jpeg',

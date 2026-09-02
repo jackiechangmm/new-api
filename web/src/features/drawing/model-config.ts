@@ -101,14 +101,14 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
     textToImage: {
       aspectRatios: GPT_IMAGE_2_ASPECT_RATIOS,
       resolutions: ['1k', '2k', '4k'],
-      qualities: ['auto', 'low', 'medium', 'high'],
+      qualities: ['low', 'medium'],
       maxOutputs: 4,
       outputFormats: ['png'],
     },
     imageToImage: {
       aspectRatios: GPT_IMAGE_2_ASPECT_RATIOS,
       resolutions: ['1k', '2k', '4k'],
-      qualities: ['auto', 'low', 'medium', 'high'],
+      qualities: ['low', 'medium'],
       maxOutputs: 4,
       outputFormats: ['png'],
       input: GPT_IMAGE_2_INPUT,

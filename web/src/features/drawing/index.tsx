@@ -145,6 +145,7 @@ function DrawingSelect(props: {
   disabled?: boolean
   onChange: (value: string) => void
   options: string[]
+  optionLabels?: Record<string, string>
   value: string
 }) {
   return (
@@ -156,13 +157,15 @@ function DrawingSelect(props: {
       value={props.value}
     >
       <SelectTrigger aria-label={props.ariaLabel} className='w-full'>
-        <SelectValue />
+        <SelectValue>
+          {props.optionLabels?.[props.value] ?? props.value}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent alignItemWithTrigger={false}>
         <SelectGroup>
           {props.options.map((option) => (
             <SelectItem key={option} value={option}>
-              {option}
+              {props.optionLabels?.[option] ?? option}
             </SelectItem>
           ))}
         </SelectGroup>
@@ -828,6 +831,14 @@ export function Drawing() {
                   ariaLabel={t('Quality')}
                   disabled={activeOperation.qualities.length === 1}
                   onChange={setQuality}
+                  optionLabels={
+                    model === 'gpt-image-2'
+                      ? {
+                          low: t('Standard quality'),
+                          medium: t('Higher quality'),
+                        }
+                      : undefined
+                  }
                   options={activeOperation.qualities}
                   value={quality}
                 />

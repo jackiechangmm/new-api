@@ -3738,6 +3738,8 @@
     "QR Code Image URL": "Đường dẫn URL hình ảnh mã QR",
     "QR code is not configured. Please contact support.": "Mã QR chưa được cấu hình. Vui lòng liên hệ bộ phận hỗ trợ.",
     "Quality": "Chất lượng",
+    "Higher quality": "Higher quality",
+    "Standard quality": "Standard quality",
     "Quantity": "Số lượng",
     "QuantumNous": "QuantumNous",
     "Query": "Query",

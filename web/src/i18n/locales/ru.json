@@ -3738,6 +3738,8 @@
     "QR Code Image URL": "URL изображения QR-кода",
     "QR code is not configured. Please contact support.": "QR-код не настроен. Пожалуйста, свяжитесь со службой поддержки.",
     "Quality": "Качество",
+    "Higher quality": "Higher quality",
+    "Standard quality": "Standard quality",
     "Quantity": "Количество",
     "QuantumNous": "QuantumNous",
     "Query": "Query",

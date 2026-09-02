@@ -3738,6 +3738,8 @@
     "QR Code Image URL": "二维码图片 URL",
     "QR code is not configured. Please contact support.": "二维码未配置。请联系支持人员。",
     "Quality": "质量",
+    "Higher quality": "更高质量",
+    "Standard quality": "标准质量",
     "Quantity": "数量",
     "QuantumNous": "QuantumNous",
     "Query": "Query",

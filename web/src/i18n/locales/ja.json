@@ -3738,6 +3738,8 @@
     "QR Code Image URL": "QRコード画像URL",
     "QR code is not configured. Please contact support.": "QRコードが設定されていません。サポートにお問い合わせください。",
     "Quality": "品質",
+    "Higher quality": "Higher quality",
+    "Standard quality": "Standard quality",
     "Quantity": "数量",
     "QuantumNous": "QuantumNous",
     "Query": "Query",
