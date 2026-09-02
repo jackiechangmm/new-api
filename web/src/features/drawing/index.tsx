@@ -37,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { FormNavigationGuard } from '@/features/system-settings/components/form-navigation-guard'
 
 import {
   getDrawingModels,
@@ -250,7 +251,6 @@ export function Drawing() {
   const [undoPrompt, setUndoPrompt] = useState<string>()
   const polishControllerRef = useRef<AbortController>(null)
   const generationControllerRef = useRef<AbortController>(null)
-  const [generationProgress, setGenerationProgress] = useState('')
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
   const [highlightHistoryId, setHighlightHistoryId] = useState<string>()
@@ -386,7 +386,6 @@ export function Drawing() {
       return
     }
     setError('')
-    setGenerationProgress('')
     setIsGenerating(true)
     const controller = new AbortController()
     generationControllerRef.current = controller
@@ -420,7 +419,6 @@ export function Drawing() {
           referenceImages,
           {
             signal: controller.signal,
-            onProgress: (progress) => setGenerationProgress(progress),
           }
         )
         images = result.images
@@ -485,7 +483,6 @@ export function Drawing() {
       if (generationControllerRef.current === controller) {
         generationControllerRef.current = null
         setIsGenerating(false)
-        setGenerationProgress('')
       }
     }
   }
@@ -623,6 +620,13 @@ export function Drawing() {
 
   return (
     <Main ref={scrollRef} className='relative overflow-y-auto p-4 md:p-6'>
+      <FormNavigationGuard
+        message={t(
+          'A drawing task is still running. Leaving this page may cause the task result to be lost. Are you sure you want to leave?'
+        )}
+        title={t('Drawing generation in progress')}
+        when={isGenerating}
+      />
       <div
         aria-hidden='true'
         className='pointer-events-none absolute inset-x-0 top-0 z-0 h-[35vh] overflow-hidden [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] opacity-70'
@@ -839,9 +843,14 @@ export function Drawing() {
               </label>
             ) : null}
           </div>
-          {isGenerating && generationProgress ? (
-            <p className='text-muted-foreground mt-3 text-sm' role='status'>
-              {t('Progress')}: {generationProgress}
+          {isGenerating ? (
+            <p
+              className='text-destructive mt-3 text-sm motion-safe:animate-pulse'
+              role='status'
+            >
+              {t(
+                'A task is in progress. Do not refresh or close this page, or the task will be cancelled and charged normally.'
+              )}
             </p>
           ) : null}
           {error ? (

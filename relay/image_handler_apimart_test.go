@@ -57,6 +57,6 @@ func TestImageHelperLetsAPIMartAcceptedResponseReachAdapter(t *testing.T) {
 
 	apiErr := ImageHelper(c, info)
 	require.NotNil(t, apiErr)
-	assert.Contains(t, apiErr.Error(), "sample failure")
+	assert.EqualError(t, apiErr, "image generation request failed")
 	assert.EqualValues(t, 1, taskQueries.Load())
 }
