@@ -77,9 +77,30 @@ export interface DrawingPromptPolishInput {
   prompt: string
   aspectRatio: string
   referenceImages: File[]
+  isMidjourney?: boolean
 }
 
 const DRAWING_PROMPT_POLISH_MODEL = 'gpt-5.6-terra'
+
+const MIDJOURNEY_POLISH_TEMPLATE = `任务：
+将用户提供的提示词，改写为专业的Midjourney英文提示词
+
+可选参数：
+--niji：Niji 开关
+--ar：画面比例，1:1 / 16:9 / 2:3 / 9:16 等
+--q：渲染质量，0.25 / 0.5 / 1 / 2
+--hd：HD 高清
+--style：风格：“raw”等
+--s：风格化强度，0–1000
+--c：混乱度，0–100
+--w：怪异度，0–3000
+--iw：图片权重，0–3
+--cw：角色权重，0–100
+--sw：风格权重，0–1000
+--seed：固定种子
+
+用户输入：
+<input>`
 
 function parseJsonResponse(content: string): Record<string, unknown> {
   const json = content.match(/\{[\s\S]*\}/)?.[0]
@@ -144,6 +165,23 @@ export async function polishDrawingPrompt(
   input: DrawingPromptPolishInput,
   signal?: AbortSignal
 ): Promise<string> {
+  if (input.isMidjourney) {
+    const generated = await requestPromptPolishStage(
+      'Use the supplied Midjourney prompt template to rewrite the user input as a professional Midjourney English prompt. Replace the <input> placeholder with the rewritten prompt. Preserve the template structure and include only parameters that are appropriate for the user\'s request. Return only JSON in this format: {"prompt":"final prompt"}.',
+      JSON.stringify({
+        original_prompt: input.prompt,
+        aspect_ratio: input.aspectRatio,
+        template: MIDJOURNEY_POLISH_TEMPLATE,
+      }),
+      input.referenceImages,
+      signal
+    )
+    if (typeof generated.prompt !== 'string' || !generated.prompt.trim()) {
+      throw new Error('Prompt polishing returned an empty prompt')
+    }
+    return generated.prompt.trim()
+  }
+
   const templateIndex = DRAWING_PROMPT_TEMPLATES.map((template) => ({
     id: template.id,
     title: template.title,

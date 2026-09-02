@@ -361,6 +361,7 @@ export function Drawing() {
           prompt: originalPrompt,
           aspectRatio,
           referenceImages,
+          isMidjourney: isMidjourneyModel,
         },
         controller.signal
       )
