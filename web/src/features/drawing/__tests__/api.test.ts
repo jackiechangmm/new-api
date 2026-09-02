@@ -7,6 +7,7 @@ import {
   getDrawingModels,
   polishDrawingPrompt,
   requestDrawingImages,
+  requestMidjourneyImage,
 } from '../api'
 
 type ApiResponse = Promise<{ data: unknown }>
@@ -22,6 +23,85 @@ const originalPost = client.post
 afterEach(() => {
   client.get = originalGet
   client.post = originalPost
+})
+
+test('Midjourney drawing submits references, polls to success, and downloads the proxy image', async () => {
+  const requests: Array<{ method: string; url: string; data: unknown }> = []
+  const image = new Blob(['image'], { type: 'image/png' })
+  client.post = async (url, data) => {
+    requests.push({ method: 'POST', url, data })
+    return { data: { code: 1, result: 'mj-task-1' } }
+  }
+  let taskPolls = 0
+  client.get = async (url, config) => {
+    requests.push({ method: 'GET', url, data: config })
+    if (url.includes('/fetch')) {
+      taskPolls++
+      return {
+        data: {
+          id: 'mj-task-1',
+          status: taskPolls === 1 ? 'IN_PROGRESS' : 'SUCCESS',
+          progress: taskPolls === 1 ? '50%' : '100%',
+          imageUrl: 'https://upstream.example/image.png',
+        },
+      }
+    }
+    return { data: image }
+  }
+  const progress: string[] = []
+  const reference = new File(['reference'], 'reference.png', {
+    type: 'image/png',
+  })
+
+  const result = await requestMidjourneyImage(
+    'draw a lighthouse',
+    [reference],
+    {
+      pollIntervalMs: 0,
+      onProgress: (value) => progress.push(value),
+    }
+  )
+
+  assert.deepEqual(requests[0], {
+    method: 'POST',
+    url: '/mj/submit/imagine',
+    data: {
+      prompt: 'draw a lighthouse',
+      base64Array: ['data:image/png;base64,cmVmZXJlbmNl'],
+    },
+  })
+  assert.deepEqual(progress, ['50%', '100%'])
+  assert.equal(result.taskId, 'mj-task-1')
+  assert.equal(result.image, image)
+  assert.deepEqual(requests[3], {
+    method: 'GET',
+    url: '/mj/image/mj-task-1',
+    data: {
+      signal: undefined,
+      responseType: 'blob',
+      skipErrorHandler: true,
+      disableDuplicate: true,
+    },
+  })
+})
+
+test('Midjourney drawing rejects a failed task without exposing upstream details', async () => {
+  client.post = async () => ({
+    data: { code: 1, result: 'mj-failed-task' },
+  })
+  client.get = async () => ({
+    data: {
+      id: 'mj-failed-task',
+      status: 'FAILURE',
+      progress: '100%',
+      failReason: 'provider internal error',
+    },
+  })
+
+  await assert.rejects(
+    requestMidjourneyImage('draw a lighthouse', [], { pollIntervalMs: 0 }),
+    { message: 'Image generation failed' }
+  )
 })
 
 test('text drawing sends the OpenAI image generation contract', async () => {

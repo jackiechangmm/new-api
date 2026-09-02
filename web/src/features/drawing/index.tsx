@@ -42,6 +42,7 @@ import {
   getDrawingModels,
   polishDrawingPrompt,
   requestDrawingImages,
+  requestMidjourneyImage,
   type ImageGenerationRequest,
 } from './api'
 import {
@@ -248,6 +249,8 @@ export function Drawing() {
   const [isPolishing, setIsPolishing] = useState(false)
   const [undoPrompt, setUndoPrompt] = useState<string>()
   const polishControllerRef = useRef<AbortController>(null)
+  const generationControllerRef = useRef<AbortController>(null)
+  const [generationProgress, setGenerationProgress] = useState('')
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
   const [highlightHistoryId, setHighlightHistoryId] = useState<string>()
@@ -316,7 +319,10 @@ export function Drawing() {
   }, [activeOperation, aspectRatio, quality, resolution])
 
   useEffect(() => {
-    return () => polishControllerRef.current?.abort()
+    return () => {
+      polishControllerRef.current?.abort()
+      generationControllerRef.current?.abort()
+    }
   }, [])
 
   const invalidatePromptPolish = () => {
@@ -380,19 +386,22 @@ export function Drawing() {
       return
     }
     setError('')
+    setGenerationProgress('')
     setIsGenerating(true)
+    const controller = new AbortController()
+    generationControllerRef.current = controller
     const aspect = getFixedOrSelectedValue(
-      activeOperation?.aspectRatios,
+      activeOperation.aspectRatios,
       aspectRatio
     )
     const resolutionValue = getFixedOrSelectedValue(
-      activeOperation?.resolutions,
+      activeOperation.resolutions,
       resolution
     )
     const size =
       aspect && resolutionValue ? `${aspect} ${resolutionValue}` : undefined
     const qualityValue = getFixedOrSelectedValue(
-      activeOperation?.qualities,
+      activeOperation.qualities,
       quality
     )
     const payload: ImageGenerationRequest = {
@@ -404,19 +413,34 @@ export function Drawing() {
       ...(qualityValue ? { quality: qualityValue } : {}),
     }
     try {
-      const response = await requestDrawingImages(
-        modelConfig.requestFormat,
-        referenceImages.length
-          ? { ...payload, images: referenceImages }
-          : payload
-      )
-      const images = (response.data ?? [])
-        .filter((item) => Boolean(item.b64_json))
-        .map((item) => {
-          const binary = atob(item.b64_json as string)
-          const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
-          return new Blob([bytes], { type: item.mime_type || 'image/png' })
-        })
+      let images: Blob[]
+      if (modelConfig.requestFormat === 'midjourney') {
+        const result = await requestMidjourneyImage(
+          payload.prompt,
+          referenceImages,
+          {
+            signal: controller.signal,
+            onProgress: (progress) => setGenerationProgress(progress),
+          }
+        )
+        images = [result.image]
+      } else {
+        const response = await requestDrawingImages(
+          modelConfig.requestFormat,
+          referenceImages.length
+            ? { ...payload, images: referenceImages }
+            : payload,
+          controller.signal
+        )
+        images = (response.data ?? [])
+          .filter((item) => Boolean(item.b64_json))
+          .map((item) => {
+            const binary = atob(item.b64_json as string)
+            const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
+            return new Blob([bytes], { type: item.mime_type || 'image/png' })
+          })
+      }
+      if (controller.signal.aborted) return
       if (!images.length) {
         throw new Error(t('The image response did not contain an image'))
       }
@@ -427,7 +451,7 @@ export function Drawing() {
         model,
         size: payload.size ?? '',
         quality: payload.quality ?? '',
-        n: count,
+        n: images.length,
         images,
         referenceImages: [...referenceImages],
       }
@@ -444,13 +468,18 @@ export function Drawing() {
         window.setTimeout(() => setHighlightHistoryId(record.id), 450)
       })
     } catch (requestError) {
+      if (controller.signal.aborted) return
       const message =
         requestError instanceof Error
           ? requestError.message
           : t('Image generation failed')
       setError(message)
     } finally {
-      setIsGenerating(false)
+      if (generationControllerRef.current === controller) {
+        generationControllerRef.current = null
+        setIsGenerating(false)
+        setGenerationProgress('')
+      }
     }
   }
 
@@ -794,6 +823,11 @@ export function Drawing() {
               </label>
             ) : null}
           </div>
+          {isGenerating && generationProgress ? (
+            <p className='text-muted-foreground mt-3 text-sm' role='status'>
+              {t('Progress')}: {generationProgress}
+            </p>
+          ) : null}
           {error ? (
             <p className='text-destructive mt-3 text-sm' role='alert'>
               {error}

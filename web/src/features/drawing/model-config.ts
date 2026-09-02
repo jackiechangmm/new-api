@@ -16,7 +16,10 @@ export type DrawingOperationConfig = {
   input?: DrawingInputConfig
 }
 
-export type DrawingRequestFormat = 'openai-image' | 'gemini-generate-content'
+export type DrawingRequestFormat =
+  | 'openai-image'
+  | 'gemini-generate-content'
+  | 'midjourney'
 
 export type DrawingModelConfig = {
   model: string
@@ -90,6 +93,14 @@ const NANO_BANANA_2_LITE_ASPECT_RATIOS = [
   '16:9',
   '21:9',
 ]
+
+const MIDJOURNEY_INPUT: DrawingInputConfig = {
+  formats: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+  maxImages: 16,
+  maxImageBytes: 20 * 1024 * 1024,
+  maxWidth: 4096,
+  maxHeight: 4096,
+}
 
 export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
   {
@@ -167,6 +178,17 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
       maxOutputs: 10,
       outputFormats: ['png'],
       input: GROK_IMAGINE_2_INPUT,
+    },
+  },
+  {
+    model: 'mj_imagine',
+    requestFormat: 'midjourney',
+    textToImage: {
+      maxOutputs: 1,
+    },
+    imageToImage: {
+      maxOutputs: 1,
+      input: MIDJOURNEY_INPUT,
     },
   },
 ]
