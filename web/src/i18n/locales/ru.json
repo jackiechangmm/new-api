@@ -2386,6 +2386,7 @@
     "Image preview": "Предпросмотр изображения",
     "Image Preview": "Предпросмотр изображения",
     "Image ratio": "Коэффициент изображения",
+    "Image splitting failed. The original Midjourney grid was saved instead.": "Не удалось разделить изображение. Вместо этого сохранена исходная сетка Midjourney.",
     "Image to Video": "Изображение в видео",
     "Image Tokens": "Токены изображений",
     "Image Toolkit": "Набор инструментов для изображений",

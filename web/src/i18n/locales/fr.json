@@ -2386,6 +2386,7 @@
     "Image preview": "Aperçu de l'image",
     "Image Preview": "Aperçu de l'image",
     "Image ratio": "Ratio d'image",
+    "Image splitting failed. The original Midjourney grid was saved instead.": "Échec du découpage de l’image. La grille Midjourney d’origine a été enregistrée à la place.",
     "Image to Video": "Image vers vidéo",
     "Image Tokens": "Tokens image",
     "Image Toolkit": "Boîte à outils d'image",

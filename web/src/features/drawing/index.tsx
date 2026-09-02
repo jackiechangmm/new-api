@@ -423,7 +423,14 @@ export function Drawing() {
             onProgress: (progress) => setGenerationProgress(progress),
           }
         )
-        images = [result.image]
+        images = result.images
+        if (result.usedOriginalGrid) {
+          toast.warning(
+            t(
+              'Image splitting failed. The original Midjourney grid was saved instead.'
+            )
+          )
+        }
       } else {
         const response = await requestDrawingImages(
           modelConfig.requestFormat,
@@ -491,13 +498,22 @@ export function Drawing() {
     )
   }
 
-  const download = (blob: Blob, name: string) => {
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = name
-    link.click()
-    URL.revokeObjectURL(url)
+  const download = (images: Blob[], id: string) => {
+    images.forEach((blob, index) => {
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      const subtype = blob.type.split('/')[1]?.toLowerCase()
+      let extension = 'png'
+      if (subtype === 'jpeg') {
+        extension = 'jpg'
+      } else if (subtype && ['png', 'webp', 'gif'].includes(subtype)) {
+        extension = subtype
+      }
+      link.href = url
+      link.download = `${id}-${index + 1}.${extension}`
+      link.click()
+      window.setTimeout(() => URL.revokeObjectURL(url), 0)
+    })
   }
 
   const reuse = (record: DrawingHistoryRecord) => {
@@ -1043,7 +1059,7 @@ function HistoryCard(props: {
   record: DrawingHistoryRecord
   highlight?: boolean
   onDelete: () => void
-  onDownload: (blob: Blob, name: string) => void
+  onDownload: (images: Blob[], id: string) => void
   onPreview: (images: Blob[], index: number) => void
   onReuse: (record: DrawingHistoryRecord) => void
 }) {
@@ -1081,7 +1097,7 @@ function HistoryCard(props: {
           <Button
             aria-label={t('Download')}
             onClick={() =>
-              props.onDownload(props.record.images[0], `${props.record.id}.png`)
+              props.onDownload(props.record.images, props.record.id)
             }
             size='icon-sm'
             variant='ghost'

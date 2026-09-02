@@ -2386,6 +2386,7 @@
     "Image preview": "图片预览",
     "Image Preview": "图片预览",
     "Image ratio": "图片倍率",
+    "Image splitting failed. The original Midjourney grid was saved instead.": "图片拆分失败，已改为保存 Midjourney 原始宫格图。",
     "Image to Video": "图生视频",
     "Image Tokens": "图像 Token",
     "Image Toolkit": "图片工具集",

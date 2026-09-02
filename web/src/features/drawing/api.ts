@@ -1,5 +1,6 @@
 import { api } from '@/lib/api'
 
+import { splitMidjourneyGrid } from './image-grid'
 import { filterDrawingModels, type DrawingRequestFormat } from './model-config'
 import { DRAWING_PROMPT_TEMPLATES } from './prompt-style-data'
 import { DRAWING_PROMPTS } from './prompts-data'
@@ -26,12 +27,14 @@ export interface MidjourneyTaskResponse {
   status?: string
   progress?: string
   imageUrl?: string
+  videoUrls?: Array<{ url?: string }>
   failReason?: string
 }
 
 export interface MidjourneyGenerationResult {
   taskId: string
-  image: Blob
+  images: Blob[]
+  usedOriginalGrid: boolean
 }
 
 type MidjourneySubmitResponse = {
@@ -235,6 +238,34 @@ export async function requestMidjourneyImage(
       options.onProgress?.(task.progress ?? '', status)
       if (status === 'SUCCESS') {
         if (!task.imageUrl) throw new Error('Image generation failed')
+
+        const individualImageIndexes = (task.videoUrls ?? []).flatMap(
+          (image, index) => (image.url ? [index] : [])
+        )
+        if (individualImageIndexes.length > 0) {
+          try {
+            const responses = await Promise.all(
+              individualImageIndexes.map((index) =>
+                api.get<Blob>(
+                  `/mj/image/${encodeURIComponent(taskId)}?index=${index}`,
+                  {
+                    signal: options.signal,
+                    responseType: 'blob',
+                    skipErrorHandler: true,
+                    disableDuplicate: true,
+                  }
+                )
+              )
+            )
+            const images = responses.map((item) => item.data)
+            if (images.every((image) => image.type.startsWith('image/'))) {
+              return { taskId, images, usedOriginalGrid: false }
+            }
+          } catch (error) {
+            if (options.signal?.aborted) throw error
+          }
+        }
+
         const imageResponse = await api.get<Blob>(
           `/mj/image/${encodeURIComponent(taskId)}`,
           {
@@ -247,7 +278,16 @@ export async function requestMidjourneyImage(
         if (!imageResponse.data.type.startsWith('image/')) {
           throw new Error('Image generation failed')
         }
-        return { taskId, image: imageResponse.data }
+        try {
+          const images = await splitMidjourneyGrid(imageResponse.data)
+          return { taskId, images, usedOriginalGrid: false }
+        } catch {
+          return {
+            taskId,
+            images: [imageResponse.data],
+            usedOriginalGrid: true,
+          }
+        }
       }
       if (status === 'FAILURE' || status === 'CANCELLED') {
         throw new Error('Image generation failed')

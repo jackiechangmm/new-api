@@ -25,7 +25,7 @@ afterEach(() => {
   client.post = originalPost
 })
 
-test('Midjourney drawing submits references, polls to success, and downloads the proxy image', async () => {
+test('Midjourney drawing prefers the individual upstream images', async () => {
   const requests: Array<{ method: string; url: string; data: unknown }> = []
   const image = new Blob(['image'], { type: 'image/png' })
   client.post = async (url, data) => {
@@ -42,7 +42,11 @@ test('Midjourney drawing submits references, polls to success, and downloads the
           id: 'mj-task-1',
           status: taskPolls === 1 ? 'IN_PROGRESS' : 'SUCCESS',
           progress: taskPolls === 1 ? '50%' : '100%',
-          imageUrl: 'https://upstream.example/image.png',
+          imageUrl: 'https://upstream.example/grid.png',
+          videoUrls: [
+            { url: 'https://upstream.example/image-1.png' },
+            { url: 'https://upstream.example/image-2.png' },
+          ],
         },
       }
     }
@@ -72,17 +76,63 @@ test('Midjourney drawing submits references, polls to success, and downloads the
   })
   assert.deepEqual(progress, ['50%', '100%'])
   assert.equal(result.taskId, 'mj-task-1')
-  assert.equal(result.image, image)
-  assert.deepEqual(requests[3], {
-    method: 'GET',
-    url: '/mj/image/mj-task-1',
-    data: {
-      signal: undefined,
-      responseType: 'blob',
-      skipErrorHandler: true,
-      disableDuplicate: true,
+  assert.deepEqual(result.images, [image, image])
+  assert.equal(result.usedOriginalGrid, false)
+  assert.equal(requests[3]?.url, '/mj/image/mj-task-1?index=0')
+  assert.equal(requests[4]?.url, '/mj/image/mj-task-1?index=1')
+  assert.deepEqual(requests[3]?.data, {
+    signal: undefined,
+    responseType: 'blob',
+    skipErrorHandler: true,
+    disableDuplicate: true,
+  })
+})
+
+test('Midjourney drawing keeps the original grid when splitting fails', async () => {
+  const originalCreateImageBitmap = Object.getOwnPropertyDescriptor(
+    globalThis,
+    'createImageBitmap'
+  )
+  Object.defineProperty(globalThis, 'createImageBitmap', {
+    configurable: true,
+    value: async () => {
+      throw new Error('decode failed')
     },
   })
+  const grid = new Blob(['grid'], { type: 'image/png' })
+  client.post = async () => ({ data: { code: 1, result: 'mj-grid-task' } })
+  client.get = async (url) => {
+    if (url.includes('/fetch')) {
+      return {
+        data: {
+          id: 'mj-grid-task',
+          status: 'SUCCESS',
+          progress: '100%',
+          imageUrl: 'https://upstream.example/grid.png',
+        },
+      }
+    }
+    return { data: grid }
+  }
+
+  try {
+    const result = await requestMidjourneyImage('draw four scenes', [], {
+      pollIntervalMs: 0,
+    })
+
+    assert.deepEqual(result.images, [grid])
+    assert.equal(result.usedOriginalGrid, true)
+  } finally {
+    if (originalCreateImageBitmap) {
+      Object.defineProperty(
+        globalThis,
+        'createImageBitmap',
+        originalCreateImageBitmap
+      )
+    } else {
+      Reflect.deleteProperty(globalThis, 'createImageBitmap')
+    }
+  }
 })
 
 test('Midjourney drawing rejects a failed task without exposing upstream details', async () => {

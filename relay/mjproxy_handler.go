@@ -36,6 +36,24 @@ func RelayMidjourneyImage(c *gin.Context) {
 		})
 		return
 	}
+	imageURL := midjourneyTask.ImageUrl
+	if rawIndex := c.Query("index"); rawIndex != "" {
+		index, err := strconv.Atoi(rawIndex)
+		if err != nil || index < 0 {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "midjourney_image_index_invalid",
+			})
+			return
+		}
+		var imageURLs []dto.ImgUrls
+		if err := common.UnmarshalJsonStr(midjourneyTask.VideoUrls, &imageURLs); err != nil || index >= len(imageURLs) || strings.TrimSpace(imageURLs[index].Url) == "" {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "midjourney_image_not_found",
+			})
+			return
+		}
+		imageURL = imageURLs[index].Url
+	}
 	var httpClient *http.Client
 	var proxy string
 	if channel, err := model.CacheGetChannel(midjourneyTask.ChannelId); err == nil {
@@ -54,12 +72,12 @@ func RelayMidjourneyImage(c *gin.Context) {
 	}
 	var validateErr error
 	if proxy == "" {
-		validateErr = service.ValidateSSRFProtectedFetchURL(midjourneyTask.ImageUrl)
+		validateErr = service.ValidateSSRFProtectedFetchURL(imageURL)
 	} else {
 		// 渠道代理路径的连接由代理侧建立，无法做拨号时逐 IP 校验，
 		// 因此保留请求前的一次性 SSRF 校验。
 		fetchSetting := system_setting.GetFetchSetting()
-		validateErr = common.ValidateURLWithFetchSetting(midjourneyTask.ImageUrl, fetchSetting.EnableSSRFProtection, fetchSetting.AllowPrivateIp, fetchSetting.DomainFilterMode, fetchSetting.IpFilterMode, fetchSetting.DomainList, fetchSetting.IpList, fetchSetting.AllowedPorts, fetchSetting.ApplyIPFilterForDomain)
+		validateErr = common.ValidateURLWithFetchSetting(imageURL, fetchSetting.EnableSSRFProtection, fetchSetting.AllowPrivateIp, fetchSetting.DomainFilterMode, fetchSetting.IpFilterMode, fetchSetting.DomainList, fetchSetting.IpList, fetchSetting.AllowedPorts, fetchSetting.ApplyIPFilterForDomain)
 	}
 	if validateErr != nil {
 		c.JSON(http.StatusForbidden, gin.H{
@@ -67,7 +85,7 @@ func RelayMidjourneyImage(c *gin.Context) {
 		})
 		return
 	}
-	resp, err := httpClient.Get(midjourneyTask.ImageUrl)
+	resp, err := httpClient.Get(imageURL)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "http_get_image_failed",
