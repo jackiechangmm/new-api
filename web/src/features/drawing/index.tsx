@@ -46,6 +46,7 @@ import {
   requestMidjourneyImage,
   type ImageGenerationRequest,
 } from './api'
+import { getDrawingErrorMessage } from './error-message'
 import {
   getDrawingModelConfig,
   getFixedOrSelectedValue,
@@ -475,11 +476,7 @@ export function Drawing() {
       })
     } catch (requestError) {
       if (controller.signal.aborted) return
-      const message =
-        requestError instanceof Error
-          ? requestError.message
-          : t('Image generation failed')
-      setError(message)
+      setError(getDrawingErrorMessage(requestError, t))
     } finally {
       if (generationControllerRef.current === controller) {
         generationControllerRef.current = null
