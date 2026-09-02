@@ -879,7 +879,9 @@ export function Drawing() {
                     align='start'
                     className='max-w-sm whitespace-pre-line'
                   >
-                    {'--v：模型版本，7 / 8.1 / 8.2\n--ar：画面比例，1:1 / 16:9 / 2:3 / 9:16 等\n--q：渲染质量，0.25 / 0.5 / 1 / 2\n--hd：HD 高清（仅 v8.1 / v8.2）\n--style：风格：“raw”等\n--s：风格化强度，0–1000\n--c：混乱度，0–100\n--w：怪异度，0–3000\n--iw：图片权重，0–3\n--cw：角色权重，0–100\n--sw：风格权重，0–1000\n--seed：固定种子'}
+                    {
+                      '--v：模型版本，7 / 8.1 / 8.2\n--ar：画面比例，1:1 / 16:9 / 2:3 / 9:16 等\n--q：渲染质量，0.25 / 0.5 / 1 / 2\n--hd：HD 高清（仅 v8.1 / v8.2）\n--style：风格：“raw”等\n--s：风格化强度，0–1000\n--c：混乱度，0–100\n--w：怪异度，0–3000\n--iw：图片权重，0–3\n--cw：角色权重，0–100\n--sw：风格权重，0–1000\n--seed：固定种子'
+                    }
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

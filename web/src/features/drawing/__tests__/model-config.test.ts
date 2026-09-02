@@ -28,19 +28,12 @@ test('filters available models through the drawing whitelist', () => {
   )
 })
 
-test('configures Midjourney Imagine as an asynchronous single-image model', () => {
+test('configures Midjourney Imagine as asynchronous text-to-image only', () => {
   const config = getDrawingModelConfig('mj_imagine')
 
   assert.equal(config?.requestFormat, 'midjourney')
   assert.equal(config?.textToImage?.maxOutputs, 1)
-  assert.equal(config?.imageToImage?.maxOutputs, 1)
-  assert.deepEqual(config?.imageToImage?.input?.formats, [
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp',
-  ])
-  assert.equal(config?.imageToImage?.input?.maxImages, 16)
+  assert.equal(config?.imageToImage, undefined)
 })
 
 test('configures Grok Imagine 2 for generation and up to three reference images', () => {
