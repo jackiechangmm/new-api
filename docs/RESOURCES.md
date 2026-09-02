@@ -37,7 +37,7 @@
 ## 模型转发与协议转换
 
 - [Relay 路由与认证边界](../router/relay-router.go)
-  标准同步 `/v1` HTTP Relay 和原生 Gemini `/v1beta/models/*` Relay 支持用户会话或 API token；Realtime、模型发现、异步任务提交/查询和未实现兼容接口保持 API token-only。
+  标准同步 `/v1` HTTP Relay、原生 Gemini `/v1beta/models/*` Relay，以及 canonical Midjourney Imagine 提交、单任务查询和批量查询支持用户会话或 API token；Realtime、模型发现、其他 Midjourney 动作、Midjourney 兼容路径和未实现兼容接口保持 API token-only。
 - [会话 Relay 上下文](../middleware/auth.go)
   `TokenOrUserAuth` 校验会话或 API token，`SetupSessionRelayContext` 创建不落库虚拟 Token 并移除会话 JWT。
 - [模型分发与分组校验](../middleware/distributor.go)
