@@ -27,22 +27,17 @@ type midjourneyImagineRequest struct {
 	ImageURLs []string `json:"image_urls,omitempty"`
 }
 
-type midjourneyTaskResponse struct {
-	Code  int                `json:"code"`
-	Data  midjourneyTaskData `json:"data"`
-	Error *apiError          `json:"error"`
-}
-
 type midjourneyTaskData struct {
-	ID       string          `json:"id"`
-	TaskID   string          `json:"task_id"`
-	Status   string          `json:"status"`
-	Progress json.RawMessage `json:"progress"`
-	Result   struct {
-		GridImageURL string                 `json:"grid_image_url"`
-		ImageURLs    []string               `json:"image_urls"`
-		Buttons      []midjourneyTaskButton `json:"buttons"`
-	} `json:"result"`
+	ID           string                 `json:"id"`
+	Status       string                 `json:"status"`
+	Progress     json.RawMessage        `json:"progress"`
+	PromptEn     string                 `json:"prompt_en"`
+	CreatedAt    int64                  `json:"created_at"`
+	FinishedAt   int64                  `json:"finished_at"`
+	GridImageURL string                 `json:"grid_image_url"`
+	ImageURLs    []string               `json:"image_urls"`
+	Buttons      []midjourneyTaskButton `json:"buttons"`
+	Error        *apiError              `json:"error"`
 }
 
 type midjourneyTaskButton struct {
@@ -58,6 +53,9 @@ type MidjourneyTask struct {
 	TaskID       string
 	Status       string
 	Progress     string
+	PromptEn     string
+	CreatedAt    int64
+	FinishedAt   int64
 	GridImageURL string
 	ImageURLs    []string
 	Buttons      []taskdto.ActionButton
@@ -152,30 +150,29 @@ func FetchMidjourneyTask(ctx context.Context, baseURL, apiKey, taskID string) (*
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("midjourney task query returned status %d", resp.StatusCode)
 	}
-	var response midjourneyTaskResponse
-	if err := common.DecodeJson(resp.Body, &response); err != nil {
+	var data midjourneyTaskData
+	if err := common.DecodeJson(resp.Body, &data); err != nil {
 		return nil, err
 	}
-	if response.Error != nil {
+	if data.Error != nil {
 		return nil, errors.New("midjourney task query failed")
 	}
+	if strings.TrimSpace(data.ID) == "" || strings.TrimSpace(data.Status) == "" {
+		return nil, errors.New("midjourney task query returned invalid data")
+	}
 	progress := ""
-	if len(response.Data.Progress) > 0 && string(response.Data.Progress) != "null" {
-		if common.GetJsonType(response.Data.Progress) == "string" {
-			_ = common.Unmarshal(response.Data.Progress, &progress)
+	if len(data.Progress) > 0 && string(data.Progress) != "null" {
+		if common.GetJsonType(data.Progress) == "string" {
+			_ = common.Unmarshal(data.Progress, &progress)
 		} else {
 			var value float64
-			if common.Unmarshal(response.Data.Progress, &value) == nil {
+			if common.Unmarshal(data.Progress, &value) == nil {
 				progress = fmt.Sprintf("%g%%", value)
 			}
 		}
 	}
-	id := response.Data.TaskID
-	if id == "" {
-		id = response.Data.ID
-	}
-	buttons := make([]taskdto.ActionButton, 0, len(response.Data.Result.Buttons))
-	for _, button := range response.Data.Result.Buttons {
+	buttons := make([]taskdto.ActionButton, 0, len(data.Buttons))
+	for _, button := range data.Buttons {
 		customID := button.CustomID
 		if customID == nil {
 			customID = button.LegacyCustomID
@@ -189,11 +186,14 @@ func FetchMidjourneyTask(ctx context.Context, baseURL, apiKey, taskID string) (*
 		})
 	}
 	return &MidjourneyTask{
-		TaskID:       id,
-		Status:       response.Data.Status,
+		TaskID:       data.ID,
+		Status:       data.Status,
 		Progress:     progress,
-		GridImageURL: response.Data.Result.GridImageURL,
-		ImageURLs:    response.Data.Result.ImageURLs,
+		PromptEn:     data.PromptEn,
+		CreatedAt:    data.CreatedAt,
+		FinishedAt:   data.FinishedAt,
+		GridImageURL: data.GridImageURL,
+		ImageURLs:    data.ImageURLs,
 		Buttons:      buttons,
 	}, nil
 }

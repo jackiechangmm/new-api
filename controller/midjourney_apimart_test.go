@@ -45,6 +45,9 @@ func TestMapAPIMartMidjourneyTaskStatuses(t *testing.T) {
 			result := &apimart.MidjourneyTask{
 				Status:       tt.status,
 				Progress:     tt.progress,
+				PromptEn:     "translated prompt",
+				CreatedAt:    100,
+				FinishedAt:   200,
 				GridImageURL: tt.gridImageURL,
 				ImageURLs:    []string{"image-1", "image-2"},
 				Buttons:      []dto.ActionButton{{CustomId: "U1", Label: "U1"}},
@@ -59,6 +62,9 @@ func TestMapAPIMartMidjourneyTaskStatuses(t *testing.T) {
 			assert.Equal(t, tt.wantProgress, item.Progress)
 			assert.Equal(t, tt.wantImageURL, item.ImageUrl)
 			assert.Equal(t, tt.wantFailReason, item.FailReason)
+			assert.Equal(t, "translated prompt", item.PromptEn)
+			assert.Equal(t, int64(100_000), item.StartTime)
+			assert.Equal(t, int64(200_000), item.FinishTime)
 			require.Len(t, item.VideoUrls, 2)
 			assert.Equal(t, "image-1", item.VideoUrls[0].Url)
 			require.Len(t, item.Buttons, 1)

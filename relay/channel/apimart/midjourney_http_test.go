@@ -86,10 +86,13 @@ func TestFetchMidjourneyTaskMapsResult(t *testing.T) {
 	assert.Equal(t, "mj-task-sample", result.TaskID)
 	assert.Equal(t, "SUCCESS", result.Status)
 	assert.Equal(t, "100%", result.Progress)
+	assert.Equal(t, "a small red sailboat on a calm lake at sunrise --ar 1:1 --relax", result.PromptEn)
+	assert.Equal(t, int64(1788328199), result.CreatedAt)
+	assert.Equal(t, int64(1788328277), result.FinishedAt)
 	assert.Equal(t, "https://example.test/mj-grid.png", result.GridImageURL)
 	assert.Equal(t, []string{"https://example.test/mj-1.png", "https://example.test/mj-2.png"}, result.ImageURLs)
 	require.Len(t, result.Buttons, 1)
-	assert.Equal(t, "MJ::JOB::upsample::1::mj-task-sample", result.Buttons[0].CustomId)
+	assert.Equal(t, "MJ::JOB::upsample::1::6a97b90742c95d6a06e872f1", result.Buttons[0].CustomId)
 }
 
 func TestValidateMidjourneyImagineRejectsTurboParameters(t *testing.T) {

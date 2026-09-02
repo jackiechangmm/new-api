@@ -293,12 +293,19 @@ func mapAPIMartMidjourneyTask(task *model.Midjourney, result *apimart.Midjourney
 	item := dto.MidjourneyDto{
 		MjId:       task.MjId,
 		Progress:   result.Progress,
+		PromptEn:   result.PromptEn,
 		Status:     strings.ToUpper(result.Status),
 		SubmitTime: task.SubmitTime,
 		StartTime:  task.StartTime,
 		FinishTime: task.FinishTime,
 		ImageUrl:   task.ImageUrl,
 		Buttons:    result.Buttons,
+	}
+	if result.CreatedAt > 0 {
+		item.StartTime = result.CreatedAt * 1000
+	}
+	if result.FinishedAt > 0 {
+		item.FinishTime = result.FinishedAt * 1000
 	}
 	if item.Progress == "" {
 		item.Progress = task.Progress
