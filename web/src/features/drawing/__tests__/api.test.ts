@@ -135,7 +135,7 @@ test('Midjourney drawing keeps the original grid when splitting fails', async ()
   }
 })
 
-test('Midjourney drawing rejects a failed task without exposing upstream details', async () => {
+test('Midjourney drawing preserves failed task response details', async () => {
   client.post = async () => ({
     data: { code: 1, result: 'mj-failed-task' },
   })
@@ -150,7 +150,84 @@ test('Midjourney drawing rejects a failed task without exposing upstream details
 
   await assert.rejects(
     requestMidjourneyImage('draw a lighthouse', [], { pollIntervalMs: 0 }),
-    { message: 'Image generation failed' }
+    (error) => {
+      assert.deepEqual(error, {
+        id: 'mj-failed-task',
+        status: 'FAILURE',
+        progress: '100%',
+        failReason: 'provider internal error',
+      })
+      return true
+    }
+  )
+})
+
+test('Midjourney drawing accepts successful submit responses without a code', async () => {
+  const image = new Blob(['image'], { type: 'image/png' })
+  client.post = async () => ({ data: { result: 'mj-task-without-code' } })
+  client.get = async (url) => {
+    if (url.includes('/fetch')) {
+      return {
+        data: {
+          id: 'mj-task-without-code',
+          status: 'SUCCESS',
+          progress: '100%',
+          imageUrl: 'https://upstream.example/grid.png',
+        },
+      }
+    }
+    return { data: image }
+  }
+
+  const result = await requestMidjourneyImage('draw a lighthouse', [], {
+    pollIntervalMs: 0,
+  })
+
+  assert.equal(result.taskId, 'mj-task-without-code')
+  assert.deepEqual(result.images, [image])
+})
+
+test('Midjourney drawing preserves HTTP request errors', async () => {
+  const requestError = {
+    isAxiosError: true,
+    response: {
+      status: 400,
+      data: {
+        code: 4,
+        description: 'quota_not_enough',
+        type: 'upstream_error',
+      },
+    },
+  }
+  client.post = async () => {
+    throw requestError
+  }
+
+  await assert.rejects(
+    requestMidjourneyImage('draw a lighthouse', []),
+    (error) => error === requestError
+  )
+})
+
+test('Midjourney drawing preserves structured submit failure response', async () => {
+  client.post = async () => ({
+    data: {
+      code: 4,
+      description: 'quota_not_enough',
+      type: 'upstream_error',
+    },
+  })
+
+  await assert.rejects(
+    requestMidjourneyImage('draw a lighthouse', []),
+    (error) => {
+      assert.deepEqual(error, {
+        code: 4,
+        description: 'quota_not_enough',
+        type: 'upstream_error',
+      })
+      return true
+    }
   )
 })
 

@@ -39,6 +39,8 @@ export interface MidjourneyGenerationResult {
 
 type MidjourneySubmitResponse = {
   code?: number
+  description?: string
+  type?: string
   result?: string
 }
 
@@ -207,100 +209,98 @@ export async function requestMidjourneyImage(
     pollIntervalMs?: number
   } = {}
 ): Promise<MidjourneyGenerationResult> {
-  try {
-    const base64Array = await Promise.all(
-      referenceImages.map((image) => fileToDataUrl(image))
-    )
-    const response = await api.post<MidjourneySubmitResponse>(
-      '/mj/submit/imagine',
-      {
-        prompt,
-        ...(base64Array.length ? { base64Array } : {}),
-      },
-      { signal: options.signal, skipErrorHandler: true }
-    )
-    const taskId = response.data.result
-    if (!taskId) throw new Error('Image generation failed')
+  const base64Array = await Promise.all(
+    referenceImages.map((image) => fileToDataUrl(image))
+  )
+  const response = await api.post<MidjourneySubmitResponse>(
+    '/mj/submit/imagine',
+    {
+      prompt,
+      ...(base64Array.length ? { base64Array } : {}),
+    },
+    { signal: options.signal, skipErrorHandler: true }
+  )
+  const taskId = response.data.result
+  if (
+    (response.data.code !== undefined && response.data.code !== 1) ||
+    !taskId
+  ) {
+    throw response.data
+  }
 
-    const deadline = Date.now() + MIDJOURNEY_POLL_TIMEOUT_MS
-    const pollIntervalMs = options.pollIntervalMs ?? MIDJOURNEY_POLL_INTERVAL_MS
-    while (Date.now() < deadline) {
-      const taskResponse = await api.get<MidjourneyTaskResponse>(
-        `/mj/task/${encodeURIComponent(taskId)}/fetch`,
+  const deadline = Date.now() + MIDJOURNEY_POLL_TIMEOUT_MS
+  const pollIntervalMs = options.pollIntervalMs ?? MIDJOURNEY_POLL_INTERVAL_MS
+  while (Date.now() < deadline) {
+    const taskResponse = await api.get<MidjourneyTaskResponse>(
+      `/mj/task/${encodeURIComponent(taskId)}/fetch`,
+      {
+        signal: options.signal,
+        skipErrorHandler: true,
+        disableDuplicate: true,
+      }
+    )
+    const task = taskResponse.data
+    const status = task.status?.toUpperCase() ?? ''
+    options.onProgress?.(task.progress ?? '', status)
+    if (status === 'SUCCESS') {
+      if (!task.imageUrl) throw task
+
+      const individualImageIndexes = (task.videoUrls ?? []).flatMap(
+        (image, index) => (image.url ? [index] : [])
+      )
+      if (individualImageIndexes.length > 0) {
+        try {
+          const responses = await Promise.all(
+            individualImageIndexes.map((index) =>
+              api.get<Blob>(
+                `/mj/image/${encodeURIComponent(taskId)}?index=${index}`,
+                {
+                  signal: options.signal,
+                  responseType: 'blob',
+                  skipErrorHandler: true,
+                  disableDuplicate: true,
+                }
+              )
+            )
+          )
+          const images = responses.map((item) => item.data)
+          if (images.every((image) => image.type.startsWith('image/'))) {
+            return { taskId, images, usedOriginalGrid: false }
+          }
+        } catch (error) {
+          if (options.signal?.aborted) throw error
+        }
+      }
+
+      const imageResponse = await api.get<Blob>(
+        `/mj/image/${encodeURIComponent(taskId)}`,
         {
           signal: options.signal,
+          responseType: 'blob',
           skipErrorHandler: true,
           disableDuplicate: true,
         }
       )
-      const task = taskResponse.data
-      const status = task.status?.toUpperCase() ?? ''
-      options.onProgress?.(task.progress ?? '', status)
-      if (status === 'SUCCESS') {
-        if (!task.imageUrl) throw new Error('Image generation failed')
-
-        const individualImageIndexes = (task.videoUrls ?? []).flatMap(
-          (image, index) => (image.url ? [index] : [])
-        )
-        if (individualImageIndexes.length > 0) {
-          try {
-            const responses = await Promise.all(
-              individualImageIndexes.map((index) =>
-                api.get<Blob>(
-                  `/mj/image/${encodeURIComponent(taskId)}?index=${index}`,
-                  {
-                    signal: options.signal,
-                    responseType: 'blob',
-                    skipErrorHandler: true,
-                    disableDuplicate: true,
-                  }
-                )
-              )
-            )
-            const images = responses.map((item) => item.data)
-            if (images.every((image) => image.type.startsWith('image/'))) {
-              return { taskId, images, usedOriginalGrid: false }
-            }
-          } catch (error) {
-            if (options.signal?.aborted) throw error
-          }
-        }
-
-        const imageResponse = await api.get<Blob>(
-          `/mj/image/${encodeURIComponent(taskId)}`,
-          {
-            signal: options.signal,
-            responseType: 'blob',
-            skipErrorHandler: true,
-            disableDuplicate: true,
-          }
-        )
-        if (!imageResponse.data.type.startsWith('image/')) {
-          throw new Error('Image generation failed')
-        }
-        try {
-          const images = await splitMidjourneyGrid(imageResponse.data)
-          return { taskId, images, usedOriginalGrid: false }
-        } catch {
-          return {
-            taskId,
-            images: [imageResponse.data],
-            usedOriginalGrid: true,
-          }
-        }
-      }
-      if (status === 'FAILURE' || status === 'CANCELLED') {
+      if (!imageResponse.data.type.startsWith('image/')) {
         throw new Error('Image generation failed')
       }
-      await waitForMidjourneyPoll(pollIntervalMs, options.signal)
+      try {
+        const images = await splitMidjourneyGrid(imageResponse.data)
+        return { taskId, images, usedOriginalGrid: false }
+      } catch {
+        return {
+          taskId,
+          images: [imageResponse.data],
+          usedOriginalGrid: true,
+        }
+      }
     }
-    throw new Error('Image generation failed')
-  } catch (error) {
-    if (options.signal?.aborted) {
-      throw error
+    if (status === 'FAILURE' || status === 'CANCELLED') {
+      throw task
     }
-    throw new Error('Image generation failed')
+    await waitForMidjourneyPoll(pollIntervalMs, options.signal)
   }
+  throw new Error('Image generation failed')
 }
 
 function waitForMidjourneyPoll(
