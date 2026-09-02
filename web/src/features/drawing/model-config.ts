@@ -94,14 +94,6 @@ const NANO_BANANA_2_LITE_ASPECT_RATIOS = [
   '21:9',
 ]
 
-const MIDJOURNEY_INPUT: DrawingInputConfig = {
-  formats: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  maxImages: 16,
-  maxImageBytes: 20 * 1024 * 1024,
-  maxWidth: 4096,
-  maxHeight: 4096,
-}
-
 export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
   {
     model: 'gpt-image-2',
@@ -185,10 +177,6 @@ export const DRAWING_MODEL_CONFIGS: DrawingModelConfig[] = [
     requestFormat: 'midjourney',
     textToImage: {
       maxOutputs: 1,
-    },
-    imageToImage: {
-      maxOutputs: 1,
-      input: MIDJOURNEY_INPUT,
     },
   },
 ]
