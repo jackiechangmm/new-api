@@ -17,15 +17,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Cancel01Icon, Loading03Icon } from '@hugeicons/core-free-icons'
+import { Loading03Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { Check } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { Dialog } from '@/components/dialog'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -78,17 +78,15 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
   }, [form, props.asset, props.open])
 
   const selectedTags = form.watch('tags')
-  const suggestions = [
+  const allTags = [
     ...DIGITAL_ASSET_DEFAULT_TAGS,
     ...props.availableTags.map((tag) => tag.name),
+    ...selectedTags,
   ].filter(
     (name, index, names) =>
       names.findIndex(
         (candidate) => normalizeTag(candidate) === normalizeTag(name)
-      ) === index &&
-      !selectedTags.some(
-        (selected) => normalizeTag(selected) === normalizeTag(name)
-      )
+      ) === index
   )
 
   const addTag = (rawName: string) => {
@@ -98,7 +96,14 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
       toast.error(t('Tag must be 32 characters or fewer'))
       return
     }
-    if (selectedTags.some((tag) => normalizeTag(tag) === normalizeTag(name))) {
+    const existingTag = allTags.find(
+      (tag) => normalizeTag(tag) === normalizeTag(name)
+    )
+    if (
+      selectedTags.some(
+        (tag) => normalizeTag(tag) === normalizeTag(existingTag ?? name)
+      )
+    ) {
       setTagInput('')
       return
     }
@@ -106,16 +111,25 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
       toast.error(t('You can add up to 20 tags'))
       return
     }
-    form.setValue('tags', [...selectedTags, name], { shouldValidate: true })
+    form.setValue('tags', [...selectedTags, existingTag ?? name], {
+      shouldValidate: true,
+    })
     setTagInput('')
   }
 
-  const removeTag = (name: string) => {
-    form.setValue(
-      'tags',
-      selectedTags.filter((tag) => tag !== name),
-      { shouldValidate: true }
+  const toggleTag = (name: string) => {
+    const selected = selectedTags.some(
+      (tag) => normalizeTag(tag) === normalizeTag(name)
     )
+    if (selected) {
+      form.setValue(
+        'tags',
+        selectedTags.filter((tag) => normalizeTag(tag) !== normalizeTag(name)),
+        { shouldValidate: true }
+      )
+      return
+    }
+    addTag(name)
   }
 
   const submit = form.handleSubmit(async (values) => {
@@ -131,7 +145,6 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
       open={props.open}
       onOpenChange={props.onOpenChange}
       title={props.asset ? t('Edit prompt') : t('New prompt')}
-      description={t('Save a reusable text prompt to your private assets.')}
       contentClassName='sm:max-w-xl'
       bodyClassName='space-y-4'
       footer={
@@ -197,55 +210,50 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
           />
           <FormItem>
             <FormLabel htmlFor='digital-asset-tag-input'>{t('Tags')}</FormLabel>
-            <div className='flex flex-wrap gap-1.5'>
-              {selectedTags.map((tag) => (
-                <Badge
-                  key={normalizeTag(tag)}
-                  variant='secondary'
-                  className='gap-1'
-                >
-                  {tag}
-                  <button
+            <div
+              className='flex max-h-36 flex-wrap gap-1.5 overflow-y-auto p-1'
+              aria-label={t('Suggested tags')}
+            >
+              {allTags.map((tag) => {
+                const selected = selectedTags.some(
+                  (name) => normalizeTag(name) === normalizeTag(tag)
+                )
+                const selectionDisabled = !selected && selectedTags.length >= 20
+                return (
+                  <Button
+                    key={normalizeTag(tag)}
                     type='button'
-                    aria-label={t('Remove tag {{tag}}', { tag })}
-                    onClick={() => removeTag(tag)}
+                    variant={selected ? 'secondary' : 'ghost'}
+                    size='xs'
+                    className='max-w-full'
+                    disabled={selectionDisabled}
+                    aria-pressed={selected}
+                    title={tag}
+                    onClick={() => toggleTag(tag)}
                   >
-                    <HugeiconsIcon icon={Cancel01Icon} className='size-3' />
-                  </button>
-                </Badge>
-              ))}
+                    {selected ? (
+                      <Check className='size-3' aria-hidden='true' />
+                    ) : null}
+                    <span className='truncate'>{tag}</span>
+                  </Button>
+                )
+              })}
             </div>
             <Input
               id='digital-asset-tag-input'
               value={tagInput}
               maxLength={32}
-              placeholder={t('Type a tag and press Enter')}
+              disabled={selectedTags.length >= 20}
+              placeholder={t('Type and press Enter to create a new tag')}
               onChange={(event) => setTagInput(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key !== 'Enter') return
+                if (event.key !== 'Enter' || event.nativeEvent.isComposing) {
+                  return
+                }
                 event.preventDefault()
                 addTag(tagInput)
               }}
-              onBlur={() => addTag(tagInput)}
             />
-            {suggestions.length > 0 ? (
-              <div
-                className='flex flex-wrap gap-1.5'
-                aria-label={t('Suggested tags')}
-              >
-                {suggestions.slice(0, 12).map((tag) => (
-                  <Button
-                    key={normalizeTag(tag)}
-                    type='button'
-                    variant='outline'
-                    size='xs'
-                    onClick={() => addTag(tag)}
-                  >
-                    {tag}
-                  </Button>
-                ))}
-              </div>
-            ) : null}
           </FormItem>
         </form>
       </Form>

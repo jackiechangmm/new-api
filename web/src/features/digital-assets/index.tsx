@@ -24,6 +24,7 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Check, ChevronDown, X } from 'lucide-react'
 import { useDeferredValue, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -32,6 +33,11 @@ import { SectionPageLayout } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 import {
   createDigitalAsset,
@@ -306,7 +312,7 @@ export function DigitalAssets() {
             <div className='space-y-4'>
               <div className='space-y-3'>
                 <h3 className='text-sm font-semibold'>{t('All Assets')}</h3>
-                <div className='grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]'>
+                <div className='grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto]'>
                   <div className='relative'>
                     <HugeiconsIcon
                       icon={Search01Icon}
@@ -323,48 +329,111 @@ export function DigitalAssets() {
                       }}
                     />
                   </div>
-                  <Button type='button' variant='outline' onClick={openCreate}>
+                  <Popover>
+                    <PopoverTrigger
+                      render={
+                        <Button
+                          type='button'
+                          variant='outline'
+                          disabled={!tagsQuery.data?.length}
+                          aria-label={t('Filter by tags')}
+                        />
+                      }
+                    >
+                      {t('Filter by tags')}
+                      {selectedTagIds.length > 0 ? (
+                        <Badge variant='secondary' className='px-1.5'>
+                          {selectedTagIds.length}
+                        </Badge>
+                      ) : null}
+                      <ChevronDown className='size-4' aria-hidden='true' />
+                    </PopoverTrigger>
+                    <PopoverContent align='end' className='w-72'>
+                      <div
+                        className='flex max-h-56 flex-wrap gap-1.5 overflow-y-auto'
+                        aria-label={t('Filter by tags')}
+                      >
+                        {tagsQuery.data?.map((tag) => {
+                          const selected = selectedTagIds.includes(tag.id)
+                          return (
+                            <Button
+                              key={tag.id}
+                              type='button'
+                              variant={selected ? 'secondary' : 'ghost'}
+                              size='xs'
+                              className='max-w-full'
+                              aria-pressed={selected}
+                              title={tag.name}
+                              onClick={() => toggleTag(tag.id)}
+                            >
+                              {selected ? (
+                                <Check className='size-3' aria-hidden='true' />
+                              ) : null}
+                              <span className='truncate'>{tag.name}</span>
+                            </Button>
+                          )
+                        })}
+                      </div>
+                      {selectedTagIds.length > 0 ? (
+                        <Button
+                          type='button'
+                          variant='ghost'
+                          size='sm'
+                          className='self-end'
+                          onClick={() => {
+                            setSelectedTagIds([])
+                            setAllPage(1)
+                          }}
+                        >
+                          {t('Clear filters')}
+                        </Button>
+                      ) : null}
+                    </PopoverContent>
+                  </Popover>
+                  <Button type='button' onClick={openCreate}>
                     <HugeiconsIcon icon={Add01Icon} />
                     {t('New prompt')}
                   </Button>
                 </div>
               </div>
-              {tagsQuery.data?.length ? (
+              {selectedTagIds.length > 0 ? (
                 <div
-                  className='flex flex-wrap gap-1.5'
+                  className='flex flex-wrap items-center gap-1.5'
                   aria-label={t('Filter by tags')}
                 >
-                  {tagsQuery.data.map((tag) => {
-                    const selected = selectedTagIds.includes(tag.id)
-                    return (
-                      <Button
+                  {tagsQuery.data
+                    ?.filter((tag) => selectedTagIds.includes(tag.id))
+                    .map((tag) => (
+                      <Badge
                         key={tag.id}
-                        type='button'
-                        variant={selected ? 'secondary' : 'outline'}
-                        size='xs'
-                        aria-pressed={selected}
-                        onClick={() => toggleTag(tag.id)}
+                        variant='secondary'
+                        className='max-w-48 gap-1'
                       >
-                        {tag.name}
-                      </Button>
-                    )
-                  })}
-                  {selectedTagIds.length > 0 ? (
-                    <Badge
-                      variant='ghost'
-                      render={
+                        <span className='truncate' title={tag.name}>
+                          {tag.name}
+                        </span>
                         <button
                           type='button'
-                          onClick={() => {
-                            setSelectedTagIds([])
-                            setAllPage(1)
-                          }}
-                        />
-                      }
-                    >
-                      {t('Clear filters')}
-                    </Badge>
-                  ) : null}
+                          aria-label={t('Remove tag {{tag}}', {
+                            tag: tag.name,
+                          })}
+                          onClick={() => toggleTag(tag.id)}
+                        >
+                          <X className='size-3' aria-hidden='true' />
+                        </button>
+                      </Badge>
+                    ))}
+                  <Button
+                    type='button'
+                    variant='ghost'
+                    size='xs'
+                    onClick={() => {
+                      setSelectedTagIds([])
+                      setAllPage(1)
+                    }}
+                  >
+                    {t('Clear filters')}
+                  </Button>
                 </div>
               ) : null}
               <AssetSection

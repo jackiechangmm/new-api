@@ -5035,6 +5035,7 @@
     "Type *": "类型 *",
     "Type a command or search...": "输入命令或搜索...",
     "Type a tag and press Enter": "输入标签后按 Enter",
+    "Type and press Enter to create a new tag": "输入后回车以新建标签",
     "Type the confirmation text here": "在此输入确认文本",
     "Type-Specific Settings": "特定类型设置",
     "Type:": "类型：",
