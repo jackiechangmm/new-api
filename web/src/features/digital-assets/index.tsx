@@ -67,6 +67,7 @@ type AssetSectionProps = {
   onRetry: () => void
   onOpen: (asset: DigitalAsset) => void
   onFavorite: (asset: DigitalAsset) => void
+  hideTitle?: boolean
 }
 
 function AssetSection(props: AssetSectionProps) {
@@ -98,7 +99,7 @@ function AssetSection(props: AssetSectionProps) {
     )
   } else if (props.assets.length === 0) {
     content = (
-      <div className='text-muted-foreground flex min-h-32 flex-col items-center justify-center gap-2 border-y py-6 text-center text-sm'>
+      <div className='text-muted-foreground flex min-h-32 flex-col items-center justify-center gap-2 py-6 text-center text-sm'>
         <HugeiconsIcon icon={Database01Icon} className='size-6' />
         <p>{props.emptyMessage}</p>
       </div>
@@ -121,7 +122,9 @@ function AssetSection(props: AssetSectionProps) {
 
   return (
     <section className='space-y-3' aria-label={props.title}>
-      <h3 className='text-sm font-semibold'>{props.title}</h3>
+      {props.hideTitle ? null : (
+        <h3 className='text-sm font-semibold'>{props.title}</h3>
+      )}
       {content}
     </section>
   )
@@ -278,12 +281,6 @@ export function DigitalAssets() {
     <>
       <SectionPageLayout>
         <SectionPageLayout.Title>{t('Digital Assets')}</SectionPageLayout.Title>
-        <SectionPageLayout.Actions>
-          <Button type='button' onClick={openCreate}>
-            <HugeiconsIcon icon={Add01Icon} />
-            {t('New prompt')}
-          </Button>
-        </SectionPageLayout.Actions>
         <SectionPageLayout.Content>
           <div className='mx-auto max-w-6xl space-y-8 pb-4'>
             <div className='space-y-4'>
@@ -307,22 +304,29 @@ export function DigitalAssets() {
             </div>
 
             <div className='space-y-4'>
-              <div className='flex justify-end'>
-                <div className='relative w-full sm:max-w-sm'>
-                  <HugeiconsIcon
-                    icon={Search01Icon}
-                    className='text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2'
-                  />
-                  <Input
-                    value={search}
-                    className='pl-9'
-                    aria-label={t('Search assets')}
-                    placeholder={t('Search titles and content')}
-                    onChange={(event) => {
-                      setSearch(event.target.value)
-                      setAllPage(1)
-                    }}
-                  />
+              <div className='space-y-3'>
+                <h3 className='text-sm font-semibold'>{t('All Assets')}</h3>
+                <div className='grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]'>
+                  <div className='relative'>
+                    <HugeiconsIcon
+                      icon={Search01Icon}
+                      className='text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2'
+                    />
+                    <Input
+                      value={search}
+                      className='pl-9'
+                      aria-label={t('Search assets')}
+                      placeholder={t('Search titles and content')}
+                      onChange={(event) => {
+                        setSearch(event.target.value)
+                        setAllPage(1)
+                      }}
+                    />
+                  </div>
+                  <Button type='button' variant='outline' onClick={openCreate}>
+                    <HugeiconsIcon icon={Add01Icon} />
+                    {t('New prompt')}
+                  </Button>
                 </div>
               </div>
               {tagsQuery.data?.length ? (
@@ -377,6 +381,7 @@ export function DigitalAssets() {
                 onRetry={() => allAssetsQuery.refetch()}
                 onOpen={setDetailAsset}
                 onFavorite={(asset) => favoriteMutation.mutate(asset)}
+                hideTitle
               />
               <AssetPagination
                 page={allPage}
