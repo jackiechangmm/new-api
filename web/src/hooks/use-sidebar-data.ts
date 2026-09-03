@@ -20,6 +20,7 @@ import {
   Activity,
   Box,
   CreditCard,
+  Database,
   Eraser,
   FileText,
   FlaskConical,
@@ -59,6 +60,11 @@ export function useSidebarData(): SidebarData {
         id: 'chat',
         title: t('AI Apps'),
         items: [
+          {
+            title: t('Digital Assets'),
+            url: '/playground/assets',
+            icon: Database,
+          },
           {
             title: t('Conversation'),
             url: '/playground/chat',
