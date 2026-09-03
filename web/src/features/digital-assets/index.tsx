@@ -24,6 +24,7 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { Check, ChevronDown, X } from 'lucide-react'
 import { useDeferredValue, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -141,6 +142,7 @@ function AssetSection(props: AssetSectionProps) {
 export function DigitalAssets() {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [favoritesPage, setFavoritesPage] = useState(1)
   const [allPage, setAllPage] = useState(1)
   const [search, setSearch] = useState('')
@@ -286,6 +288,13 @@ export function DigitalAssets() {
       toast.error(mutationErrorMessage(error, t('Failed to delete tag')))
     },
   })
+
+  const drawWithAsset = (asset: DigitalAsset) => {
+    void navigate({
+      to: '/playground/drawing',
+      search: { prompt: asset.content },
+    })
+  }
 
   const openCreate = () => {
     setFormAsset(null)
@@ -523,6 +532,7 @@ export function DigitalAssets() {
         onCopy={copyPrompt}
         onEdit={openEdit}
         onFavorite={(asset) => favoriteMutation.mutate(asset)}
+        onDraw={drawWithAsset}
         onDelete={setDeleteAsset}
       />
       <AssetFormDialog

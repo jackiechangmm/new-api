@@ -48,6 +48,7 @@ import type { DigitalAsset, DigitalAssetTag } from '../types'
 type AssetFormDialogProps = {
   open: boolean
   asset: DigitalAsset | null
+  initialPrompt?: { title: string; content: string }
   availableTags: DigitalAssetTag[]
   deletedTag: DigitalAssetTag | null
   pending: boolean
@@ -72,12 +73,12 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
   useEffect(() => {
     if (!props.open) return
     form.reset({
-      title: props.asset?.title ?? '',
-      content: props.asset?.content ?? '',
+      title: props.asset?.title ?? props.initialPrompt?.title ?? '',
+      content: props.asset?.content ?? props.initialPrompt?.content ?? '',
       tags: props.asset?.tags.map((tag) => tag.name) ?? [],
     })
     setTagInput('')
-  }, [form, props.asset, props.open])
+  }, [form, props.asset, props.initialPrompt, props.open])
 
   useEffect(() => {
     if (!props.deletedTag) return

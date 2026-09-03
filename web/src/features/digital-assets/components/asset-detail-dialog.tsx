@@ -23,6 +23,7 @@ import {
   PencilEdit01Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { Paintbrush } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { Dialog } from '@/components/dialog'
@@ -38,6 +39,7 @@ type AssetDetailDialogProps = {
   onCopy: (asset: DigitalAsset) => void
   onEdit: (asset: DigitalAsset) => void
   onFavorite: (asset: DigitalAsset) => void
+  onDraw: (asset: DigitalAsset) => void
   onDelete: (asset: DigitalAsset) => void
 }
 
@@ -84,6 +86,14 @@ export function AssetDetailDialog(props: AssetDetailDialogProps) {
             >
               <HugeiconsIcon icon={PencilEdit01Icon} />
               {t('Edit')}
+            </Button>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => props.onDraw(asset)}
+            >
+              <Paintbrush />
+              {t('Go draw')}
             </Button>
             <Button type='button' onClick={() => props.onCopy(asset)}>
               <HugeiconsIcon icon={Copy01Icon} />
