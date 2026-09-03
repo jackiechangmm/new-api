@@ -210,6 +210,19 @@ export function isSidebarModuleEnabledFromStatus(
   }
 }
 
+export async function getFreshSidebarModuleEnabled(
+  section: string,
+  module: string
+): Promise<boolean> {
+  try {
+    const status = (await getStatus()) as Record<string, unknown> | null
+    cacheStatus(status)
+    return isSidebarModuleEnabledFromStatus(status, section, module)
+  } catch {
+    return false
+  }
+}
+
 export function isSidebarModuleEnabled(
   section: string,
   module: string

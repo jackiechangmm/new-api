@@ -19,11 +19,11 @@ For commercial licensing, please contact support@quantumnous.com
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 import { DigitalAssets } from '@/features/digital-assets'
-import { isSidebarModuleEnabled } from '@/lib/nav-modules'
+import { getFreshSidebarModuleEnabled } from '@/lib/nav-modules'
 
 export const Route = createFileRoute('/_authenticated/playground/assets')({
-  beforeLoad: () => {
-    if (!isSidebarModuleEnabled('chat', 'assets')) {
+  beforeLoad: async () => {
+    if (!(await getFreshSidebarModuleEnabled('chat', 'assets'))) {
       throw redirect({ to: '/dashboard' })
     }
   },

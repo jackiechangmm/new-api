@@ -1,10 +1,11 @@
 package dto
 
 const (
-	DigitalAssetMaxTitleLength   = 100
-	DigitalAssetMaxContentLength = 100000
-	DigitalAssetMaxTagLength     = 32
-	DigitalAssetMaxTags          = 20
+	DigitalAssetMaxTitleLength      = 100
+	DigitalAssetMaxContentLength    = 100000
+	DigitalAssetMaxTagLength        = 32
+	DigitalAssetMaxTags             = 20
+	DigitalAssetMaxRequestBodyBytes = 512 * 1024
 )
 
 type DigitalAssetWriteRequest struct {

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"net/http"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -150,6 +151,7 @@ func parseDigitalAssetId(c *gin.Context) (int, bool) {
 }
 
 func bindDigitalAssetWriteRequest(c *gin.Context) (*dto.DigitalAssetWriteRequest, bool) {
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, dto.DigitalAssetMaxRequestBodyBytes)
 	request := &dto.DigitalAssetWriteRequest{}
 	if err := c.ShouldBindJSON(request); err != nil {
 		common.ApiErrorMsg(c, "请求内容无效")

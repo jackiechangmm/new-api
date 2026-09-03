@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/QuantumNous/new-api/common"
+	"golang.org/x/text/cases"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -49,8 +50,10 @@ type DigitalAssetListFilter struct {
 	TagIds   []int
 }
 
+var digitalAssetTagCaseFolder = cases.Fold()
+
 func NormalizeDigitalAssetTagName(name string) string {
-	return strings.ToLower(strings.TrimSpace(name))
+	return digitalAssetTagCaseFolder.String(strings.TrimSpace(name))
 }
 
 func ListDigitalAssets(userId int, filter DigitalAssetListFilter, pageInfo *common.PageInfo) ([]*DigitalAsset, int64, error) {
