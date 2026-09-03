@@ -190,6 +190,17 @@ func ListDigitalAssetTags(userId int) ([]*DigitalAssetTag, error) {
 	return tags, err
 }
 
+func DeleteDigitalAssetTag(userId int, id int) error {
+	result := DB.Where("id = ? AND user_id = ?", id, userId).Delete(&DigitalAssetTag{})
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return ErrDigitalAssetNotFound
+	}
+	return nil
+}
+
 func loadDigitalAssetTags(assets []*DigitalAsset) error {
 	if len(assets) == 0 {
 		return nil

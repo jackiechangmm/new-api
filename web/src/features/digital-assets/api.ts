@@ -63,6 +63,13 @@ export async function listDigitalAssetTags(): Promise<DigitalAssetTag[]> {
   return unwrap(response.data)
 }
 
+export async function deleteDigitalAssetTag(id: number): Promise<void> {
+  const response = await api.delete<ApiResponse<null>>(
+    `/api/digital-assets/tags/${id}`
+  )
+  unwrap(response.data)
+}
+
 export async function createDigitalAsset(
   payload: DigitalAssetPayload
 ): Promise<DigitalAsset> {

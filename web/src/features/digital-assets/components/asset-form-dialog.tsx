@@ -49,8 +49,10 @@ type AssetFormDialogProps = {
   open: boolean
   asset: DigitalAsset | null
   availableTags: DigitalAssetTag[]
+  deletedTag: DigitalAssetTag | null
   pending: boolean
   onOpenChange: (open: boolean) => void
+  onManageTags: () => void
   onSubmit: (values: DigitalAssetFormValues) => Promise<void>
 }
 
@@ -76,6 +78,19 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
     })
     setTagInput('')
   }, [form, props.asset, props.open])
+
+  useEffect(() => {
+    if (!props.deletedTag) return
+    const currentTags = form.getValues('tags')
+    form.setValue(
+      'tags',
+      currentTags.filter(
+        (tag) =>
+          normalizeTag(tag) !== normalizeTag(props.deletedTag?.name ?? '')
+      ),
+      { shouldValidate: true }
+    )
+  }, [form, props.deletedTag])
 
   const selectedTags = form.watch('tags')
   const allTags = [
@@ -209,7 +224,21 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
             )}
           />
           <FormItem>
-            <FormLabel htmlFor='digital-asset-tag-input'>{t('Tags')}</FormLabel>
+            <div className='flex items-center justify-between gap-3'>
+              <FormLabel htmlFor='digital-asset-tag-input'>
+                {t('Tags')}
+              </FormLabel>
+              {props.asset ? (
+                <Button
+                  type='button'
+                  variant='outline'
+                  size='xs'
+                  onClick={props.onManageTags}
+                >
+                  {t('Manage tags')}
+                </Button>
+              ) : null}
+            </div>
             <div
               className='flex max-h-36 flex-wrap gap-1.5 overflow-y-auto p-1'
               aria-label={t('Suggested tags')}

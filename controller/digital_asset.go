@@ -141,6 +141,19 @@ func ListDigitalAssetTags(c *gin.Context) {
 	common.ApiSuccess(c, tags)
 }
 
+func DeleteDigitalAssetTag(c *gin.Context) {
+	userId := common.GetContextKeyInt(c, constant.ContextKeyUserId)
+	id, ok := parseDigitalAssetId(c)
+	if !ok {
+		return
+	}
+	if err := model.DeleteDigitalAssetTag(userId, id); err != nil {
+		digitalAssetError(c, err)
+		return
+	}
+	common.ApiSuccess(c, nil)
+}
+
 func parseDigitalAssetId(c *gin.Context) (int, bool) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil || id <= 0 {

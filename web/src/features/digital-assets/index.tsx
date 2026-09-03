@@ -42,6 +42,7 @@ import {
 import {
   createDigitalAsset,
   deleteDigitalAsset,
+  deleteDigitalAssetTag,
   listDigitalAssets,
   listDigitalAssetTags,
   setDigitalAssetFavorite,
@@ -52,8 +53,9 @@ import { AssetDeleteDialog } from './components/asset-delete-dialog'
 import { AssetDetailDialog } from './components/asset-detail-dialog'
 import { AssetFormDialog } from './components/asset-form-dialog'
 import { AssetPagination } from './components/asset-pagination'
+import { TagManagerDialog } from './components/tag-manager-dialog'
 import type { DigitalAssetFormValues } from './lib/form'
-import type { DigitalAsset } from './types'
+import type { DigitalAsset, DigitalAssetTag } from './types'
 
 const FAVORITES_PAGE_SIZE = 6
 const ALL_ASSETS_PAGE_SIZE = 12
@@ -148,6 +150,8 @@ export function DigitalAssets() {
   const [formAsset, setFormAsset] = useState<DigitalAsset | null>(null)
   const [formOpen, setFormOpen] = useState(false)
   const [deleteAsset, setDeleteAsset] = useState<DigitalAsset | null>(null)
+  const [tagManagerOpen, setTagManagerOpen] = useState(false)
+  const [deletedTag, setDeletedTag] = useState<DigitalAssetTag | null>(null)
 
   const favoritesQuery = useQuery({
     queryKey: [...queryRoot, 'list', 'favorites', favoritesPage],
@@ -254,6 +258,35 @@ export function DigitalAssets() {
     },
   })
 
+  const tagDeleteMutation = useMutation({
+    mutationFn: deleteDigitalAssetTag,
+    onSuccess: async (_result, tagId) => {
+      const tag = tagsQuery.data?.find((candidate) => candidate.id === tagId)
+      if (tag) {
+        setDeletedTag(tag)
+        setDetailAsset((current) =>
+          current
+            ? {
+                ...current,
+                tags: current.tags.filter(
+                  (candidate) => candidate.id !== tagId
+                ),
+              }
+            : current
+        )
+      }
+      setSelectedTagIds((current) => current.filter((id) => id !== tagId))
+      await Promise.all([
+        refreshAssetLists(),
+        queryClient.invalidateQueries({ queryKey: [...queryRoot, 'tags'] }),
+      ])
+      toast.success(t('Tag deleted'))
+    },
+    onError: (error) => {
+      toast.error(mutationErrorMessage(error, t('Failed to delete tag')))
+    },
+  })
+
   const openCreate = () => {
     setFormAsset(null)
     setFormOpen(true)
@@ -335,7 +368,6 @@ export function DigitalAssets() {
                         <Button
                           type='button'
                           variant='outline'
-                          disabled={!tagsQuery.data?.length}
                           aria-label={t('Filter by tags')}
                         />
                       }
@@ -349,45 +381,64 @@ export function DigitalAssets() {
                       <ChevronDown className='size-4' aria-hidden='true' />
                     </PopoverTrigger>
                     <PopoverContent align='end' className='w-72'>
-                      <div
-                        className='flex max-h-56 flex-wrap gap-1.5 overflow-y-auto'
-                        aria-label={t('Filter by tags')}
-                      >
-                        {tagsQuery.data?.map((tag) => {
-                          const selected = selectedTagIds.includes(tag.id)
-                          return (
-                            <Button
-                              key={tag.id}
-                              type='button'
-                              variant={selected ? 'secondary' : 'ghost'}
-                              size='xs'
-                              className='max-w-full'
-                              aria-pressed={selected}
-                              title={tag.name}
-                              onClick={() => toggleTag(tag.id)}
-                            >
-                              {selected ? (
-                                <Check className='size-3' aria-hidden='true' />
-                              ) : null}
-                              <span className='truncate'>{tag.name}</span>
-                            </Button>
-                          )
-                        })}
-                      </div>
-                      {selectedTagIds.length > 0 ? (
+                      {tagsQuery.data?.length ? (
+                        <div
+                          className='flex max-h-56 flex-wrap gap-1.5 overflow-y-auto'
+                          aria-label={t('Filter by tags')}
+                        >
+                          {tagsQuery.data.map((tag) => {
+                            const selected = selectedTagIds.includes(tag.id)
+                            return (
+                              <Button
+                                key={tag.id}
+                                type='button'
+                                variant={selected ? 'secondary' : 'ghost'}
+                                size='xs'
+                                className='max-w-full'
+                                aria-pressed={selected}
+                                title={tag.name}
+                                onClick={() => toggleTag(tag.id)}
+                              >
+                                {selected ? (
+                                  <Check
+                                    className='size-3'
+                                    aria-hidden='true'
+                                  />
+                                ) : null}
+                                <span className='truncate'>{tag.name}</span>
+                              </Button>
+                            )
+                          })}
+                        </div>
+                      ) : (
+                        <p className='text-muted-foreground py-3 text-center text-sm'>
+                          {t('No tags yet')}
+                        </p>
+                      )}
+                      <div className='flex items-center justify-between gap-2 border-t pt-2'>
                         <Button
                           type='button'
-                          variant='ghost'
+                          variant='outline'
                           size='sm'
-                          className='self-end'
-                          onClick={() => {
-                            setSelectedTagIds([])
-                            setAllPage(1)
-                          }}
+                          onClick={() => setTagManagerOpen(true)}
                         >
-                          {t('Clear filters')}
+                          {t('Manage tags')}
                         </Button>
-                      ) : null}
+                        {selectedTagIds.length > 0 ? (
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='sm'
+                            className='self-end'
+                            onClick={() => {
+                              setSelectedTagIds([])
+                              setAllPage(1)
+                            }}
+                          >
+                            {t('Clear filters')}
+                          </Button>
+                        ) : null}
+                      </div>
                     </PopoverContent>
                   </Popover>
                   <Button type='button' onClick={openCreate}>
@@ -478,14 +529,23 @@ export function DigitalAssets() {
         open={formOpen}
         asset={formAsset}
         availableTags={tagsQuery.data ?? []}
+        deletedTag={deletedTag}
         pending={saveMutation.isPending}
         onOpenChange={(open) => {
           setFormOpen(open)
           if (!open) setFormAsset(null)
         }}
+        onManageTags={() => setTagManagerOpen(true)}
         onSubmit={async (values) => {
           await saveMutation.mutateAsync(values)
         }}
+      />
+      <TagManagerDialog
+        open={tagManagerOpen}
+        tags={tagsQuery.data ?? []}
+        pending={tagDeleteMutation.isPending}
+        onOpenChange={setTagManagerOpen}
+        onDelete={(tag) => tagDeleteMutation.mutate(tag.id)}
       />
       <AssetDeleteDialog
         asset={deleteAsset}

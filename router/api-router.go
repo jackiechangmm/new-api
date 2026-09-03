@@ -158,6 +158,7 @@ func SetApiRouter(router *gin.Engine) {
 		{
 			digitalAssetRoute.GET("/", controller.ListDigitalAssets)
 			digitalAssetRoute.GET("/tags", controller.ListDigitalAssetTags)
+			digitalAssetRoute.DELETE("/tags/:id", controller.DeleteDigitalAssetTag)
 			digitalAssetRoute.GET("/:id", controller.GetDigitalAsset)
 			digitalAssetRoute.POST("/", controller.CreateDigitalAsset)
 			digitalAssetRoute.PUT("/:id", controller.UpdateDigitalAsset)

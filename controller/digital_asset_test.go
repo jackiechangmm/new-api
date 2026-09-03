@@ -64,6 +64,7 @@ func TestDigitalAssetHTTPContractAndUserIsolation(t *testing.T) {
 	})
 	router.GET("/api/digital-assets/", ListDigitalAssets)
 	router.GET("/api/digital-assets/tags", ListDigitalAssetTags)
+	router.DELETE("/api/digital-assets/tags/:id", DeleteDigitalAssetTag)
 	router.GET("/api/digital-assets/:id", GetDigitalAsset)
 	router.POST("/api/digital-assets/", CreateDigitalAsset)
 	router.PUT("/api/digital-assets/:id", UpdateDigitalAsset)
@@ -128,6 +129,23 @@ func TestDigitalAssetHTTPContractAndUserIsolation(t *testing.T) {
 	assert.Equal(t, "更新后的提示词", updated.Data.Title)
 	assert.Greater(t, updated.Data.UpdatedAt, oldUpdatedAt)
 	require.Len(t, updated.Data.Tags, 1)
+
+	var sceneTagId int
+	for _, tag := range tags.Data {
+		if tag.Name == "Scene" {
+			sceneTagId = tag.Id
+		}
+	}
+	require.Positive(t, sceneTagId)
+	foreignTagDelete := performDigitalAssetRequest[any](t, router, http.MethodDelete, fmt.Sprintf("/api/digital-assets/tags/%d", sceneTagId), "", "2")
+	assert.False(t, foreignTagDelete.Success)
+	tagDeleted := performDigitalAssetRequest[any](t, router, http.MethodDelete, fmt.Sprintf("/api/digital-assets/tags/%d", sceneTagId), "", "1")
+	require.True(t, tagDeleted.Success)
+	secondAfterTagDelete := performDigitalAssetRequest[model.DigitalAsset](t, router, http.MethodGet, fmt.Sprintf("/api/digital-assets/%d", second.Data.Id), "", "1")
+	require.True(t, secondAfterTagDelete.Success)
+	assert.Equal(t, second.Data.UpdatedAt, secondAfterTagDelete.Data.UpdatedAt)
+	require.Len(t, secondAfterTagDelete.Data.Tags, 1)
+	assert.Equal(t, "物品", secondAfterTagDelete.Data.Tags[0].Name)
 
 	deleted := performDigitalAssetRequest[any](t, router, http.MethodDelete, fmt.Sprintf("/api/digital-assets/%d", created.Data.Id), "", "1")
 	require.True(t, deleted.Success)
