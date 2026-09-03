@@ -34,6 +34,7 @@ import {
   Radio,
   ServerCog,
   Settings,
+  ShoppingBag,
   Ticket,
   User,
   Users,
@@ -74,6 +75,11 @@ export function useSidebarData(): SidebarData {
             title: t('Drawing Plaza'),
             url: '/playground/drawing',
             icon: WandSparkles,
+          },
+          {
+            title: t('Ecommerce Drawing'),
+            url: '/playground/ecommerce-drawing',
+            icon: ShoppingBag,
           },
           {
             title: t('Image Toolkit'),
