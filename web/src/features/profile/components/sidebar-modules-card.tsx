@@ -62,6 +62,11 @@ export function SidebarModulesCard() {
       description: t('Conversations and external chat functions'),
       modules: [
         {
+          key: 'assets',
+          title: t('Digital Assets'),
+          description: t('Create and organize private reusable prompts'),
+        },
+        {
           key: 'playground',
           title: t('Conversation'),
           description: t('Use prompts and models for simple conversations'),

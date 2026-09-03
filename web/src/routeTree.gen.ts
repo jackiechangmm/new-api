@@ -43,6 +43,7 @@ import { Route as AuthenticatedKeysIndexRouteImport } from './routes/_authentica
 import { Route as AuthenticatedModelsIndexRouteImport } from './routes/_authenticated/models/index'
 import { Route as AuthenticatedModelsSectionRouteImport } from './routes/_authenticated/models/$section'
 import { Route as AuthenticatedPlaygroundIndexRouteImport } from './routes/_authenticated/playground/index'
+import { Route as AuthenticatedPlaygroundAssetsRouteImport } from './routes/_authenticated/playground/assets'
 import { Route as AuthenticatedPlaygroundBackgroundRemovalRouteImport } from './routes/_authenticated/playground/background-removal'
 import { Route as AuthenticatedPlaygroundChatRouteImport } from './routes/_authenticated/playground/chat'
 import { Route as AuthenticatedPlaygroundDrawingRouteImport } from './routes/_authenticated/playground/drawing'
@@ -249,6 +250,12 @@ const AuthenticatedPlaygroundIndexRoute =
     path: '/playground/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPlaygroundAssetsRoute =
+  AuthenticatedPlaygroundAssetsRouteImport.update({
+    id: '/playground/assets',
+    path: '/playground/assets',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPlaygroundBackgroundRemovalRoute =
   AuthenticatedPlaygroundBackgroundRemovalRouteImport.update({
     id: '/playground/background-removal',
@@ -450,6 +457,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/$section': typeof AuthenticatedDashboardSectionRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/models/$section': typeof AuthenticatedModelsSectionRoute
+  '/playground/assets': typeof AuthenticatedPlaygroundAssetsRoute
   '/playground/background-removal': typeof AuthenticatedPlaygroundBackgroundRemovalRoute
   '/playground/chat': typeof AuthenticatedPlaygroundChatRoute
   '/playground/drawing': typeof AuthenticatedPlaygroundDrawingRoute
@@ -512,6 +520,7 @@ export interface FileRoutesByTo {
   '/dashboard/$section': typeof AuthenticatedDashboardSectionRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/models/$section': typeof AuthenticatedModelsSectionRoute
+  '/playground/assets': typeof AuthenticatedPlaygroundAssetsRoute
   '/playground/background-removal': typeof AuthenticatedPlaygroundBackgroundRemovalRoute
   '/playground/chat': typeof AuthenticatedPlaygroundChatRoute
   '/playground/drawing': typeof AuthenticatedPlaygroundDrawingRoute
@@ -578,6 +587,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/$section': typeof AuthenticatedDashboardSectionRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/models/$section': typeof AuthenticatedModelsSectionRoute
+  '/_authenticated/playground/assets': typeof AuthenticatedPlaygroundAssetsRoute
   '/_authenticated/playground/background-removal': typeof AuthenticatedPlaygroundBackgroundRemovalRoute
   '/_authenticated/playground/chat': typeof AuthenticatedPlaygroundChatRoute
   '/_authenticated/playground/drawing': typeof AuthenticatedPlaygroundDrawingRoute
@@ -643,6 +653,7 @@ export interface FileRouteTypes {
     | '/dashboard/$section'
     | '/errors/$error'
     | '/models/$section'
+    | '/playground/assets'
     | '/playground/background-removal'
     | '/playground/chat'
     | '/playground/drawing'
@@ -705,6 +716,7 @@ export interface FileRouteTypes {
     | '/dashboard/$section'
     | '/errors/$error'
     | '/models/$section'
+    | '/playground/assets'
     | '/playground/background-removal'
     | '/playground/chat'
     | '/playground/drawing'
@@ -770,6 +782,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/$section'
     | '/_authenticated/errors/$error'
     | '/_authenticated/models/$section'
+    | '/_authenticated/playground/assets'
     | '/_authenticated/playground/background-removal'
     | '/_authenticated/playground/chat'
     | '/_authenticated/playground/drawing'
@@ -1063,6 +1076,13 @@ declare module '@tanstack/react-router' {
       path: '/playground'
       fullPath: '/playground/'
       preLoaderRoute: typeof AuthenticatedPlaygroundIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/playground/assets': {
+      id: '/_authenticated/playground/assets'
+      path: '/playground/assets'
+      fullPath: '/playground/assets'
+      preLoaderRoute: typeof AuthenticatedPlaygroundAssetsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/playground/background-removal': {
@@ -1361,6 +1381,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardSectionRoute: typeof AuthenticatedDashboardSectionRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedModelsSectionRoute: typeof AuthenticatedModelsSectionRoute
+  AuthenticatedPlaygroundAssetsRoute: typeof AuthenticatedPlaygroundAssetsRoute
   AuthenticatedPlaygroundBackgroundRemovalRoute: typeof AuthenticatedPlaygroundBackgroundRemovalRoute
   AuthenticatedPlaygroundChatRoute: typeof AuthenticatedPlaygroundChatRoute
   AuthenticatedPlaygroundDrawingRoute: typeof AuthenticatedPlaygroundDrawingRoute
@@ -1389,6 +1410,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardSectionRoute: AuthenticatedDashboardSectionRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedModelsSectionRoute: AuthenticatedModelsSectionRoute,
+  AuthenticatedPlaygroundAssetsRoute: AuthenticatedPlaygroundAssetsRoute,
   AuthenticatedPlaygroundBackgroundRemovalRoute:
     AuthenticatedPlaygroundBackgroundRemovalRoute,
   AuthenticatedPlaygroundChatRoute: AuthenticatedPlaygroundChatRoute,

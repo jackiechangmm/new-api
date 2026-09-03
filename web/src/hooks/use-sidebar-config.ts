@@ -39,6 +39,7 @@ type SidebarModulesUserConfig = SidebarModulesAdminConfig | null
 const DEFAULT_SIDEBAR_MODULES: SidebarModulesAdminConfig = {
   chat: {
     enabled: true,
+    assets: true,
     playground: true,
     drawing: true,
     watermarkRemoval: true,
@@ -98,6 +99,7 @@ const mergeWithDefaultSidebarModules = (
  * Mapping from URL to configuration keys
  */
 const URL_TO_CONFIG_MAP: Record<string, { section: string; module: string }> = {
+  '/playground/assets': { section: 'chat', module: 'assets' },
   '/playground/chat': { section: 'chat', module: 'playground' },
   '/playground/drawing': { section: 'chat', module: 'drawing' },
   '/playground/watermark-removal': {

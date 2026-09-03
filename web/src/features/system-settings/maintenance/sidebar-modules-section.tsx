@@ -88,6 +88,10 @@ export function SidebarModulesSection({
     Record<string, { title: string; description: string }>
   > = {
     chat: {
+      assets: {
+        title: t('Digital Assets'),
+        description: t('Create and organize private reusable prompts'),
+      },
       playground: {
         title: t('Conversation'),
         description: t('Use prompts and models for simple conversations.'),

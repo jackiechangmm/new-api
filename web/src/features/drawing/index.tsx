@@ -1,4 +1,5 @@
 import {
+  Archive,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -44,6 +45,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import {
+  createDigitalAsset,
+  listDigitalAssetTags,
+} from '@/features/digital-assets/api'
+import { AssetFormDialog } from '@/features/digital-assets/components/asset-form-dialog'
+import type { DigitalAssetFormValues } from '@/features/digital-assets/lib/form'
+import type { DigitalAssetTag } from '@/features/digital-assets/types'
 import { FormNavigationGuard } from '@/features/system-settings/components/form-navigation-guard'
 
 import {
@@ -234,11 +242,11 @@ function HistoryImage({ blob, onClick }: { blob: Blob; onClick: () => void }) {
   )
 }
 
-export function Drawing() {
+export function Drawing(props: { initialPrompt?: string }) {
   const { t } = useTranslation()
   const [models, setModels] = useState<string[]>([])
   const [model, setModel] = useState('')
-  const [prompt, setPrompt] = useState('')
+  const [prompt, setPrompt] = useState(props.initialPrompt ?? '')
   const [aspectRatio, setAspectRatio] = useState('auto')
   const [resolution, setResolution] = useState('1k')
   const [quality, setQuality] = useState('auto')
@@ -258,6 +266,49 @@ export function Drawing() {
   const [promptPage, setPromptPage] = useState(1)
   const deferredQuery = useDeferredValue(query)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [assetPrompt, setAssetPrompt] = useState<string | null>(null)
+  const [assetTags, setAssetTags] = useState<DigitalAssetTag[]>([])
+  const [assetSavePending, setAssetSavePending] = useState(false)
+
+  useEffect(() => {
+    if (assetPrompt === null) return
+    void listDigitalAssetTags()
+      .then(setAssetTags)
+      .catch((error) => {
+        toast.error(
+          error instanceof Error && error.message
+            ? error.message
+            : t('Failed to load tags')
+        )
+      })
+  }, [assetPrompt, t])
+
+  const savePromptAsset = async (values: DigitalAssetFormValues) => {
+    setAssetSavePending(true)
+    try {
+      await createDigitalAsset({ ...values, asset_type: 'text' })
+      setAssetPrompt(null)
+      toast.success(t('Prompt saved to assets'))
+    } catch (error) {
+      toast.error(
+        error instanceof Error && error.message
+          ? error.message
+          : t('Failed to save prompt to assets')
+      )
+      throw error
+    } finally {
+      setAssetSavePending(false)
+    }
+  }
+
+  const assetDraft = useMemo(() => {
+    if (assetPrompt === null) return undefined
+    const compact = assetPrompt.trim().replaceAll(/\s+/g, ' ')
+    return {
+      title: compact.slice(0, 30),
+      content: assetPrompt,
+    }
+  }, [assetPrompt])
   const [isPolishing, setIsPolishing] = useState(false)
   const [undoPrompt, setUndoPrompt] = useState<string>()
   const polishControllerRef = useRef<AbortController>(null)
@@ -962,6 +1013,7 @@ export function Drawing() {
                   onDownload={download}
                   onPreview={(images, index) => setPreview({ images, index })}
                   onReuse={reuse}
+                  onSavePrompt={() => setAssetPrompt(record.prompt)}
                 />
               ))}
             </div>
@@ -1077,6 +1129,19 @@ export function Drawing() {
           ) : null}
         </section>
       </div>
+      <AssetFormDialog
+        open={assetPrompt !== null}
+        asset={null}
+        initialPrompt={assetDraft}
+        availableTags={assetTags}
+        deletedTag={null}
+        pending={assetSavePending}
+        onOpenChange={(open) => {
+          if (!open) setAssetPrompt(null)
+        }}
+        onManageTags={() => undefined}
+        onSubmit={savePromptAsset}
+      />
       {preview ? (
         <PreviewDialog
           images={preview.images}
@@ -1126,6 +1191,7 @@ function HistoryCard(props: {
   onDownload: (images: Blob[], id: string) => void
   onPreview: (images: Blob[], index: number) => void
   onReuse: (record: DrawingHistoryRecord) => void
+  onSavePrompt: () => void
 }) {
   const { t } = useTranslation()
   return (
@@ -1158,24 +1224,55 @@ function HistoryCard(props: {
             <RefreshCw />
             {t('Reuse')}
           </Button>
-          <Button
-            aria-label={t('Download')}
-            onClick={() =>
-              props.onDownload(props.record.images, props.record.id)
-            }
-            size='icon-sm'
-            variant='ghost'
-          >
-            <Download />
-          </Button>
-          <Button
-            aria-label={t('Delete')}
-            onClick={props.onDelete}
-            size='icon-sm'
-            variant='ghost'
-          >
-            <Trash2 />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    aria-label={t('Save prompt to assets')}
+                    onClick={props.onSavePrompt}
+                    size='icon-sm'
+                    variant='ghost'
+                  />
+                }
+              >
+                <Archive />
+              </TooltipTrigger>
+              <TooltipContent>{t('Save prompt to assets')}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    aria-label={t('Download')}
+                    onClick={() =>
+                      props.onDownload(props.record.images, props.record.id)
+                    }
+                    size='icon-sm'
+                    variant='ghost'
+                  />
+                }
+              >
+                <Download />
+              </TooltipTrigger>
+              <TooltipContent>{t('Download')}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    aria-label={t('Delete')}
+                    onClick={props.onDelete}
+                    size='icon-sm'
+                    variant='ghost'
+                  />
+                }
+              >
+                <Trash2 />
+              </TooltipTrigger>
+              <TooltipContent>{t('Delete')}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </article>

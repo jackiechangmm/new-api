@@ -185,11 +185,11 @@ export async function getFreshModuleAccess(
   }
 }
 
-export function isSidebarModuleEnabled(
+export function isSidebarModuleEnabledFromStatus(
+  status: Record<string, unknown> | null,
   section: string,
   module: string
 ): boolean {
-  const status = getCachedStatus()
   if (!status) return true
 
   const raw = status.SidebarModulesAdmin
@@ -208,4 +208,24 @@ export function isSidebarModuleEnabled(
   } catch {
     return true
   }
+}
+
+export async function getFreshSidebarModuleEnabled(
+  section: string,
+  module: string
+): Promise<boolean> {
+  try {
+    const status = (await getStatus()) as Record<string, unknown> | null
+    cacheStatus(status)
+    return isSidebarModuleEnabledFromStatus(status, section, module)
+  } catch {
+    return false
+  }
+}
+
+export function isSidebarModuleEnabled(
+  section: string,
+  module: string
+): boolean {
+  return isSidebarModuleEnabledFromStatus(getCachedStatus(), section, module)
 }

@@ -152,6 +152,20 @@ func SetApiRouter(router *gin.Engine) {
 			}
 		}
 
+		// 数字资产是用户私有资源，侧栏可见性仅由前端控制。
+		digitalAssetRoute := apiRouter.Group("/digital-assets")
+		digitalAssetRoute.Use(middleware.UserAuth())
+		{
+			digitalAssetRoute.GET("/", controller.ListDigitalAssets)
+			digitalAssetRoute.GET("/tags", controller.ListDigitalAssetTags)
+			digitalAssetRoute.DELETE("/tags/:id", controller.DeleteDigitalAssetTag)
+			digitalAssetRoute.GET("/:id", controller.GetDigitalAsset)
+			digitalAssetRoute.POST("/", controller.CreateDigitalAsset)
+			digitalAssetRoute.PUT("/:id", controller.UpdateDigitalAsset)
+			digitalAssetRoute.PATCH("/:id/favorite", controller.SetDigitalAssetFavorite)
+			digitalAssetRoute.DELETE("/:id", controller.DeleteDigitalAsset)
+		}
+
 		// Subscription billing (plans, purchase, admin management)
 		subscriptionRoute := apiRouter.Group("/subscription")
 		subscriptionRoute.Use(middleware.UserAuth())
