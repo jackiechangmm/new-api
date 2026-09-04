@@ -10,6 +10,7 @@ import {
   Plus,
   RefreshCw,
   Search,
+  ScanSearch,
   Sparkles,
   Trash2,
   Undo2,
@@ -55,6 +56,7 @@ import { FormNavigationGuard } from '@/features/system-settings/components/form-
 
 import {
   getDrawingModels,
+  reverseDrawingPrompt,
   polishDrawingPrompt,
   requestDrawingImages,
   requestMidjourneyImage,
@@ -311,8 +313,10 @@ export function Drawing(props: { initialPrompt?: string }) {
     }
   }, [assetPrompt])
   const [isPolishing, setIsPolishing] = useState(false)
+  const [isReversePrompting, setIsReversePrompting] = useState(false)
   const [undoPrompt, setUndoPrompt] = useState<string>()
   const polishControllerRef = useRef<AbortController>(null)
+  const reversePromptControllerRef = useRef<AbortController>(null)
   const generationControllerRef = useRef<AbortController>(null)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
@@ -385,6 +389,7 @@ export function Drawing(props: { initialPrompt?: string }) {
   useEffect(() => {
     return () => {
       polishControllerRef.current?.abort()
+      reversePromptControllerRef.current?.abort()
       generationControllerRef.current?.abort()
     }
   }, [])
@@ -399,6 +404,42 @@ export function Drawing(props: { initialPrompt?: string }) {
   const changePromptInput = (value: string) => {
     invalidatePromptPolish()
     setPrompt(value)
+  }
+
+  const reversePrompt = async () => {
+    if (
+      referenceImages.length !== 1 ||
+      prompt.trim() ||
+      isGenerating ||
+      isPolishing ||
+      isReversePrompting
+    ) {
+      return
+    }
+    const controller = new AbortController()
+    reversePromptControllerRef.current = controller
+    setError('')
+    setIsReversePrompting(true)
+    try {
+      const reversedPrompt = await reverseDrawingPrompt(
+        referenceImages[0],
+        controller.signal
+      )
+      if (controller.signal.aborted) return
+      setPrompt(reversedPrompt)
+    } catch (requestError) {
+      if (controller.signal.aborted) return
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : t('Prompt reverse engineering failed')
+      )
+    } finally {
+      if (reversePromptControllerRef.current === controller) {
+        reversePromptControllerRef.current = null
+        setIsReversePrompting(false)
+      }
+    }
   }
 
   const polishPrompt = async () => {
@@ -623,11 +664,6 @@ export function Drawing(props: { initialPrompt?: string }) {
     }
   }
 
-  const referenceBytes = referenceImages.reduce(
-    (total, file) => total + file.size,
-    0
-  )
-
   const addReferenceImages = async (files: FileList | null) => {
     if (!files) return
     invalidatePromptPolish()
@@ -769,6 +805,27 @@ export function Drawing(props: { initialPrompt?: string }) {
                     onPreview={() => setPreview({ images: [file], index: 0 })}
                   />
                 ))}
+                {referenceImages.length === 1 ? (
+                  <Button
+                    disabled={
+                      Boolean(prompt.trim()) ||
+                      isGenerating ||
+                      isPolishing ||
+                      isReversePrompting
+                    }
+                    onClick={() => void reversePrompt()}
+                    size='sm'
+                    type='button'
+                    variant='ghost'
+                  >
+                    {isReversePrompting ? (
+                      <Loader2 className='animate-spin' />
+                    ) : (
+                      <ScanSearch />
+                    )}
+                    {t('Reverse prompt')}
+                  </Button>
+                ) : null}
               </div>
               <div className='flex shrink-0 items-center gap-2'>
                 {undoPrompt !== undefined ? (
@@ -974,14 +1031,6 @@ export function Drawing(props: { initialPrompt?: string }) {
             {models.length > 0 && !hasEditModel ? (
               <span className='text-muted-foreground text-sm'>
                 {t('Reference images are unavailable for this model.')}
-              </span>
-            ) : null}
-            {referenceImages.length ? (
-              <span className='text-muted-foreground text-xs'>
-                {t('{{count}} reference images, {{size}} MB', {
-                  count: referenceImages.length,
-                  size: (referenceBytes / 1024 / 1024).toFixed(1),
-                })}
               </span>
             ) : null}
           </div>
