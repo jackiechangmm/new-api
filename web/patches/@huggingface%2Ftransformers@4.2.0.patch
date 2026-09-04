@@ -1,0 +1,13 @@
+diff --git a/dist/transformers.web.js b/dist/transformers.web.js
+index bb7b32717a42475a5f66411a33d5e5964dfda3e2..8f9efc53584e6fe8a64cd40068b822cfe8a5165c 100644
+--- a/dist/transformers.web.js
++++ b/dist/transformers.web.js
+@@ -86,7 +86,7 @@ var apis = Object.freeze({
+ var RUNNING_LOCALLY = IS_FS_AVAILABLE && IS_PATH_AVAILABLE;
+ var dirname__ = "./";
+ if (RUNNING_LOCALLY) {
+-  const _import_meta_url = Object(import.meta).url;
++  const _import_meta_url = import.meta.url;
+   if (_import_meta_url) {
+     dirname__ = node_path_default.dirname(node_path_default.dirname(node_url_default.fileURLToPath(_import_meta_url)));
+   } else if (typeof __dirname !== "undefined") {

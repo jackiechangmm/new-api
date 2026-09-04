@@ -11,7 +11,7 @@ logs
 web/dist
 web/node_modules
 .env
-.env.manual
+.env.preview
 one-api
 new-api
 /__debug_bin*

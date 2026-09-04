@@ -1,18 +1,17 @@
-name: new-api-manual
+name: new-api-preview
 
 services:
   caddy:
     image: caddy:2.10.2-alpine@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d
     ports:
-      - "127.0.0.1:${MANUAL_PORT:-5174}:80"
+      - "127.0.0.1:${PREVIEW_PORT:-5174}:80"
     volumes:
-      - ./Caddyfile.manual:/etc/caddy/Caddyfile:ro
-      - ./.cache/drawing-covers:/srv/drawing-covers:ro
+      - ./Caddyfile.preview:/etc/caddy/Caddyfile:ro
     depends_on:
       new-api:
         condition: service_healthy
     networks:
-      - manual-network
+      - preview-network
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://localhost/api/status | grep -o '\"success\":\\s*true' || exit 1"]
       interval: 5s
@@ -24,11 +23,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: new-api-manual:local
+    image: new-api-preview:local
     volumes:
-      - manual_data:/data
+      - preview_data:/data
     env_file:
-      - path: .env.manual
+      - path: .env.preview
         required: false
     environment:
       SQL_DSN: postgresql://root:123456@postgres:5432/new-api
@@ -42,7 +41,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - manual-network
+      - preview-network
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://localhost:3000/api/status | grep -o '\"success\":\\s*true' || exit 1"]
       interval: 5s
@@ -53,7 +52,7 @@ services:
   redis:
     image: redis:7-alpine
     networks:
-      - manual-network
+      - preview-network
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep -qx PONG"]
       interval: 5s
@@ -67,9 +66,9 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: new-api
     volumes:
-      - manual_pg_data:/var/lib/postgresql/data
+      - preview_pg_data:/var/lib/postgresql/data
     networks:
-      - manual-network
+      - preview-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U root -d new-api"]
       interval: 5s
@@ -77,9 +76,9 @@ services:
       retries: 5
 
 volumes:
-  manual_data:
-  manual_pg_data:
+  preview_data:
+  preview_pg_data:
 
 networks:
-  manual-network:
+  preview-network:
     driver: bridge

@@ -1,0 +1,3 @@
+:80 {
+	reverse_proxy new-api:3000
+}

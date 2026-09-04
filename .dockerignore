@@ -6,7 +6,7 @@
 Makefile
 makefile
 docker-compose*.yml
-.env.manual*
+.env.preview*
 docs
 .eslintcache
 .gocache

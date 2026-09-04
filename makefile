@@ -7,11 +7,10 @@ DEV_API_SERVICE = new-api
 DEV_POSTGRES_DB = new-api
 DEV_POSTGRES_USER = root
 DEV_SQLITE_PATH ?= one-api.db
-MANUAL_COMPOSE_FILE = docker-compose.manual.yml
-MANUAL_COMPOSE = docker compose -f $(MANUAL_COMPOSE_FILE)
-MANUAL_BUILD_STAMP = .cache/manual-build.hash
+PREVIEW_COMPOSE_FILE = docker-compose.preview.yml
+PREVIEW_COMPOSE = docker compose -f $(PREVIEW_COMPOSE_FILE)
 
-.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web manual-up manual-down manual-reset manual-redis-reset manual-logs reset-setup test
+.PHONY: all build-web build-all-web start-api dev dev-api dev-api-rebuild dev-web preview preview-down preview-reset reset-setup test
 
 all: build-all-web start-api
 
@@ -42,39 +41,16 @@ dev-web:
 
 dev: dev-api dev-web
 
-manual-up:
-	@test -n "$$(find .cache/drawing-covers -maxdepth 1 -type f -print -quit 2>/dev/null)" || { \
-		echo "人工测试封面缓存为空，请先执行：cd web && bun run drawing:collect"; \
-		exit 1; \
-	}
-	@set -e; \
-	mkdir -p .cache; \
-	source_hash="$$(git ls-files -co --exclude-standard -z -- . ':(exclude)*.md' ':(exclude).github/**' ':(exclude)docs/**' ':(exclude)Makefile' ':(exclude)makefile' ':(exclude)docker-compose*.yml' ':(exclude).env.manual*' | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | awk '{print $$1}')"; \
-	if [ ! -f "$(MANUAL_BUILD_STAMP)" ] || [ "$$source_hash" != "$$(cat "$(MANUAL_BUILD_STAMP)")" ]; then \
-		echo "构建人工测试镜像..."; \
-		$(MANUAL_COMPOSE) build; \
-		printf '%s\n' "$$source_hash" > "$(MANUAL_BUILD_STAMP)"; \
-	fi; \
-	echo "启动人工测试环境：http://127.0.0.1:$${MANUAL_PORT:-5174}"; \
-	if ! $(MANUAL_COMPOSE) up -d --wait; then \
-		echo "人工测试环境启动失败，应用日志："; \
-		$(MANUAL_COMPOSE) logs --tail=100 new-api; \
-		exit 1; \
-	fi
+preview:
+	@echo "构建并启动发布前验收环境：http://127.0.0.1:$${PREVIEW_PORT:-5174}"
+	@$(PREVIEW_COMPOSE) up -d --build --wait
 
-manual-down:
-	@$(MANUAL_COMPOSE) stop
+preview-down:
+	@$(PREVIEW_COMPOSE) stop
 
-manual-reset:
-	@$(MANUAL_COMPOSE) down -v --remove-orphans
-	@$(MAKE) manual-up
-
-manual-redis-reset:
-	@echo "清空人工测试环境 Redis..."
-	@$(MANUAL_COMPOSE) exec -T redis redis-cli FLUSHALL
-
-manual-logs:
-	@$(MANUAL_COMPOSE) logs -f new-api
+preview-reset:
+	@$(PREVIEW_COMPOSE) down -v --remove-orphans
+	@$(MAKE) preview
 
 # The main package embeds the ignored web/dist output and is covered after build-web.
 test:
@@ -105,6 +81,6 @@ reset-setup:
 		echo "SQLite setup state reset. Restart the local api process before testing the setup wizard."; \
 	else \
 		echo "No running docker dev PostgreSQL or local SQLite database found."; \
-		echo "Start the dev stack with 'make dev-api', or set SQLITE_PATH/DEV_SQLITE_PATH to your local SQLite database."; \
+		echo "Start the dev stack with 'make dev', or set SQLITE_PATH/DEV_SQLITE_PATH to your local SQLite database."; \
 		exit 1; \
 	fi
