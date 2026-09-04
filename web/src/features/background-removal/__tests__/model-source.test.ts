@@ -6,8 +6,8 @@ it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or (at your option)
 any later version.
 */
+import { test } from 'bun:test'
 import assert from 'node:assert/strict'
-import { test } from 'node:test'
 
 import { env } from '@huggingface/transformers'
 

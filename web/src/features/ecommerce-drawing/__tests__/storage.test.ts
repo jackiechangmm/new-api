@@ -1,5 +1,5 @@
+import { test, afterEach, beforeEach } from 'bun:test'
 import assert from 'node:assert/strict'
-import test, { afterEach, beforeEach } from 'node:test'
 
 import { IDBFactory, IDBObjectStore } from 'fake-indexeddb'
 
