@@ -8,7 +8,7 @@
     "build": "rsbuild build",
     "build:check": "tsgo -b && rsbuild build",
     "typecheck": "tsgo -b",
-    "test": "NODE_ENV=test bun test",
+    "test": "NODE_ENV=test bun test --parallel",
     "lint": "oxlint -c .oxlintrc.json .",
     "lint:fix": "oxlint -c .oxlintrc.json . --fix",
     "preview": "rsbuild preview",

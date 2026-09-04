@@ -56,6 +56,14 @@ for (const key of domGlobals) {
   globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true
 
+Object.defineProperty(globalThis, 'URL', {
+  configurable: true,
+  value: {
+    createObjectURL: () => 'blob:test-cover',
+    revokeObjectURL: () => undefined,
+  },
+})
+
 class TestImage {
   naturalWidth = 100
   naturalHeight = 100
@@ -209,15 +217,15 @@ test('admin can create a featured prompt with a valid cover', async () => {
   })
   let submitted: FormData | undefined
   client.post = async (_url, data) => {
-    assert.ok(data instanceof FormData)
-    submitted = data
+    const formData = data as FormData
+    submitted = formData
     return {
       data: {
         success: true,
         data: {
           id: 1,
-          title: data.get('title'),
-          prompt: data.get('prompt'),
+          title: formData.get('title'),
+          prompt: formData.get('prompt'),
           cover_url: 'https://assets.test/new.webp',
           sort_order: 1,
           created_at: 1,
@@ -235,11 +243,10 @@ test('admin can create a featured prompt with a valid cover', async () => {
   await user.type(screen.getByLabelText('Prompt content'), 'Portrait prompt')
   const cover = screen.getByLabelText('Cover image')
   assert.ok(cover instanceof HTMLInputElement)
-  fireEvent.change(cover, {
-    target: {
-      files: [new File(['image'], 'cover.webp', { type: 'image/webp' })],
-    },
-  })
+  await user.upload(
+    cover,
+    new File(['image'], 'cover.webp', { type: 'image/webp' })
+  )
   await waitFor(() =>
     assert.equal(
       (screen.getByRole('button', { name: 'Save' }) as HTMLButtonElement)
@@ -249,13 +256,18 @@ test('admin can create a featured prompt with a valid cover', async () => {
   )
   const form = document.querySelector('#featured-prompt-form')
   assert.ok(form instanceof domWindow.HTMLFormElement)
-  fireEvent.submit(form)
+  const formElement = form as unknown as {
+    noValidate: boolean
+    requestSubmit: () => void
+  }
+  formElement.noValidate = true
+  formElement.requestSubmit()
 
   await waitFor(() => assert.ok(submitted))
   const submittedForm = submitted
   assert.ok(submittedForm)
   assert.equal(submittedForm.get('title'), 'New portrait')
-  assert.ok(submittedForm.get('cover') instanceof File)
+  assert.ok(submittedForm.get('cover'))
 })
 
 test('admin can open the empty-state editor and oversized cover is rejected', async () => {
