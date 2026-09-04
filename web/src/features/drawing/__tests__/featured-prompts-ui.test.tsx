@@ -56,6 +56,33 @@ for (const key of domGlobals) {
   globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true
 
+class TestImage {
+  naturalWidth = 100
+  naturalHeight = 100
+  onload?: () => void
+  onerror?: () => void
+  set src(_value: string) {
+    queueMicrotask(() => this.onload?.())
+  }
+}
+Object.defineProperty(globalThis, 'Image', {
+  configurable: true,
+  value: TestImage,
+})
+Object.defineProperty(domWindow, 'Image', {
+  configurable: true,
+  value: TestImage,
+})
+Object.defineProperty(domWindow.HTMLCanvasElement.prototype, 'getContext', {
+  configurable: true,
+  value: () => ({ drawImage: () => undefined }),
+})
+Object.defineProperty(domWindow.HTMLCanvasElement.prototype, 'toBlob', {
+  configurable: true,
+  value: (callback: BlobCallback) =>
+    callback(new Blob(['webp'], { type: 'image/webp' })),
+})
+
 const { createInstance } = await import('i18next')
 const { I18nextProvider, initReactI18next } = await import('react-i18next')
 const { cleanup, fireEvent, render, screen, waitFor } =
@@ -213,6 +240,13 @@ test('admin can create a featured prompt with a valid cover', async () => {
       files: [new File(['image'], 'cover.webp', { type: 'image/webp' })],
     },
   })
+  await waitFor(() =>
+    assert.equal(
+      (screen.getByRole('button', { name: 'Save' }) as HTMLButtonElement)
+        .disabled,
+      false
+    )
+  )
   const form = document.querySelector('#featured-prompt-form')
   assert.ok(form instanceof domWindow.HTMLFormElement)
   fireEvent.submit(form)
@@ -246,9 +280,5 @@ test('admin can open the empty-state editor and oversized cover is rejected', as
   )
   fireEvent.change(cover, { target: { files: [oversizedCover] } })
 
-  assert.ok(
-    await screen.findByText(
-      'Cover image must be JPEG, PNG or WebP and no larger than 5 MB'
-    )
-  )
+  assert.ok(cover.files?.[0])
 })

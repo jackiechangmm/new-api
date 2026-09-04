@@ -15,15 +15,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { compressImageToWebP } from '@/lib/image-compression'
 
 import type { FeaturedPrompt, FeaturedPromptInput } from './types'
 
 const FEATURED_PROMPT_MAX_COVER_BYTES = 5 * 1024 * 1024
-const FEATURED_PROMPT_COVER_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-])
 
 type FeaturedPromptDialogProps = {
   item: FeaturedPrompt | null
@@ -38,6 +34,7 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
   const [title, setTitle] = useState('')
   const [prompt, setPrompt] = useState('')
   const [cover, setCover] = useState<File>()
+  const [compressing, setCompressing] = useState(false)
   const [validation, setValidation] = useState('')
 
   useEffect(() => {
@@ -50,6 +47,7 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (compressing) return
     if (!title.trim() || !prompt.trim()) {
       setValidation(t('Complete all required fields'))
       return
@@ -58,11 +56,7 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
       setValidation(t('Choose a cover image'))
       return
     }
-    if (
-      cover &&
-      (!FEATURED_PROMPT_COVER_TYPES.has(cover.type) ||
-        cover.size > FEATURED_PROMPT_MAX_COVER_BYTES)
-    ) {
+    if (cover && cover.size > FEATURED_PROMPT_MAX_COVER_BYTES) {
       setValidation(
         t('Cover image must be JPEG, PNG or WebP and no larger than 5 MB')
       )
@@ -93,7 +87,7 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
             {t('Cancel')}
           </Button>
           <Button
-            disabled={props.pending}
+            disabled={props.pending || compressing}
             form='featured-prompt-form'
             type='submit'
           >
@@ -140,20 +134,28 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
             id='featured-prompt-cover'
             onChange={(event) => {
               const file = event.target.files?.[0]
-              setCover(file)
-              if (
-                file &&
-                (!FEATURED_PROMPT_COVER_TYPES.has(file.type) ||
-                  file.size > FEATURED_PROMPT_MAX_COVER_BYTES)
-              ) {
-                setValidation(
-                  t(
-                    'Cover image must be JPEG, PNG or WebP and no larger than 5 MB'
-                  )
-                )
-              } else {
-                setValidation('')
+              if (!file) {
+                setCover(undefined)
+                return
               }
+              setCompressing(true)
+              setValidation('')
+              void compressImageToWebP(file)
+                .then((compressed) => {
+                  setCover(compressed)
+                  if (compressed.size > FEATURED_PROMPT_MAX_COVER_BYTES) {
+                    setValidation(
+                      t(
+                        'Cover image must be JPEG, PNG or WebP and no larger than 5 MB'
+                      )
+                    )
+                  }
+                })
+                .catch(() => {
+                  setCover(undefined)
+                  setValidation(t('Unable to process cover image'))
+                })
+                .finally(() => setCompressing(false))
             }}
             required={!props.item}
             type='file'
