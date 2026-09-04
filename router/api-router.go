@@ -152,6 +152,15 @@ func SetApiRouter(router *gin.Engine) {
 			}
 		}
 
+		featuredPromptRoute := apiRouter.Group("/featured-prompts")
+		{
+			featuredPromptRoute.GET("", middleware.UserAuth(), controller.ListFeaturedPrompts)
+			featuredPromptRoute.POST("", middleware.AdminAuth(), controller.CreateFeaturedPrompt)
+			featuredPromptRoute.PUT("/:id", middleware.AdminAuth(), controller.UpdateFeaturedPrompt)
+			featuredPromptRoute.POST("/:id/move", middleware.AdminAuth(), controller.MoveFeaturedPrompt)
+			featuredPromptRoute.DELETE("/:id", middleware.AdminAuth(), controller.DeleteFeaturedPrompt)
+		}
+
 		// 数字资产是用户私有资源，侧栏可见性仅由前端控制。
 		digitalAssetRoute := apiRouter.Group("/digital-assets")
 		digitalAssetRoute.Use(middleware.UserAuth())

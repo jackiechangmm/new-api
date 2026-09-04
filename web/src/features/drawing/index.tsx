@@ -63,6 +63,7 @@ import {
   type ImageGenerationRequest,
 } from './api'
 import { getDrawingErrorMessage } from './error-message'
+import { FeaturedPromptSection } from './featured-prompts/section'
 import {
   ImagePreviewDialog,
   type ImagePreviewSource,
@@ -1088,6 +1089,11 @@ export function Drawing(props: { initialPrompt?: string }) {
             </div>
           ) : null}
         </section>
+
+        <FeaturedPromptSection
+          onPreview={(url) => setPreview({ images: [url], index: 0 })}
+          onSelect={selectPrompt}
+        />
 
         <section className='pt-6' ref={promptLibraryRef}>
           <div className='mb-4 flex flex-col gap-3'>
