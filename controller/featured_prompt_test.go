@@ -52,13 +52,13 @@ func setupFeaturedPromptHTTPTest(t *testing.T) (*gin.Engine, *gorm.DB) {
 func TestFeaturedPromptHTTPListsPaginatedItemsInConfiguredOrder(t *testing.T) {
 	router, db := setupFeaturedPromptHTTPTest(t)
 	require.NoError(t, db.Create(&[]model.FeaturedPrompt{
-		{Title: "第二条", Description: "desc-2", Prompt: "prompt-2", CoverURL: "https://assets.test/2.webp", CoverKey: "featured/2.webp", SortOrder: 2},
-		{Title: "第一条", Description: "desc-1", Prompt: "prompt-1", CoverURL: "https://assets.test/1.webp", CoverKey: "featured/1.webp", SortOrder: 1},
-		{Title: "第三条", Description: "desc-3", Prompt: "prompt-3", CoverURL: "https://assets.test/3.webp", CoverKey: "featured/3.webp", SortOrder: 3},
-		{Title: "第四条", Description: "desc-4", Prompt: "prompt-4", CoverURL: "https://assets.test/4.webp", CoverKey: "featured/4.webp", SortOrder: 4},
-		{Title: "第五条", Description: "desc-5", Prompt: "prompt-5", CoverURL: "https://assets.test/5.webp", CoverKey: "featured/5.webp", SortOrder: 5},
-		{Title: "第六条", Description: "desc-6", Prompt: "prompt-6", CoverURL: "https://assets.test/6.webp", CoverKey: "featured/6.webp", SortOrder: 6},
-		{Title: "第七条", Description: "desc-7", Prompt: "prompt-7", CoverURL: "https://assets.test/7.webp", CoverKey: "featured/7.webp", SortOrder: 7},
+		{Title: "第二条", Prompt: "prompt-2", CoverURL: "https://assets.test/2.webp", CoverKey: "featured/2.webp", SortOrder: 2},
+		{Title: "第一条", Prompt: "prompt-1", CoverURL: "https://assets.test/1.webp", CoverKey: "featured/1.webp", SortOrder: 1},
+		{Title: "第三条", Prompt: "prompt-3", CoverURL: "https://assets.test/3.webp", CoverKey: "featured/3.webp", SortOrder: 3},
+		{Title: "第四条", Prompt: "prompt-4", CoverURL: "https://assets.test/4.webp", CoverKey: "featured/4.webp", SortOrder: 4},
+		{Title: "第五条", Prompt: "prompt-5", CoverURL: "https://assets.test/5.webp", CoverKey: "featured/5.webp", SortOrder: 5},
+		{Title: "第六条", Prompt: "prompt-6", CoverURL: "https://assets.test/6.webp", CoverKey: "featured/6.webp", SortOrder: 6},
+		{Title: "第七条", Prompt: "prompt-7", CoverURL: "https://assets.test/7.webp", CoverKey: "featured/7.webp", SortOrder: 7},
 	}).Error)
 
 	response := performFeaturedPromptJSON[featuredPromptTestPage](t, router, http.MethodGet, "/api/featured-prompts?p=1&page_size=1", "")
@@ -107,11 +107,11 @@ func TestFeaturedPromptAdminHTTPManagesContentAndOrder(t *testing.T) {
 	router.DELETE("/api/featured-prompts/:id", DeleteFeaturedPrompt)
 
 	first := performFeaturedPromptMultipart(t, router, http.MethodPost, "/api/featured-prompts", map[string]string{
-		"title": "第一条", "description": "第一条描述", "prompt": "first prompt",
+		"title": "第一条", "prompt": "first prompt",
 	}, true)
 	require.True(t, first.Success, first.Message)
 	second := performFeaturedPromptMultipart(t, router, http.MethodPost, "/api/featured-prompts", map[string]string{
-		"title": "第二条", "description": "第二条描述", "prompt": "second prompt",
+		"title": "第二条", "prompt": "second prompt",
 	}, true)
 	require.True(t, second.Success, second.Message)
 	assert.Equal(t, 1, second.Data.SortOrder)
@@ -129,7 +129,7 @@ func TestFeaturedPromptAdminHTTPManagesContentAndOrder(t *testing.T) {
 	assert.Equal(t, 1, boundaryMove.Data.SortOrder)
 
 	updated := performFeaturedPromptMultipart(t, router, http.MethodPut, fmt.Sprintf("/api/featured-prompts/%d", first.Data.Id), map[string]string{
-		"title": "更新标题", "description": "更新描述", "prompt": "updated prompt",
+		"title": "更新标题", "prompt": "updated prompt",
 	}, true)
 	require.True(t, updated.Success, updated.Message)
 	assert.Equal(t, "更新标题", updated.Data.Title)

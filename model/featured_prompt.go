@@ -10,15 +10,14 @@ import (
 var ErrFeaturedPromptNotFound = errors.New("精选提示词不存在")
 
 type FeaturedPrompt struct {
-	Id          int    `json:"id" gorm:"primaryKey"`
-	Title       string `json:"title" gorm:"type:varchar(100);not null"`
-	Description string `json:"description" gorm:"type:varchar(500);not null"`
-	Prompt      string `json:"prompt" gorm:"type:text;not null"`
-	CoverURL    string `json:"cover_url" gorm:"type:text;not null"`
-	CoverKey    string `json:"-" gorm:"type:text;not null"`
-	SortOrder   int    `json:"sort_order" gorm:"not null;index"`
-	CreatedAt   int64  `json:"created_at" gorm:"type:bigint;not null;autoCreateTime"`
-	UpdatedAt   int64  `json:"updated_at" gorm:"type:bigint;not null;autoCreateTime;autoUpdateTime"`
+	Id        int    `json:"id" gorm:"primaryKey"`
+	Title     string `json:"title" gorm:"type:varchar(100);not null"`
+	Prompt    string `json:"prompt" gorm:"type:text;not null"`
+	CoverURL  string `json:"cover_url" gorm:"type:text;not null"`
+	CoverKey  string `json:"-" gorm:"type:text;not null"`
+	SortOrder int    `json:"sort_order" gorm:"not null;index"`
+	CreatedAt int64  `json:"created_at" gorm:"type:bigint;not null;autoCreateTime"`
+	UpdatedAt int64  `json:"updated_at" gorm:"type:bigint;not null;autoCreateTime;autoUpdateTime"`
 }
 
 func ListFeaturedPrompts(pageInfo *common.PageInfo) ([]*FeaturedPrompt, int64, error) {
@@ -35,8 +34,8 @@ func ListFeaturedPrompts(pageInfo *common.PageInfo) ([]*FeaturedPrompt, int64, e
 	return items, total, err
 }
 
-func CreateFeaturedPrompt(title, description, prompt, coverURL, coverKey string) (*FeaturedPrompt, error) {
-	item := &FeaturedPrompt{Title: title, Description: description, Prompt: prompt, CoverURL: coverURL, CoverKey: coverKey, SortOrder: 1}
+func CreateFeaturedPrompt(title, prompt, coverURL, coverKey string) (*FeaturedPrompt, error) {
+	item := &FeaturedPrompt{Title: title, Prompt: prompt, CoverURL: coverURL, CoverKey: coverKey, SortOrder: 1}
 	err := DB.Transaction(func(tx *gorm.DB) error {
 		if err := lockFeaturedPromptOrder(tx); err != nil {
 			return err
@@ -49,14 +48,14 @@ func CreateFeaturedPrompt(title, description, prompt, coverURL, coverKey string)
 	return item, err
 }
 
-func UpdateFeaturedPrompt(id int, title, description, prompt string, coverURL, coverKey *string) (*FeaturedPrompt, string, error) {
+func UpdateFeaturedPrompt(id int, title, prompt string, coverURL, coverKey *string) (*FeaturedPrompt, string, error) {
 	item := &FeaturedPrompt{}
 	oldCoverKey := ""
 	err := DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("id = ?", id).First(item).Error; err != nil {
 			return featuredPromptNotFound(err)
 		}
-		updates := map[string]any{"title": title, "description": description, "prompt": prompt}
+		updates := map[string]any{"title": title, "prompt": prompt}
 		if coverURL != nil && coverKey != nil {
 			oldCoverKey = item.CoverKey
 			updates["cover_url"] = *coverURL

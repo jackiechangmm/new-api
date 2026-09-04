@@ -17,11 +17,10 @@ import (
 )
 
 const (
-	featuredPromptMaxBodyBytes         = 6 << 20
-	featuredPromptMaxCoverBytes        = 5 << 20
-	featuredPromptMaxTitleLength       = 100
-	featuredPromptMaxDescriptionLength = 500
-	featuredPromptMaxPromptLength      = 100000
+	featuredPromptMaxBodyBytes    = 6 << 20
+	featuredPromptMaxCoverBytes   = 5 << 20
+	featuredPromptMaxTitleLength  = 100
+	featuredPromptMaxPromptLength = 100000
 )
 
 var (
@@ -55,7 +54,7 @@ func CreateFeaturedPrompt(c *gin.Context) {
 		common.ApiError(c, err)
 		return
 	}
-	item, err := model.CreateFeaturedPrompt(request.title, request.description, request.prompt, publicURL, key)
+	item, err := model.CreateFeaturedPrompt(request.title, request.prompt, publicURL, key)
 	if err != nil {
 		if cleanupErr := store.Delete(c.Request.Context(), key); cleanupErr != nil {
 			common.SysError(fmt.Sprintf("清理未保存的精选词库封面失败，object_key=%q：%v", key, cleanupErr))
@@ -85,7 +84,7 @@ func UpdateFeaturedPrompt(c *gin.Context) {
 		}
 		key, publicURL = &uploadedKey, &uploadedURL
 	}
-	item, oldCoverKey, err := model.UpdateFeaturedPrompt(id, request.title, request.description, request.prompt, publicURL, key)
+	item, oldCoverKey, err := model.UpdateFeaturedPrompt(id, request.title, request.prompt, publicURL, key)
 	if err != nil {
 		if key != nil {
 			if cleanupErr := store.Delete(c.Request.Context(), *key); cleanupErr != nil {
@@ -141,7 +140,6 @@ func MoveFeaturedPrompt(c *gin.Context) {
 
 type featuredPromptWriteRequest struct {
 	title       string
-	description string
 	prompt      string
 	cover       []byte
 	contentType string
@@ -154,16 +152,11 @@ func bindFeaturedPromptWriteRequest(c *gin.Context, coverRequired bool) (*featur
 		return nil, false
 	}
 	request := &featuredPromptWriteRequest{
-		title:       strings.TrimSpace(c.PostForm("title")),
-		description: strings.TrimSpace(c.PostForm("description")),
-		prompt:      strings.TrimSpace(c.PostForm("prompt")),
+		title:  strings.TrimSpace(c.PostForm("title")),
+		prompt: strings.TrimSpace(c.PostForm("prompt")),
 	}
 	if request.title == "" || utf8.RuneCountInString(request.title) > featuredPromptMaxTitleLength {
 		common.ApiErrorMsg(c, "标题长度必须为 1 到 100 个字符")
-		return nil, false
-	}
-	if request.description == "" || utf8.RuneCountInString(request.description) > featuredPromptMaxDescriptionLength {
-		common.ApiErrorMsg(c, "描述长度必须为 1 到 500 个字符")
 		return nil, false
 	}
 	if request.prompt == "" || utf8.RuneCountInString(request.prompt) > featuredPromptMaxPromptLength {

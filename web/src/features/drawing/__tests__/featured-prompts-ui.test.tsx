@@ -113,7 +113,6 @@ function featuredPromptPage(page: number, total = 1) {
           {
             id: page,
             title: `Studio portrait ${page}`,
-            description: 'A controlled portrait setup',
             prompt: `Create studio portrait ${page}`,
             cover_url: `https://assets.test/portrait-${page}.webp`,
             sort_order: page,
@@ -134,6 +133,7 @@ test('regular user can view and use a featured prompt without management control
   })
 
   assert.ok(await screen.findByRole('heading', { name: 'Studio portrait 1' }))
+  assert.ok(screen.getByText('Create studio portrait 1'))
   await userEvent
     .setup({ document })
     .click(screen.getByRole('button', { name: 'Use prompt' }))
@@ -190,7 +190,6 @@ test('admin can create a featured prompt with a valid cover', async () => {
         data: {
           id: 1,
           title: data.get('title'),
-          description: data.get('description'),
           prompt: data.get('prompt'),
           cover_url: 'https://assets.test/new.webp',
           sort_order: 1,
@@ -206,7 +205,6 @@ test('admin can create a featured prompt with a valid cover', async () => {
   await user.click(await screen.findByRole('button', { name: 'Manage' }))
   await user.click(screen.getByRole('button', { name: 'New featured prompt' }))
   await user.type(screen.getByLabelText('Title'), 'New portrait')
-  await user.type(screen.getByLabelText('Description'), 'Portrait description')
   await user.type(screen.getByLabelText('Prompt content'), 'Portrait prompt')
   const cover = screen.getByLabelText('Cover image')
   assert.ok(cover instanceof HTMLInputElement)
@@ -220,8 +218,10 @@ test('admin can create a featured prompt with a valid cover', async () => {
   fireEvent.submit(form)
 
   await waitFor(() => assert.ok(submitted))
-  assert.equal(submitted.get('title'), 'New portrait')
-  assert.ok(submitted.get('cover') instanceof File)
+  const submittedForm = submitted
+  assert.ok(submittedForm)
+  assert.equal(submittedForm.get('title'), 'New portrait')
+  assert.ok(submittedForm.get('cover') instanceof File)
 })
 
 test('admin can open the empty-state editor and oversized cover is rejected', async () => {

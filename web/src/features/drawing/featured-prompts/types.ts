@@ -10,7 +10,6 @@ License, or (at your option) any later version.
 export type FeaturedPrompt = {
   id: number
   title: string
-  description: string
   prompt: string
   cover_url: string
   sort_order: number
@@ -27,7 +26,6 @@ export type FeaturedPromptPage = {
 
 export type FeaturedPromptInput = {
   title: string
-  description: string
   prompt: string
   cover?: File
 }

@@ -36,7 +36,6 @@ type FeaturedPromptDialogProps = {
 export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
   const { t } = useTranslation()
   const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
   const [prompt, setPrompt] = useState('')
   const [cover, setCover] = useState<File>()
   const [validation, setValidation] = useState('')
@@ -44,7 +43,6 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
   useEffect(() => {
     if (!props.open) return
     setTitle(props.item?.title ?? '')
-    setDescription(props.item?.description ?? '')
     setPrompt(props.item?.prompt ?? '')
     setCover(undefined)
     setValidation('')
@@ -52,7 +50,7 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!title.trim() || !description.trim() || !prompt.trim()) {
+    if (!title.trim() || !prompt.trim()) {
       setValidation(t('Complete all required fields'))
       return
     }
@@ -73,7 +71,6 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
     setValidation('')
     await props.onSubmit({
       title: title.trim(),
-      description: description.trim(),
       prompt: prompt.trim(),
       cover,
     })
@@ -120,19 +117,6 @@ export function FeaturedPromptDialog(props: FeaturedPromptDialogProps) {
             onChange={(event) => setTitle(event.target.value)}
             required
             value={title}
-          />
-        </div>
-        <div className='space-y-2'>
-          <Label htmlFor='featured-prompt-description'>
-            {t('Description')}
-          </Label>
-          <Textarea
-            id='featured-prompt-description'
-            maxLength={500}
-            onChange={(event) => setDescription(event.target.value)}
-            required
-            rows={3}
-            value={description}
           />
         </div>
         <div className='space-y-2'>

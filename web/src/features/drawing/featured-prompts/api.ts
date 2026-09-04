@@ -23,7 +23,6 @@ function unwrap<T>(response: ApiResponse<T>): T {
 function toFormData(input: FeaturedPromptInput): FormData {
   const form = new FormData()
   form.set('title', input.title)
-  form.set('description', input.description)
   form.set('prompt', input.prompt)
   if (input.cover) form.set('cover', input.cover)
   return form

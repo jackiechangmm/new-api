@@ -266,8 +266,8 @@ export function FeaturedPromptSection(props: FeaturedPromptSectionProps) {
                     </TooltipProvider>
                   ) : null}
                 </div>
-                <p className='text-muted-foreground mt-1 line-clamp-3 text-sm'>
-                  {item.description}
+                <p className='text-muted-foreground mt-1 line-clamp-3 min-h-15 text-sm'>
+                  {item.prompt}
                 </p>
                 <Button
                   className='mt-auto w-full'
