@@ -10,6 +10,7 @@ import {
   Plus,
   RefreshCw,
   Search,
+  ScanSearch,
   Sparkles,
   Trash2,
   Undo2,
@@ -361,17 +362,6 @@ export function Drawing(props: { initialPrompt?: string }) {
     referenceImages.length > 0
       ? modelConfig?.imageToImage
       : modelConfig?.textToImage
-  const reversePromptTooltip = () => {
-    if (referenceImages.length === 0) {
-      return t('Upload one reference image first')
-    }
-    if (referenceImages.length !== 1) {
-      return t('Reverse prompt supports one image only')
-    }
-    if (prompt.trim()) return t('Clear the prompt first')
-    if (isReversePrompting) return t('Reverse prompting...')
-    return null
-  }
 
   useEffect(() => {
     const nextAspectRatio = getFixedOrSelectedValue(
@@ -820,6 +810,27 @@ export function Drawing(props: { initialPrompt?: string }) {
                     onPreview={() => setPreview({ images: [file], index: 0 })}
                   />
                 ))}
+                {referenceImages.length === 1 ? (
+                  <Button
+                    disabled={
+                      Boolean(prompt.trim()) ||
+                      isGenerating ||
+                      isPolishing ||
+                      isReversePrompting
+                    }
+                    onClick={() => void reversePrompt()}
+                    size='sm'
+                    type='button'
+                    variant='ghost'
+                  >
+                    {isReversePrompting ? (
+                      <Loader2 className='animate-spin' />
+                    ) : (
+                      <ScanSearch />
+                    )}
+                    {t('Reverse prompt')}
+                  </Button>
+                ) : null}
               </div>
               <div className='flex shrink-0 items-center gap-2'>
                 {undoPrompt !== undefined ? (
@@ -875,40 +886,6 @@ export function Drawing(props: { initialPrompt?: string }) {
                 </Button>
               </div>
             </div>
-          </div>
-          <div className='mt-2 flex min-h-6 items-center'>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <span className='inline-flex'>
-                      <Button
-                        aria-label={t('Reverse prompt')}
-                        className='h-6 rounded-full px-2 text-xs'
-                        disabled={
-                          referenceImages.length !== 1 ||
-                          Boolean(prompt.trim()) ||
-                          isGenerating ||
-                          isPolishing ||
-                          isReversePrompting
-                        }
-                        onClick={() => void reversePrompt()}
-                        type='button'
-                        variant='outline'
-                      >
-                        {isReversePrompting ? (
-                          <Loader2 className='animate-spin' />
-                        ) : null}
-                        {t('Reverse prompt')}
-                      </Button>
-                    </span>
-                  }
-                />
-                {reversePromptTooltip() ? (
-                  <TooltipContent>{reversePromptTooltip()}</TooltipContent>
-                ) : null}
-              </Tooltip>
-            </TooltipProvider>
           </div>
           {referenceError ? (
             <p className='text-destructive mt-2 text-sm' role='alert'>
