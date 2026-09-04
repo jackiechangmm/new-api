@@ -16,6 +16,8 @@ import (
 	"github.com/google/uuid"
 )
 
+const featuredPromptCacheControl = "public, max-age=2592000, immutable"
+
 var ErrFeaturedPromptStorageUnavailable = errors.New("精选词库对象存储未配置")
 
 type FeaturedPromptObjectStore interface {
@@ -84,10 +86,11 @@ func (s *featuredPromptS3Store) Upload(ctx context.Context, data []byte, content
 	}
 	key := path.Join(s.prefix, "featured-prompts", uuid.NewString()+extension)
 	_, err := s.client.PutObject(ctx, &s3.PutObjectInput{
-		Bucket:      aws.String(s.bucket),
-		Key:         aws.String(key),
-		Body:        bytes.NewReader(data),
-		ContentType: aws.String(contentType),
+		Bucket:       aws.String(s.bucket),
+		Key:          aws.String(key),
+		Body:         bytes.NewReader(data),
+		ContentType:  aws.String(contentType),
+		CacheControl: aws.String(featuredPromptCacheControl),
 	})
 	if err != nil {
 		return "", "", fmt.Errorf("上传精选词库封面失败：%w", err)

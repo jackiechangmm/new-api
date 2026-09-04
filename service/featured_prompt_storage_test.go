@@ -23,6 +23,7 @@ func TestFeaturedPromptObjectStoreUploadsAndDeletesThroughS3CompatibleEndpoint(t
 			require.NoError(t, err)
 			assert.Equal(t, []byte("image-data"), body)
 			assert.Equal(t, "image/webp", r.Header.Get("Content-Type"))
+			assert.Equal(t, featuredPromptCacheControl, r.Header.Get("Cache-Control"))
 		}
 		w.WriteHeader(http.StatusOK)
 	}))
