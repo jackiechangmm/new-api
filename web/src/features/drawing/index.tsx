@@ -63,7 +63,6 @@ import {
   type ImageGenerationRequest,
 } from './api'
 import { getDrawingErrorMessage } from './error-message'
-import { focusPromptEditor } from './prompt-scroll'
 import { FeaturedPromptSection } from './featured-prompts/section'
 import {
   ImagePreviewDialog,
@@ -75,6 +74,7 @@ import {
   type DrawingInputConfig,
   type DrawingOperationConfig,
 } from './model-config'
+import { focusPromptEditor } from './prompt-scroll'
 import {
   DRAWING_PROMPT_CATEGORIES,
   DRAWING_PROMPT_SCENES,
