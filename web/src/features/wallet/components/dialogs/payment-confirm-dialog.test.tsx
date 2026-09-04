@@ -14,8 +14,8 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
+import { afterAll, describe, test } from 'bun:test'
 import assert from 'node:assert/strict'
-import { after, describe, test } from 'node:test'
 
 import { Window } from 'happy-dom'
 
@@ -79,7 +79,7 @@ const reactTestGlobals = globalThis as typeof globalThis & {
 reactTestGlobals.IS_REACT_ACT_ENVIRONMENT = true
 
 describe('payment confirmation dialog', () => {
-  after(() => {
+  afterAll(() => {
     domWindow.close()
   })
 

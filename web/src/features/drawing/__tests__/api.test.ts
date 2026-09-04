@@ -1,5 +1,5 @@
+import { test, afterEach } from 'bun:test'
 import assert from 'node:assert/strict'
-import test, { afterEach } from 'node:test'
 
 import { api } from '@/lib/api'
 
