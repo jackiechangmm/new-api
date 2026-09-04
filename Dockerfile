@@ -4,6 +4,7 @@ FROM oven/bun:1.3.14@sha256:e10577f0db68676a7024391c6e5cb4b879ebd17188ab750cf100
 
 WORKDIR /build/web
 COPY web/package.json web/bun.lock ./
+COPY web/patches ./patches
 RUN --mount=type=cache,target=/root/.bun/install/cache \
     bun install --frozen-lockfile --network-concurrency 24
 COPY ./web ./
