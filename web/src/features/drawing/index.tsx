@@ -664,11 +664,6 @@ export function Drawing(props: { initialPrompt?: string }) {
     }
   }
 
-  const referenceBytes = referenceImages.reduce(
-    (total, file) => total + file.size,
-    0
-  )
-
   const addReferenceImages = async (files: FileList | null) => {
     if (!files) return
     invalidatePromptPolish()
@@ -1036,14 +1031,6 @@ export function Drawing(props: { initialPrompt?: string }) {
             {models.length > 0 && !hasEditModel ? (
               <span className='text-muted-foreground text-sm'>
                 {t('Reference images are unavailable for this model.')}
-              </span>
-            ) : null}
-            {referenceImages.length ? (
-              <span className='text-muted-foreground text-xs'>
-                {t('{{count}} reference images, {{size}} MB', {
-                  count: referenceImages.length,
-                  size: (referenceBytes / 1024 / 1024).toFixed(1),
-                })}
               </span>
             ) : null}
           </div>
