@@ -47,6 +47,9 @@ import { useAuthStore } from '@/stores/auth-store'
 function RootComponent() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const showDevtools =
+    import.meta.env.MODE === 'development' &&
+    new URLSearchParams(window.location.search).has('devtools')
 
   // Load system configuration (logo, system name, etc.) from backend
   useSystemConfig({ autoLoad: true })
@@ -97,7 +100,7 @@ function RootComponent() {
       <NavigationProgress />
       <Outlet />
       <Toaster closeButton duration={5000} position='top-center' richColors />
-      {import.meta.env.MODE === 'development' && (
+      {showDevtools && (
         <>
           <ReactQueryDevtools buttonPosition='bottom-left' />
           <TanStackRouterDevtools position='bottom-right' />
