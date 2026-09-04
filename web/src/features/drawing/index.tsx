@@ -55,6 +55,7 @@ import { FormNavigationGuard } from '@/features/system-settings/components/form-
 
 import {
   getDrawingModels,
+  reverseDrawingPrompt,
   polishDrawingPrompt,
   requestDrawingImages,
   requestMidjourneyImage,
@@ -311,8 +312,10 @@ export function Drawing(props: { initialPrompt?: string }) {
     }
   }, [assetPrompt])
   const [isPolishing, setIsPolishing] = useState(false)
+  const [isReversePrompting, setIsReversePrompting] = useState(false)
   const [undoPrompt, setUndoPrompt] = useState<string>()
   const polishControllerRef = useRef<AbortController>(null)
+  const reversePromptControllerRef = useRef<AbortController>(null)
   const generationControllerRef = useRef<AbortController>(null)
   const [error, setError] = useState('')
   const [preview, setPreview] = useState<PreviewState>()
@@ -358,6 +361,17 @@ export function Drawing(props: { initialPrompt?: string }) {
     referenceImages.length > 0
       ? modelConfig?.imageToImage
       : modelConfig?.textToImage
+  const reversePromptTooltip = () => {
+    if (referenceImages.length === 0) {
+      return t('Upload one reference image first')
+    }
+    if (referenceImages.length !== 1) {
+      return t('Reverse prompt supports one image only')
+    }
+    if (prompt.trim()) return t('Clear the prompt first')
+    if (isReversePrompting) return t('Reverse prompting...')
+    return null
+  }
 
   useEffect(() => {
     const nextAspectRatio = getFixedOrSelectedValue(
@@ -385,6 +399,7 @@ export function Drawing(props: { initialPrompt?: string }) {
   useEffect(() => {
     return () => {
       polishControllerRef.current?.abort()
+      reversePromptControllerRef.current?.abort()
       generationControllerRef.current?.abort()
     }
   }, [])
@@ -399,6 +414,42 @@ export function Drawing(props: { initialPrompt?: string }) {
   const changePromptInput = (value: string) => {
     invalidatePromptPolish()
     setPrompt(value)
+  }
+
+  const reversePrompt = async () => {
+    if (
+      referenceImages.length !== 1 ||
+      prompt.trim() ||
+      isGenerating ||
+      isPolishing ||
+      isReversePrompting
+    ) {
+      return
+    }
+    const controller = new AbortController()
+    reversePromptControllerRef.current = controller
+    setError('')
+    setIsReversePrompting(true)
+    try {
+      const reversedPrompt = await reverseDrawingPrompt(
+        referenceImages[0],
+        controller.signal
+      )
+      if (controller.signal.aborted) return
+      setPrompt(reversedPrompt)
+    } catch (requestError) {
+      if (controller.signal.aborted) return
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : t('Prompt reverse engineering failed')
+      )
+    } finally {
+      if (reversePromptControllerRef.current === controller) {
+        reversePromptControllerRef.current = null
+        setIsReversePrompting(false)
+      }
+    }
   }
 
   const polishPrompt = async () => {
@@ -824,6 +875,40 @@ export function Drawing(props: { initialPrompt?: string }) {
                 </Button>
               </div>
             </div>
+          </div>
+          <div className='mt-2 flex min-h-6 items-center'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <span className='inline-flex'>
+                      <Button
+                        aria-label={t('Reverse prompt')}
+                        className='h-6 rounded-full px-2 text-xs'
+                        disabled={
+                          referenceImages.length !== 1 ||
+                          Boolean(prompt.trim()) ||
+                          isGenerating ||
+                          isPolishing ||
+                          isReversePrompting
+                        }
+                        onClick={() => void reversePrompt()}
+                        type='button'
+                        variant='outline'
+                      >
+                        {isReversePrompting ? (
+                          <Loader2 className='animate-spin' />
+                        ) : null}
+                        {t('Reverse prompt')}
+                      </Button>
+                    </span>
+                  }
+                />
+                {reversePromptTooltip() ? (
+                  <TooltipContent>{reversePromptTooltip()}</TooltipContent>
+                ) : null}
+              </Tooltip>
+            </TooltipProvider>
           </div>
           {referenceError ? (
             <p className='text-destructive mt-2 text-sm' role='alert'>

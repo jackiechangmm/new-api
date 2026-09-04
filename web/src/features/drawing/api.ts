@@ -161,6 +161,39 @@ async function requestPromptPolishStage(
   return parseJsonResponse(content)
 }
 
+export async function reverseDrawingPrompt(
+  referenceImage: File,
+  signal?: AbortSignal
+): Promise<string> {
+  const response = await api.post<ChatCompletionResponse>(
+    '/v1/chat/completions',
+    {
+      model: DRAWING_PROMPT_POLISH_MODEL,
+      stream: false,
+      messages: [
+        {
+          role: 'system',
+          content:
+            '只输出提示词正文，不要解释。覆盖主体、构图、风格、光线、色彩、材质、镜头和氛围，尽量写成可直接用于生图模型的完整提示词。',
+        },
+        {
+          role: 'user',
+          content: await buildPolishUserContent(
+            '请根据参考图片反推一段适合用于 AI 生图的提示词。',
+            [referenceImage]
+          ),
+        },
+      ],
+    },
+    { signal, skipErrorHandler: true }
+  )
+  const content = response.data.choices?.[0]?.message?.content?.trim()
+  if (!content) {
+    throw new Error('Prompt reverse engineering returned an empty response')
+  }
+  return content
+}
+
 export async function polishDrawingPrompt(
   input: DrawingPromptPolishInput,
   signal?: AbortSignal
