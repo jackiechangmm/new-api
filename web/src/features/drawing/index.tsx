@@ -63,6 +63,7 @@ import {
   type ImageGenerationRequest,
 } from './api'
 import { getDrawingErrorMessage } from './error-message'
+import { focusPromptEditor } from './prompt-scroll'
 import { FeaturedPromptSection } from './featured-prompts/section'
 import {
   ImagePreviewDialog,
@@ -617,8 +618,7 @@ export function Drawing(props: { initialPrompt?: string }) {
   }
 
   const reuse = (record: DrawingHistoryRecord) => {
-    invalidatePromptPolish()
-    setPrompt(record.prompt)
+    selectPrompt(record.prompt)
     setModel(record.model)
     const savedSize = record.size.split(' ')
     setAspectRatio(savedSize.length === 2 ? savedSize[0] : 'auto')
@@ -632,7 +632,6 @@ export function Drawing(props: { initialPrompt?: string }) {
       files,
       getDrawingModelConfig(record.model)?.imageToImage?.input
     )
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const validateReferences = async (
@@ -707,8 +706,13 @@ export function Drawing(props: { initialPrompt?: string }) {
   const selectPrompt = (value: string) => {
     invalidatePromptPolish()
     setPrompt(value)
-    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
-    requestAnimationFrame(() => promptInputRef.current?.focus())
+    requestAnimationFrame(() => {
+      const input = promptInputRef.current
+      const scrollContainer = scrollRef.current
+      if (input && scrollContainer) {
+        focusPromptEditor(scrollContainer, input)
+      }
+    })
   }
 
   const changePromptPage = (page: number) => {
