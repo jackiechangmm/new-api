@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { createFileRoute, redirect } from '@tanstack/react-router'
+import { useAuthStore } from '@/stores/auth-store'
 
 export const Route = createFileRoute('/_authenticated/playground/canvas')({
   beforeLoad: async () => {
@@ -12,6 +14,18 @@ function isCanvasEnabled() {
 }
 
 function CanvasPage() {
+  const auth = useAuthStore((state) => state.auth)
+
+  useEffect(() => {
+    const host = window as Window & { newApiCanvasHost?: { getAuthHeaders: () => Record<string, string> } }
+    host.newApiCanvasHost = {
+      getAuthHeaders: () => auth.accessToken ? { Authorization: `Bearer ${auth.accessToken}` } : {},
+    }
+    return () => {
+      delete host.newApiCanvasHost
+    }
+  }, [auth.accessToken])
+
   return (
     <iframe
       title='Infinite Canvas'

@@ -5,7 +5,9 @@ type CanvasHost = { getAuthHeaders?: () => Promise<Record<string, string>> | Rec
 declare global { interface Window { newApiCanvasHost?: CanvasHost } }
 
 export async function getCanvasAuthHeaders() {
-    return (await window.newApiCanvasHost?.getAuthHeaders?.()) || {};
+    const parentWindow = window.parent as Window & { newApiCanvasHost?: CanvasHost };
+    const host = window.newApiCanvasHost || (window.parent !== window ? parentWindow.newApiCanvasHost : undefined);
+    return (await host?.getAuthHeaders?.()) || {};
 }
 
 export function setCanvasUser(user: { id: string; username?: string; displayName?: string; avatarUrl?: string } | null) {
