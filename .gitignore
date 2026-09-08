@@ -10,6 +10,10 @@ build
 logs
 web/dist
 web/node_modules
+canvas/web/dist
+canvas/web/node_modules
+canvas/web/.vite
+canvas/web/.vite-temp
 .env
 .env.preview
 one-api

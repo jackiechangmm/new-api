@@ -7,8 +7,15 @@ import { defineConfig, type Plugin } from "vite";
 import { parseChangelog } from "./src/lib/release";
 
 const webDir = dirname(fileURLToPath(import.meta.url));
-const localVersion = readFileSync(resolve(webDir, "../VERSION"), "utf8").trim() || "dev";
-const localChangelog = readFileSync(resolve(webDir, "../CHANGELOG.md"), "utf8");
+const localVersion = readFileSync(resolve(webDir, "../../VERSION"), "utf8").trim() || "dev";
+const changelogPath = resolve(webDir, "../../CHANGELOG.md");
+const localChangelog = (() => {
+    try {
+        return readFileSync(changelogPath, "utf8");
+    } catch {
+        return "";
+    }
+})();
 
 // Expose /plugins/index.json with local plugin files from public/plugins.
 // The frontend can discover and list them when enabled; development reads the directory live, while builds emit a static registry.
@@ -39,7 +46,7 @@ function localPluginsManifest(): Plugin {
 }
 
 export default defineConfig({
-    base: process.env.VITE_BASE || "/",
+    base: process.env.VITE_BASE || "/canvas/",
     plugins: [react(), localPluginsManifest()],
     resolve: {
         alias: {
