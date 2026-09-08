@@ -3,6 +3,7 @@ import localforage from "localforage";
 import { nanoid } from "nanoid";
 import i18n from "@/i18n";
 import { withLocalProxy } from "@/stores/use-config-store";
+import { useUserStore } from "@/stores/use-user-store";
 
 export type UploadedImage = {
     url: string;
@@ -14,6 +15,10 @@ export type UploadedImage = {
 };
 
 const store = localforage.createInstance({ name: "infinite-canvas", storeName: "image_files" });
+const userStorageKey = (key: string) => {
+    const userId = useUserStore.getState().user?.id;
+    return userId ? `${key}:${userId}` : `${key}:anonymous`;
+};
 const imageLogStore = localforage.createInstance({ name: "infinite-canvas", storeName: "image_generation_logs" });
 const videoLogStore = localforage.createInstance({ name: "infinite-canvas", storeName: "video_generation_logs" });
 const objectUrls = new Map<string, string>();
@@ -41,7 +46,7 @@ export async function uploadImage(input: string | Blob, options?: ImageReadOptio
 }
 
 async function storeImage(blob: Blob, options?: ImageReadOptions): Promise<UploadedImage> {
-    const storageKey = `image:${nanoid()}`;
+    const storageKey = userStorageKey(`image:${nanoid()}`);
     const url = URL.createObjectURL(blob);
     try {
         const meta = await loadImageMeta(url, options);
