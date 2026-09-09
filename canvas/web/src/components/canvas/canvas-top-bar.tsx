@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Images, Menu, PanelLeftClose, PanelLeftOpen, Plus, Redo2, Save, Trash2, Undo2 } from "lucide-react";
+import { AlertTriangle, Images, Menu, PanelLeftClose, PanelLeftOpen, Plus, Redo2, Save, Trash2, Undo2 } from "lucide-react";
 import { Button, Dropdown, Modal, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +8,7 @@ import { canvasThemes } from "@/lib/canvas-theme";
 import { useCanvasSidePanelStore } from "@/stores/use-canvas-side-panel-store";
 import { useThemeStore } from "@/stores/use-theme-store";
 
-export type SaveStatus = "saved" | "dirty" | "saving" | "error";
+export type SaveStatus = "saved" | "dirty" | "saving" | "error" | "conflict_warning";
 
 export function CanvasTopBar({
     title,
@@ -137,34 +137,11 @@ export function CanvasTopBar({
                     </div>
 
                     <div className="flex items-center gap-2 pl-2">
-                        {saveStatus === "saving" ? (
-                            <span className="flex items-center gap-1.5 text-xs text-stone-500">
-                                <span className="size-2 rounded-full animate-pulse bg-amber-500" />
-                                {t("canvas.saving")}
-                            </span>
-                        ) : saveStatus === "dirty" ? (
-                            <span className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
-                                <span className="size-2 rounded-full bg-amber-500" />
-                                {t("canvas.unsaved")}
-                            </span>
-                        ) : saveStatus === "error" ? (
-                            <button
-                                type="button"
-                                onClick={onSave}
-                                className="flex cursor-pointer items-center gap-1.5 text-xs text-rose-600 hover:underline dark:text-rose-400"
-                            >
-                                <span className="size-2 rounded-full bg-rose-500" />
-                                {t("canvas.saveFailed")}
-                            </button>
-                        ) : (
-                            <span className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
-                                <span className="size-2 rounded-full bg-emerald-500" />
-                                {t("canvas.saved")}
-                            </span>
-                        )}
+                        <SaveStatusBadge saveStatus={saveStatus} onSave={onSave} />
                         <Button
                             size="small"
-                            type={saveStatus === "dirty" ? "primary" : "default"}
+                            type={saveStatus === "dirty" || saveStatus === "conflict_warning" ? "primary" : "default"}
+                            danger={saveStatus === "error"}
                             loading={saveStatus === "saving"}
                             onClick={onSave}
                             className="text-xs"
@@ -198,6 +175,57 @@ export function CanvasTopBar({
                 </div>
             </Modal>
         </>
+    );
+}
+
+function SaveStatusBadge({ saveStatus, onSave }: { saveStatus: SaveStatus; onSave?: () => void }) {
+    const { t } = useTranslation();
+
+    if (saveStatus === "saving") {
+        return (
+            <span className="flex items-center gap-1.5 text-xs text-stone-500">
+                <span className="size-2 rounded-full animate-pulse bg-amber-500" />
+                {t("canvas.saving")}
+            </span>
+        );
+    }
+
+    if (saveStatus === "conflict_warning") {
+        return (
+            <span className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+                <AlertTriangle className="size-3.5 shrink-0 text-amber-500" />
+                {t("canvas.conflictWarning")}
+            </span>
+        );
+    }
+
+    if (saveStatus === "dirty") {
+        return (
+            <span className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+                <span className="size-2 rounded-full bg-amber-500" />
+                {t("canvas.unsaved")}
+            </span>
+        );
+    }
+
+    if (saveStatus === "error") {
+        return (
+            <button
+                type="button"
+                onClick={onSave}
+                className="flex cursor-pointer items-center gap-1.5 text-xs text-rose-600 hover:underline dark:text-rose-400"
+            >
+                <span className="size-2 rounded-full bg-rose-500" />
+                {t("canvas.saveFailed")}
+            </button>
+        );
+    }
+
+    return (
+        <span className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
+            <span className="size-2 rounded-full bg-emerald-500" />
+            {t("canvas.saved")}
+        </span>
     );
 }
 

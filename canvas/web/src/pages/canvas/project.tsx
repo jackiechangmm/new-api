@@ -72,7 +72,7 @@ import { registerBuiltinNodes } from "@/components/canvas/nodes/builtin-nodes";
 import { CanvasPluginManagerModal } from "@/components/canvas/canvas-plugin-manager-modal";
 import { CanvasRefreshShell } from "@/components/canvas/canvas-refresh-shell";
 import { CanvasTopBar, type SaveStatus } from "@/components/canvas/canvas-top-bar";
-import { updateCloudProject, ConflictError } from "@/services/api/project";
+import { updateCloudProject, fetchCloudProject, ConflictError, NotFoundError } from "@/services/api/project";
 import { ConnectionCreateMenu, NodeCreateMenu, type PendingConnectionCreate } from "@/components/canvas/canvas-create-menus";
 import {
     CanvasNodeType,
@@ -114,6 +114,24 @@ type CanvasGenerationRequest = {
     runningNodeId: string;
     controller: AbortController;
 };
+
+type RemoteCanvasContent = {
+    nodes?: CanvasNodeData[];
+    connections?: CanvasConnection[];
+    chatSessions?: CanvasAssistantSession[];
+    activeChatId?: string | null;
+    backgroundMode?: CanvasBackgroundMode;
+    showImageInfo?: boolean;
+    viewport?: ViewportTransform;
+};
+
+function isNotFoundError(err: unknown): boolean {
+    if (err instanceof NotFoundError) return true;
+    if (typeof err === "object" && err !== null && "status" in err && (err as { status: unknown }).status === 404) {
+        return true;
+    }
+    return false;
+}
 
 const VIDEO_NODE_MAX_WIDTH = 420;
 const VIDEO_NODE_MAX_HEIGHT = 420;
@@ -219,7 +237,12 @@ function InfiniteCanvasPage() {
     const currentProject = useCanvasStore((state) => state.projects.find((project) => project.id === projectId));
     const theme = canvasThemes[useThemeStore((state) => state.theme)];
     const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
+    const saveStatusRef = useRef(saveStatus);
+    saveStatusRef.current = saveStatus;
     const [conflictModalOpen, setConflictModalOpen] = useState(false);
+    const [deletedModalOpen, setDeletedModalOpen] = useState(false);
+    const lastVisibilityCheckTimeRef = useRef(0);
+    const inFlightRef = useRef(false);
     const [nodes, setNodes] = useState<CanvasNodeData[]>([]);
     const [connections, setConnections] = useState<CanvasConnection[]>([]);
     const [chatSessions, setChatSessions] = useState<CanvasAssistantSession[]>([]);
@@ -290,6 +313,19 @@ function InfiniteCanvasPage() {
     const generationRequestsRef = useRef(new Map<string, CanvasGenerationRequest>());
     const videoPollIdsRef = useRef(new Set<string>());
     const { generate: handleGenerateNode, retry: handleRetryNode, stop: stopGenerationByRunningId, runningIds } = useImageGeneration({ projectId, config: effectiveConfig, nodes, nodesRef, connectionsRef, setNodes, setConnections });
+    const runningIdsRef = useRef(runningIds);
+    runningIdsRef.current = runningIds;
+
+    const checkHasInFlightTasks = useCallback((nodeList: CanvasNodeData[]) => {
+        if (runningIdsRef.current.size > 0) return true;
+        if (generationRequestsRef.current.size > 0) return true;
+        return nodeList.some(
+            (node) =>
+                (node.metadata?.status as string) === "loading" ||
+                (node.metadata?.status as string) === "uploading" ||
+                Boolean(node.metadata?.images?.some((img) => (img.status as string) === "loading" || (img.status as string) === "uploading")),
+        );
+    }, []);
 
     const createHistoryEntry = useCallback(
         (): CanvasHistoryEntry => ({
@@ -428,8 +464,25 @@ function InfiniteCanvasPage() {
         [],
     );
 
+    const handleProjectDeleted = useCallback(() => {
+        if (autoSaveTimerRef.current) {
+            clearTimeout(autoSaveTimerRef.current);
+            autoSaveTimerRef.current = null;
+        }
+        const isDirty = isDirtyRef.current || getContentComparisonSnapshot() !== lastSavedContentRef.current;
+        if (!isDirty && !checkHasInFlightTasks(nodesRef.current)) {
+            message.info(t("canvas.projectDeletedCloud"));
+            setTimeout(() => {
+                navigate("/canvas", { replace: true });
+            }, 1500);
+        } else {
+            setSaveStatus("error");
+            setDeletedModalOpen(true);
+        }
+    }, [checkHasInFlightTasks, getContentComparisonSnapshot, message, navigate, t]);
+
     const executeSave = useCallback(async () => {
-        if (!projectLoaded || isSavingRef.current) return;
+        if (!projectLoaded || isSavingRef.current || checkHasInFlightTasks(nodesRef.current)) return;
 
         if (autoSaveTimerRef.current) {
             clearTimeout(autoSaveTimerRef.current);
@@ -454,6 +507,7 @@ function InfiniteCanvasPage() {
 
             currentRevisionRef.current = updated.revision;
             lastSavedContentRef.current = contentSnapshotCompare;
+            lastVisibilityCheckTimeRef.current = Date.now();
 
             useCanvasStore.setState((state) => ({
                 projects: state.projects.map((p) =>
@@ -471,9 +525,11 @@ function InfiniteCanvasPage() {
                 isDirtyWhileSavingRef.current = false;
                 isDirtyRef.current = true;
                 setSaveStatus("dirty");
-                autoSaveTimerRef.current = setTimeout(() => {
-                    void executeSave();
-                }, 10000);
+                if (!checkHasInFlightTasks(nodesRef.current)) {
+                    autoSaveTimerRef.current = setTimeout(() => {
+                        void executeSave();
+                    }, 10000);
+                }
             } else {
                 isDirtyRef.current = false;
                 setSaveStatus("saved");
@@ -487,11 +543,13 @@ function InfiniteCanvasPage() {
                 }
                 setSaveStatus("error");
                 setConflictModalOpen(true);
+            } else if (isNotFoundError(err)) {
+                handleProjectDeleted();
             } else {
                 setSaveStatus("error");
             }
         }
-    }, [currentProject?.title, getContentComparisonSnapshot, getFullContentSnapshot, projectId, projectLoaded, t, titleDraft]);
+    }, [checkHasInFlightTasks, currentProject?.title, getContentComparisonSnapshot, getFullContentSnapshot, handleProjectDeleted, projectId, projectLoaded, t, titleDraft]);
 
     useEffect(() => {
         let active = true;
@@ -605,6 +663,27 @@ function InfiniteCanvasPage() {
 
     useEffect(() => {
         if (!projectLoaded || historyPausedRef.current) return;
+
+        const inFlight = checkHasInFlightTasks(nodes);
+        const wasInFlight = inFlightRef.current;
+        inFlightRef.current = inFlight;
+
+        if (inFlight) {
+            if (autoSaveTimerRef.current) {
+                clearTimeout(autoSaveTimerRef.current);
+                autoSaveTimerRef.current = null;
+            }
+            isDirtyRef.current = true;
+            return;
+        }
+
+        if (wasInFlight && !inFlight) {
+            if (getContentComparisonSnapshot() !== lastSavedContentRef.current || isDirtyRef.current) {
+                void executeSave();
+                return;
+            }
+        }
+
         const currentContentJson = JSON.stringify({
             nodes,
             connections,
@@ -622,13 +701,15 @@ function InfiniteCanvasPage() {
             isDirtyRef.current = true;
         } else {
             isDirtyRef.current = true;
-            setSaveStatus("dirty");
-            if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
-            autoSaveTimerRef.current = setTimeout(() => {
-                void executeSave();
-            }, 10000);
+            if (saveStatusRef.current !== "conflict_warning") {
+                setSaveStatus("dirty");
+                if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+                autoSaveTimerRef.current = setTimeout(() => {
+                    void executeSave();
+                }, 10000);
+            }
         }
-    }, [activeChatId, backgroundMode, chatSessions, connections, executeSave, nodes, projectId, projectLoaded, showImageInfo, updateProject]);
+    }, [activeChatId, backgroundMode, chatSessions, checkHasInFlightTasks, connections, executeSave, getContentComparisonSnapshot, nodes, projectId, projectLoaded, showImageInfo, updateProject]);
 
     useEffect(() => {
         if (!dialogNodeId) setNodeImageSettingsOpen(false);
@@ -1763,9 +1844,130 @@ function InfiniteCanvasPage() {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [copySelectedNodes, deleteConnection, deleteNodes, executeSave, groupSelection, pasteCopiedNodes, pasteSystemClipboard, redoCanvas, selectedConnectionId, setConnecting, undoCanvas, ungroupSelection]);
 
+    const checkCloudUpdate = useCallback(async () => {
+        if (!projectLoaded || isSavingRef.current) return;
+        const now = Date.now();
+        if (now - lastVisibilityCheckTimeRef.current < 5000) return;
+        lastVisibilityCheckTimeRef.current = now;
+
+        try {
+            const remote = await fetchCloudProject(projectId);
+            if (remote.revision > currentRevisionRef.current) {
+                const isDirty = isDirtyRef.current || getContentComparisonSnapshot() !== lastSavedContentRef.current;
+                const inFlight = checkHasInFlightTasks(nodesRef.current);
+
+                if (!isDirty && !inFlight) {
+                    const currentViewport = viewportRef.current;
+
+                    let contentData: RemoteCanvasContent = {};
+                    if (typeof remote.content === "string") {
+                        try {
+                            contentData = JSON.parse(remote.content) as RemoteCanvasContent;
+                        } catch {
+                            contentData = {};
+                        }
+                    } else if (typeof remote.content === "object" && remote.content !== null) {
+                        contentData = remote.content as RemoteCanvasContent;
+                    }
+
+                    const rawNodes = Array.isArray(contentData.nodes) ? contentData.nodes : [];
+                    const rawConnections = Array.isArray(contentData.connections) ? contentData.connections : [];
+                    const rawSessions = Array.isArray(contentData.chatSessions) ? contentData.chatSessions : [];
+
+                    const restoredNodes = await hydrateCanvasImages(resetInterruptedGeneration(rawNodes));
+                    const restoredSessions = await hydrateAssistantImages(rawSessions);
+
+                    setNodes(restoredNodes);
+                    setConnections(rawConnections);
+                    setChatSessions(restoredSessions);
+                    if (contentData.activeChatId !== undefined) setActiveChatId(contentData.activeChatId);
+                    if (contentData.backgroundMode) setBackgroundMode(contentData.backgroundMode);
+                    if (contentData.showImageInfo !== undefined) setShowImageInfo(contentData.showImageInfo);
+                    if (remote.title) setTitleDraft(remote.title);
+
+                    setViewport(currentViewport);
+                    viewportRef.current = currentViewport;
+
+                    currentRevisionRef.current = remote.revision;
+
+                    lastSavedContentRef.current = JSON.stringify({
+                        nodes: restoredNodes,
+                        connections: rawConnections,
+                        chatSessions: restoredSessions,
+                        activeChatId: contentData.activeChatId ?? null,
+                        backgroundMode: contentData.backgroundMode ?? "lines",
+                        showImageInfo: contentData.showImageInfo ?? false,
+                    });
+
+                    lastHistoryRef.current = {
+                        nodes: restoredNodes,
+                        connections: rawConnections,
+                        chatSessions: restoredSessions,
+                        activeChatId: contentData.activeChatId ?? null,
+                        backgroundMode: contentData.backgroundMode ?? "lines",
+                        showImageInfo: contentData.showImageInfo ?? false,
+                    };
+                    historyRef.current = { past: [], future: [] };
+                    setHistoryState({ canUndo: false, canRedo: false });
+
+                    isDirtyRef.current = false;
+                    setSaveStatus("saved");
+
+                    useCanvasStore.setState((state) => ({
+                        projects: state.projects.map((p) =>
+                            p.id === projectId
+                                ? { ...p, title: remote.title, revision: remote.revision, updatedAt: new Date(remote.updated_at * 1000).toISOString() }
+                                : p,
+                        ),
+                    }));
+
+                    message.info(t("canvas.syncedCloudLatest"));
+                } else {
+                    if (autoSaveTimerRef.current) {
+                        clearTimeout(autoSaveTimerRef.current);
+                        autoSaveTimerRef.current = null;
+                    }
+                    setSaveStatus("conflict_warning");
+                }
+            }
+        } catch (err: unknown) {
+            if (isNotFoundError(err)) {
+                handleProjectDeleted();
+            }
+        }
+    }, [checkHasInFlightTasks, getContentComparisonSnapshot, handleProjectDeleted, message, projectId, projectLoaded, t]);
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === "visible") {
+                void checkCloudUpdate();
+            }
+        };
+        const handleFocus = () => {
+            if (document.visibilityState === "visible") {
+                void checkCloudUpdate();
+            }
+        };
+        const handleOnline = () => {
+            if (isDirtyRef.current && !checkHasInFlightTasks(nodesRef.current) && !isSavingRef.current) {
+                void executeSave();
+            }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        window.addEventListener("focus", handleFocus);
+        window.addEventListener("online", handleOnline);
+
+        return () => {
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+            window.removeEventListener("focus", handleFocus);
+            window.removeEventListener("online", handleOnline);
+        };
+    }, [checkCloudUpdate, checkHasInFlightTasks, executeSave]);
+
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (isDirtyRef.current) {
+            if (isDirtyRef.current || checkHasInFlightTasks(nodesRef.current)) {
                 event.preventDefault();
                 event.returnValue = "";
             }
@@ -1778,7 +1980,7 @@ function InfiniteCanvasPage() {
                 autoSaveTimerRef.current = null;
             }
         };
-    }, []);
+    }, [checkHasInFlightTasks]);
 
     const handleConnectStart = useCallback(
         (event: ReactMouseEvent, nodeId: string, handleType: "source" | "target") => {
@@ -2999,22 +3201,24 @@ function InfiniteCanvasPage() {
                                 setConflictModalOpen(false);
                                 try {
                                     const cloud = await loadProject(projectId);
-                                    setNodes(cloud.nodes);
-                                    setConnections(cloud.connections);
-                                    setChatSessions(cloud.chatSessions);
-                                    setActiveChatId(cloud.activeChatId);
-                                    setBackgroundMode(cloud.backgroundMode);
-                                    setShowImageInfo(cloud.showImageInfo);
-                                    setViewport(cloud.viewport);
-                                    viewportRef.current = cloud.viewport;
+                                    const restoredNodes = await hydrateCanvasImages(resetInterruptedGeneration(cloud.nodes));
+                                    const restoredSessions = await hydrateAssistantImages(cloud.chatSessions || []);
+                                    setNodes(restoredNodes);
+                                    setConnections(cloud.connections || []);
+                                    setChatSessions(restoredSessions);
+                                    setActiveChatId(cloud.activeChatId || null);
+                                    setBackgroundMode(cloud.backgroundMode || "lines");
+                                    setShowImageInfo(cloud.showImageInfo || false);
+                                    setViewport(cloud.viewport || { x: 0, y: 0, k: 1 });
+                                    viewportRef.current = cloud.viewport || { x: 0, y: 0, k: 1 };
                                     currentRevisionRef.current = cloud.revision;
                                     lastSavedContentRef.current = JSON.stringify({
-                                        nodes: cloud.nodes,
-                                        connections: cloud.connections,
-                                        chatSessions: cloud.chatSessions,
-                                        activeChatId: cloud.activeChatId,
-                                        backgroundMode: cloud.backgroundMode,
-                                        showImageInfo: cloud.showImageInfo,
+                                        nodes: restoredNodes,
+                                        connections: cloud.connections || [],
+                                        chatSessions: restoredSessions,
+                                        activeChatId: cloud.activeChatId || null,
+                                        backgroundMode: cloud.backgroundMode || "lines",
+                                        showImageInfo: cloud.showImageInfo || false,
                                     });
                                     isDirtyRef.current = false;
                                     setSaveStatus("saved");
@@ -3047,6 +3251,45 @@ function InfiniteCanvasPage() {
                     centered
                 >
                     <p className="py-2 text-sm text-stone-600 dark:text-stone-300">{t("canvas.conflictDescription")}</p>
+                </Modal>
+
+                <Modal
+                    title={t("canvas.deletedTitle")}
+                    open={deletedModalOpen}
+                    closable={false}
+                    mask={{ closable: false }}
+                    footer={[
+                        <Button
+                            key="discard"
+                            onClick={() => {
+                                setDeletedModalOpen(false);
+                                navigate("/canvas", { replace: true });
+                            }}
+                        >
+                            {t("canvas.discardAndExit")}
+                        </Button>,
+                        <Button
+                            key="saveAsCopy"
+                            type="primary"
+                            onClick={async () => {
+                                setDeletedModalOpen(false);
+                                try {
+                                    const baseTitle = currentProject?.title || titleDraft || t("canvas.projectPage.untitledCanvas");
+                                    const newTitle = `${baseTitle}${t("canvas.copySuffix")}`;
+                                    const contentSnapshot = getFullContentSnapshot();
+                                    const newId = await createProject(newTitle, JSON.stringify(contentSnapshot));
+                                    navigate(`/canvas/${newId}`);
+                                } catch {
+                                    message.error(t("canvas.saveAsCopyFailed"));
+                                }
+                            }}
+                        >
+                            {t("canvas.saveAsCopy")}
+                        </Button>,
+                    ]}
+                    centered
+                >
+                    <p className="py-2 text-sm text-stone-600 dark:text-stone-300">{t("canvas.deletedDescription")}</p>
                 </Modal>
             </section>
         </main>
