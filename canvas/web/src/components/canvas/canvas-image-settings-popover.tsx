@@ -4,7 +4,7 @@ import { Settings2 } from "lucide-react";
 import { Button } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { ImageSettingsPanel, imageQualityLabel, imageSizeLabel } from "@/components/image-settings-panel";
+import { ImageSettingsPanel, imageAspectLabel, imageQualityLabel } from "@/components/image-settings-panel";
 import { canvasThemes } from "@/lib/canvas-theme";
 import { useThemeStore } from "@/stores/use-theme-store";
 import type { AiConfig } from "@/stores/use-config-store";
@@ -29,7 +29,7 @@ export function CanvasImageSettingsPopover({ config, onConfigChange, onOpenChang
     const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
     const quality = config.quality;
     const count = Number(config.count) || 1;
-    const ratioLabel = imageSizeLabel(config.aspectRatio);
+    const ratioLabel = imageAspectLabel(config.aspectRatio);
     const sizeSummary = [config.resolution?.toUpperCase(), ratioLabel].filter(Boolean).join(" · ");
     const summary = [imageQualityLabel(quality), sizeSummary, t("canvas.controls.images", { count })].filter(Boolean).join(" · ");
     const updateOpen = (nextOpen: boolean) => {
@@ -95,13 +95,13 @@ function ImageSettingsPortal({
     const alignRight = placement?.endsWith("Right");
     const alignCenter = placement === "top" || placement === "bottom";
     const left = alignCenter ? buttonRect.left + buttonRect.width / 2 - width / 2 : alignRight ? buttonRect.right - width : buttonRect.left;
-    const topPlacement = placement?.startsWith("top");
+    const topPlacement = placement?.startsWith("top") && buttonRect.top > window.innerHeight / 2;
     const style = {
         position: "fixed",
         zIndex: 1200,
         width,
         left: Math.max(margin, Math.min(window.innerWidth - width - margin, left)),
-        ...(topPlacement ? { bottom: window.innerHeight - buttonRect.top + gap, maxHeight: Math.max(260, buttonRect.top - margin * 2) } : { top: buttonRect.bottom + gap, maxHeight: Math.max(260, window.innerHeight - buttonRect.bottom - margin * 2) }),
+        ...(topPlacement ? { bottom: window.innerHeight - buttonRect.top + gap, maxHeight: buttonRect.top - margin - gap } : { top: buttonRect.bottom + gap, maxHeight: window.innerHeight - buttonRect.bottom - margin - gap }),
         background: theme.toolbar.panel,
         borderRadius: 18,
         boxShadow: "0 18px 54px rgba(28, 25, 23, 0.16)",

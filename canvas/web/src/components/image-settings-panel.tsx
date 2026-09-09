@@ -13,7 +13,7 @@ export const imageQualityOptions = ["low", "medium"].map((value) => ({
         return imageQualityLabel(value);
     },
 }));
-export const imageAspectOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.aspectRatios.map((value) => ({ value, label: imageSizeLabel(value) }));
+export const imageAspectOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.aspectRatios.map((value) => ({ value, label: imageAspectLabel(value) }));
 export const imageScaleOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.resolutions.map((value) => ({ value, label: value.toUpperCase() }));
 
 type ImageSettingsPanelProps = {
@@ -88,7 +88,7 @@ export function ImageSettingsPanel({ config, onConfigChange, theme, showTitle = 
                             <div className="grid grid-cols-4 gap-2.5">
                                 {operation.sizing.aspectRatios.map((value) => (
                                     <OptionPill key={value} selected={config.aspectRatio === value} theme={theme} onClick={() => onConfigChange("aspectRatio", value)}>
-                                        {imageSizeLabel(value)}
+                                        {imageAspectLabel(value)}
                                     </OptionPill>
                                 ))}
                             </div>
@@ -162,12 +162,15 @@ function OptionPill({ selected, theme, onClick, children }: { selected: boolean;
     );
 }
 
+const qualityLabels: Record<string, string> = { auto: "自动", high: "高", medium: "中", low: "低" };
+
 export function imageQualityLabel(value: string | undefined) {
-    if (!value) return "";
-    return ["auto", "high", "medium", "low"].includes(value) ? i18n.t(`settingsPanels.common.${value}`) : value;
+    return (value && qualityLabels[value]) || value || "";
 }
 
-export function imageSizeLabel(size: string | undefined) {
-    if (!size || size === "auto") return i18n.t("settingsPanels.common.auto");
-    return size;
+export function imageAspectLabel(value: string | undefined) {
+    if (!value) return "";
+    return value === "auto" ? "自动" : value;
 }
+
+export const imageSizeLabel = imageAspectLabel;

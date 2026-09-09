@@ -85,14 +85,35 @@ export function imageSettingsIssues(settings: ImageSettings, available: readonly
 
 export function resolveImageSettings(global: ImageSettings, node?: Partial<Omit<ImageSettings, "count">> & { count?: number | string }): ImageSettings {
     const model = node?.model ?? global.model;
-    const isSupported = Boolean(getCanvasImageModel(model));
+    const canvasModel = getCanvasImageModel(model);
+    const capability = canvasModel?.operations.generation;
+    const defaults = capability?.defaults ?? defaultImageSettings;
+    const isSupported = Boolean(capability);
     const legacySize = Boolean(node?.size && !node.resolution && !node.aspectRatio);
+
+    if (isSupported && capability) {
+        const resolution = node?.resolution ?? global.resolution;
+        const aspectRatio = node?.aspectRatio ?? global.aspectRatio;
+        const quality = node?.quality ?? global.quality;
+        const count = Number(node?.count ?? global.count);
+
+        return {
+            model,
+            resolution: capability.sizing.resolutions.includes(resolution || "") ? resolution : defaults.resolution,
+            aspectRatio: capability.sizing.aspectRatios.includes(aspectRatio || "") ? aspectRatio : defaults.aspectRatio,
+            quality: capability.qualities ? (capability.qualities.includes(quality) ? quality : defaults.quality) : defaults.quality,
+            size: "",
+            background: capability.backgrounds?.includes(node?.background ?? "") ? (node?.background ?? "") : (capability.backgrounds?.includes(global.background) ? global.background : ""),
+            count: Number.isInteger(count) && count >= 1 && count <= capability.maxOutputs ? String(count) : defaults.count,
+        };
+    }
+
     return {
         model,
-        resolution: node?.resolution ?? (legacySize && !isSupported ? undefined : global.resolution),
-        aspectRatio: node?.aspectRatio ?? (legacySize && !isSupported ? undefined : global.aspectRatio),
+        resolution: node?.resolution ?? (legacySize ? undefined : global.resolution),
+        aspectRatio: node?.aspectRatio ?? (legacySize ? undefined : global.aspectRatio),
         quality: node?.quality ?? global.quality,
-        size: isSupported ? "" : (node?.size ?? global.size ?? ""),
+        size: node?.size ?? global.size ?? "",
         background: node?.background ?? global.background,
         count: String(node?.count ?? global.count),
     };
