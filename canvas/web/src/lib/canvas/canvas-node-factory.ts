@@ -1,3 +1,4 @@
+import { defaultImageSettings } from "@/lib/canvas/image-models";
 import { isCanvasNodeAllowed } from "@/lib/canvas/canvas-capabilities";
 import i18n from "@/i18n";
 import { getNodeSpec, NODE_DEFAULT_SIZE } from "@/constant/canvas";
@@ -23,7 +24,7 @@ export function createCanvasNode(type: CanvasNodeTypeId, position: Position, met
         },
         width: spec.width,
         height: spec.height,
-        metadata: { ...spec.metadata, ...metadata },
+        metadata: { ...spec.metadata, ...(type === CanvasNodeType.Image || type === CanvasNodeType.Config ? { ...defaultImageSettings, count: Number(defaultImageSettings.count) } : {}), ...metadata },
     };
 }
 
@@ -48,8 +49,10 @@ export function buildImageGenerationMetadata(type: CanvasImageGenerationType, co
         generationType: type,
         model: config.model,
         size: config.size,
+        resolution: config.resolution,
+        aspectRatio: config.aspectRatio,
         quality: config.quality,
-        ...(config.background ? { background: config.background } : {}),
+        background: config.background,
         count,
         references: references.map(referenceUrl).filter((url): url is string => Boolean(url)),
     };
@@ -69,6 +72,7 @@ export function applyNodeConfigPatch(node: CanvasNodeData, patch: Partial<Canvas
     const safePatch = patch || {};
     const next = { ...node, metadata: { ...node.metadata, ...safePatch } };
     const spec = node.type === CanvasNodeType.Video ? NODE_DEFAULT_SIZE[CanvasNodeType.Video] : NODE_DEFAULT_SIZE[CanvasNodeType.Image];
-    const size = typeof safePatch.size === "string" && !node.metadata?.content ? nodeSizeFromRatio(safePatch.size, spec.width, spec.height) : null;
+    const requestedSize = safePatch.aspectRatio ?? safePatch.size;
+    const size = typeof requestedSize === "string" && !node.metadata?.content ? nodeSizeFromRatio(requestedSize, spec.width, spec.height) : null;
     return size && (node.type === CanvasNodeType.Image || node.type === CanvasNodeType.Video) ? { ...next, ...size, position: { x: node.position.x + node.width / 2 - size.width / 2, y: node.position.y + node.height / 2 - size.height / 2 } } : next;
 }

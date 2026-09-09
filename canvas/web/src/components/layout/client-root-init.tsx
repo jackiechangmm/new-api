@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { getCanvasHost, fetchCanvasModels } from "@/services/host-auth";
+import { useConfigStore } from "@/stores/use-config-store";
 import { useUserStore } from "@/stores/use-user-store";
 import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
 import { useAssetStore } from "@/stores/use-asset-store";
@@ -13,7 +14,6 @@ export function ClientRootInit({ children }: { children: ReactNode }) {
     const { t } = useTranslation();
     const [ready, setReady] = useState(false);
     const [error, setError] = useState("");
-    const [attempt, setAttempt] = useState(0);
 
     useEffect(() => {
         let active = true;
@@ -27,12 +27,15 @@ export function ClientRootInit({ children }: { children: ReactNode }) {
             useUserStore.setState({ user: { ...user, displayName: user.displayName || "", avatarUrl: "" } });
             unsubscribe = host.subscribe(() => {
                 active = false;
+                useConfigStore.getState().setAvailableModels([]);
                 setReady(false);
                 setError(t("integration.sessionExpired"));
             });
             // 身份确定后才恢复账号数据；StrictMode 重挂载复用同一次初始化。
             initialization ??= (async () => {
-                await fetchCanvasModels();
+                const models = await fetchCanvasModels();
+                if (host.getUser()?.id !== user.id) throw new Error(t("integration.sessionExpired"));
+                useConfigStore.getState().setAvailableModels(models);
                 await Promise.all([useCanvasStore.persist.rehydrate(), useAssetStore.persist.rehydrate()]);
                 if (!useCanvasStore.getState().hydrated || !useAssetStore.getState().hydrated) throw new Error(t("integration.storageFailed"));
             })().catch((reason) => {
@@ -53,13 +56,13 @@ export function ClientRootInit({ children }: { children: ReactNode }) {
             active = false;
             unsubscribe();
         };
-    }, [attempt, t]);
+    }, [t]);
 
     if (!ready)
         return (
             <main className="flex h-dvh flex-col items-center justify-center gap-4 p-6 text-sm" role="status">
                 <p>{error || t("canvas.loading")}</p>
-                {error ? <Button onClick={() => setAttempt((value) => value + 1)}>{t("canvas.node.retry")}</Button> : null}
+                {error ? <Button onClick={() => window.location.reload()}>{t("canvas.node.retry")}</Button> : null}
             </main>
         );
     return (

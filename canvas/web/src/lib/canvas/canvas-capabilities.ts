@@ -2,7 +2,7 @@ import i18n from "@/i18n";
 import { CanvasNodeType, type CanvasNodeData } from "@/types/canvas";
 
 export const canvasCapabilities = {
-    generation: false,
+    generation: true,
     imageEditing: false,
     auxiliaryText: false,
     video: false,

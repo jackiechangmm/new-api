@@ -1,3 +1,4 @@
+import { defaultImageSettings, filterCanvasImageModels } from "@/lib/canvas/image-models";
 import { canvasCapabilities, requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { useMemo } from "react";
 import { create } from "zustand";
@@ -50,6 +51,8 @@ export type AiConfig = {
     models: string[];
     quality: string;
     size: string;
+    resolution?: string;
+    aspectRatio?: string;
     background: string;
     count: string;
     canvasImageCount: string;
@@ -98,8 +101,8 @@ export const defaultConfig: AiConfig = {
             ],
         },
     ],
-    model: "default::gpt-image-2",
-    imageModel: "default::gpt-image-2",
+    model: defaultImageSettings.model,
+    imageModel: defaultImageSettings.model,
     videoModel: "default::grok-imagine-video",
     textModel: "default::gpt-5.5",
     audioModel: "default::gpt-4o-mini-tts",
@@ -115,11 +118,13 @@ export const defaultConfig: AiConfig = {
     systemPrompt: "",
     reasoningEffort: "auto",
     models: ["default::gpt-image-2", "default::grok-imagine-video", "default::gpt-5.5", "default::gpt-4o-mini-tts"],
-    quality: "auto",
-    size: "1:1",
+    quality: defaultImageSettings.quality,
+    size: "",
+    resolution: defaultImageSettings.resolution,
+    aspectRatio: defaultImageSettings.aspectRatio,
     background: "",
     count: "1",
-    canvasImageCount: "3",
+    canvasImageCount: "1",
     proxyEnabled: false,
     proxyUrl: DEFAULT_LOCAL_PROXY_URL,
 };
@@ -133,6 +138,8 @@ export const defaultWebdavSyncConfig: WebdavSyncConfig = {
 };
 
 type ConfigStore = {
+    availableModels: string[];
+    setAvailableModels: (models: string[]) => void;
     config: AiConfig;
     webdav: WebdavSyncConfig;
     isConfigOpen: boolean;
@@ -182,16 +189,16 @@ export function modelMatchesCapability(config: AiConfig, value: string, capabili
 }
 
 export function resolveModelForCapability(config: AiConfig, currentModel: string | undefined, capability: ModelCapability) {
-    const defaultModel = capability === "image" ? config.imageModel : capability === "video" ? config.videoModel : capability === "audio" ? config.audioModel : config.textModel;
-    const fallbackModel = capability === "image" ? defaultConfig.imageModel : capability === "video" ? defaultConfig.videoModel : capability === "audio" ? defaultConfig.audioModel : defaultConfig.textModel;
+    if (capability === "image") return currentModel ?? config.imageModel;
+    const defaultModel = capability === "video" ? config.videoModel : capability === "audio" ? config.audioModel : config.textModel;
+    const fallbackModel = capability === "video" ? defaultConfig.videoModel : capability === "audio" ? defaultConfig.audioModel : defaultConfig.textModel;
     if (currentModel && modelMatchesCapability(config, currentModel, capability)) return currentModel;
     if (defaultModel && modelMatchesCapability(config, defaultModel, capability)) return defaultModel;
     return fallbackModel;
 }
 
 export function selectableModelsByCapability(config: AiConfig, capability?: ModelCapability) {
-    if (!capability) return config.models;
-    return config.channels.flatMap((channel) => channel.models.filter((model) => model.capability === capability).map((model) => encodeChannelModel(channel.id, model.name)));
+    return !capability || capability === "image" ? filterCanvasImageModels(config.models) : [];
 }
 
 /** The user script (if any) attached to a model; empty string means use the system default call. */
@@ -200,14 +207,14 @@ export function resolveModelScript(config: AiConfig, value: string) {
 }
 
 function isAiConfigReady(config: AiConfig, model: string) {
-    if (!canvasCapabilities.generation) return false;
-    const channel = resolveModelChannel(config, model);
-    return Boolean(model.trim() && channel.baseUrl.trim() && channel.apiKey.trim());
+    return canvasCapabilities.generation && filterCanvasImageModels(config.models).includes(model);
 }
 
 export const useConfigStore = create<ConfigStore>()(
     persist(
         (set, get) => ({
+            availableModels: [],
+            setAvailableModels: (models) => set({ availableModels: filterCanvasImageModels(models) }),
             config: defaultConfig,
             webdav: defaultWebdavSyncConfig,
             isConfigOpen: false,
@@ -274,7 +281,7 @@ export const useConfigStore = create<ConfigStore>()(
                         videoGenerateAudio: config.videoGenerateAudio || "true",
                         videoWatermark: config.videoWatermark || "false",
                         videoMode: config.videoMode === "reference" ? "reference" : "frames",
-                        canvasImageCount: config.canvasImageCount || "3",
+                        canvasImageCount: config.canvasImageCount || "1",
                         proxyEnabled: Boolean(config.proxyEnabled),
                         proxyUrl: config.proxyUrl || DEFAULT_LOCAL_PROXY_URL,
                     },
@@ -286,7 +293,8 @@ export const useConfigStore = create<ConfigStore>()(
 
 export function useEffectiveConfig() {
     const config = useConfigStore((state) => state.config);
-    return useMemo(() => ({ ...config, channelMode: "local" as const, channels: [], models: [], apiKey: "", baseUrl: "", proxyEnabled: false }), [config]);
+    const models = useConfigStore((state) => state.availableModels);
+    return useMemo(() => ({ ...config, channelMode: "local" as const, channels: [], models, apiKey: "", baseUrl: "", proxyEnabled: false }), [config, models]);
 }
 
 /** Normalize a mixed list of raw model names or model objects into deduped ChannelModel entries. */

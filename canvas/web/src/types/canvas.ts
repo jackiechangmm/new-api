@@ -53,9 +53,12 @@ export type CanvasNodeMetadata = {
     fontSize?: number;
     generationMode?: CanvasGenerationMode;
     generationType?: CanvasImageGenerationType;
+    generationId?: string;
     model?: string;
     reasoningEffort?: "auto" | "low" | "medium" | "high" | "xhigh";
     size?: string;
+    resolution?: string;
+    aspectRatio?: string;
     quality?: string;
     background?: string;
     count?: number;

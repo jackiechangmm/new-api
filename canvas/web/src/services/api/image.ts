@@ -1,4 +1,7 @@
 import { requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
+import { buildCanvasImageRequest } from "@/lib/canvas/image-models";
+import { fetchCanvasModels, getCanvasAuthHeaders, getCanvasHost } from "@/services/host-auth";
+import { useUserStore } from "@/stores/use-user-store";
 import axios from "axios";
 
 import i18n from "@/i18n";
@@ -246,7 +249,12 @@ function resolveImageSource(item: Record<string, unknown>) {
         return `data:image/png;base64,${item.b64_json}`;
     }
     if (typeof item.url === "string" && item.url) {
-        return item.url;
+        try {
+            const url = new URL(item.url);
+            if (url.protocol === "https:" || url.protocol === "http:") return url.href;
+        } catch {
+            return null;
+        }
     }
     return null;
 }
@@ -723,60 +731,30 @@ function parseGeminiImagePayload(payload: GeminiPayload) {
 
 export async function requestGeneration(config: AiConfig, prompt: string, options?: RequestOptions) {
     requireCanvasCapability("generation");
-    const requestConfig = resolveModelRequestConfig(config, config.model || config.imageModel);
-    const n = Math.max(1, Math.min(15, Math.floor(Math.abs(Number(config.count)) || 1)));
-    const script = resolveModelScript(config, config.model || config.imageModel);
-    if (script) {
-        const quality = normalizeQuality(config.quality);
-        const requestSize = resolveRequestSize(quality, config.size);
-        const background = normalizeBackground(config.background);
-        try {
-            const result = await runModelPlugin({
-                capability: "image",
-                script,
-                config: requestConfig,
-                prompt: withSystemPrompt(requestConfig, prompt),
-                images: [],
-                params: { size: requestSize, quality, count: n, ...(background ? { background } : {}) },
-                signal: options?.signal,
-            });
-            return normalizePluginImages(result).map((dataUrl) => ({ id: nanoid(), dataUrl }));
-        } catch (error) {
-            throw new Error(readAxiosError(error, apiText("requestFailed")));
-        }
-    }
-    if (requestConfig.apiFormat === "gemini") {
-        try {
-            return await requestGeminiImages(requestConfig, prompt, [], n, options);
-        } catch (error) {
-            throw new Error(readAxiosError(error, apiText("requestFailed")));
-        }
-    }
-    const quality = normalizeQuality(config.quality);
-    const requestSize = resolveRequestSize(quality, config.size);
-    const background = normalizeBackground(config.background);
+    options?.signal?.throwIfAborted();
+    buildCanvasImageRequest(config, prompt, config.models);
+    const userId = useUserStore.getState().user?.id;
+    const models = await fetchCanvasModels(options?.signal);
+    const body = buildCanvasImageRequest(config, prompt, models);
+    const headers = await getCanvasAuthHeaders();
+    options?.signal?.throwIfAborted();
+    if (getCanvasHost().getUser()?.id !== userId) throw new Error(i18n.t("integration.sessionExpired"));
     try {
         const response = await axios.post<ImageApiResponse>(
-            aiApiUrl(requestConfig, "/images/generations"),
-            {
-                model: requestConfig.model,
-                prompt: withSystemPrompt(requestConfig, prompt),
-                n,
-                ...(quality ? { quality } : {}),
-                ...(requestSize ? { size: requestSize } : {}),
-                ...(background ? { background } : {}),
-                // gpt-image models reject response_format; they always return b64.
-                ...(/gpt-image/.test(requestConfig.model) ? {} : { response_format: "b64_json" }),
-                output_format: IMAGE_OUTPUT_FORMAT,
-            },
-            {
-                headers: aiHeaders(requestConfig, "application/json"),
-                signal: options?.signal,
-            },
+            "/v1/images/generations", body, { headers, signal: options?.signal },
         );
-        const images = await parseImagePayload(response.data);
-        return images;
+        options?.signal?.throwIfAborted();
+        if (getCanvasHost().getUser()?.id !== userId || useUserStore.getState().user?.id !== userId) throw new Error(i18n.t("integration.sessionExpired"));
+        const payload = response.data;
+        if (!payload || typeof payload !== "object" || !Array.isArray(payload.data)) {
+            throw new Error(readApiErrorMessage(payload) || i18n.t("integration.invalidResponse"));
+        }
+        if (payload.error) throw new Error(readApiErrorMessage(payload));
+        if (!payload.data.length || payload.data.some((item) => !item || typeof item !== "object" || !resolveImageSource(item))) throw new Error(i18n.t("integration.invalidResponse"));
+        return parseImagePayload(payload);
     } catch (error) {
+        options?.signal?.throwIfAborted();
+        if (axios.isCancel(error)) throw new DOMException("Aborted", "AbortError");
         throw new Error(readAxiosError(error, apiText("requestFailed")));
     }
 }

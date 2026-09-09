@@ -16,9 +16,8 @@ import { CanvasNodeType } from "@/types/canvas";
 
 const config = { ...defaultConfig, apiKey: "legacy-key", baseUrl: "https://invalid.example" };
 
-test("M1 拒绝所有模型执行及外部服务调用，包括旧凭据和脚本", async () => {
+test("M2 仍拒绝编辑、辅助模型、插件与外部服务调用", async () => {
     const requests = [
-        () => requestGeneration(config, "prompt"),
         () => requestEdit(config, "prompt", []),
         () => requestImageQuestion(config, [], () => {}),
         () => fetchImageModels(config),
@@ -31,6 +30,7 @@ test("M1 拒绝所有模型执行及外部服务调用，包括旧凭据和脚�
         () => testWebdavConnection({ url: "https://invalid.example", username: "a", password: "legacy", directory: "", lastSyncedAt: "" }),
         () => exportCanvasProjects([]),
     ];
+    await assert.rejects(() => requestGeneration(config, "prompt"), /当前不可用/);
     for (const request of requests) await assert.rejects(request, /此功能尚未开放/);
     assert.throws(() => activatePlugin({ id: "legacy", name: "legacy", version: "1", nodes: [] }), /此功能尚未开放/);
     assert.throws(() => useCanvasStore.getState().importProject({ nodes: [] }), /此功能尚未开放/);

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("主站认证刷新、账号隔离和 M1 入口封闭", async ({ page }) => {
+test("主站认证刷新、账号隔离和首期入口封闭", async ({ page }) => {
     let account = "a";
     let refreshes = 0;
     const modelHeaders: string[] = [];
@@ -40,7 +40,8 @@ test("主站认证刷新、账号隔离和 M1 入口封闭", async ({ page }) =>
     expect(modelHeaders).toContain("Bearer test-a-2");
     await canvas.getByRole("button", { name: "新建画布", exact: true }).first().click();
     await expect(canvas.getByRole("button", { name: "文本", exact: true })).toBeVisible();
-    for (const name of ["视频", "音频", "生成配置", "提示词库"]) {
+    await expect(canvas.getByRole("button", { name: "生成配置", exact: true }).first()).toBeVisible();
+    for (const name of ["视频", "音频", "提示词库"]) {
         await expect(canvas.getByRole("button", { name, exact: true })).toHaveCount(0);
     }
     await canvas.getByRole("button", { name: "文本", exact: true }).click();
