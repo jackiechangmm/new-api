@@ -1,39 +1,73 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
-import { App } from "antd";
+import { useEffect, useState } from "react";
+import { Button } from "antd";
 import { useTranslation } from "react-i18next";
+import { getCanvasHost, fetchCanvasModels } from "@/services/host-auth";
+import { useUserStore } from "@/stores/use-user-store";
+import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
+import { useAssetStore } from "@/stores/use-asset-store";
 
-import { useConfigStore } from "@/stores/use-config-store";
-import { usePromptSourceScheduler } from "@/hooks/use-prompt-source-scheduler";
+let initialization: Promise<void> | undefined;
 
 export function ClientRootInit({ children }: { children: ReactNode }) {
-    const { message } = App.useApp();
     const { t } = useTranslation();
-    const handledConfigParams = useRef(false);
-    const importChannelCredentials = useConfigStore((state) => state.importChannelCredentials);
-    const openConfigDialog = useConfigStore((state) => state.openConfigDialog);
-
-    usePromptSourceScheduler();
+    const [ready, setReady] = useState(false);
+    const [error, setError] = useState("");
+    const [attempt, setAttempt] = useState(0);
 
     useEffect(() => {
-        if (handledConfigParams.current) return;
-        const searchParams = new URLSearchParams(window.location.search);
-        const baseUrl = searchParams.get("baseUrl") || searchParams.get("baseurl");
-        const apiKey = searchParams.get("apiKey") || searchParams.get("apikey");
-        if (!baseUrl && !apiKey) return;
-        handledConfigParams.current = true;
-        searchParams.delete("baseUrl");
-        searchParams.delete("baseurl");
-        searchParams.delete("apiKey");
-        searchParams.delete("apikey");
-        window.history.replaceState(null, "", `${window.location.pathname}${searchParams.size ? `?${searchParams}` : ""}${window.location.hash}`);
-        const result = importChannelCredentials({ baseUrl, apiKey });
-        openConfigDialog(false, "channels");
-        if (result.status === "created") message.success(t("config.importedChannelCreated", { name: result.channelName }));
-        else if (result.status === "updated") message.success(t("config.importedChannelUpdated", { name: result.channelName }));
-        else if (result.status === "missing-base-url") message.error(t("config.importedChannelBaseUrlRequired"));
-        else message.error(t("config.importedChannelBaseUrlInvalid"));
-    }, [importChannelCredentials, message, openConfigDialog, t]);
+        let active = true;
+        let unsubscribe = () => {};
+        setReady(false);
+        setError("");
+        try {
+            const host = getCanvasHost();
+            const user = host.getUser();
+            if (!user) throw new Error(t("integration.sessionExpired"));
+            useUserStore.setState({ user: { ...user, displayName: user.displayName || "", avatarUrl: "" } });
+            unsubscribe = host.subscribe(() => {
+                active = false;
+                setReady(false);
+                setError(t("integration.sessionExpired"));
+            });
+            // 身份确定后才恢复账号数据；StrictMode 重挂载复用同一次初始化。
+            initialization ??= (async () => {
+                await fetchCanvasModels();
+                await Promise.all([useCanvasStore.persist.rehydrate(), useAssetStore.persist.rehydrate()]);
+                if (!useCanvasStore.getState().hydrated || !useAssetStore.getState().hydrated) throw new Error(t("integration.storageFailed"));
+            })().catch((reason) => {
+                initialization = undefined;
+                throw reason;
+            });
+            void initialization
+                .then(() => {
+                    if (active && host.getUser()?.id === user.id) setReady(true);
+                })
+                .catch((reason) => {
+                    if (active) setError(reason instanceof Error ? reason.message : t("integration.storageFailed"));
+                });
+        } catch (reason) {
+            setError(reason instanceof Error ? reason.message : t("integration.hostRequired"));
+        }
+        return () => {
+            active = false;
+            unsubscribe();
+        };
+    }, [attempt, t]);
 
-    return <>{children}</>;
+    if (!ready)
+        return (
+            <main className="flex h-dvh flex-col items-center justify-center gap-4 p-6 text-sm" role="status">
+                <p>{error || t("canvas.loading")}</p>
+                {error ? <Button onClick={() => setAttempt((value) => value + 1)}>{t("canvas.node.retry")}</Button> : null}
+            </main>
+        );
+    return (
+        <div className="flex h-dvh flex-col">
+            <div className="shrink-0 border-b bg-background px-4 py-1 text-xs text-muted-foreground" role="status">
+                {t("integration.preview")}
+            </div>
+            <div className="min-h-0 flex-1">{children}</div>
+        </div>
+    );
 }

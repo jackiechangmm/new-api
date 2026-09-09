@@ -1,3 +1,4 @@
+import { canvasCapabilities, requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { useMemo } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -199,6 +200,7 @@ export function resolveModelScript(config: AiConfig, value: string) {
 }
 
 function isAiConfigReady(config: AiConfig, model: string) {
+    if (!canvasCapabilities.generation) return false;
     const channel = resolveModelChannel(config, model);
     return Boolean(model.trim() && channel.baseUrl.trim() && channel.apiKey.trim());
 }
@@ -219,6 +221,7 @@ export const useConfigStore = create<ConfigStore>()(
                     },
                 })),
             importChannelCredentials: (input) => {
+                requireCanvasCapability("externalConfig");
                 const currentConfig = get().config;
                 const result = upsertChannelCredentials(currentConfig, input);
                 if (result.config !== currentConfig) set({ config: result.config });
@@ -232,12 +235,13 @@ export const useConfigStore = create<ConfigStore>()(
                     },
                 })),
             isAiConfigReady: (config, model) => isAiConfigReady(config, model),
-            openConfigDialog: (shouldPromptContinue = false, configTab = "channels") => set({ isConfigOpen: true, shouldPromptContinue, configTab }),
-            setConfigDialogOpen: (isConfigOpen) => set({ isConfigOpen }),
+            openConfigDialog: (shouldPromptContinue = false, configTab = "channels") => { if (canvasCapabilities.externalConfig) set({ isConfigOpen: true, shouldPromptContinue, configTab }); },
+            setConfigDialogOpen: (isConfigOpen) => set({ isConfigOpen: canvasCapabilities.externalConfig && isConfigOpen }),
             clearPromptContinue: () => set({ shouldPromptContinue: false }),
         }),
         {
             name: CONFIG_STORE_KEY,
+            skipHydration: true,
             partialize: (state) => ({ config: state.config, webdav: state.webdav }),
             merge: (persisted, current) => {
                 const persistedState = (persisted || {}) as Partial<ConfigStore>;
@@ -282,7 +286,7 @@ export const useConfigStore = create<ConfigStore>()(
 
 export function useEffectiveConfig() {
     const config = useConfigStore((state) => state.config);
-    return useMemo(() => ({ ...config, channelMode: "local" as const }), [config]);
+    return useMemo(() => ({ ...config, channelMode: "local" as const, channels: [], models: [], apiKey: "", baseUrl: "", proxyEnabled: false }), [config]);
 }
 
 /** Normalize a mixed list of raw model names or model objects into deduped ChannelModel entries. */

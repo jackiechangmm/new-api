@@ -1,3 +1,4 @@
+import { requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import i18n from "@/i18n";
 import type { PromptSource } from "./prompt-source-presets";
 
@@ -29,6 +30,7 @@ async function fetchSource(source: PromptSource, options?: RunOptions) {
 }
 
 export async function runPromptSource(source: PromptSource, options?: RunOptions): Promise<RawPrompt[]> {
+    requireCanvasCapability("externalPrompts");
     if (!source.url.trim()) throw new Error(i18n.t("config.promptSources.runtime.urlRequired"));
     let data: unknown;
     try {

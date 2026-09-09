@@ -1,4 +1,13 @@
 export default {
+    integration: {
+        unavailable: "This feature is not available yet",
+        unsupportedProject: "This project contains unsupported nodes or generation modes and cannot be opened yet. The original data has not been changed.",
+        hostRequired: "Open the canvas from the main application",
+        sessionExpired: "Your session has expired. Sign in again in the main application.",
+        modelsFailed: "Unable to verify model access. Please retry.",
+        storageFailed: "Unable to read local projects or assets. Please retry.",
+        preview: "Integration preview: projects are stored only in this browser, not in the cloud.",
+    },
     meta: {
         title: "Infinite Canvas",
         description: "An infinite canvas creation tool",

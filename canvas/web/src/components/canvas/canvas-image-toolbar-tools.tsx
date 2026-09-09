@@ -132,10 +132,12 @@ export const imageToolDefinitions: ImageToolDefinition[] = [
     },
 ];
 
-export const defaultImageQuickToolIds: ImageQuickToolId[] = [...defaultBaseToolIds, ...imageToolDefinitions.filter((tool) => tool.defaultVisible).map((tool) => tool.id)];
+const enabledImageTools = new Set<ImageNodeActionToolId>(["copyPrompt", "replace", "resize", "crop", "split", "view"]);
+
+export const defaultImageQuickToolIds: ImageQuickToolId[] = [...defaultBaseToolIds, ...imageToolDefinitions.filter((tool) => tool.defaultVisible && enabledImageTools.has(tool.id)).map((tool) => tool.id)];
 
 export function buildImageToolbarTools(node: CanvasNodeData, handlers: ImageToolHandlers) {
-    return imageToolDefinitions.map((tool) => ({
+    return imageToolDefinitions.filter((tool) => enabledImageTools.has(tool.id)).map((tool) => ({
         id: tool.id,
         label: resolveToolText(tool.label, node),
         title: resolveToolText(tool.title, node),

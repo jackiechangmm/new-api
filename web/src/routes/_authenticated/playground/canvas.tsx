@@ -1,5 +1,10 @@
-import { useEffect } from 'react'
 import { createFileRoute, redirect } from '@tanstack/react-router'
+import { useLayoutEffect, useState } from 'react'
+
+import {
+  createCanvasHost,
+  type CanvasHost,
+} from '@/features/canvas/canvas-host'
 import { useAuthStore } from '@/stores/auth-store'
 
 export const Route = createFileRoute('/_authenticated/playground/canvas')({
@@ -16,18 +21,30 @@ function isCanvasEnabled() {
 function CanvasPage() {
   const auth = useAuthStore((state) => state.auth)
 
-  useEffect(() => {
-    const host = window as Window & { newApiCanvasHost?: { getAuthHeaders: () => Record<string, string> } }
-    host.newApiCanvasHost = {
-      getAuthHeaders: () => auth.accessToken ? { Authorization: `Bearer ${auth.accessToken}` } : {},
-    }
-    return () => {
-      delete host.newApiCanvasHost
-    }
-  }, [auth.accessToken])
+  const sessionKey = `${auth.user?.id ?? ''}:${auth.session?.sid ?? ''}`
+  const [readySession, setReadySession] = useState<string | null>(null)
 
+  useLayoutEffect(() => {
+    const hostWindow = window as Window & { newApiCanvasHost?: CanvasHost }
+    const host = createCanvasHost()
+    hostWindow.newApiCanvasHost = host
+    setReadySession(host.getUser() ? sessionKey : null)
+    return () => {
+      if (hostWindow.newApiCanvasHost === host) {
+        delete hostWindow.newApiCanvasHost
+      }
+    }
+  }, [sessionKey])
+
+  if (!auth.user || !auth.accessToken || readySession !== sessionKey) {
+    return null
+  }
+
+  // 同域受信任子应用需要直接读取宿主接口；不把 iframe 当作安全隔离。
   return (
+    // oxlint-disable-next-line react/iframe-missing-sandbox
     <iframe
+      key={sessionKey}
       title='Infinite Canvas'
       src='/canvas/'
       className='h-full w-full border-0'

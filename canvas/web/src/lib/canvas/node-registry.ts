@@ -1,3 +1,4 @@
+import { isCanvasNodeAllowed, requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { create } from "zustand";
 
 import i18n from "@/i18n";
@@ -15,7 +16,8 @@ function bump() {
 }
 
 export function registerNodeDefinitions(defs: CanvasNodeDefinition[], pluginId = "builtin") {
-    defs.forEach((def) => {
+    if (pluginId !== "builtin") requireCanvasCapability("plugins");
+    defs.filter((def) => isCanvasNodeAllowed(def.type)).forEach((def) => {
         definitions.set(def.type, def);
         ownerByType.set(def.type, pluginId);
     });

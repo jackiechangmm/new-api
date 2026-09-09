@@ -1,3 +1,5 @@
+import { isCanvasNodeAllowed } from "@/lib/canvas/canvas-capabilities";
+import i18n from "@/i18n";
 import { getNodeSpec, NODE_DEFAULT_SIZE } from "@/constant/canvas";
 import { nodeSizeFromRatio } from "@/lib/canvas/canvas-node-size";
 import type { AiConfig } from "@/stores/use-config-store";
@@ -7,6 +9,7 @@ import type { ReferenceImage } from "@/types/image";
 import { CanvasNodeType, type CanvasImageGenerationType, type CanvasNodeData, type CanvasNodeMetadata, type CanvasNodeTypeId, type Position } from "@/types/canvas";
 
 export function createCanvasNode(type: CanvasNodeTypeId, position: Position, metadata?: CanvasNodeMetadata): CanvasNodeData {
+    if (!isCanvasNodeAllowed(type)) throw new Error(i18n.t("integration.unavailable"));
     const spec = getNodeSpec(type);
     const id = `${type}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 

@@ -175,6 +175,8 @@ export async function deleteStoredImages(keys: Iterable<string>) {
 }
 
 export async function cleanupUnusedImages(usedData: unknown) {
+    const userId = useUserStore.getState().user?.id;
+    if (!userId) return;
     const usedKeys = collectImageStorageKeys(usedData);
     await Promise.all([
         imageLogStore.iterate((value) => {
@@ -186,7 +188,7 @@ export async function cleanupUnusedImages(usedData: unknown) {
     ]);
     const unused: string[] = [];
     await store.iterate((_value, key) => {
-        if (!usedKeys.has(key)) unused.push(key);
+        if (key.endsWith(`:${userId}`) && !usedKeys.has(key)) unused.push(key);
     });
     await deleteStoredImages(unused);
 }

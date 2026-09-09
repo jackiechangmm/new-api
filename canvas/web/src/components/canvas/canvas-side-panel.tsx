@@ -1,3 +1,4 @@
+import { canvasCapabilities } from "@/lib/canvas/canvas-capabilities";
 import { memo, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { App, Empty, Input, Popconfirm, Select, Spin, Tag } from "antd";
 import { useQuery } from "@tanstack/react-query";
@@ -102,7 +103,7 @@ export function CanvasSidePanel({ nodes, selectedNodeIds, onFocusNode, onPreview
                 <div className="flex items-center gap-5 px-4 pt-3.5">
                     <TabButton label={t("canvas.sidePanel.canvas")} active={tab === "canvas"} theme={theme} onClick={() => setTab("canvas")} />
                     <TabButton label={t("canvas.sidePanel.assets")} active={tab === "assets"} theme={theme} onClick={() => setTab("assets")} />
-                    <TabButton label={t("canvas.sidePanel.prompts")} active={tab === "prompts"} theme={theme} onClick={() => setTab("prompts")} />
+                    {canvasCapabilities.externalPrompts ? <TabButton label={t("canvas.sidePanel.prompts")} active={tab === "prompts"} theme={theme} onClick={() => setTab("prompts")} /> : null}
                 </div>
                 <div className="mt-2 min-h-0 flex-1 overflow-hidden">
                     {tab === "canvas" ? (
@@ -132,7 +133,7 @@ function TabButton({ label, active, theme, onClick }: { label: string; active: b
 // Canvas tab: list nodes and center, zoom, and select the clicked node.
 // ---------------------------------------------------------------------------
 
-const NODE_FILTER_VALUES = ["all", CanvasNodeType.Image, CanvasNodeType.Video, CanvasNodeType.Text, CanvasNodeType.Audio, CanvasNodeType.Config, CanvasNodeType.Group];
+const NODE_FILTER_VALUES = ["all", CanvasNodeType.Image, CanvasNodeType.Text, CanvasNodeType.Config, CanvasNodeType.Group];
 
 function nodePreviewText(node: CanvasNodeData) {
     if (node.type === CanvasNodeType.Text) return node.metadata?.content || node.metadata?.prompt || "";
@@ -208,6 +209,7 @@ function CanvasNodesTab({ nodes, selectedNodeIds, onFocusNode, onPreviewNode, th
                 {filtered.length ? <span className="text-xs opacity-35">{filtered.length}</span> : null}
                 <button
                     type="button"
+                    hidden={!canvasCapabilities.projectTransfer}
                     onClick={() => (selectMode ? exitSelect() : setSelectMode(true))}
                     className="ml-auto flex items-center gap-1 rounded-md px-1.5 py-1 text-xs font-medium opacity-70 transition hover:bg-black/5 hover:opacity-100 dark:hover:bg-white/10"
                     style={selectMode ? { color: theme.toolbar.activeText, opacity: 1 } : undefined}
@@ -298,7 +300,6 @@ function CheckMark({ checked, theme }: { checked: boolean; theme: CanvasTheme })
 
 const ASSET_GROUPS: { kind: AssetKind; icon: typeof Square }[] = [
     { kind: "image", icon: ImageIcon },
-    { kind: "video", icon: Video },
     { kind: "text", icon: FileText },
 ];
 
@@ -330,7 +331,7 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
     const groups = useMemo(() => ASSET_GROUPS.map((group) => ({ ...group, items: filtered.filter((asset) => asset.kind === group.kind) })).filter((group) => group.items.length > 0), [filtered]);
 
     const handleFiles = async (fileList: FileList | null) => {
-        const files = Array.from(fileList || []);
+        const files = Array.from(fileList || []).filter((file) => file.type.startsWith("image/"));
         if (!files.length) return;
         setUploading(true);
         const hide = message.loading(t("canvas.sidePanel.addingAssets"), 0);
@@ -373,7 +374,7 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
                     <Plus className="size-3.5" />
                     {t("canvas.sidePanel.add")}
                 </button>
-                <input ref={fileInputRef} type="file" accept="image/*,video/*" multiple className="hidden" onChange={(e) => void handleFiles(e.target.files)} />
+                <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => void handleFiles(e.target.files)} />
             </div>
             {allTags.length ? (
                 <div className="flex flex-wrap gap-1.5 px-3 pb-2">

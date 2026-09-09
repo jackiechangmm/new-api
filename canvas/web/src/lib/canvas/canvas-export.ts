@@ -1,3 +1,4 @@
+import { requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { saveAs } from "file-saver";
 
 import i18n from "@/i18n";
@@ -9,6 +10,7 @@ import type { CanvasProject } from "@/stores/canvas/use-canvas-store";
 import { CanvasNodeType, type CanvasNodeData } from "@/types/canvas";
 
 export async function exportCanvasProjects(projects: CanvasProject[], fileName = i18n.t("canvas.export.defaultProjectName")) {
+    requireCanvasCapability("projectTransfer");
     const zipFiles: { name: string; data: BlobPart }[] = [];
     const exportedProjects = await Promise.all(
         projects.map(async (project) => {
@@ -32,6 +34,7 @@ export async function exportCanvasProjects(projects: CanvasProject[], fileName =
 }
 
 export async function exportCanvasNodes(nodes: CanvasNodeData[], fileName = i18n.t("canvas.export.defaultNodesName")) {
+    requireCanvasCapability("projectTransfer");
     const zipFiles: { name: string; data: BlobPart }[] = [];
     const used = new Set<string>();
     const uniqueName = (base: string, ext: string) => {

@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { create } from "zustand";
 import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
 
@@ -5,7 +6,7 @@ import { nanoid } from "nanoid";
 import { localForageStorage } from "@/lib/localforage-storage";
 import { useUserStore } from "@/stores/use-user-store";
 import { cleanupUnusedImages, resolveImageUrl, uploadImage } from "@/services/image-storage";
-import { cleanupUnusedMedia, resolveMediaUrl } from "@/services/file-storage";
+import { resolveMediaUrl } from "@/services/file-storage";
 
 export type AssetKind = "text" | "image" | "video";
 export type TextAsset = AssetBase<"text"> & { data: { content: string } };
@@ -39,7 +40,8 @@ type AssetStore = {
 const ASSET_STORE_KEY = "infinite-canvas:asset_store";
 const userStorageKey = (name: string) => {
     const userId = useUserStore.getState().user?.id;
-    return userId ? `${name}:${userId}` : `${name}:anonymous`;
+    if (!userId) throw new Error(i18n.t("integration.sessionExpired"));
+    return `${name}:${userId}`;
 };
 
 const assetStorage: PersistStorage<AssetStore> = {
@@ -94,16 +96,16 @@ export const useAssetStore = create<AssetStore>()(
                 window.setTimeout(async () => {
                     const { useCanvasStore } = await import("@/stores/canvas/use-canvas-store");
                     await cleanupUnusedImages({ assets: get().assets, projects: useCanvasStore.getState().projects, extra });
-                    await cleanupUnusedMedia({ assets: get().assets, projects: useCanvasStore.getState().projects, extra });
                 }, 0);
             },
         }),
         {
             name: ASSET_STORE_KEY,
             storage: assetStorage,
+            skipHydration: true,
             partialize: (state) => ({ assets: state.assets }) as StorageValue<AssetStore>["state"],
-            onRehydrateStorage: () => () => {
-                useAssetStore.setState({ hydrated: true });
+            onRehydrateStorage: () => (_state, error) => {
+                if (!error) useAssetStore.setState({ hydrated: true });
             },
         },
     ),

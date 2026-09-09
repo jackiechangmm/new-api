@@ -1,3 +1,4 @@
+import { requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { nanoid } from "nanoid";
 
 import i18n from "@/i18n";
@@ -35,6 +36,7 @@ export function summarizeCanvasAgentOps(ops?: CanvasAgentOp[]) {
 }
 
 export function applyCanvasAgentOps(snapshot: CanvasAgentSnapshot, ops?: CanvasAgentOp[]) {
+    requireCanvasCapability("agent");
     let nodes = snapshot.nodes;
     let connections = snapshot.connections;
     let selectedNodeIds = snapshot.selectedNodeIds;

@@ -1,3 +1,4 @@
+import { canvasCapabilities, requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { registerNodeDefinitions, unregisterPluginNodes } from "@/lib/canvas/node-registry";
 import { getPluginRuntime } from "@/lib/canvas/plugin-runtime";
 import { usePluginStore, type InstalledPlugin } from "@/stores/canvas/use-plugin-store";
@@ -29,6 +30,7 @@ function assertPlugin(plugin: unknown): asserts plugin is CanvasPlugin {
 }
 
 export function activatePlugin(plugin: CanvasPlugin) {
+    requireCanvasCapability("plugins");
     registerNodeDefinitions(plugin.nodes, plugin.id);
     const runtime = getPluginRuntime();
     const disposers: Array<() => void> = [];
@@ -59,6 +61,7 @@ function withCacheBust(url: string) {
 // Install or replace a plugin from a URL and enable it immediately.
 // bustCache bypasses HTTP/CDN caches during upgrades while persisting a clean URL without the timestamp query.
 export async function installPluginFromUrl(url: string, opts?: { official?: boolean; bustCache?: boolean }) {
+    requireCanvasCapability("plugins");
     const source = await fetchPluginSource(opts?.bustCache ? withCacheBust(url) : url);
     const plugin = await evaluatePluginSource(source);
     deactivatePlugin(plugin.id); // Replace the previous version.
@@ -73,6 +76,7 @@ export async function updatePlugin(record: InstalledPlugin) {
 }
 
 export async function setPluginEnabled(record: InstalledPlugin, enabled: boolean) {
+    requireCanvasCapability("plugins");
     usePluginStore.getState().setEnabled(record.id, enabled);
     if (!enabled) {
         deactivatePlugin(record.id);
@@ -93,6 +97,7 @@ let loaded = false;
 
 // Load installed and enabled plugins at application startup.
 export async function ensurePluginsLoaded() {
+    if (!canvasCapabilities.plugins) return;
     if (loaded) return;
     loaded = true;
     await usePluginStore.persist.rehydrate();

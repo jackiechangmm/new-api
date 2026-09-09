@@ -4,6 +4,7 @@ import { persist, type PersistStorage, type StorageValue } from "zustand/middlew
 import { nanoid } from "nanoid";
 import i18n from "@/i18n";
 import { localForageStorage } from "@/lib/localforage-storage";
+import { requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { useUserStore } from "@/stores/use-user-store";
 import type { CanvasBackgroundMode } from "@/lib/canvas-theme";
 import type { CanvasAssistantSession, CanvasConnection, CanvasNodeData, ViewportTransform } from "@/types/canvas";
@@ -44,7 +45,8 @@ const initialViewport: ViewportTransform = { x: 0, y: 0, k: 1 };
 const CANVAS_STORE_KEY = "infinite-canvas:canvas_store";
 const userStorageKey = (name: string) => {
     const userId = useUserStore.getState().user?.id;
-    return userId ? `${name}:${userId}` : `${name}:anonymous`;
+    if (!userId) throw new Error(i18n.t("integration.sessionExpired"));
+    return `${name}:${userId}`;
 };
 type PersistedCanvasState = Pick<CanvasStore, "projects" | "deletedProjects">;
 let saveTimer: ReturnType<typeof setTimeout> | null = null;
@@ -62,10 +64,11 @@ const canvasStorage: PersistStorage<CanvasStore> = {
         const nextState = value.state as PersistedCanvasState;
         if (queuedPersistState && queuedPersistState.projects === nextState.projects && queuedPersistState.deletedProjects === nextState.deletedProjects) return;
         queuedPersistState = nextState;
+        const storageKey = userStorageKey(name);
         if (saveTimer) clearTimeout(saveTimer);
         saveTimer = setTimeout(() => {
             saveTimer = null;
-            void localForageStorage.setItem(userStorageKey(name), JSON.stringify(value));
+            void localForageStorage.setItem(storageKey, JSON.stringify(value));
         }, 400);
     },
     removeItem: (name) => localForageStorage.removeItem(userStorageKey(name)),
@@ -97,6 +100,7 @@ export const useCanvasStore = create<CanvasStore>()(
                 return id;
             },
             importProject: (source) => {
+                requireCanvasCapability("projectTransfer");
                 const now = new Date().toISOString();
                 const project: CanvasProject = {
                     id: nanoid(),
@@ -138,13 +142,14 @@ export const useCanvasStore = create<CanvasStore>()(
         {
             name: CANVAS_STORE_KEY,
             storage: canvasStorage,
+            skipHydration: true,
             partialize: (state) =>
                 ({
                     projects: state.projects,
                     deletedProjects: state.deletedProjects,
                 }) as StorageValue<CanvasStore>["state"],
-            onRehydrateStorage: () => () => {
-                useCanvasStore.setState({ hydrated: true });
+            onRehydrateStorage: () => (_state, error) => {
+                if (!error) useCanvasStore.setState({ hydrated: true });
             },
         },
     ),

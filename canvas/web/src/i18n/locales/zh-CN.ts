@@ -1,4 +1,13 @@
 export default {
+    integration: {
+        unavailable: "此功能尚未开放",
+        unsupportedProject: "此工程包含尚未开放的节点或生成模式，暂时无法打开；原数据未修改。",
+        hostRequired: "请从主站的无限画布入口打开",
+        sessionExpired: "登录会话已失效，请在主站重新登录",
+        modelsFailed: "无法验证模型访问权限，请重试",
+        storageFailed: "无法读取本地工程或资产，请重试",
+        preview: "集成预览：工程仅保存在当前浏览器，尚未云端保存。",
+    },
     meta: {
         title: "无限画布",
         description: "一个无限画布创作工具",

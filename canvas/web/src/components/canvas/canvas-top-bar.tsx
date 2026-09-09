@@ -106,6 +106,7 @@ export function CanvasTopBar({
                         {isTitleEditing ? (
                             <input
                                 autoFocus
+                                aria-label={t("canvas.renameHint")}
                                 value={titleDraft}
                                 onChange={(event) => onTitleDraftChange(event.target.value)}
                                 onBlur={onFinishTitleEditing}

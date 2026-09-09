@@ -5,6 +5,7 @@ import { Group, Video } from "lucide-react";
 import { saveAs } from "file-saver";
 import { useTranslation } from "react-i18next";
 
+import { canvasCapabilities, assertCanvasNodesAllowed } from "@/lib/canvas/canvas-capabilities";
 import { requestEdit, requestGeneration, requestImageQuestion } from "@/services/api/image";
 import { requestAudioGeneration, storeGeneratedAudio } from "@/services/api/audio";
 import { createVideoGenerationTask, isVideoTaskFailed, storeGeneratedVideo, waitForVideoGenerationTask } from "@/services/api/video";
@@ -145,12 +146,24 @@ function applyGeneratedVideo(item: CanvasNodeData, video: UploadedFile, extra: C
 
 export default function CanvasPage() {
     const [mounted, setMounted] = useState(false);
+    const { id } = useParams();
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const project = useCanvasStore((state) => state.projects.find((item) => item.id === id));
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
     if (!mounted) return <CanvasRefreshShell />;
+    try {
+        if (project) assertCanvasNodesAllowed(project.nodes);
+    } catch (error) {
+        return <main className="flex h-full flex-col items-center justify-center gap-4 p-6 text-sm" role="alert">
+            <p>{error instanceof Error ? error.message : t("integration.unsupportedProject")}</p>
+            <button type="button" onClick={() => navigate("/canvas")}>{t("canvas.library")}</button>
+        </main>;
+    }
 
     return <InfiniteCanvasPage />;
 }
@@ -462,7 +475,7 @@ function InfiniteCanvasPage() {
     }, [hydrated, navigate, openProject, projectId]);
 
     useEffect(() => {
-        if (!projectLoaded) return;
+        if (!canvasCapabilities.generation || !projectLoaded) return;
         nodesRef.current.filter(hasResumableVideoTask).forEach((node) => void pollVideoNodeTask(node, true));
         // Resume once after the current canvas is restored, not on later config identity changes.
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2103,7 +2116,7 @@ function InfiniteCanvasPage() {
     const handleImageInputChange = useCallback(
         async (event: ReactChangeEvent<HTMLInputElement>) => {
             const files = Array.from(event.target.files || []).filter(
-                (f) => f.type.startsWith("image/") || f.type.startsWith("video/") || isAudioFile(f),
+                (f) => f.type.startsWith("image/"),
             );
             if (!files.length) {
                 uploadTargetRef.current = null;
@@ -2236,7 +2249,7 @@ function InfiniteCanvasPage() {
         (event: ReactDragEvent<HTMLDivElement>) => {
             event.preventDefault();
             const files = Array.from(event.dataTransfer.files).filter(
-                (item) => item.type.startsWith("image/") || item.type.startsWith("video/") || isAudioFile(item),
+                (item) => item.type.startsWith("image/"),
             );
             if (!files.length) return;
 
@@ -3325,7 +3338,7 @@ function InfiniteCanvasPage() {
                     />
                 ) : null}
 
-                <input ref={imageInputRef} type="file" multiple accept="image/*,video/*,audio/mpeg,audio/wav,audio/x-wav,.mp3,.wav" className="hidden" onChange={handleImageInputChange} />
+                <input ref={imageInputRef} type="file" multiple accept="image/*" className="hidden" onChange={handleImageInputChange} />
 
                 <CanvasNodeInfoModal node={infoNode} open={Boolean(infoNode)} onClose={() => setInfoNodeId(null)} />
                 <CanvasPluginManagerModal open={pluginManagerOpen} onClose={() => setPluginManagerOpen(false)} />

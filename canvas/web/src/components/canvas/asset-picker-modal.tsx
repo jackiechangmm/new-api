@@ -26,7 +26,7 @@ export function AssetPickerModal({ open, onInsert, onClose }: Props) {
 
 const PAGE_SIZE = 8;
 
-const kindOptions = ["all", "text", "image", "video"];
+const kindOptions = ["all", "text", "image"];
 
 function PickerCard({ title, kind, cover, onClick }: { title: string; kind: string; cover: string; onClick: () => void }) {
     const { t } = useTranslation();
@@ -62,7 +62,7 @@ function MyAssetsTab({ onInsert }: { onInsert: (payload: InsertAssetPayload) => 
     const filtered = useMemo(() => {
         const query = keyword.trim().toLowerCase();
         return assets
-            .filter((a) => a.kind === "text" || a.kind === "image" || a.kind === "video")
+            .filter((a) => a.kind === "text" || a.kind === "image")
             .filter((a) => kindFilter === "all" || a.kind === kindFilter)
             .filter((a) => !query || [a.title, ...(a.tags || [])].join(" ").toLowerCase().includes(query));
     }, [assets, keyword, kindFilter]);

@@ -1,3 +1,4 @@
+import { canvasCapabilities } from "@/lib/canvas/canvas-capabilities";
 import { useEffect, useState } from "react";
 import { ArrowUp, LoaderCircle, Maximize2, Square } from "lucide-react";
 import { Button, Modal, Tooltip } from "antd";
@@ -53,6 +54,8 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
         setPrompt(node.metadata?.composerContent ?? node.metadata?.prompt ?? "");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [node.id]);
+
+    if (!canvasCapabilities.generation) return null;
 
     const updatePrompt = (value: string) => {
         setPrompt(value);
