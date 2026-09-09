@@ -180,6 +180,16 @@ func SetApiRouter(router *gin.Engine) {
 			canvasRoute.POST("/images/generations", controller.CanvasGenerateImages)
 		}
 
+		canvasProjectRoute := apiRouter.Group("/canvas/projects")
+		canvasProjectRoute.Use(middleware.UserAuth())
+		{
+			canvasProjectRoute.GET("", controller.ListCanvasProjects)
+			canvasProjectRoute.POST("", controller.CreateCanvasProject)
+			canvasProjectRoute.GET("/:id", controller.GetCanvasProject)
+			canvasProjectRoute.PUT("/:id", controller.UpdateCanvasProject)
+			canvasProjectRoute.DELETE("/:id", controller.DeleteCanvasProject)
+		}
+
 		// 数字资产是用户私有资源，侧栏可见性仅由前端控制。
 		digitalAssetRoute := apiRouter.Group("/digital-assets")
 		digitalAssetRoute.Use(middleware.UserAuth())

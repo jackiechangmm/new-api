@@ -1,6 +1,58 @@
 import { expect, test } from "@playwright/test";
+import { mockCanvasProjectApi } from "./mock-canvas-project";
 
 test("主站认证刷新、账号隔离和首期入口封闭", async ({ page }) => {
+    const userProjects: Record<string, any[]> = {
+        a: [],
+        b: [],
+    };
+    await page.route("**/api/canvas/projects**", async (route) => {
+        const currentUserId = account === "a" ? 901 : 902;
+        const currentList = userProjects[account] || [];
+        if (route.request().method() === "POST") {
+            const body = route.request().postDataJSON() || {};
+            const proj = {
+                id: body.id || `proj-${Date.now()}`,
+                user_id: currentUserId,
+                title: body.title || "无限画布 1",
+                revision: 1,
+                content: body.content || "{}",
+                created_at: Math.floor(Date.now() / 1000),
+                updated_at: Math.floor(Date.now() / 1000),
+            };
+            userProjects[account].push(proj);
+            await route.fulfill({ json: { success: true, data: proj } });
+        } else if (route.request().method() === "GET") {
+            const url = route.request().url();
+            if (url.includes("/api/canvas/projects/")) {
+                const id = url.split("/api/canvas/projects/")[1].split("?")[0];
+                const found = currentList.find((p) => p.id === id);
+                if (found) {
+                    await route.fulfill({ json: { success: true, data: found } });
+                } else {
+                    await route.fulfill({ status: 404, json: { success: false, message: "Not found" } });
+                }
+            } else {
+                await route.fulfill({ json: { success: true, data: currentList } });
+            }
+        } else if (route.request().method() === "PUT") {
+            const body = route.request().postDataJSON() || {};
+            const url = route.request().url();
+            const id = url.split("/api/canvas/projects/")[1].split("?")[0];
+            const found = currentList.find((p) => p.id === id);
+            if (found) {
+                found.title = body.title || found.title;
+                found.revision = (body.revision || 1) + 1;
+                found.content = body.content || found.content;
+                found.updated_at = Math.floor(Date.now() / 1000);
+                await route.fulfill({ json: { success: true, data: found } });
+            } else {
+                await route.fulfill({ status: 404, json: { success: false, message: "Not found" } });
+            }
+        } else {
+            await route.continue();
+        }
+    });
     let account = "a";
     let refreshes = 0;
     const modelHeaders: string[] = [];
@@ -65,9 +117,9 @@ test("主站认证刷新、账号隔离和首期入口封闭", async ({ page }) 
                         request.onerror = () => reject(request.error);
                         request.onsuccess = () => {
                             const db = request.result;
-                            const read = db.transaction("app_state").objectStore("app_state").get("infinite-canvas:canvas_store:901");
+                            const read = db.transaction("app_state").objectStore("app_state").get("infinite-canvas:asset_store:901");
                             read.onsuccess = () => {
-                                resolve(String(read.result).includes("A-private-project"));
+                                resolve(String(read.result).includes("A-private-asset"));
                                 db.close();
                             };
                             read.onerror = () => {

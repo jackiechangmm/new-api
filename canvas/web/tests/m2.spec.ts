@@ -1,8 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
+import { mockCanvasProjectApi } from "./mock-canvas-project";
 
 const png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=";
 
 async function openCanvas(page: Page, models = ["gpt-image-2"]) {
+    await mockCanvasProjectApi(page);
     await page.route("**/api/user/**", async (route) => {
         const path = new URL(route.request().url()).pathname;
         const user = { id: 903, username: "canvas-m2", role: 100, group: "default" };
@@ -133,55 +135,61 @@ test("上游失败可明确重试，停止后不接收晚到图片", async ({ pa
 });
 
 test("旧工程不静默修正，主动选择模型后明确调整不兼容设置", async ({ page }) => {
-    const canvas = await openCanvas(page);
-    const child = page.frames().find((frame) => frame.parentFrame())!;
-    await expect
-        .poll(() =>
-            child.evaluate(
-                () =>
-                    new Promise<number>((resolve) => {
-                        const request = indexedDB.open("infinite-canvas");
-                        request.onsuccess = () => {
-                            const db = request.result;
-                            const read = db.transaction("app_state").objectStore("app_state").get("infinite-canvas:canvas_store:903");
-                            read.onsuccess = () => {
-                                resolve(read.result ? JSON.parse(read.result).state.projects[0]?.nodes.length || 0 : 0);
-                                db.close();
-                            };
-                        };
-                    }),
-            ),
-        )
-        .toBe(1);
-    await child.evaluate(
-        () =>
-            new Promise<void>((resolve, reject) => {
-                const request = indexedDB.open("infinite-canvas");
-                request.onsuccess = () => {
-                    const db = request.result;
-                    const tx = db.transaction("app_state", "readwrite");
-                    const store = tx.objectStore("app_state");
-                    const read = store.get("infinite-canvas:canvas_store:903");
-                    read.onsuccess = () => {
-                        const persisted = JSON.parse(read.result);
-                        const node = persisted.state.projects[0].nodes[0];
-                        node.metadata = { ...node.metadata, model: "removed-image-model", quality: "high", size: "1232x768", background: "transparent", count: 8 };
-                        delete node.metadata.resolution;
-                        delete node.metadata.aspectRatio;
-                        store.put(JSON.stringify(persisted), "infinite-canvas:canvas_store:903");
-                    };
-                    tx.oncomplete = () => {
-                        db.close();
-                        resolve();
-                    };
-                    tx.onerror = () => {
-                        db.close();
-                        reject(tx.error);
-                    };
-                };
+    const legacyNode = {
+        id: "legacy-node-1",
+        type: "image",
+        title: "图片",
+        position: { x: 100, y: 100 },
+        width: 320,
+        height: 240,
+        metadata: {
+            model: "removed-image-model",
+            quality: "high",
+            size: "1232x768",
+            background: "transparent",
+            count: 8,
+        },
+    };
+    const initialProjects = [
+        {
+            id: "legacy-proj-id",
+            user_id: 903,
+            title: "无限画布 1",
+            revision: 1,
+            content: JSON.stringify({
+                nodes: [legacyNode],
+                connections: [],
+                chatSessions: [],
+                activeChatId: null,
+                backgroundMode: "lines",
+                showImageInfo: false,
+                viewport: { x: 0, y: 0, k: 1 },
             }),
-    );
-    await page.reload();
+            created_at: Math.floor(Date.now() / 1000),
+            updated_at: Math.floor(Date.now() / 1000),
+        },
+    ];
+    await mockCanvasProjectApi(page, initialProjects);
+    await page.route("**/api/user/**", async (route) => {
+        const path = new URL(route.request().url()).pathname;
+        const user = { id: 903, username: "canvas-m2", role: 100, group: "default" };
+        if (path === "/api/user/auth/refresh") {
+            await route.fulfill({
+                json: {
+                    success: true,
+                    data: {
+                        access_token: "canvas-session",
+                        token_type: "Bearer",
+                        access_expires_at: Math.floor(Date.now() / 1000) + 600,
+                        user,
+                        session: { sid: "m2", current: true, login_method: "password", ip: "", user_agent: "", created_at: 1, last_active_at: 1, expires_at: 4102444800 },
+                    },
+                },
+            });
+        } else await route.fulfill({ json: { success: true, data: path === "/api/user/models" ? ["gpt-image-2"] : user } });
+    });
+    await page.goto("/playground/canvas");
+    const canvas = page.frameLocator('iframe[title="Infinite Canvas"]');
     await canvas.getByRole("heading", { name: "无限画布 1", exact: true }).click();
     const node = canvas.locator("[data-node-id]").first();
     await node.dblclick();

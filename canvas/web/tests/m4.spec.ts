@@ -1,9 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
+import { mockCanvasProjectApi } from "./mock-canvas-project";
 
 const pngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=";
 const pngBuffer = Buffer.from(pngBase64, "base64");
 
 async function openCanvas(page: Page, models = ["gpt-image-2"]) {
+    await mockCanvasProjectApi(page);
     await page.route("**/api/user/**", async (route) => {
         const path = new URL(route.request().url()).pathname;
         const user = { id: 903, username: "canvas-m4", role: 100, group: "default" };
@@ -72,7 +74,7 @@ test("M4 出图直接转存上云，元数据持有 S3 URL 与 UUID，零二次�
     await expect.poll(() => generationRequests).toBe(1);
 
     // 验证节点图片渲染，使用直接返回的 S3 URL
-    const imgNode = canvas.locator(`img[src="${s3ImageUrl}"]`);
+    const imgNode = canvas.locator(`img[src="${s3ImageUrl}"]`).first();
     await expect(imgNode).toBeVisible({ timeout: 10_000 });
 
     // 验证完全没有发往 /api/images 的二次上传请求
@@ -111,7 +113,7 @@ test("M4 生成中删除节点不会发生崩溃，迟到结果不插回画布",
     await canvas.getByRole("button", { name: "生成", exact: true }).click();
 
     // 等待正在生成的占位节点显示
-    await expect(canvas.getByText("正在生成").first()).toBeVisible();
+    await expect(canvas.getByText(/生成中|正在生成/).first()).toBeVisible();
 
     // 找到生成节点并在工具栏点击移除（或通过快捷键删除）
     const deleteBtn = canvas.locator('button[aria-label="移除节点"], button[title="移除节点"]').first();

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "antd";
 import { Plus } from "lucide-react";
@@ -15,10 +15,16 @@ export default function CanvasPage() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const autoOpenRef = useRef(false);
+    const [creating, setCreating] = useState(false);
     const hydrated = useCanvasStore((state) => state.hydrated);
     const projects = useCanvasStore((state) => state.projects);
     const createProject = useCanvasStore((state) => state.createProject);
+    const fetchProjects = useCanvasStore((state) => state.fetchProjects);
     const setDeleteIds = useCanvasUiStore((state) => state.setDeleteProjectIds);
+
+    useEffect(() => {
+        void fetchProjects();
+    }, [fetchProjects]);
 
     const mode = searchParams.get("mode");
     const agentMode = mode === "new" || mode === "recent" || mode === "choose";
@@ -27,12 +33,29 @@ export default function CanvasPage() {
         const agentHash = hasAgentUrlBootstrap(window.location.hash) ? window.location.hash : "";
         navigate(`/canvas/${id}${agentQuery}${agentHash}`, { replace: Boolean(agentHash) });
     };
-    const createAndEnter = () => enterProject(createProject(t("canvas.defaultTitle", { count: projects.length + 1 })));
+    const createAndEnter = async () => {
+        if (creating) return;
+        setCreating(true);
+        try {
+            const id = await createProject(t("canvas.defaultTitle", { count: projects.length + 1 }));
+            enterProject(id);
+        } finally {
+            setCreating(false);
+        }
+    };
 
     useEffect(() => {
         if (!hydrated || autoOpenRef.current || (mode !== "new" && mode !== "recent")) return;
         autoOpenRef.current = true;
-        enterProject(mode === "new" ? createProject(t("canvas.defaultTitle", { count: projects.length + 1 })) : projects[0]?.id || createProject(t("canvas.defaultTitle", { count: projects.length + 1 })));
+        void (async () => {
+            if (mode === "new") {
+                const id = await createProject(t("canvas.defaultTitle", { count: projects.length + 1 }));
+                enterProject(id);
+            } else {
+                const id = projects[0]?.id || (await createProject(t("canvas.defaultTitle", { count: projects.length + 1 })));
+                enterProject(id);
+            }
+        })();
     }, [createProject, hydrated, mode, projects, t]);
 
     if (hydrated && (mode === "new" || mode === "recent")) return <main className="flex h-full items-center justify-center bg-background text-sm text-stone-500">{t("canvas.opening")}</main>;
@@ -51,7 +74,7 @@ export default function CanvasPage() {
                                 {t("canvas.deleteAll")}
                             </Button>
                         ) : null}
-                        <Button disabled={!hydrated} type="primary" icon={<Plus className="size-4" />} onClick={createAndEnter}>
+                        <Button disabled={!hydrated || creating} loading={creating} type="primary" icon={<Plus className="size-4" />} onClick={createAndEnter}>
                             {t("canvas.create")}
                         </Button>
                     </div>

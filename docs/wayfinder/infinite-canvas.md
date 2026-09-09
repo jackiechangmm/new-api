@@ -273,6 +273,15 @@ M3 可与 M2 并行准备，M10 可独立提前；推荐按表中顺序串行验
 
 **自动验收**：目标 PostgreSQL 上的 CRUD、所有权、条件更新并发、删除后写入、图片引用及导入文档边界。
 
+**M5 实施记录**：对应 Issue #23。
+- **服务端云端工程实体与租户隔离**：新增 `model.CanvasProject`（`canvas_projects` 表），包含 `id`, `user_id`, `title`, `revision`, `content`, `created_at`, `updated_at`。挂载 `/api/canvas/projects` RESTful 路由并接入 `middleware.UserAuth()`，所有写查严格绑定当前登录用户 `user_id`。
+- **CAS 条件更新乐观锁**：PUT 接口执行 `UPDATE canvas_projects SET ..., revision = revision + 1 WHERE id = ? AND user_id = ? AND revision = ?`。版本不匹配返回 `409 Conflict` 并带回服务端最新 revision；工程不存在或已删除返回 `404 Not Found`。
+- **包体上限与极简校验**：单次工程包体在控制器层限制不超过 5MB（超限返回 413），防范异常大包。
+- **前端纯内存运行时**：彻底剥离 `useCanvasStore` 的 `zustand/persist` 与 `localForage` 存储，正式工程由服务端 API 动态加载与持久化，关闭工程导入导出功能。
+- **10 秒无感自动保存 + 显式保存排队状态机**：实质内容变动标记 `isDirty = true` 并启动 10s 空闲倒计时；纯视口平移缩放不计入 dirty；提供顶部保存按钮及 `Ctrl/Cmd + S` 立即保存；传输中（In-flight）的新编辑受到排队保护不误标为已保存；`beforeunload` 安全拦截未保存离开。
+- **409 冲突模态阻断**：遇到版本冲突立即停止覆盖并弹窗阻断，支持“另存为新工程”或“放弃本地修改重新拉取”。
+- **自动化测试**：后端 HTTP 契约测试 `controller/canvas_project_test.go`（覆盖 CRUD、CAS 乐观锁、租户隔离、删除防复活及大包体限制）；前端端到端测试 `canvas/web/tests/m5.spec.ts`（覆盖即时创建与导航、未保存与显式/快捷键保存、纯视口不致脏、传输中编辑保护、409 模态处置及 IndexedDB canvas_store 彻底移除校验）。全部自动化测试通过。
+
 ### M6：可靠自动保存
 
 **范围**：空闲自动保存、当前编辑版本与已确认版本、单工程串行提交、保存中继续编辑的后续保存、失败提示与恢复重试、离开提醒。复用 M5 冲突底线，不重做工程 API。

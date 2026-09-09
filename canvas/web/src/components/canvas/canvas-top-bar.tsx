@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Images, Menu, PanelLeftClose, PanelLeftOpen, Plus, Redo2, Trash2, Undo2 } from "lucide-react";
+import { Images, Menu, PanelLeftClose, PanelLeftOpen, Plus, Redo2, Save, Trash2, Undo2 } from "lucide-react";
 import { Button, Dropdown, Modal, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -7,6 +7,8 @@ import { UserStatusActions } from "@/components/layout/user-status-actions";
 import { canvasThemes } from "@/lib/canvas-theme";
 import { useCanvasSidePanelStore } from "@/stores/use-canvas-side-panel-store";
 import { useThemeStore } from "@/stores/use-theme-store";
+
+export type SaveStatus = "saved" | "dirty" | "saving" | "error";
 
 export function CanvasTopBar({
     title,
@@ -30,6 +32,8 @@ export function CanvasTopBar({
     agentOpen,
     compactAgentStatus,
     onToggleAgent,
+    saveStatus = "saved",
+    onSave,
 }: {
     title: string;
     titleDraft: string;
@@ -52,6 +56,8 @@ export function CanvasTopBar({
     agentOpen: boolean;
     compactAgentStatus: { connected: boolean; enabled: boolean; activity: string };
     onToggleAgent: () => void;
+    saveStatus?: SaveStatus;
+    onSave?: () => void;
 }) {
     const colorTheme = useThemeStore((state) => state.theme);
     const { t } = useTranslation();
@@ -89,6 +95,7 @@ export function CanvasTopBar({
                         trigger={["click"]}
                         menu={{
                             items: [
+                                { key: "save", icon: <Save className="size-4" />, label: <MenuLabel text={t("canvas.save")} shortcut="⌘ S" />, onClick: onSave },
                                 { key: "new", icon: <Plus className="size-4" />, label: t("canvas.create"), onClick: onCreateProject },
                                 { key: "delete", danger: true, icon: <Trash2 className="size-4" />, label: t("canvas.deleteCurrent"), onClick: onDeleteProject },
                                 { type: "divider" },
@@ -128,6 +135,43 @@ export function CanvasTopBar({
                             </button>
                         )}
                     </div>
+
+                    <div className="flex items-center gap-2 pl-2">
+                        {saveStatus === "saving" ? (
+                            <span className="flex items-center gap-1.5 text-xs text-stone-500">
+                                <span className="size-2 rounded-full animate-pulse bg-amber-500" />
+                                {t("canvas.saving")}
+                            </span>
+                        ) : saveStatus === "dirty" ? (
+                            <span className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+                                <span className="size-2 rounded-full bg-amber-500" />
+                                {t("canvas.unsaved")}
+                            </span>
+                        ) : saveStatus === "error" ? (
+                            <button
+                                type="button"
+                                onClick={onSave}
+                                className="flex cursor-pointer items-center gap-1.5 text-xs text-rose-600 hover:underline dark:text-rose-400"
+                            >
+                                <span className="size-2 rounded-full bg-rose-500" />
+                                {t("canvas.saveFailed")}
+                            </button>
+                        ) : (
+                            <span className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
+                                <span className="size-2 rounded-full bg-emerald-500" />
+                                {t("canvas.saved")}
+                            </span>
+                        )}
+                        <Button
+                            size="small"
+                            type={saveStatus === "dirty" ? "primary" : "default"}
+                            loading={saveStatus === "saving"}
+                            onClick={onSave}
+                            className="text-xs"
+                        >
+                            {t("canvas.save")}
+                        </Button>
+                    </div>
                 </div>
                 <div className="pointer-events-auto flex items-center gap-1.5">
                     <UserStatusActions variant="canvas" />
@@ -135,6 +179,7 @@ export function CanvasTopBar({
             </div>
             <Modal title={t("canvas.shortcuts")} open={shortcutsOpen} onCancel={() => setShortcutsOpen(false)} footer={null} centered>
                 <div className="space-y-2 border-t pt-4 text-sm" style={{ borderColor: theme.node.stroke }}>
+                    <Shortcut keys={["Ctrl / Cmd", "S"]} value={t("canvas.save")} />
                     <Shortcut keys={["Ctrl / Space", t("canvas.shortcut.drag")]} value={t("canvas.shortcut.toggleTool")} />
                     <Shortcut keys={[t("canvas.shortcut.wheel")]} value={t("canvas.shortcut.zoom")} />
                     <Shortcut keys={[t("canvas.shortcut.zoomSlider")]} value={t("canvas.shortcut.preciseZoom")} />

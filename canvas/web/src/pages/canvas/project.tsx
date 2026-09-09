@@ -71,7 +71,8 @@ import { getNodeDefinition, isBuiltinNodeType as isBuiltinType, useNodeRegistryV
 import { registerBuiltinNodes } from "@/components/canvas/nodes/builtin-nodes";
 import { CanvasPluginManagerModal } from "@/components/canvas/canvas-plugin-manager-modal";
 import { CanvasRefreshShell } from "@/components/canvas/canvas-refresh-shell";
-import { CanvasTopBar } from "@/components/canvas/canvas-top-bar";
+import { CanvasTopBar, type SaveStatus } from "@/components/canvas/canvas-top-bar";
+import { updateCloudProject, ConflictError } from "@/services/api/project";
 import { ConnectionCreateMenu, NodeCreateMenu, type PendingConnectionCreate } from "@/components/canvas/canvas-create-menus";
 import {
     CanvasNodeType,
@@ -209,6 +210,7 @@ function InfiniteCanvasPage() {
     const addAsset = useAssetStore((state) => state.addAsset);
     const cleanupAssetImages = useAssetStore((state) => state.cleanupImages);
     const hydrated = useCanvasStore((state) => state.hydrated);
+    const loadProject = useCanvasStore((state) => state.loadProject);
     const createProject = useCanvasStore((state) => state.createProject);
     const openProject = useCanvasStore((state) => state.openProject);
     const updateProject = useCanvasStore((state) => state.updateProject);
@@ -216,6 +218,8 @@ function InfiniteCanvasPage() {
     const deleteProjects = useCanvasStore((state) => state.deleteProjects);
     const currentProject = useCanvasStore((state) => state.projects.find((project) => project.id === projectId));
     const theme = canvasThemes[useThemeStore((state) => state.theme)];
+    const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
+    const [conflictModalOpen, setConflictModalOpen] = useState(false);
     const [nodes, setNodes] = useState<CanvasNodeData[]>([]);
     const [connections, setConnections] = useState<CanvasConnection[]>([]);
     const [chatSessions, setChatSessions] = useState<CanvasAssistantSession[]>([]);
@@ -266,7 +270,18 @@ function InfiniteCanvasPage() {
     const connectionsRef = useRef(connections);
     const selectedNodeIdsRef = useRef(selectedNodeIds);
     const viewportRef = useRef(viewport);
+    const chatSessionsRef = useRef(chatSessions);
+    const activeChatIdRef = useRef(activeChatId);
+    const backgroundModeRef = useRef(backgroundMode);
+    const showImageInfoRef = useRef(showImageInfo);
     const focusAnimRef = useRef<number | null>(null);
+
+    const isDirtyRef = useRef(false);
+    const isSavingRef = useRef(false);
+    const isDirtyWhileSavingRef = useRef(false);
+    const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const currentRevisionRef = useRef(1);
+    const lastSavedContentRef = useRef("");
     const generateNodeRef = useRef<((nodeId: string, mode: CanvasNodeGenerationMode, prompt: string) => Promise<void>) | null>(null);
     const connectingParamsRef = useRef(connectingParams);
     const connectionTargetNodeIdRef = useRef(connectionTargetNodeId);
@@ -387,25 +402,128 @@ function InfiniteCanvasPage() {
         [modal, stopGenerationByRunningId, t],
     );
 
-    useEffect(() => {
-        if (!hydrated) return;
-        setProjectLoaded(false);
-        const project = openProject(projectId);
-        if (!project) {
-            navigate("/canvas", { replace: true });
-            return;
+    const getContentComparisonSnapshot = useCallback(
+        () =>
+            JSON.stringify({
+                nodes: nodesRef.current,
+                connections: connectionsRef.current,
+                chatSessions: chatSessionsRef.current,
+                activeChatId: activeChatIdRef.current,
+                backgroundMode: backgroundModeRef.current,
+                showImageInfo: showImageInfoRef.current,
+            }),
+        [],
+    );
+
+    const getFullContentSnapshot = useCallback(
+        () => ({
+            nodes: nodesRef.current,
+            connections: connectionsRef.current,
+            chatSessions: chatSessionsRef.current,
+            activeChatId: activeChatIdRef.current,
+            backgroundMode: backgroundModeRef.current,
+            showImageInfo: showImageInfoRef.current,
+            viewport: viewportRef.current,
+        }),
+        [],
+    );
+
+    const executeSave = useCallback(async () => {
+        if (!projectLoaded || isSavingRef.current) return;
+
+        if (autoSaveTimerRef.current) {
+            clearTimeout(autoSaveTimerRef.current);
+            autoSaveTimerRef.current = null;
         }
 
+        isSavingRef.current = true;
+        setSaveStatus("saving");
+
+        const currentTitle = titleDraft.trim() || currentProject?.title || t("canvas.projectPage.untitledCanvas");
+        const contentSnapshot = getFullContentSnapshot();
+        const contentSnapshotCompare = getContentComparisonSnapshot();
+        const contentStr = JSON.stringify(contentSnapshot);
+        const revisionToSubmit = currentRevisionRef.current;
+
+        try {
+            const updated = await updateCloudProject(projectId, {
+                revision: revisionToSubmit,
+                title: currentTitle,
+                content: contentStr,
+            });
+
+            currentRevisionRef.current = updated.revision;
+            lastSavedContentRef.current = contentSnapshotCompare;
+
+            useCanvasStore.setState((state) => ({
+                projects: state.projects.map((p) =>
+                    p.id === projectId
+                        ? { ...p, title: updated.title, revision: updated.revision, updatedAt: new Date(updated.updated_at * 1000).toISOString() }
+                        : p,
+                ),
+            }));
+
+            isSavingRef.current = false;
+
+            const nowContentJson = getContentComparisonSnapshot();
+
+            if (nowContentJson !== lastSavedContentRef.current || isDirtyWhileSavingRef.current) {
+                isDirtyWhileSavingRef.current = false;
+                isDirtyRef.current = true;
+                setSaveStatus("dirty");
+                autoSaveTimerRef.current = setTimeout(() => {
+                    void executeSave();
+                }, 10000);
+            } else {
+                isDirtyRef.current = false;
+                setSaveStatus("saved");
+            }
+        } catch (err: unknown) {
+            isSavingRef.current = false;
+            if (err instanceof ConflictError) {
+                if (autoSaveTimerRef.current) {
+                    clearTimeout(autoSaveTimerRef.current);
+                    autoSaveTimerRef.current = null;
+                }
+                setSaveStatus("error");
+                setConflictModalOpen(true);
+            } else {
+                setSaveStatus("error");
+            }
+        }
+    }, [currentProject?.title, getContentComparisonSnapshot, getFullContentSnapshot, projectId, projectLoaded, t, titleDraft]);
+
+    useEffect(() => {
+        let active = true;
+        setProjectLoaded(false);
+
         const restore = async () => {
+            let project = openProject(projectId);
+            if (!project || project.nodes.length === 0) {
+                try {
+                    project = await loadProject(projectId);
+                } catch {
+                    if (active) navigate("/canvas", { replace: true });
+                    return;
+                }
+            }
+            if (!active) return;
+            currentRevisionRef.current = project.revision || 1;
+            setTitleDraft(project.title);
+
             const restoredNodes = await hydrateCanvasImages(resetInterruptedGeneration(project.nodes));
             const restoredSessions = await hydrateAssistantImages(project.chatSessions || []);
+            if (!active) return;
+
             setNodes(restoredNodes);
-            setConnections(project.connections);
+            setConnections(project.connections || []);
             setChatSessions(restoredSessions);
             setActiveChatId(project.activeChatId || null);
-            setBackgroundMode(project.backgroundMode);
+            setBackgroundMode(project.backgroundMode || "lines");
             setShowImageInfo(project.showImageInfo || false);
-            setViewport(project.viewport);
+            setViewport(project.viewport || { x: 0, y: 0, k: 1 });
+            viewportRef.current = project.viewport || { x: 0, y: 0, k: 1 };
+
             historyRef.current = { past: [], future: [] };
             if (historyCommitTimerRef.current) {
                 clearTimeout(historyCommitTimerRef.current);
@@ -413,17 +531,31 @@ function InfiniteCanvasPage() {
             }
             lastHistoryRef.current = {
                 nodes: restoredNodes,
-                connections: project.connections,
+                connections: project.connections || [],
                 chatSessions: restoredSessions,
                 activeChatId: project.activeChatId || null,
-                backgroundMode: project.backgroundMode,
+                backgroundMode: project.backgroundMode || "lines",
                 showImageInfo: project.showImageInfo || false,
             };
+            lastSavedContentRef.current = JSON.stringify({
+                nodes: restoredNodes,
+                connections: project.connections || [],
+                chatSessions: restoredSessions,
+                activeChatId: project.activeChatId || null,
+                backgroundMode: project.backgroundMode || "lines",
+                showImageInfo: project.showImageInfo || false,
+            });
             setHistoryState({ canUndo: false, canRedo: false });
+
+            isDirtyRef.current = false;
+            setSaveStatus("saved");
             setProjectLoaded(true);
         };
         void restore();
-    }, [hydrated, navigate, openProject, projectId]);
+        return () => {
+            active = false;
+        };
+    }, [loadProject, navigate, openProject, projectId]);
 
     useEffect(() => {
         if (!canvasCapabilities.generation || !projectLoaded) return;
@@ -473,8 +605,30 @@ function InfiniteCanvasPage() {
 
     useEffect(() => {
         if (!projectLoaded || historyPausedRef.current) return;
+        const currentContentJson = JSON.stringify({
+            nodes,
+            connections,
+            chatSessions,
+            activeChatId,
+            backgroundMode,
+            showImageInfo,
+        });
+        if (currentContentJson === lastSavedContentRef.current) {
+            return;
+        }
         updateProject(projectId, { nodes, connections, chatSessions, activeChatId, backgroundMode, showImageInfo });
-    }, [activeChatId, backgroundMode, chatSessions, connections, nodes, projectId, projectLoaded, showImageInfo, updateProject]);
+        if (isSavingRef.current) {
+            isDirtyWhileSavingRef.current = true;
+            isDirtyRef.current = true;
+        } else {
+            isDirtyRef.current = true;
+            setSaveStatus("dirty");
+            if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+            autoSaveTimerRef.current = setTimeout(() => {
+                void executeSave();
+            }, 10000);
+        }
+    }, [activeChatId, backgroundMode, chatSessions, connections, executeSave, nodes, projectId, projectLoaded, showImageInfo, updateProject]);
 
     useEffect(() => {
         if (!dialogNodeId) setNodeImageSettingsOpen(false);
@@ -482,14 +636,8 @@ function InfiniteCanvasPage() {
 
     useEffect(() => {
         if (!projectLoaded) return;
-        if (viewportSaveTimerRef.current) clearTimeout(viewportSaveTimerRef.current);
-        viewportSaveTimerRef.current = setTimeout(() => {
-            updateProject(projectId, { viewport: viewportRef.current });
-            viewportSaveTimerRef.current = null;
-        }, 500);
-        return () => {
-            if (viewportSaveTimerRef.current) clearTimeout(viewportSaveTimerRef.current);
-        };
+        viewportRef.current = viewport;
+        updateProject(projectId, { viewport });
     }, [projectId, projectLoaded, updateProject, viewport]);
 
     useLayoutEffect(() => {
@@ -497,10 +645,14 @@ function InfiniteCanvasPage() {
         connectionsRef.current = connections;
         selectedNodeIdsRef.current = selectedNodeIds;
         viewportRef.current = viewport;
+        chatSessionsRef.current = chatSessions;
+        activeChatIdRef.current = activeChatId;
+        backgroundModeRef.current = backgroundMode;
+        showImageInfoRef.current = showImageInfo;
         connectingParamsRef.current = connectingParams;
         connectionTargetNodeIdRef.current = connectionTargetNodeId;
         pendingConnectionCreateRef.current = pendingConnectionCreate;
-    }, [nodes, connections, selectedNodeIds, viewport, connectingParams, connectionTargetNodeId, pendingConnectionCreate]);
+    }, [nodes, connections, selectedNodeIds, viewport, chatSessions, activeChatId, backgroundMode, showImageInfo, connectingParams, connectionTargetNodeId, pendingConnectionCreate]);
 
     useLayoutEffect(() => {
         selectionBoxRef.current = selectionBox;
@@ -1527,6 +1679,12 @@ function InfiniteCanvasPage() {
 
             if (isModifierShortcut && key === "c" && window.getSelection()?.toString()) return;
 
+            if (isModifierShortcut && !event.altKey && key === "s") {
+                event.preventDefault();
+                void executeSave();
+                return;
+            }
+
             if (isModifierShortcut && !event.altKey && key === "z") {
                 event.preventDefault();
                 if (event.shiftKey) redoCanvas();
@@ -1603,7 +1761,24 @@ function InfiniteCanvasPage() {
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [copySelectedNodes, deleteConnection, deleteNodes, groupSelection, pasteCopiedNodes, pasteSystemClipboard, redoCanvas, selectedConnectionId, setConnecting, undoCanvas, ungroupSelection]);
+    }, [copySelectedNodes, deleteConnection, deleteNodes, executeSave, groupSelection, pasteCopiedNodes, pasteSystemClipboard, redoCanvas, selectedConnectionId, setConnecting, undoCanvas, ungroupSelection]);
+
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            if (isDirtyRef.current) {
+                event.preventDefault();
+                event.returnValue = "";
+            }
+        };
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+            if (autoSaveTimerRef.current) {
+                clearTimeout(autoSaveTimerRef.current);
+                autoSaveTimerRef.current = null;
+            }
+        };
+    }, []);
 
     const handleConnectStart = useCallback(
         (event: ReactMouseEvent, nodeId: string, handleType: "source" | "target") => {
@@ -2274,9 +2449,17 @@ function InfiniteCanvasPage() {
 
     const finishTitleEditing = useCallback(() => {
         const nextTitle = titleDraft.trim();
-        if (nextTitle) renameProject(projectId, nextTitle);
+        if (nextTitle && nextTitle !== (currentProject?.title || "")) {
+            void renameProject(projectId, nextTitle);
+            isDirtyRef.current = true;
+            setSaveStatus("dirty");
+            if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+            autoSaveTimerRef.current = setTimeout(() => {
+                void executeSave();
+            }, 10000);
+        }
         setTitleEditing(false);
-    }, [projectId, renameProject, titleDraft]);
+    }, [currentProject?.title, executeSave, projectId, renameProject, titleDraft]);
 
     const preventCanvasContextMenu = useCallback((event: ReactMouseEvent) => {
         if ((event.target as HTMLElement).closest("[data-node-id]")) return;
@@ -2526,6 +2709,8 @@ function InfiniteCanvasPage() {
                     agentOpen={agentPanelOpen}
                     compactAgentStatus={{ connected: localAgentConnected, enabled: localAgentEnabled, activity: localAgentActivity }}
                     onToggleAgent={toggleAgentPanel}
+                    saveStatus={saveStatus}
+                    onSave={() => void executeSave()}
                 />
 
                 <InfiniteCanvas
@@ -2801,6 +2986,68 @@ function InfiniteCanvasPage() {
                 </Modal>
 
                 <AssetPickerModal open={assetPickerOpen} onInsert={handleAssetInsert} onClose={() => setAssetPickerOpen(false)} />
+
+                <Modal
+                    title={t("canvas.conflictTitle")}
+                    open={conflictModalOpen}
+                    closable={false}
+                    mask={{ closable: false }}
+                    footer={[
+                        <Button
+                            key="discard"
+                            onClick={async () => {
+                                setConflictModalOpen(false);
+                                try {
+                                    const cloud = await loadProject(projectId);
+                                    setNodes(cloud.nodes);
+                                    setConnections(cloud.connections);
+                                    setChatSessions(cloud.chatSessions);
+                                    setActiveChatId(cloud.activeChatId);
+                                    setBackgroundMode(cloud.backgroundMode);
+                                    setShowImageInfo(cloud.showImageInfo);
+                                    setViewport(cloud.viewport);
+                                    viewportRef.current = cloud.viewport;
+                                    currentRevisionRef.current = cloud.revision;
+                                    lastSavedContentRef.current = JSON.stringify({
+                                        nodes: cloud.nodes,
+                                        connections: cloud.connections,
+                                        chatSessions: cloud.chatSessions,
+                                        activeChatId: cloud.activeChatId,
+                                        backgroundMode: cloud.backgroundMode,
+                                        showImageInfo: cloud.showImageInfo,
+                                    });
+                                    isDirtyRef.current = false;
+                                    setSaveStatus("saved");
+                                } catch {
+                                    navigate("/canvas", { replace: true });
+                                }
+                            }}
+                        >
+                            {t("canvas.discardLocal")}
+                        </Button>,
+                        <Button
+                            key="saveAsCopy"
+                            type="primary"
+                            onClick={async () => {
+                                setConflictModalOpen(false);
+                                try {
+                                    const baseTitle = currentProject?.title || titleDraft || t("canvas.projectPage.untitledCanvas");
+                                    const newTitle = `${baseTitle}${t("canvas.copySuffix")}`;
+                                    const contentSnapshot = getFullContentSnapshot();
+                                    const newId = await createProject(newTitle, JSON.stringify(contentSnapshot));
+                                    navigate(`/canvas/${newId}`);
+                                } catch {
+                                    message.error(t("canvas.saveAsCopyFailed"));
+                                }
+                            }}
+                        >
+                            {t("canvas.saveAsCopy")}
+                        </Button>,
+                    ]}
+                    centered
+                >
+                    <p className="py-2 text-sm text-stone-600 dark:text-stone-300">{t("canvas.conflictDescription")}</p>
+                </Modal>
             </section>
         </main>
     );

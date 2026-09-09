@@ -36,7 +36,13 @@ export function ClientRootInit({ children }: { children: ReactNode }) {
                 const models = await fetchCanvasModels();
                 if (host.getUser()?.id !== user.id) throw new Error(t("integration.sessionExpired"));
                 useConfigStore.getState().setAvailableModels(models);
-                await Promise.all([useCanvasStore.persist.rehydrate(), useAssetStore.persist.rehydrate()]);
+                await Promise.all([
+                    useCanvasStore.getState().fetchProjects().catch((err) => {
+                        console.error("Failed to fetch canvas projects:", err);
+                    }),
+                    useAssetStore.persist.rehydrate(),
+                ]);
+                useCanvasStore.setState({ hydrated: true });
                 if (!useCanvasStore.getState().hydrated || !useAssetStore.getState().hydrated) throw new Error(t("integration.storageFailed"));
             })().catch((reason) => {
                 initialization = undefined;
@@ -67,9 +73,6 @@ export function ClientRootInit({ children }: { children: ReactNode }) {
         );
     return (
         <div className="flex h-dvh flex-col">
-            <div className="shrink-0 border-b bg-background px-4 py-1 text-xs text-muted-foreground" role="status">
-                {t("integration.preview")}
-            </div>
             <div className="min-h-0 flex-1">{children}</div>
         </div>
     );

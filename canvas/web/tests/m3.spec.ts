@@ -1,9 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
+import { mockCanvasProjectApi } from "./mock-canvas-project";
 
 const pngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=";
 const pngBuffer = Buffer.from(pngBase64, "base64");
 
 async function openCanvas(page: Page) {
+    await mockCanvasProjectApi(page);
     await page.route("**/api/user/**", async (route) => {
         const path = new URL(route.request().url()).pathname;
         const user = { id: 903, username: "canvas-m3", role: 100, group: "default" };
@@ -33,6 +35,8 @@ async function openCanvas(page: Page) {
 test("M3 本地导入图片上传至云端并获得稳定 UUID storageKey", async ({ page }) => {
     let uploadRequests = 0;
     let authHeader = "";
+
+    await page.route("https://s3.example.test/**", async (route) => route.fulfill({ contentType: "image/png", body: pngBuffer }));
 
     await page.route("**/api/images", async (route) => {
         if (route.request().method() === "POST") {
@@ -73,29 +77,22 @@ test("M3 本地导入图片上传至云端并获得稳定 UUID storageKey", asyn
     // 验证画布中渲染了该公开 S3 资源
     await expect(canvas.locator('section img[src="https://s3.example.test/images/903/m3-cloud-uuid-8888.png"]')).toBeVisible();
 
-    // 验证本地工程持久化数据中的节点 metadata 承载了该云端 UUID
+    // 关键校验：确认在 M5 下已彻底不再写入 IndexedDB canvas_store
     const child = page.frames().find((frame) => frame.parentFrame())!;
-    await expect
-        .poll(() =>
-            child.evaluate(() =>
-                new Promise<string | null>((resolve) => {
-                    const req = indexedDB.open("infinite-canvas");
-                    req.onsuccess = () => {
-                        const db = req.result;
-                        const read = db.transaction("app_state").objectStore("app_state").get("infinite-canvas:canvas_store:903");
-                        read.onsuccess = () => {
-                            if (!read.result) return resolve(null);
-                            const persisted = JSON.parse(read.result);
-                            const nodes = persisted.state.projects[0]?.nodes || [];
-                            const imageNode = nodes.find((n: { type: string }) => n.type === "image");
-                            resolve(imageNode?.metadata?.storageKey || null);
-                            db.close();
-                        };
-                    };
-                }),
-            ),
-        )
-        .toBe("m3-cloud-uuid-8888");
+    const hasCanvasStore = await child.evaluate(() =>
+        new Promise<boolean>((resolve) => {
+            const req = indexedDB.open("infinite-canvas");
+            req.onsuccess = () => {
+                const db = req.result;
+                if (!db.objectStoreNames.contains("app_state")) return resolve(false);
+                const read = db.transaction("app_state").objectStore("app_state").get("infinite-canvas:canvas_store:903");
+                read.onsuccess = () => resolve(Boolean(read.result));
+                read.onerror = () => resolve(false);
+            };
+            req.onerror = () => resolve(false);
+        }),
+    );
+    expect(hasCanvasStore).toBe(false);
 });
 
 test("M3 导入非图片或损坏文件时服务端拦截报错且不生成假身份", async ({ page }) => {
