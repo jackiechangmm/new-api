@@ -3,7 +3,7 @@ import { CanvasNodeType, type CanvasNodeData } from "@/types/canvas";
 
 export const canvasCapabilities = {
     generation: true,
-    imageEditing: false,
+    imageEditing: true,
     auxiliaryText: false,
     video: false,
     audio: false,

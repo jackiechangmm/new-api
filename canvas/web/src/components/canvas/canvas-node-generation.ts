@@ -190,7 +190,7 @@ function generationLabel(type: NodeGenerationResourceInput["type"], index: numbe
     return i18n.t("canvas.composer.resources.text", { index: index + 1 });
 }
 
-function readReferenceImage(node: CanvasNodeData): ReferenceImage | null {
+export function readReferenceImage(node: CanvasNodeData): ReferenceImage | null {
     if (node.type !== CanvasNodeType.Image || !node.metadata?.content) return null;
     return {
         id: node.id,

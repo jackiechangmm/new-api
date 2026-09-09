@@ -14,7 +14,7 @@ export default {
         referencesUnavailable: "参考图编辑尚未开放，请移除图片输入后再生成",
         invalidResponse: "上游未返回有效图片",
         fewerImages: "已返回 {{actual}} 张图片，少于请求的 {{requested}} 张",
-        settings: { resolution: "分辨率", aspectRatio: "宽高比", quality: "质量", size: "尺寸", background: "透明背景", count: "生成张数" },
+        settings: { resolution: "分辨率", aspectRatio: "宽高比", quality: "质量", size: "尺寸", background: "透明背景", count: "生成张数", references: "参考图" },
         storageFailed: "无法读取本地工程或资产，请重试",
         preview: "集成预览：工程仅保存在当前浏览器，尚未云端保存。",
     },

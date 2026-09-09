@@ -94,8 +94,11 @@ export function getInputSummary(inputs: NodeGenerationInput[]) {
     };
 }
 
-export function buildGenerationConfig(config: AiConfig, node: CanvasNodeData | undefined, mode: CanvasNodeGenerationMode): AiConfig {
-    if (mode === "image") return { ...config, ...resolveImageSettings({ ...config, model: config.imageModel, count: config.canvasImageCount }, node?.metadata) };
+export function buildGenerationConfig(config: AiConfig, node: CanvasNodeData | undefined, mode: CanvasNodeGenerationMode, operation: "generation" | "edit" = "generation"): AiConfig {
+    if (mode === "image") {
+        const op = operation === "edit" || node?.metadata?.generationType === "edit" ? "edit" : "generation";
+        return { ...config, ...resolveImageSettings({ ...config, model: config.imageModel, count: config.canvasImageCount }, node?.metadata, op) };
+    }
     return {
         ...config,
         model: resolveModelForCapability(config, node?.metadata?.model, mode),
@@ -175,7 +178,12 @@ export function isAudioFile(file: File) {
 }
 
 export function buildAngleLabel(params: CanvasImageAngleParams) {
-    const horizontal = params.horizontalAngle === 0 ? i18n.t("canvas.generation.front") : params.horizontalAngle > 0 ? i18n.t("canvas.generation.rotateRight", { angle: params.horizontalAngle }) : i18n.t("canvas.generation.rotateLeft", { angle: Math.abs(params.horizontalAngle) });
+    const horizontal =
+        params.horizontalAngle === 0
+            ? i18n.t("canvas.generation.front")
+            : params.horizontalAngle > 0
+              ? i18n.t("canvas.generation.rotateRight", { angle: params.horizontalAngle })
+              : i18n.t("canvas.generation.rotateLeft", { angle: Math.abs(params.horizontalAngle) });
     const pitch = params.pitchAngle === 0 ? i18n.t("canvas.generation.level") : params.pitchAngle > 0 ? i18n.t("canvas.generation.topDown", { angle: params.pitchAngle }) : i18n.t("canvas.generation.lowAngle", { angle: Math.abs(params.pitchAngle) });
     return i18n.t("canvas.generation.angleLabel", { horizontal, pitch, distance: params.cameraDistance.toFixed(1), lens: i18n.t(params.wideAngle ? "canvas.editors.wide" : "canvas.editors.standard") });
 }

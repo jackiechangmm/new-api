@@ -1,12 +1,13 @@
 import { nanoid } from "nanoid";
 import i18n from "@/i18n";
 import type { AiConfig } from "@/stores/use-config-store";
-import { requestGeneration } from "@/services/api/image";
+import { requestEdit, requestGeneration } from "@/services/api/image";
 import { uploadImage } from "@/services/image-storage";
-import { buildCanvasImageRequest } from "./image-models";
+import { buildCanvasImageEditRequest, buildCanvasImageRequest } from "./image-models";
 import { fitNodeSize } from "./canvas-node-size";
 import { buildImageGenerationMetadata } from "./canvas-node-factory";
 import { CanvasNodeType, type CanvasNodeData, type CanvasNodeImage } from "@/types/canvas";
+import type { ReferenceImage } from "@/types/image";
 
 type ImageGenerationRun = {
     sourceId: string;
@@ -18,20 +19,35 @@ type ImageGenerationRun = {
     addConnection: (sourceId: string, targetId: string) => void;
     onTarget?: (targetId: string) => void;
     retry?: { imageId?: string };
+    references?: ReferenceImage[];
 };
 
 // 只有当前请求标识仍匹配的节点可以接受结果；每次回写都基于最新画布。
-export async function runCanvasImageGeneration(run: ImageGenerationRun, io = { generate: requestGeneration, store: uploadImage }) {
-    const { config, signal, sourceId, prompt, retry } = run;
+export async function runCanvasImageGeneration(
+    run: ImageGenerationRun,
+    io: {
+        generate?: typeof requestGeneration;
+        edit?: typeof requestEdit;
+        store?: typeof uploadImage;
+    } = { generate: requestGeneration, edit: requestEdit, store: uploadImage },
+) {
+    const { config, signal, sourceId, prompt, retry, references = [] } = run;
     signal.throwIfAborted();
-    buildCanvasImageRequest(config, prompt, config.models);
     const source = run.getNodes().find((node) => node.id === sourceId);
     if (!source) throw new DOMException("Aborted", "AbortError");
+
+    const isEdit = references.length > 0 || (Boolean(retry) && source.metadata?.generationType === "edit");
+    if (isEdit) {
+        buildCanvasImageEditRequest(config, prompt, config.models, references.length);
+    } else {
+        buildCanvasImageRequest(config, prompt, config.models);
+    }
+
     const reuse = Boolean(retry) || (source.type === CanvasNodeType.Image && !source.metadata?.content);
     const targetId = reuse ? sourceId : nanoid();
     const generationId = nanoid();
     const pending: CanvasNodeImage[] = Array.from({ length: Number(config.count) }, () => ({ id: nanoid(), status: "loading", content: "", naturalWidth: 0, naturalHeight: 0, bytes: 0, mimeType: "" }));
-    const metadata = buildImageGenerationMetadata("generation", config, retry?.imageId ? (source.metadata?.count ?? 1) : Number(config.count), []);
+    const metadata = buildImageGenerationMetadata(isEdit ? "edit" : "generation", config, retry?.imageId ? (source.metadata?.count ?? 1) : Number(config.count), references);
     if (retry?.imageId && !source.metadata?.images?.some((image) => image.id === retry.imageId)) throw new DOMException("Aborted", "AbortError");
     const target: CanvasNodeData = {
         id: targetId,
@@ -55,7 +71,10 @@ export async function runCanvasImageGeneration(run: ImageGenerationRun, io = { g
     });
     if (!reuse) run.addConnection(sourceId, targetId);
     try {
-        const images = await io.generate(config, prompt, { signal });
+        const editFn = io.edit ?? io.generate ?? requestEdit;
+        const generateFn = io.generate ?? requestGeneration;
+        const storeFn = io.store ?? uploadImage;
+        const images = isEdit ? await editFn(config, prompt, references, { signal }) : await generateFn(config, prompt, { signal });
         signal.throwIfAborted();
         if (!run.getNodes().some((node) => node.id === sourceId) || !run.getNodes().some((node) => node.id === targetId && node.metadata?.generationId === generationId)) throw new DOMException("Aborted", "AbortError");
         const stored = await Promise.all(
@@ -73,7 +92,7 @@ export async function runCanvasImageGeneration(run: ImageGenerationRun, io = { g
                         mimeType: img.mimeType || "",
                     };
                 }
-                const value = await io.store(img.dataUrl || img.url || "", { signal });
+                const value = await storeFn(img.dataUrl || img.url || "", { signal });
                 return { id: retry?.imageId || img.id, status: "success" as const, content: value.url, storageKey: value.storageKey, naturalWidth: value.width, naturalHeight: value.height, bytes: value.bytes, mimeType: value.mimeType };
             }),
         );

@@ -2,12 +2,13 @@ import { useCallback, useEffect, useRef, useState, type Dispatch, type RefObject
 import { App } from "antd";
 import { useTranslation } from "react-i18next";
 import { nanoid } from "nanoid";
-import { buildNodeGenerationContext } from "@/components/canvas/canvas-node-generation";
+import { buildNodeGenerationContext, readReferenceImage } from "@/components/canvas/canvas-node-generation";
 import { buildGenerationConfig } from "@/lib/canvas/canvas-generation-helpers";
 import { runCanvasImageGeneration } from "@/lib/canvas/image-generation";
 import { imageSettingsIssues } from "@/lib/canvas/image-models";
 import type { AiConfig } from "@/stores/use-config-store";
 import { CanvasNodeType, type CanvasConnection, type CanvasGenerationMode, type CanvasNodeData } from "@/types/canvas";
+import type { ReferenceImage } from "@/types/image";
 
 type Props = {
     projectId: string;
@@ -77,19 +78,44 @@ export function useImageGeneration({ projectId, config, nodes, nodesRef, connect
             runs.current.set(sourceId, run);
             setRunningIds((current) => new Set(current).add(sourceId));
             try {
-                const settings = buildGenerationConfig(config, source, "image");
-                const issues = imageSettingsIssues(settings, config.models);
-                if (issues.length) throw new Error(issues.join("\n"));
+                const isRetryEdit = Boolean(retry && source.metadata?.generationType === "edit");
                 const context = buildNodeGenerationContext(sourceId, nodesRef.current, connectionsRef.current, prompt);
-                if (retry ? source.metadata?.generationType === "edit" || Boolean(source.metadata?.references?.length) : Boolean(context.referenceImages.length || (source.type === CanvasNodeType.Image && source.metadata?.content)))
-                    throw new Error(t("integration.referencesUnavailable"));
+                let references: ReferenceImage[] = [];
+
+                if (isRetryEdit) {
+                    const savedRefs = source.metadata?.references || [];
+                    if (!savedRefs.length) {
+                        throw new Error(t("canvas.projectPage.referenceMissing"));
+                    }
+                    const resolvedRefs: ReferenceImage[] = [];
+                    for (const ref of savedRefs) {
+                        const matchedNode = nodesRef.current.find((n) => n.metadata?.storageKey === ref || n.metadata?.content === ref || n.id === ref);
+                        const refImage = matchedNode ? readReferenceImage(matchedNode) : null;
+                        if (!refImage) {
+                            throw new Error(t("canvas.projectPage.referenceMissing"));
+                        }
+                        resolvedRefs.push(refImage);
+                    }
+                    references = resolvedRefs;
+                } else if (!retry) {
+                    const selfReference = readReferenceImage(source);
+                    references = context.referenceImages.length > 0 ? context.referenceImages : selfReference ? [selfReference] : [];
+                }
+
+                const isEdit = references.length > 0 || isRetryEdit;
+                const operation = isEdit ? "edit" : "generation";
+                const settings = buildGenerationConfig(config, source, "image", operation);
+                const issues = imageSettingsIssues(settings, config.models, operation, isEdit ? references.length : undefined);
+                if (issues.length) throw new Error(issues.join("\n"));
                 if (retry?.imageId) settings.count = "1";
+
                 const result = await runCanvasImageGeneration({
                     sourceId,
-                    prompt: retry ? prompt : context.prompt,
+                    prompt: retry ? prompt || source.metadata?.prompt || "" : context.prompt,
                     config: settings,
                     signal: controller.signal,
                     retry,
+                    references,
                     getNodes: () => nodesRef.current,
                     setNodes,
                     addConnection: (fromNodeId, toNodeId) => setConnections((current) => [...current, { id: nanoid(), fromNodeId, toNodeId }]),

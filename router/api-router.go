@@ -178,6 +178,7 @@ func SetApiRouter(router *gin.Engine) {
 		)
 		{
 			canvasRoute.POST("/images/generations", controller.CanvasGenerateImages)
+			canvasRoute.POST("/images/edits", controller.CanvasEditImages)
 		}
 
 		canvasProjectRoute := apiRouter.Group("/canvas/projects")

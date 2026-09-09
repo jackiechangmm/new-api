@@ -15,6 +15,7 @@ export type ImageOperation = {
     qualities?: readonly string[];
     backgrounds?: readonly string[];
     maxOutputs: number;
+    maxReferences?: number;
     defaults: ImageSettings;
 };
 
@@ -28,6 +29,16 @@ export const defaultImageSettings: ImageSettings = {
     model: "gpt-image-2",
     resolution: "1k",
     aspectRatio: "1:1",
+    quality: "low",
+    size: "",
+    background: "",
+    count: "1",
+};
+
+export const defaultImageEditSettings: ImageSettings = {
+    model: "gpt-image-2",
+    resolution: "1k",
+    aspectRatio: "auto",
     quality: "low",
     size: "",
     background: "",
@@ -50,6 +61,17 @@ export const canvasImageModels: readonly CanvasImageModel[] = [
                 maxOutputs: 4,
                 defaults: defaultImageSettings,
             },
+            edit: {
+                sizing: {
+                    kind: "resolution-ratio",
+                    resolutions: ["1k", "2k", "4k"],
+                    aspectRatios: ["auto", "1:1", "1:3", "3:1", "3:2", "2:3", "4:3", "3:4", "5:4", "4:5", "16:9", "9:16", "2:1", "1:2", "21:9", "9:21"],
+                },
+                qualities: ["low", "medium"],
+                maxOutputs: 4,
+                maxReferences: 3,
+                defaults: defaultImageEditSettings,
+            },
         },
     },
 ];
@@ -62,7 +84,7 @@ export function filterCanvasImageModels(available: readonly string[]) {
     return canvasImageModels.filter((item) => available.includes(item.model)).map((item) => item.model);
 }
 
-export function imageSettingsIssues(settings: ImageSettings, available: readonly string[], operation: "generation" | "edit" = "generation") {
+export function imageSettingsIssues(settings: ImageSettings, available: readonly string[], operation: "generation" | "edit" = "generation", referenceCount?: number) {
     const issues: string[] = [];
     const model = getCanvasImageModel(settings.model);
     if (!model || !available.includes(settings.model)) issues.push(i18n.t("integration.modelUnavailable", { model: settings.model }));
@@ -72,6 +94,12 @@ export function imageSettingsIssues(settings: ImageSettings, available: readonly
         return issues;
     }
     const invalid: string[] = [];
+    if (operation === "edit") {
+        const maxRefs = capability.maxReferences ?? 3;
+        if (referenceCount === undefined || !Number.isInteger(referenceCount) || referenceCount < 1 || referenceCount > maxRefs) {
+            invalid.push(i18n.t("integration.settings.references"));
+        }
+    }
     if (!capability.sizing.resolutions.includes(settings.resolution || "")) invalid.push(i18n.t("settingsPanels.image.resolution"));
     if (!capability.sizing.aspectRatios.includes(settings.aspectRatio || "")) invalid.push(i18n.t("settingsPanels.image.aspectRatio"));
     if (settings.size) invalid.push(i18n.t("settingsPanels.image.size"));
@@ -83,17 +111,17 @@ export function imageSettingsIssues(settings: ImageSettings, available: readonly
     return issues;
 }
 
-export function resolveImageSettings(global: ImageSettings, node?: Partial<Omit<ImageSettings, "count">> & { count?: number | string }): ImageSettings {
+export function resolveImageSettings(global: ImageSettings, node?: Partial<Omit<ImageSettings, "count">> & { count?: number | string }, operation: "generation" | "edit" = "generation"): ImageSettings {
     const model = node?.model ?? global.model;
     const canvasModel = getCanvasImageModel(model);
-    const capability = canvasModel?.operations.generation;
-    const defaults = capability?.defaults ?? defaultImageSettings;
+    const capability = canvasModel?.operations[operation] ?? canvasModel?.operations.generation;
+    const defaults = capability?.defaults ?? (operation === "edit" ? defaultImageEditSettings : defaultImageSettings);
     const isSupported = Boolean(capability);
     const legacySize = Boolean(node?.size && !node.resolution && !node.aspectRatio);
 
     if (isSupported && capability) {
-        const resolution = node?.resolution ?? global.resolution;
-        const aspectRatio = node?.aspectRatio ?? global.aspectRatio;
+        const resolution = node?.resolution ?? (operation === "edit" && !node?.resolution ? defaults.resolution : global.resolution);
+        const aspectRatio = node?.aspectRatio ?? (operation === "edit" && !node?.aspectRatio ? defaults.aspectRatio : global.aspectRatio);
         const quality = node?.quality ?? global.quality;
         const count = Number(node?.count ?? global.count);
 
@@ -103,15 +131,15 @@ export function resolveImageSettings(global: ImageSettings, node?: Partial<Omit<
             aspectRatio: capability.sizing.aspectRatios.includes(aspectRatio || "") ? aspectRatio : defaults.aspectRatio,
             quality: capability.qualities ? (capability.qualities.includes(quality) ? quality : defaults.quality) : defaults.quality,
             size: "",
-            background: capability.backgrounds?.includes(node?.background ?? "") ? (node?.background ?? "") : (capability.backgrounds?.includes(global.background) ? global.background : ""),
+            background: capability.backgrounds?.includes(node?.background ?? "") ? (node?.background ?? "") : capability.backgrounds?.includes(global.background) ? global.background : "",
             count: Number.isInteger(count) && count >= 1 && count <= capability.maxOutputs ? String(count) : defaults.count,
         };
     }
 
     return {
         model,
-        resolution: node?.resolution ?? (legacySize ? undefined : global.resolution),
-        aspectRatio: node?.aspectRatio ?? (legacySize ? undefined : global.aspectRatio),
+        resolution: node?.resolution ?? (legacySize ? undefined : operation === "edit" ? defaults.resolution : global.resolution),
+        aspectRatio: node?.aspectRatio ?? (legacySize ? undefined : operation === "edit" ? defaults.aspectRatio : global.aspectRatio),
         quality: node?.quality ?? global.quality,
         size: node?.size ?? global.size ?? "",
         background: node?.background ?? global.background,
@@ -155,6 +183,23 @@ export function buildCanvasImageRequest(settings: ImageSettings, prompt: string,
         size: `${settings.aspectRatio} ${settings.resolution}`,
         ...(settings.quality ? { quality: settings.quality } : {}),
         ...(settings.background ? { background: settings.background } : {}),
+        response_format: "b64_json",
+        output_format: "png",
+    };
+}
+
+export function buildCanvasImageEditRequest(settings: ImageSettings, prompt: string, available: readonly string[], referenceCount: number) {
+    const issues = imageSettingsIssues(settings, available, "edit", referenceCount);
+    if (issues.length) throw new Error(issues.join("\n"));
+    if (!prompt.trim()) throw new Error(i18n.t("integration.promptRequired"));
+    const aspectRatio = settings.aspectRatio || "auto";
+    const resolution = settings.resolution || "1k";
+    return {
+        model: settings.model,
+        prompt: prompt.trim(),
+        n: Number(settings.count || 1),
+        size: `${aspectRatio} ${resolution}`,
+        ...(settings.quality ? { quality: settings.quality } : {}),
         response_format: "b64_json",
         output_format: "png",
     };

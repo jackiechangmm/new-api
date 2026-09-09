@@ -16,9 +16,8 @@ import { CanvasNodeType } from "@/types/canvas";
 
 const config = { ...defaultConfig, apiKey: "legacy-key", baseUrl: "https://invalid.example" };
 
-test("M2 仍拒绝编辑、辅助模型、插件与外部服务调用", async () => {
+test("M8 开放图片编辑，仍拒绝辅助模型、插件与外部服务调用", async () => {
     const requests = [
-        () => requestEdit(config, "prompt", []),
         () => requestImageQuestion(config, [], () => {}),
         () => fetchImageModels(config),
         () => requestAudioGeneration(config, "prompt"),
@@ -31,6 +30,7 @@ test("M2 仍拒绝编辑、辅助模型、插件与外部服务调用", async ()
         () => exportCanvasProjects([]),
     ];
     await assert.rejects(() => requestGeneration(config, "prompt"), /当前不可用/);
+    await assert.rejects(() => requestEdit(config, "prompt", []), /当前不可用/);
     for (const request of requests) await assert.rejects(request, /此功能尚未开放/);
     assert.throws(() => activatePlugin({ id: "legacy", name: "legacy", version: "1", nodes: [] }), /此功能尚未开放/);
     assert.throws(() => useCanvasStore.getState().importProject({ nodes: [] }), /此功能尚未开放/);

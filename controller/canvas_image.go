@@ -194,10 +194,10 @@ func processAndUploadImage(ctx context.Context, driver service.StorageDriver, us
 	}, nil
 }
 
-func CanvasGenerateImages(c *gin.Context) {
+func handleCanvasImageRelay(c *gin.Context, internalPath string, actionName string) {
 	userId := c.GetInt("id")
 	if userId <= 0 {
-		c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": "未登录用户不能生成图片"})
+		c.JSON(http.StatusUnauthorized, gin.H{"success": false, "message": fmt.Sprintf("未登录用户不能%s图片", actionName)})
 		return
 	}
 
@@ -211,9 +211,9 @@ func CanvasGenerateImages(c *gin.Context) {
 	bufWriter := newCanvasResponseWriter(origWriter)
 	c.Writer = bufWriter
 
-	// 临时重写为 /v1/images/generations 供内部 Relay 转发
+	// 临时重写为 internalPath 供内部 Relay 转发
 	origURL := *c.Request.URL
-	c.Request.URL.Path = "/v1/images/generations"
+	c.Request.URL.Path = internalPath
 	defer func() {
 		c.Request.URL = &origURL
 	}()
@@ -260,7 +260,7 @@ func CanvasGenerateImages(c *gin.Context) {
 	}
 
 	if err := g.Wait(); err != nil {
-		common.SysError(fmt.Sprintf("画布生成图片转存失败：%v", err))
+		common.SysError(fmt.Sprintf("画布%s图片转存失败：%v", actionName, err))
 		for _, rec := range uploadedRecords {
 			if rec != nil {
 				_ = driver.Delete(c.Request.Context(), rec.Key)
@@ -268,10 +268,18 @@ func CanvasGenerateImages(c *gin.Context) {
 			}
 		}
 		c.Writer = origWriter
-		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "转存生成图片到对象存储失败"})
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": fmt.Sprintf("转存%s图片到对象存储失败", actionName)})
 		return
 	}
 
 	c.Writer = origWriter
 	common.ApiSuccess(c, results)
+}
+
+func CanvasGenerateImages(c *gin.Context) {
+	handleCanvasImageRelay(c, "/v1/images/generations", "生成")
+}
+
+func CanvasEditImages(c *gin.Context) {
+	handleCanvasImageRelay(c, "/v1/images/edits", "编辑")
 }

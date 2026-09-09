@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildCanvasImageRequest, defaultImageSettings, filterCanvasImageModels, imageSettingsIssues, resolveImageSettings, switchImageModel } from "../image-models";
+import { buildCanvasImageEditRequest, buildCanvasImageRequest, defaultImageEditSettings, defaultImageSettings, filterCanvasImageModels, imageSettingsIssues, resolveImageSettings, switchImageModel } from "../image-models";
 
 test("受控模型交集与 image2 语义尺寸请求，不发送透明背景或旧渠道配置", () => {
     assert.deepEqual(filterCanvasImageModels(["gpt-image-2", "gpt-image-2", "nano-banana-2", "unknown"]), ["gpt-image-2"]);
@@ -54,4 +54,45 @@ test("主动切换保留兼容选择，调整无效值并列出调整字段", ()
     assert.deepEqual(result.adjusted, ["aspectRatio", "quality", "background", "count"]);
     assert.equal(original.aspectRatio, "1:8");
     assert.throws(() => switchImageModel(original, "unknown"));
+});
+
+test("M8 编辑操作受控校验：默认 auto 1k、支持 1~3 张参考图、阻断超限与非法参数", () => {
+    assert.deepEqual(buildCanvasImageEditRequest(defaultImageEditSettings, " 修改图片 ", ["gpt-image-2"], 1), {
+        model: "gpt-image-2",
+        prompt: "修改图片",
+        size: "auto 1k",
+        quality: "low",
+        n: 1,
+        response_format: "b64_json",
+        output_format: "png",
+    });
+
+    assert.deepEqual(buildCanvasImageEditRequest({ ...defaultImageEditSettings, resolution: "2k", aspectRatio: "16:9", count: "2" }, "换风格", ["gpt-image-2"], 3), {
+        model: "gpt-image-2",
+        prompt: "换风格",
+        size: "16:9 2k",
+        quality: "low",
+        n: 2,
+        response_format: "b64_json",
+        output_format: "png",
+    });
+
+    for (const count of [1, 2, 3]) {
+        assert.equal(imageSettingsIssues(defaultImageEditSettings, ["gpt-image-2"], "edit", count).length, 0);
+    }
+
+    for (const count of [0, 4, -1]) {
+        assert.throws(() => buildCanvasImageEditRequest(defaultImageEditSettings, "修改", ["gpt-image-2"], count));
+        const issues = imageSettingsIssues(defaultImageEditSettings, ["gpt-image-2"], "edit", count);
+        assert.ok(issues.length > 0);
+        assert.ok(issues.some((msg) => msg.includes("参考图")));
+    }
+
+    assert.throws(() => buildCanvasImageEditRequest({ ...defaultImageEditSettings, aspectRatio: "1:8" }, "修改", ["gpt-image-2"], 1));
+    assert.throws(() => buildCanvasImageEditRequest(defaultImageEditSettings, "  ", ["gpt-image-2"], 1));
+
+    const resolvedEdit = resolveImageSettings(defaultImageSettings, {}, "edit");
+    assert.equal(resolvedEdit.aspectRatio, "auto");
+    assert.equal(resolvedEdit.resolution, "1k");
+    assert.equal(imageSettingsIssues(resolvedEdit, ["gpt-image-2"], "edit", 1).length, 0);
 });
