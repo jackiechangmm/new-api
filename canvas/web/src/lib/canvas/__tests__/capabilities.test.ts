@@ -9,14 +9,16 @@ import { discoverAgentConfig } from "@/services/api/canvas-agent";
 import { testWebdavConnection } from "@/services/webdav-sync";
 import { activatePlugin, installPluginFromUrl } from "@/lib/canvas/plugin-loader";
 import { createCanvasNode } from "@/lib/canvas/canvas-node-factory";
-import { assertCanvasNodesAllowed } from "@/lib/canvas/canvas-capabilities";
+import { assertCanvasNodesAllowed, canvasCapabilities } from "@/lib/canvas/canvas-capabilities";
 import { exportCanvasProjects } from "@/lib/canvas/canvas-export";
 import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
 import { CanvasNodeType } from "@/types/canvas";
 
 const config = { ...defaultConfig, apiKey: "legacy-key", baseUrl: "https://invalid.example" };
 
-test("M9 开放提示词修饰与图片反推（auxiliaryText），仍拒绝视频、音频、插件与外部服务调用", async () => {
+test("M10 开放本站精选词库（promptLibrary），仍拒绝外部源（externalPrompts）、视频、音频、插件与外部服务调用", async () => {
+    assert.equal(canvasCapabilities.promptLibrary, true);
+    assert.equal(canvasCapabilities.externalPrompts, false);
     const requests = [
         () => fetchImageModels(config),
         () => requestAudioGeneration(config, "prompt"),

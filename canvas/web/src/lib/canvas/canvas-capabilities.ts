@@ -5,6 +5,7 @@ export const canvasCapabilities = {
     generation: true,
     imageEditing: true,
     auxiliaryText: true,
+    promptLibrary: true,
     video: false,
     audio: false,
     plugins: false,

@@ -1,17 +1,28 @@
-import localforage from "localforage";
-
-import { runPromptSource, type RawPrompt } from "./prompt-source-runtime";
-import { usePromptSourceStore } from "@/stores/use-prompt-source-store";
 import i18n from "@/i18n";
-import type { PromptSource } from "./prompt-source-presets";
+import { queryClient } from "@/lib/query-client";
+import { getCanvasAuthHeaders } from "@/services/host-auth";
 
-export type Prompt = RawPrompt & {
-    sourceId: string;
+export type Prompt = {
+    id: string;
+    title: string;
+    prompt: string;
+    coverUrl: string;
+    referenceImageUrls: string[];
+    description: string;
     category: string;
+    tags: string[];
+    sourceId: string;
     githubUrl: string;
+    preview?: string;
+    createdAt?: string;
+    updatedAt?: string;
 };
 
 export const ALL_PROMPTS_OPTION = "all";
+export const BULULU_FEATURED_CATEGORY = "Bululu精选";
+export const BULULU_FEATURED_SOURCE_ID = "bululu-featured";
+export const FEATURED_PROMPTS_QUERY_KEY = ["featured-prompts"] as const;
+const FEATURED_PROMPTS_STALE_TIME = 5 * 60 * 1000;
 
 export type PromptListResponse = {
     items: Prompt[];
@@ -39,188 +50,141 @@ export type PromptSourceRefreshSummary = {
     failureCount: number;
 };
 
-type SourceCache = PromptSourceStatus & {
-    items: Prompt[];
-    fetchedAt: number;
-    signature: string;
+type FeaturedPromptDto = {
+    id: number;
+    title: string;
+    prompt: string;
+    cover_url: string;
+    sort_order: number;
+    created_at: number;
+    updated_at: number;
 };
 
-const cacheTtlMs = 1000 * 60 * 60;
-const promptCacheStore = localforage.createInstance({ name: "infinite-canvas", storeName: "prompt_cache" });
-const loadingSources = new Map<string, Promise<PromptSourceRefreshResult>>();
-
-function enabledSources() {
-    return usePromptSourceStore.getState().sources.filter((source) => source.enabled);
+function mapFeaturedPrompt(item: FeaturedPromptDto): Prompt {
+    return {
+        id: String(item.id),
+        title: item.title,
+        prompt: item.prompt,
+        coverUrl: item.cover_url || "",
+        referenceImageUrls: item.cover_url ? [item.cover_url] : [],
+        description: "",
+        category: BULULU_FEATURED_CATEGORY,
+        tags: [],
+        sourceId: BULULU_FEATURED_SOURCE_ID,
+        githubUrl: "",
+        createdAt: item.created_at ? new Date(item.created_at > 1e11 ? item.created_at : item.created_at * 1000).toISOString() : undefined,
+        updatedAt: item.updated_at ? new Date(item.updated_at > 1e11 ? item.updated_at : item.updated_at * 1000).toISOString() : undefined,
+    };
 }
 
-function cacheKey(sourceId: string) {
-    return `prompt-source:${sourceId}`;
-}
-
-function sourceSignature(source: PromptSource) {
-    const value = `${source.name}\n${source.url}\n${source.homepage}`;
-    let hash = 0;
-    for (let i = 0; i < value.length; i += 1) hash = (hash * 31 + value.charCodeAt(i)) | 0;
-    return `${value.length}:${hash}`;
-}
-
-function withSourceMeta(source: PromptSource, items: RawPrompt[]): Prompt[] {
-    return items.map((item) => ({
-        ...item,
-        description: item.description || "",
-        referenceImageUrls: Array.isArray(item.referenceImageUrls) ? item.referenceImageUrls : [],
-        sourceId: source.id,
-        category: source.name,
-        githubUrl: item.sourceUrl || source.homepage,
-    }));
-}
-
-async function readSourceCache(sourceId: string) {
-    return promptCacheStore.getItem<SourceCache>(cacheKey(sourceId));
-}
-
-async function refreshSourceRecord(source: PromptSource): Promise<PromptSourceRefreshResult> {
-    const previous = await readSourceCache(source.id);
-    try {
-        const items = withSourceMeta(source, await runPromptSource(source));
-        const lastSuccessAt = new Date().toISOString();
-        const cache: SourceCache = { sourceId: source.id, items, count: items.length, fetchedAt: Date.now(), lastSuccessAt, lastError: "", signature: sourceSignature(source) };
-        await promptCacheStore.setItem(cacheKey(source.id), cache);
-        return { sourceId: source.id, sourceName: source.name, count: items.length, lastSuccessAt, lastError: "", success: true };
-    } catch (error) {
-        const lastError = error instanceof Error ? error.message : String(error);
-        const cache: SourceCache = {
-            sourceId: source.id,
-            items: previous?.items || [],
-            count: previous?.items?.length || 0,
-            fetchedAt: previous?.fetchedAt || 0,
-            lastSuccessAt: previous?.lastSuccessAt || "",
-            lastError,
-            signature: previous?.signature || sourceSignature(source),
-        };
-        await promptCacheStore.setItem(cacheKey(source.id), cache);
-        return { sourceId: source.id, sourceName: source.name, count: cache.count, lastSuccessAt: cache.lastSuccessAt, lastError, success: false };
+export async function fetchAllFeaturedPrompts(): Promise<Prompt[]> {
+    const headers = await getCanvasAuthHeaders();
+    const response = await fetch("/api/featured-prompts?page_size=100", { headers });
+    if (!response.ok) {
+        let message = i18n.t("prompts.loadFailed");
+        try {
+            const errJson = await response.json();
+            if (errJson?.message) message = errJson.message;
+        } catch {
+            // 保留默认提示
+        }
+        throw new Error(message);
     }
-}
-
-function getOrStartRefresh(source: PromptSource) {
-    const current = loadingSources.get(source.id);
-    if (current) return current;
-    const loading = refreshSourceRecord(source).finally(() => loadingSources.delete(source.id));
-    loadingSources.set(source.id, loading);
-    return loading;
-}
-
-async function getSourcePrompts(source: PromptSource): Promise<Prompt[]> {
-    const cached = await readSourceCache(source.id);
-    if (cached) {
-        const stale = cached.signature !== sourceSignature(source) || Date.now() - cached.fetchedAt >= cacheTtlMs;
-        if (stale) void getOrStartRefresh(source).catch(() => undefined);
-        return withSourceMeta(source, cached.items);
+    const body = await response.json();
+    if (!body.success || !body.data || !Array.isArray(body.data.items)) {
+        throw new Error(body.message || i18n.t("prompts.loadFailed"));
     }
-    const result = await getOrStartRefresh(source);
-    if (!result.success) throw new Error(result.lastError);
-    return (await readSourceCache(source.id))?.items || [];
+    return (body.data.items as FeaturedPromptDto[]).map(mapFeaturedPrompt);
 }
 
-async function getAllPrompts(): Promise<Prompt[]> {
-    const settled = await Promise.all(
-        enabledSources().map(async (source) => {
-            try {
-                return await getSourcePrompts(source);
-            } catch {
-                return [];
-            }
-        }),
-    );
-    return settled.flat();
+export async function getCachedFeaturedPrompts(): Promise<Prompt[]> {
+    return queryClient.fetchQuery({
+        queryKey: FEATURED_PROMPTS_QUERY_KEY,
+        queryFn: fetchAllFeaturedPrompts,
+        staleTime: FEATURED_PROMPTS_STALE_TIME,
+    });
 }
 
-export async function fetchPrompts({ keyword = "", tag = [], category = ALL_PROMPTS_OPTION, page = 1, pageSize = 20 }: { keyword?: string; tag?: string[]; category?: string; page?: number; pageSize?: number } = {}) {
-    const items = await getAllPrompts();
+export async function fetchPrompts({
+    keyword = "",
+    tag = [],
+    category = ALL_PROMPTS_OPTION,
+    page = 1,
+    pageSize = 20,
+}: {
+    keyword?: string;
+    tag?: string[];
+    category?: string;
+    page?: number;
+    pageSize?: number;
+} = {}): Promise<PromptListResponse> {
+    const items = await getCachedFeaturedPrompts();
     const normalizedKeyword = keyword.trim().toLowerCase();
     const normalizedPage = Math.max(1, page);
     const normalizedPageSize = Math.max(1, Math.min(100, pageSize));
-    const withoutTagFilter = filterPrompts(items, { keyword: normalizedKeyword, category, tags: [] });
     const filtered = filterPrompts(items, { keyword: normalizedKeyword, category, tags: tag });
-    const categories = enabledSources().map((source) => source.name);
 
     return {
         items: filtered.slice((normalizedPage - 1) * normalizedPageSize, normalizedPage * normalizedPageSize),
-        tags: collectTags(withoutTagFilter),
-        categories,
+        tags: [ALL_PROMPTS_OPTION],
+        categories: [ALL_PROMPTS_OPTION, BULULU_FEATURED_CATEGORY],
         total: filtered.length,
     };
 }
 
-export async function fetchSourcePrompts(sourceId: string): Promise<Prompt[]> {
-    const source = usePromptSourceStore.getState().sources.find((item) => item.id === sourceId);
-    if (!source) throw new Error(i18n.t("prompts.sourceMissing"));
-    return getSourcePrompts(source);
+export async function fetchSourcePrompts(_sourceId?: string): Promise<Prompt[]> {
+    return getCachedFeaturedPrompts();
 }
 
-export async function refreshSource(sourceId: string): Promise<PromptSourceRefreshResult> {
-    const source = usePromptSourceStore.getState().sources.find((item) => item.id === sourceId);
-    if (!source) throw new Error(i18n.t("prompts.sourceMissing"));
-    const result = await getOrStartRefresh(source);
-    if (!result.success) throw new Error(result.lastError);
-    return result;
-}
-
-export async function refreshAllSources(): Promise<PromptSourceRefreshSummary> {
-    const results = await Promise.all(enabledSources().map(getOrStartRefresh));
-    return summarizeRefresh(results);
-}
-
-export async function refreshDueSources(maxAgeMs: number): Promise<PromptSourceRefreshSummary> {
-    const sources = await Promise.all(
-        enabledSources().map(async (source) => {
-            const cached = await readSourceCache(source.id);
-            const lastSuccess = cached?.lastSuccessAt ? new Date(cached.lastSuccessAt).getTime() : 0;
-            return !lastSuccess || Boolean(cached?.lastError) || Date.now() - lastSuccess >= maxAgeMs || cached?.signature !== sourceSignature(source) ? source : null;
-        }),
-    );
-    const results = await Promise.all(sources.filter((source): source is PromptSource => Boolean(source)).map(getOrStartRefresh));
-    return summarizeRefresh(results);
-}
-
-export async function fetchPromptSourceStatuses(): Promise<Record<string, PromptSourceStatus>> {
-    const entries = await Promise.all(
-        usePromptSourceStore.getState().sources.map(async (source) => {
-            const cache = await readSourceCache(source.id);
-            return [source.id, { sourceId: source.id, count: cache?.items?.length || 0, lastSuccessAt: cache?.lastSuccessAt || "", lastError: cache?.lastError || "" }] as const;
-        }),
-    );
-    return Object.fromEntries(entries);
-}
-
-function summarizeRefresh(results: PromptSourceRefreshResult[]): PromptSourceRefreshSummary {
+export async function refreshSource(_sourceId: string): Promise<PromptSourceRefreshResult> {
+    const items = await queryClient.fetchQuery({
+        queryKey: FEATURED_PROMPTS_QUERY_KEY,
+        queryFn: fetchAllFeaturedPrompts,
+        staleTime: 0,
+    });
     return {
-        results,
-        total: results.reduce((total, item) => total + item.count, 0),
-        successCount: results.filter((item) => item.success).length,
-        failureCount: results.filter((item) => !item.success).length,
+        sourceId: BULULU_FEATURED_SOURCE_ID,
+        sourceName: BULULU_FEATURED_CATEGORY,
+        count: items.length,
+        lastSuccessAt: new Date().toISOString(),
+        lastError: "",
+        success: true,
     };
 }
 
-function filterPrompts(items: Prompt[], options: { keyword: string; category: string; tags: string[] }) {
+export async function refreshAllSources(): Promise<PromptSourceRefreshSummary> {
+    const res = await refreshSource(BULULU_FEATURED_SOURCE_ID);
+    return {
+        results: [res],
+        total: res.count,
+        successCount: 1,
+        failureCount: 0,
+    };
+}
+
+export async function refreshDueSources(_maxAgeMs: number): Promise<PromptSourceRefreshSummary> {
+    return { results: [], total: 0, successCount: 0, failureCount: 0 };
+}
+
+export async function fetchPromptSourceStatuses(): Promise<Record<string, PromptSourceStatus>> {
+    return {};
+}
+
+export function filterPrompts(items: Prompt[], options: { keyword: string; category: string; tags: string[] }) {
     return items.filter((item) => {
         if (isActiveOption(options.category) && item.category !== options.category) return false;
-        if (options.tags.length && !options.tags.some((tag) => item.tags.includes(tag))) return false;
+        if (options.tags.length && !options.tags.includes(ALL_PROMPTS_OPTION) && !options.tags.some((tag) => item.tags.includes(tag))) return false;
         if (!options.keyword) return true;
         return [item.title, item.prompt, item.description, item.category, ...item.tags].join(" ").toLowerCase().includes(options.keyword);
     });
-}
-
-function collectTags(items: Prompt[]) {
-    return Array.from(new Set(items.flatMap((item) => item.tags).filter(Boolean)));
 }
 
 function isActiveOption(value: string) {
     return value && value !== ALL_PROMPTS_OPTION && value !== "all";
 }
 
-export function formatPromptDate(value: string, locale?: string) {
+export function formatPromptDate(value?: string, locale?: string) {
+    if (!value) return "";
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? "" : new Intl.DateTimeFormat(locale, { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
 }

@@ -11,6 +11,7 @@ import { canvasThemes } from "@/lib/canvas-theme";
 import { useThemeStore } from "@/stores/use-theme-store";
 import { CanvasImageSettingsPopover } from "./canvas-image-settings-popover";
 import { CanvasPromptChipInput } from "./canvas-prompt-chip-input";
+import { CanvasPromptLibrary } from "./canvas-prompt-library";
 import { CanvasNodeType, type CanvasGenerationMode, type CanvasNodeData } from "@/types/canvas";
 import type { CanvasResourceReference } from "@/lib/canvas/canvas-resource-references";
 import { CanvasNodeReferenceBar } from "./canvas-node-reference-bar";
@@ -100,6 +101,7 @@ export function CanvasNodePromptPanel({
                 <Tooltip title={t("canvas.promptPanel.expandEditor")}>
                     <Button type="text" className="!h-8 !w-8 !p-0" icon={<Maximize2 className="size-4" />} onClick={() => setExpanded(true)} aria-label={t("canvas.promptPanel.expandEditor")} />
                 </Tooltip>
+                {canvasCapabilities.promptLibrary ? <CanvasPromptLibrary onSelect={updatePrompt} /> : null}
                 {isText ? (
                     <div
                         className="flex h-8 items-center rounded-md border px-2.5 text-xs font-medium"
