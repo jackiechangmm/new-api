@@ -5,18 +5,17 @@ import {
   createCanvasHost,
   type CanvasHost,
 } from '@/features/canvas/canvas-host'
+import { isSidebarModuleEnabled } from '@/lib/nav-modules'
 import { useAuthStore } from '@/stores/auth-store'
 
 export const Route = createFileRoute('/_authenticated/playground/canvas')({
   beforeLoad: async () => {
-    if (!isCanvasEnabled()) throw redirect({ to: '/dashboard' })
+    if (!isSidebarModuleEnabled('chat', 'canvas')) {
+      throw redirect({ to: '/dashboard' })
+    }
   },
   component: CanvasPage,
 })
-
-function isCanvasEnabled() {
-  return true
-}
 
 function CanvasPage() {
   const auth = useAuthStore((state) => state.auth)
