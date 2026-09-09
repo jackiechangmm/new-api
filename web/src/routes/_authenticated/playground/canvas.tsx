@@ -48,6 +48,7 @@ function CanvasPage() {
       src='/canvas/'
       className='h-full w-full border-0'
       loading='eager'
+      allow='clipboard-read; clipboard-write'
     />
   )
 }

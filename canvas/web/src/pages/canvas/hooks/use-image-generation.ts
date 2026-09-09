@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import { buildNodeGenerationContext } from "@/components/canvas/canvas-node-generation";
 import { buildGenerationConfig } from "@/lib/canvas/canvas-generation-helpers";
 import { runCanvasImageGeneration } from "@/lib/canvas/image-generation";
+import { imageSettingsIssues } from "@/lib/canvas/image-models";
 import type { AiConfig } from "@/stores/use-config-store";
 import { CanvasNodeType, type CanvasConnection, type CanvasGenerationMode, type CanvasNodeData } from "@/types/canvas";
 
@@ -77,6 +78,8 @@ export function useImageGeneration({ projectId, config, nodes, nodesRef, connect
             setRunningIds((current) => new Set(current).add(sourceId));
             try {
                 const settings = buildGenerationConfig(config, source, "image");
+                const issues = imageSettingsIssues(settings, config.models);
+                if (issues.length) throw new Error(issues.join("\n"));
                 const context = buildNodeGenerationContext(sourceId, nodesRef.current, connectionsRef.current, prompt);
                 if (retry ? source.metadata?.generationType === "edit" || Boolean(source.metadata?.references?.length) : Boolean(context.referenceImages.length || (source.type === CanvasNodeType.Image && source.metadata?.content)))
                     throw new Error(t("integration.referencesUnavailable"));
