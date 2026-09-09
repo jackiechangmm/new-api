@@ -29,7 +29,7 @@ export function CanvasImageSettingsPopover({ config, onConfigChange, onOpenChang
     const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
     const quality = config.quality;
     const count = Number(config.count) || 1;
-    const ratioLabel = config.aspectRatio === "auto" ? "自动" : config.aspectRatio;
+    const ratioLabel = imageSizeLabel(config.aspectRatio);
     const sizeSummary = [config.resolution?.toUpperCase(), ratioLabel].filter(Boolean).join(" · ");
     const summary = [imageQualityLabel(quality), sizeSummary, t("canvas.controls.images", { count })].filter(Boolean).join(" · ");
     const updateOpen = (nextOpen: boolean) => {

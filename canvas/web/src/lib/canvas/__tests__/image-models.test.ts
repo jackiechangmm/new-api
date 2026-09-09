@@ -39,6 +39,12 @@ test("拒绝旧工程失效参数与非法数量，不修改输入、不静默�
     assert.equal(legacy.size, "1536x1024");
     assert.equal(legacy.resolution, undefined);
     assert.equal(legacy.aspectRatio, undefined);
+    const resolvedLegacySupported = resolveImageSettings(defaultImageSettings, { model: "gpt-image-2", size: "1024x1024" });
+    assert.equal(resolvedLegacySupported.model, "gpt-image-2");
+    assert.equal(resolvedLegacySupported.size, "");
+    assert.equal(resolvedLegacySupported.resolution, "1k");
+    assert.equal(resolvedLegacySupported.aspectRatio, "1:1");
+    assert.equal(imageSettingsIssues(resolvedLegacySupported, ["gpt-image-2"]).length, 0);
 });
 
 test("主动切换保留兼容选择，调整无效值并列出调整字段", () => {

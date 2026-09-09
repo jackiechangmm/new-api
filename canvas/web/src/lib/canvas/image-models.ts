@@ -84,13 +84,15 @@ export function imageSettingsIssues(settings: ImageSettings, available: readonly
 }
 
 export function resolveImageSettings(global: ImageSettings, node?: Partial<Omit<ImageSettings, "count">> & { count?: number | string }): ImageSettings {
+    const model = node?.model ?? global.model;
+    const isSupported = Boolean(getCanvasImageModel(model));
     const legacySize = Boolean(node?.size && !node.resolution && !node.aspectRatio);
     return {
-        model: node?.model ?? global.model,
-        resolution: node?.resolution ?? (legacySize ? undefined : global.resolution),
-        aspectRatio: node?.aspectRatio ?? (legacySize ? undefined : global.aspectRatio),
+        model,
+        resolution: node?.resolution ?? (legacySize && !isSupported ? undefined : global.resolution),
+        aspectRatio: node?.aspectRatio ?? (legacySize && !isSupported ? undefined : global.aspectRatio),
         quality: node?.quality ?? global.quality,
-        size: node?.size ?? global.size,
+        size: isSupported ? "" : (node?.size ?? global.size ?? ""),
         background: node?.background ?? global.background,
         count: String(node?.count ?? global.count),
     };

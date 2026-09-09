@@ -13,7 +13,7 @@ export const imageQualityOptions = ["low", "medium"].map((value) => ({
         return imageQualityLabel(value);
     },
 }));
-export const imageAspectOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.aspectRatios.map((value) => ({ value, label: value === "auto" ? "自动" : value }));
+export const imageAspectOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.aspectRatios.map((value) => ({ value, label: imageSizeLabel(value) }));
 export const imageScaleOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.resolutions.map((value) => ({ value, label: value.toUpperCase() }));
 
 type ImageSettingsPanelProps = {
@@ -88,7 +88,7 @@ export function ImageSettingsPanel({ config, onConfigChange, theme, showTitle = 
                             <div className="grid grid-cols-4 gap-2.5">
                                 {operation.sizing.aspectRatios.map((value) => (
                                     <OptionPill key={value} selected={config.aspectRatio === value} theme={theme} onClick={() => onConfigChange("aspectRatio", value)}>
-                                        {value === "auto" ? "自动" : value}
+                                        {imageSizeLabel(value)}
                                     </OptionPill>
                                 ))}
                             </div>
