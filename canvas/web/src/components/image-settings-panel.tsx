@@ -13,8 +13,8 @@ export const imageQualityOptions = ["low", "medium"].map((value) => ({
         return imageQualityLabel(value);
     },
 }));
-export const imageAspectOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.aspectRatios.map((value) => ({ value, label: value }));
-export const imageScaleOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.resolutions.map((value) => ({ value, label: value }));
+export const imageAspectOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.aspectRatios.map((value) => ({ value, label: value === "auto" ? "自动" : value }));
+export const imageScaleOptions = getCanvasImageModel("gpt-image-2")!.operations.generation!.sizing.resolutions.map((value) => ({ value, label: value.toUpperCase() }));
 
 type ImageSettingsPanelProps = {
     config: AiConfig;
@@ -30,95 +30,96 @@ export function ImageSettingsPanel({ config, onConfigChange, theme, showTitle = 
     const { t } = useTranslation();
     const operation = getCanvasImageModel(config.model)?.operations.generation;
     const issues = imageSettingsIssues(config, config.models);
+    const count = Number(config.count) || 1;
+
     return (
-        <div className={className} style={{ color: theme.node.text }} onMouseDown={(event) => event.stopPropagation()}>
-            <div className="flex items-center justify-between gap-2">
-                {showTitle ? <h3 className="text-sm font-semibold">{t("settingsPanels.image.title")}</h3> : <span />}
-                {operation ? (
-                    <Tooltip title={t("integration.resetSettings")}>
-                        <Button
-                            type="text"
-                            size="small"
-                            aria-label={t("integration.resetSettings")}
-                            icon={<RotateCcw className="size-4" />}
-                            onClick={() => {
-                                for (const [key, value] of Object.entries(operation.defaults)) {
-                                    if (key !== "model") onConfigChange(key as keyof ImageSettings, value || "");
-                                }
-                            }}
-                        />
-                    </Tooltip>
-                ) : null}
-            </div>
-            {issues.length ? (
-                <div role="alert" className="text-xs leading-5 text-red-600 dark:text-red-400">
-                    {issues.join("\n")}
-                    {config.size ? (
-                        <div>
-                            {t("settingsPanels.image.size")}: {config.size}
-                        </div>
+        <ImageSettingsTheme theme={theme}>
+            <div className={className} style={{ color: theme.node.text }} onMouseDown={(event) => event.stopPropagation()}>
+                <div className="flex items-center justify-between gap-2">
+                    {showTitle ? <div className="text-lg font-semibold">{t("settingsPanels.image.title")}</div> : <span />}
+                    {operation ? (
+                        <Tooltip title={t("integration.resetSettings")}>
+                            <Button
+                                type="text"
+                                size="small"
+                                className="!h-7 !w-7 !p-0"
+                                aria-label={t("integration.resetSettings")}
+                                icon={<RotateCcw className="size-4" />}
+                                onClick={() => {
+                                    for (const [key, value] of Object.entries(operation.defaults)) {
+                                        if (key !== "model") onConfigChange(key as keyof ImageSettings, value || "");
+                                    }
+                                }}
+                            />
+                        </Tooltip>
                     ) : null}
                 </div>
-            ) : null}
-            {operation ? (
-                <>
-                    {operation.qualities ? (
-                        <fieldset className="min-w-0 space-y-2">
-                            <legend className="mb-2 text-xs" style={{ color: theme.node.muted }}>
-                                {t("settingsPanels.image.quality")}
-                            </legend>
-                            <div className="grid grid-cols-2 gap-2">
-                                {operation.qualities.map((value) => (
-                                    <SettingOption key={value} selected={config.quality === value} theme={theme} onClick={() => onConfigChange("quality", value)} label={imageQualityLabel(value)} />
+                {issues.length ? (
+                    <div role="alert" className="text-xs leading-5 text-red-600 dark:text-red-400">
+                        {issues.join("\n")}
+                    </div>
+                ) : null}
+                {operation ? (
+                    <>
+                        {operation.qualities ? (
+                            <div className="space-y-2.5">
+                                <SettingTitle color={theme.node.muted}>{t("settingsPanels.image.quality")}</SettingTitle>
+                                <div className="grid grid-cols-2 gap-2.5">
+                                    {operation.qualities.map((value) => (
+                                        <OptionPill key={value} selected={config.quality === value} theme={theme} onClick={() => onConfigChange("quality", value)}>
+                                            {imageQualityLabel(value)}
+                                        </OptionPill>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : null}
+                        <div className="space-y-2.5">
+                            <SettingTitle color={theme.node.muted}>{t("settingsPanels.image.resolution")}</SettingTitle>
+                            <div className="grid grid-cols-3 gap-2.5">
+                                {operation.sizing.resolutions.map((value) => (
+                                    <OptionPill key={value} selected={config.resolution === value} theme={theme} onClick={() => onConfigChange("resolution", value)}>
+                                        {value.toUpperCase()}
+                                    </OptionPill>
                                 ))}
                             </div>
-                        </fieldset>
-                    ) : null}
-                    <fieldset className="min-w-0 space-y-2">
-                        <legend className="mb-2 text-xs" style={{ color: theme.node.muted }}>
-                            {t("settingsPanels.image.resolution")}
-                        </legend>
-                        <div className="grid grid-cols-3 gap-2">
-                            {operation.sizing.resolutions.map((value) => (
-                                <SettingOption key={value} selected={config.resolution === value} theme={theme} onClick={() => onConfigChange("resolution", value)} label={value.toUpperCase()} />
-                            ))}
                         </div>
-                    </fieldset>
-                    <fieldset className="min-w-0 space-y-2">
-                        <legend className="mb-2 text-xs" style={{ color: theme.node.muted }}>
-                            {t("settingsPanels.image.aspectRatio")}
-                        </legend>
-                        <div className="grid grid-cols-4 gap-2">
-                            {operation.sizing.aspectRatios.map((value) => (
-                                <SettingOption key={value} selected={config.aspectRatio === value} theme={theme} onClick={() => onConfigChange("aspectRatio", value)} label={value === "auto" ? t("settingsPanels.common.auto") : value} />
-                            ))}
+                        <div className="space-y-2.5">
+                            <SettingTitle color={theme.node.muted}>{t("settingsPanels.image.aspectRatio")}</SettingTitle>
+                            <div className="grid grid-cols-4 gap-2.5">
+                                {operation.sizing.aspectRatios.map((value) => (
+                                    <OptionPill key={value} selected={config.aspectRatio === value} theme={theme} onClick={() => onConfigChange("aspectRatio", value)}>
+                                        {value === "auto" ? "自动" : value}
+                                    </OptionPill>
+                                ))}
+                            </div>
                         </div>
-                    </fieldset>
-                    {operation.backgrounds?.includes("transparent") ? (
-                        <label className="flex items-center justify-between gap-3 text-xs">
-                            {t("settingsPanels.image.transparent")}
-                            <Switch size="small" checked={config.background === "transparent"} onChange={(checked) => onConfigChange("background", checked ? "transparent" : "")} />
-                        </label>
-                    ) : null}
-                    <fieldset className="min-w-0 space-y-2">
-                        <legend className="mb-2 text-xs" style={{ color: theme.node.muted }}>
-                            {t("settingsPanels.image.count")}
-                        </legend>
-                        <input
-                            aria-label={t("settingsPanels.image.count")}
-                            type="number"
-                            min={1}
-                            max={operation.maxOutputs}
-                            step={1}
-                            value={config.count}
-                            onChange={(event) => onConfigChange("count", event.target.value)}
-                            className="h-9 w-full rounded-md border bg-transparent px-3"
-                            style={{ borderColor: theme.node.stroke }}
-                        />
-                    </fieldset>
-                </>
-            ) : null}
-        </div>
+                        {operation.backgrounds?.includes("transparent") ? (
+                            <div className="flex items-center justify-between gap-3">
+                                <div className="space-y-0.5">
+                                    <SettingTitle color={theme.node.muted}>{t("settingsPanels.image.transparent")}</SettingTitle>
+                                    <div className="text-xs" style={{ color: theme.node.muted, opacity: 0.75 }}>
+                                        {t("settingsPanels.image.transparentHint")}
+                                    </div>
+                                </div>
+                                <span onMouseDown={(event) => event.stopPropagation()}>
+                                    <Switch size="small" checked={config.background === "transparent"} onChange={(checked) => onConfigChange("background", checked ? "transparent" : "")} />
+                                </span>
+                            </div>
+                        ) : null}
+                        <div className="space-y-2.5">
+                            <SettingTitle color={theme.node.muted}>{t("settingsPanels.image.count")}</SettingTitle>
+                            <div className="grid grid-cols-4 gap-2.5">
+                                {Array.from({ length: operation.maxOutputs }, (_, index) => index + 1).map((value) => (
+                                    <OptionPill key={value} selected={count === value} theme={theme} onClick={() => onConfigChange("count", String(value))}>
+                                        {t("settingsPanels.image.images", { count: value })}
+                                    </OptionPill>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                ) : null}
+            </div>
+        </ImageSettingsTheme>
     );
 }
 
@@ -138,24 +139,35 @@ export function ImageSettingsTheme({ theme, children }: { theme: CanvasTheme; ch
     );
 }
 
-function SettingOption({ selected, theme, onClick, label }: { selected: boolean; theme: CanvasTheme; onClick: () => void; label: string }) {
+function SettingTitle({ children, color }: { children: string; color: string }) {
+    return (
+        <div className="text-xs font-medium" style={{ color }}>
+            {children}
+        </div>
+    );
+}
+
+function OptionPill({ selected, theme, onClick, children }: { selected: boolean; theme: CanvasTheme; onClick: () => void; children: ReactNode }) {
     return (
         <button
             type="button"
             aria-pressed={selected}
-            className="h-9 min-w-0 cursor-pointer rounded-md border px-1 text-xs"
+            className="h-9 cursor-pointer rounded-full border px-2 text-sm transition hover:opacity-80"
             style={{ borderColor: selected ? theme.node.text : theme.node.stroke, color: theme.node.text, background: selected ? theme.node.fill : "transparent" }}
+            onMouseDown={(event) => event.stopPropagation()}
             onClick={onClick}
         >
-            {label}
+            {children}
         </button>
     );
 }
 
-export function imageQualityLabel(value: string) {
+export function imageQualityLabel(value: string | undefined) {
+    if (!value) return "";
     return ["auto", "high", "medium", "low"].includes(value) ? i18n.t(`settingsPanels.common.${value}`) : value;
 }
 
-export function imageSizeLabel(size: string) {
-    return size === "auto" ? i18n.t("settingsPanels.common.auto") : size;
+export function imageSizeLabel(size: string | undefined) {
+    if (!size || size === "auto") return i18n.t("settingsPanels.common.auto");
+    return size;
 }

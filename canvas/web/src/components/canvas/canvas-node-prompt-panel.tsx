@@ -93,7 +93,7 @@ export function CanvasNodePromptPanel({
             />
             <div className="mt-2 flex min-w-0 flex-wrap items-center gap-2">
                 <Tooltip title={t("canvas.promptPanel.expandEditor")}>
-                    <Button type="text" className="!h-8 !w-8 !p-0" icon={<Maximize2 className="size-4" />} onClick={() => setExpanded(true)} aria-label={t("canvas.promptPanel.expandEditor")} />
+                    <Button type="text" className="!h-9 !w-9 !p-0" icon={<Maximize2 className="size-4" />} onClick={() => setExpanded(true)} aria-label={t("canvas.promptPanel.expandEditor")} />
                 </Tooltip>
                 <ModelPicker config={config} value={config.model} onChange={(model) => onConfigChange(node.id, { model })} capability="image" className="max-w-[190px]" />
                 <CanvasImageSettingsPopover config={config} onConfigChange={(key, value) => onConfigChange(node.id, key === "count" ? { count: Number(value) } : { [key]: value })} onOpenChange={onImageSettingsOpenChange} />

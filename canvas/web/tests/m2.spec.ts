@@ -45,7 +45,7 @@ test("image2 设置、语义尺寸、单次多图与预览图片展示", async (
     await expect(settings.getByText("尺寸", { exact: true })).toHaveCount(0);
     await settings.getByRole("button", { name: "2K", exact: true }).click();
     await settings.getByRole("button", { name: "1:3", exact: true }).click();
-    await settings.getByRole("spinbutton", { name: "生成张数" }).fill("4");
+    await settings.getByRole("button", { name: "4 张", exact: true }).click();
     await canvas.getByRole("button", { name: "图像设置", exact: true }).click();
     await canvas.locator('[contenteditable="true"]').fill("红色海报");
     await canvas.getByRole("button", { name: "生成", exact: true }).click();
@@ -162,6 +162,6 @@ test("旧工程不静默修正，主动选择模型后明确调整不兼容设�
     const settings = canvas.locator(".canvas-image-settings-popover");
     await expect(settings.getByRole("button", { name: "1K", exact: true })).toHaveAttribute("aria-pressed", "true");
     await expect(settings.getByRole("button", { name: "1:1", exact: true })).toHaveAttribute("aria-pressed", "true");
-    await expect(settings.getByRole("spinbutton", { name: "生成张数" })).toHaveValue("1");
+    await expect(settings.getByRole("button", { name: "1 张", exact: true })).toHaveAttribute("aria-pressed", "true");
     await expect(settings.getByRole("alert")).toHaveCount(0);
 });
