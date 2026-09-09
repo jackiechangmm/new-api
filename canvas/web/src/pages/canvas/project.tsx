@@ -2110,14 +2110,15 @@ function InfiniteCanvasPage() {
     }, []);
 
     const handleConfigNodeChange = useCallback((nodeId: string, patch: Partial<CanvasNodeData["metadata"]>) => {
-        if (patch?.model) {
-            const node = nodesRef.current.find((item) => item.id === nodeId);
-            if (!node) return;
+        const node = nodesRef.current.find((item) => item.id === nodeId);
+        if (!node) return;
+        const targetMode = patch?.generationMode || node.metadata?.generationMode || "image";
+        if (targetMode === "image" && patch?.model) {
             const { settings, adjusted } = switchImageModel(buildGenerationConfig(effectiveConfig, node, "image"), patch.model);
             patch = { ...settings, count: Number(settings.count) };
             if (adjusted.length) message.info(t("integration.settingsAdjusted", { fields: adjusted.map((field) => t(`integration.settings.${field}`)).join("、") }));
         }
-        setNodes((prev) => prev.map((node) => (node.id === nodeId ? applyNodeConfigPatch(node, patch) : node)));
+        setNodes((prev) => prev.map((item) => (item.id === nodeId ? applyNodeConfigPatch(item, patch) : item)));
     }, [effectiveConfig, message, t]);
 
     const downloadNodeImage = useCallback((node: CanvasNodeData) => {

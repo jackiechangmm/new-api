@@ -421,3 +421,60 @@ test("M9 文本生成遇 402 额度不足报错记录错误详情，并在原目
     await expect(canvas.getByText("重试后扩写成功内容").first()).toBeVisible({ timeout: 10000 });
 });
 
+test("M9 配置节点恢复模式切换器与胶囊标签：支持生图与文本双态无缝切换与控件对齐", async ({ page }) => {
+    const initialProject = {
+        id: "proj-m9-config-mode",
+        user_id: 909,
+        title: "配置节点模式切换测试",
+        revision: 1,
+        content: JSON.stringify({
+            nodes: [
+                {
+                    id: "cfg-node-switch",
+                    type: "config",
+                    title: "配置节点",
+                    position: { x: 100, y: 100 },
+                    width: 340,
+                    height: 240,
+                    metadata: {
+                        generationMode: "image",
+                        model: "gpt-image-2",
+                    },
+                },
+            ],
+            connections: [],
+            chatSessions: [],
+            viewport: { x: 0, y: 0, k: 1 },
+        }),
+        created_at: Math.floor(Date.now() / 1000),
+        updated_at: Math.floor(Date.now() / 1000),
+    };
+
+    await setupM9Env(page, [initialProject]);
+    await page.goto("/playground/canvas");
+    const canvas = page.frameLocator('iframe[title="Infinite Canvas"]');
+
+    await canvas.getByText("配置节点模式切换测试").first().click();
+    const configNode = canvas.locator('[data-node-id="cfg-node-switch"]');
+    await expect(configNode).toBeVisible({ timeout: 5000 });
+
+    // 验证展示上游原版的 Segmented 模式切换器与胶囊标签
+    await expect(configNode.getByText("生图")).toBeVisible({ timeout: 5000 });
+    await expect(configNode.getByText("文本")).toBeVisible({ timeout: 5000 });
+    await expect(configNode.getByText("提示词").first()).toBeVisible({ timeout: 5000 });
+    await expect(configNode.getByText("参考图").first()).toBeVisible({ timeout: 5000 });
+    await expect(configNode.getByText("组装提示词").first()).toBeVisible({ timeout: 5000 });
+
+    // 生图模式下展示图片模型与图片设置
+    await expect(configNode.getByText("gpt-image-2").first()).toBeVisible({ timeout: 5000 });
+
+    // 点击切换为“文本”模式
+    await configNode.getByText("文本").click();
+
+    // 验证模型自动对齐为固定受控辅助模型 gpt-5.6-terra
+    await expect(configNode.getByText("gpt-5.6-terra").first()).toBeVisible({ timeout: 5000 });
+    // 验证生图的尺寸与分辨率浮层消失，替换为文本设置
+    await expect(configNode.getByRole("button", { name: "分辨率与画质", exact: false })).toHaveCount(0);
+});
+
+
