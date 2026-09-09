@@ -21,6 +21,25 @@ async function openCanvas(page: Page, models = ["gpt-image-2"]) {
             });
         } else await route.fulfill({ json: { success: true, data: path === "/api/user/models" ? models : user } });
     });
+    await page.route("**/api/images", async (route) => {
+        if (route.request().method() === "POST") {
+            await route.fulfill({
+                json: {
+                    success: true,
+                    data: {
+                        id: "mock-image-id",
+                        url: "https://s3.example.test/mock-image.png",
+                        width: 1,
+                        height: 1,
+                        bytes: 68,
+                        mime_type: "image/png",
+                    },
+                },
+            });
+            return;
+        }
+        await route.continue();
+    });
     await page.goto("/playground/canvas");
     const canvas = page.frameLocator('iframe[title="Infinite Canvas"]');
     await canvas.getByRole("button", { name: "新建画布", exact: true }).first().click();
@@ -50,7 +69,7 @@ test("image2 设置、语义尺寸、单次多图与预览图片展示", async (
     await canvas.locator('[contenteditable="true"]').fill("红色海报");
     await canvas.getByRole("button", { name: "生成", exact: true }).click();
     await expect(canvas.getByText("已返回 2 张图片，少于请求的 4 张")).toBeVisible();
-    await expect.poll(() => canvas.locator('section img[src^="blob:"]').count()).toBeGreaterThan(0);
+    await expect.poll(() => canvas.locator('section img[src^="blob:"], section img[src*="example.test"]').count()).toBeGreaterThan(0);
     expect(requests).toBe(1);
     await page.screenshot({ path: "/tmp/new-api-canvas-m2-desktop.png", fullPage: true });
     expect(errors).toEqual([]);
@@ -95,7 +114,7 @@ test("上游失败可明确重试，停止后不接收晚到图片", async ({ pa
         .click();
     await expect(canvas.getByText("请求已取消").first()).toBeVisible();
     release();
-    await expect(canvas.locator('section img[src^="blob:"]')).toHaveCount(0);
+    await expect(canvas.locator('section img[src^="blob:"], section img[src*="example.test"]')).toHaveCount(0);
     await expect(canvas.getByRole("button", { name: "生成", exact: true })).toBeEnabled();
     expect(attempts).toBe(2);
 });

@@ -161,6 +161,13 @@ func SetApiRouter(router *gin.Engine) {
 			featuredPromptRoute.DELETE("/:id", middleware.AdminAuth(), controller.DeleteFeaturedPrompt)
 		}
 
+		imageRoute := apiRouter.Group("/images")
+		imageRoute.Use(middleware.UserAuth())
+		{
+			imageRoute.POST("", controller.UploadImage)
+			imageRoute.GET("/:id", controller.GetImage)
+		}
+
 		// 数字资产是用户私有资源，侧栏可见性仅由前端控制。
 		digitalAssetRoute := apiRouter.Group("/digital-assets")
 		digitalAssetRoute.Use(middleware.UserAuth())

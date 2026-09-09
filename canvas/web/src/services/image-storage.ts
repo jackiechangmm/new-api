@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import i18n from "@/i18n";
 import { withLocalProxy } from "@/stores/use-config-store";
 import { useUserStore } from "@/stores/use-user-store";
+import { getCanvasAuthHeaders } from "@/services/host-auth";
 
 export type UploadedImage = {
     url: string;
@@ -31,7 +32,7 @@ const IMAGE_TIMEOUT_ERROR = "ImageTimeoutError";
 type ImageReadOptions = { signal?: AbortSignal };
 
 export async function uploadImage(input: string | Blob, options?: ImageReadOptions): Promise<UploadedImage> {
-    if (typeof input !== "string") return storeImage(input, options);
+    if (typeof input !== "string") return uploadBlobToCloud(input, options);
 
     let blob: Blob;
     try {
@@ -42,25 +43,52 @@ export async function uploadImage(input: string | Blob, options?: ImageReadOptio
         if (!meta) throw error;
         return { url: input, width: meta.width, height: meta.height, bytes: 0, mimeType: "" };
     }
-    return storeImage(blob, options);
+    return uploadBlobToCloud(blob, options);
 }
 
-async function storeImage(blob: Blob, options?: ImageReadOptions): Promise<UploadedImage> {
-    const storageKey = userStorageKey(`image:${nanoid()}`);
-    const url = URL.createObjectURL(blob);
-    try {
-        const meta = await loadImageMeta(url, options);
-        if (!meta) throw new Error(i18n.t("common.imageReadFailed"));
-        throwIfAborted(options?.signal);
-        await store.setItem(storageKey, blob);
-        throwIfAborted(options?.signal);
-        objectUrls.set(storageKey, url);
-        return { url, storageKey, width: meta.width, height: meta.height, bytes: blob.size, mimeType: blob.type.startsWith("image/") ? blob.type : "" };
-    } catch (error) {
-        URL.revokeObjectURL(url);
-        await store.removeItem(storageKey).catch(() => undefined);
-        throw error;
+async function uploadBlobToCloud(blob: Blob, options?: ImageReadOptions): Promise<UploadedImage> {
+    throwIfAborted(options?.signal);
+    const headers = await getCanvasAuthHeaders();
+    throwIfAborted(options?.signal);
+
+    const formData = new FormData();
+    const filename = blob instanceof File && blob.name ? blob.name : "upload.png";
+    formData.append("file", blob, filename);
+
+    const response = await fetch("/api/images", {
+        method: "POST",
+        headers,
+        body: formData,
+        signal: options?.signal,
+    });
+
+    if (!response.ok) {
+        let errorMsg = i18n.t("common.imageReadFailed");
+        try {
+            const resJson = await response.json();
+            if (resJson && resJson.message) {
+                errorMsg = resJson.message;
+            }
+        } catch {
+            /* ignore json parse failure */
+        }
+        throw new Error(errorMsg);
     }
+
+    const resBody = await response.json();
+    if (!resBody || !resBody.success || !resBody.data) {
+        throw new Error(resBody?.message || i18n.t("common.imageReadFailed"));
+    }
+
+    const item = resBody.data;
+    return {
+        url: item.url,
+        storageKey: item.id,
+        width: item.width,
+        height: item.height,
+        bytes: item.bytes,
+        mimeType: item.mime_type || blob.type || "image/png",
+    };
 }
 
 async function fetchImageBlob(url: string, options?: ImageReadOptions) {
@@ -91,6 +119,7 @@ function loadImageMeta(url: string, options?: ImageReadOptions, timeoutMs = IMAG
     return new Promise<{ width: number; height: number } | null>((resolve, reject) => {
         if (options?.signal?.aborted) return reject(abortReason(options.signal));
         const image = new Image();
+        image.crossOrigin = "anonymous";
         let settled = false;
         const finish = (value: { width: number; height: number } | null) => {
             if (settled) return;
