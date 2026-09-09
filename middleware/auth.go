@@ -297,6 +297,21 @@ func SetupSessionRelayContext() func(c *gin.Context) {
 	}
 }
 
+// RequireSessionAuth 校验请求是否来自有效的面板登录会话，非会话（如纯 API Token）请求将被拒绝。
+func RequireSessionAuth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if _, ok := GetSessionAuthIdentity(c); !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"success": false,
+				"message": "仅允许已登录的画布有效会话访问",
+			})
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
+
 // TokenAuthReadOnly 宽松版本的令牌认证中间件，用于只读查询接口。
 // 只验证令牌 key 是否存在，不检查令牌状态、过期时间和额度。
 // 即使令牌已过期、已耗尽或已禁用，也允许访问。

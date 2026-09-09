@@ -51,11 +51,19 @@ test("image2 设置、语义尺寸、单次多图与预览图片展示", async (
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     let requests = 0;
-    await page.route("**/v1/images/generations", async (route) => {
+    await page.route("**/api/canvas/images/generations", async (route) => {
         requests++;
         expect(route.request().headers().authorization).toBe("Bearer canvas-session");
         expect(route.request().postDataJSON()).toEqual({ model: "gpt-image-2", prompt: "红色海报", n: 4, size: "1:3 2k", quality: "low", response_format: "b64_json", output_format: "png" });
-        await route.fulfill({ json: { data: [{ b64_json: png }, { b64_json: png }] } });
+        await route.fulfill({
+            json: {
+                success: true,
+                data: [
+                    { id: "m2-img-1", url: "https://s3.example.test/images/m2-img-1.png", width: 1, height: 1, bytes: 68, mime_type: "image/png" },
+                    { id: "m2-img-2", url: "https://s3.example.test/images/m2-img-2.png", width: 1, height: 1, bytes: 68, mime_type: "image/png" },
+                ],
+            },
+        });
     });
     const canvas = await openCanvas(page);
     await canvas.getByRole("button", { name: "图像设置", exact: true }).click();
@@ -77,7 +85,7 @@ test("image2 设置、语义尺寸、单次多图与预览图片展示", async (
 
 test("不可用模型禁止发送", async ({ page }) => {
     let requests = 0;
-    await page.route("**/v1/images/generations", async (route) => {
+    await page.route("**/api/canvas/images/generations", async (route) => {
         requests++;
         await route.abort();
     });
@@ -93,12 +101,17 @@ test("上游失败可明确重试，停止后不接收晚到图片", async ({ pa
     const pending = new Promise<void>((resolve) => {
         release = resolve;
     });
-    await page.route("**/v1/images/generations", async (route) => {
+    await page.route("**/api/canvas/images/generations", async (route) => {
         attempts++;
         if (attempts === 1) await route.fulfill({ status: 403, json: { error: { message: "测试额度不足" } } });
         else {
             await pending;
-            await route.fulfill({ json: { data: [{ b64_json: png }] } }).catch(() => {});
+            await route.fulfill({
+                json: {
+                    success: true,
+                    data: [{ id: "m2-retry", url: "https://s3.example.test/images/m2-retry.png", width: 1, height: 1, bytes: 68, mime_type: "image/png" }],
+                },
+            }).catch(() => {});
         }
     });
     const canvas = await openCanvas(page);

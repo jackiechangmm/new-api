@@ -22,7 +22,7 @@ func TestS3StorageUploadsAndDeletes(t *testing.T) {
 			require.NoError(t, err)
 			assert.Equal(t, []byte("image-data"), body)
 			assert.Equal(t, "image/png", r.Header.Get("Content-Type"))
-			assert.Equal(t, "public, max-age=2592000, immutable", r.Header.Get("Cache-Control"))
+			assert.Equal(t, "public, max-age=31536000, immutable", r.Header.Get("Cache-Control"))
 		}
 		w.WriteHeader(http.StatusOK)
 	}))

@@ -22,28 +22,40 @@ test("生成通过宿主认证调用本站，一次请求保留全部返回图�
     const controller = new AbortController();
     axios.post = (async (url: unknown, body: unknown, options: unknown) => {
         posts++;
-        assert.equal(url, "/v1/images/generations");
+        assert.equal(url, "/api/canvas/images/generations");
         assert.deepEqual(body, { model: "gpt-image-2", prompt: "poster", size: "1:3 2k", quality: "low", n: 4, response_format: "b64_json", output_format: "png" });
         assert.deepEqual(options, { headers: { Authorization: "Bearer session" }, signal: controller.signal });
-        return { data: { data: [{ b64_json: "YWJj" }, { url: "https://example.test/image.png" }] } };
+        return {
+            data: {
+                success: true,
+                data: [
+                    { id: "gen-1", url: "https://example.test/image1.png", width: 800, height: 600, bytes: 1000, mime_type: "image/png" },
+                    { id: "gen-2", url: "https://example.test/image2.png", width: 800, height: 600, bytes: 2000, mime_type: "image/png" },
+                ],
+            },
+        };
     }) as typeof axios.post;
     try {
         const settings = { ...defaultConfig, resolution: "2k", aspectRatio: "1:3", count: "4", apiKey: "legacy", baseUrl: "https://invalid.example", models: ["gpt-image-2"] };
         const images = await requestGeneration(settings, "poster", { signal: controller.signal });
         assert.deepEqual(
-            images.map((image) => image.dataUrl),
-            ["data:image/png;base64,YWJj", "https://example.test/image.png"],
+            images.map((image) => image.url),
+            ["https://example.test/image1.png", "https://example.test/image2.png"],
+        );
+        assert.deepEqual(
+            images.map((image) => image.storageKey),
+            ["gen-1", "gen-2"],
         );
         assert.equal(posts, 1);
         assert.notEqual(images[0].id, images[1].id);
-        for (const payload of [{ data: [] }, { data: [null] }, { data: [{ url: "javascript:alert(1)" }] }, { error: { message: "quota exhausted" } }, "not-json"]) {
+        for (const payload of [{ data: [] }, { data: [null] }, { error: { message: "quota exhausted" } }, "not-json"]) {
             axios.post = (async () => ({ data: payload })) as typeof axios.post;
             await assert.rejects(requestGeneration(settings, "poster"));
         }
         const lateController = new AbortController();
         axios.post = (async () => {
             lateController.abort();
-            return { data: { data: [{ b64_json: "YWJj" }] } };
+            return { data: { success: true, data: [{ id: "gen-3", url: "https://example.test/image3.png", width: 100, height: 100, bytes: 10, mime_type: "image/png" }] } };
         }) as typeof axios.post;
         await assert.rejects(requestGeneration(settings, "poster", { signal: lateController.signal }), { name: "AbortError" });
         controller.abort();

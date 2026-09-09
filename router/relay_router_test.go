@@ -534,6 +534,20 @@ func TestListModelsSupportsOpenAIAndGeminiAuthentication(t *testing.T) {
 	}
 }
 
+func TestApiRouterCanvasImagesGenerationsWired(t *testing.T) {
+	setupRelayRouterTestDB(t)
+	engine := gin.New()
+	SetApiRouter(engine)
+
+	// Unauthenticated request should hit the middleware and return 401
+	request := httptest.NewRequest(http.MethodPost, "/api/canvas/images/generations", strings.NewReader(`{"model":"dall-e-3","prompt":"cat"}`))
+	request.Header.Set("Content-Type", "application/json")
+	recorder := httptest.NewRecorder()
+	engine.ServeHTTP(recorder, request)
+
+	assert.Equal(t, http.StatusUnauthorized, recorder.Code)
+}
+
 func setupRelayRouterTestDB(t *testing.T) {
 	t.Helper()
 

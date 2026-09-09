@@ -35,3 +35,7 @@ func GetImageById(id string) (*Image, error) {
 	}
 	return &img, nil
 }
+
+func DeleteImage(id string) error {
+	return DB.Where("id = ?", id).Delete(&Image{}).Error
+}

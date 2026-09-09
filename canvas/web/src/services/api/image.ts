@@ -729,7 +729,18 @@ function parseGeminiImagePayload(payload: GeminiPayload) {
     return images;
 }
 
-export async function requestGeneration(config: AiConfig, prompt: string, options?: RequestOptions) {
+export type GeneratedCanvasImage = {
+    id: string;
+    dataUrl: string;
+    url?: string;
+    storageKey?: string;
+    width?: number;
+    height?: number;
+    bytes?: number;
+    mimeType?: string;
+};
+
+export async function requestGeneration(config: AiConfig, prompt: string, options?: RequestOptions): Promise<GeneratedCanvasImage[]> {
     requireCanvasCapability("generation");
     options?.signal?.throwIfAborted();
     buildCanvasImageRequest(config, prompt, config.models);
@@ -740,18 +751,37 @@ export async function requestGeneration(config: AiConfig, prompt: string, option
     options?.signal?.throwIfAborted();
     if (getCanvasHost().getUser()?.id !== userId) throw new Error(i18n.t("integration.sessionExpired"));
     try {
-        const response = await axios.post<ImageApiResponse>(
-            "/v1/images/generations", body, { headers, signal: options?.signal },
+        const response = await axios.post<{
+            success: boolean;
+            data: Array<{
+                id: string;
+                url: string;
+                width: number;
+                height: number;
+                bytes: number;
+                mime_type: string;
+            }>;
+            message?: string;
+        }>(
+            "/api/canvas/images/generations", body, { headers, signal: options?.signal },
         );
         options?.signal?.throwIfAborted();
         if (getCanvasHost().getUser()?.id !== userId || useUserStore.getState().user?.id !== userId) throw new Error(i18n.t("integration.sessionExpired"));
         const payload = response.data;
-        if (!payload || typeof payload !== "object" || !Array.isArray(payload.data)) {
-            throw new Error(readApiErrorMessage(payload) || i18n.t("integration.invalidResponse"));
+        if (!payload || typeof payload !== "object" || !payload.success || !Array.isArray(payload.data)) {
+            throw new Error(payload?.message || i18n.t("integration.invalidResponse"));
         }
-        if (payload.error) throw new Error(readApiErrorMessage(payload));
-        if (!payload.data.length || payload.data.some((item) => !item || typeof item !== "object" || !resolveImageSource(item))) throw new Error(i18n.t("integration.invalidResponse"));
-        return parseImagePayload(payload);
+        if (!payload.data.length) throw new Error(i18n.t("integration.invalidResponse"));
+        return payload.data.map((item) => ({
+            id: item.id,
+            storageKey: item.id,
+            url: item.url,
+            width: item.width,
+            height: item.height,
+            bytes: item.bytes,
+            mimeType: item.mime_type,
+            dataUrl: item.url,
+        }));
     } catch (error) {
         options?.signal?.throwIfAborted();
         if (axios.isCancel(error)) throw new DOMException("Aborted", "AbortError");

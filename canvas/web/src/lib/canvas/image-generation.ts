@@ -60,8 +60,21 @@ export async function runCanvasImageGeneration(run: ImageGenerationRun, io = { g
         if (!run.getNodes().some((node) => node.id === sourceId) || !run.getNodes().some((node) => node.id === targetId && node.metadata?.generationId === generationId)) throw new DOMException("Aborted", "AbortError");
         const stored = await Promise.all(
             images.map(async (image) => {
-                const value = await io.store(image.dataUrl, { signal });
-                return { id: retry?.imageId || image.id, status: "success" as const, content: value.url, storageKey: value.storageKey, naturalWidth: value.width, naturalHeight: value.height, bytes: value.bytes, mimeType: value.mimeType };
+                const img = image as { id: string; url?: string; storageKey?: string; width?: number; height?: number; bytes?: number; mimeType?: string; dataUrl?: string };
+                if (img.storageKey && img.url) {
+                    return {
+                        id: retry?.imageId || img.id,
+                        status: "success" as const,
+                        content: img.url,
+                        storageKey: img.storageKey,
+                        naturalWidth: img.width || 0,
+                        naturalHeight: img.height || 0,
+                        bytes: img.bytes || 0,
+                        mimeType: img.mimeType || "",
+                    };
+                }
+                const value = await io.store(img.dataUrl || img.url || "", { signal });
+                return { id: retry?.imageId || img.id, status: "success" as const, content: value.url, storageKey: value.storageKey, naturalWidth: value.width, naturalHeight: value.height, bytes: value.bytes, mimeType: value.mimeType };
             }),
         );
         signal.throwIfAborted();

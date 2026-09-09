@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/QuantumNous/new-api/common"
@@ -24,6 +25,7 @@ import (
 )
 
 type mockStorageDriver struct {
+	mu         sync.Mutex
 	configured bool
 	uploaded   map[string][]byte
 	deleted    []string
@@ -36,6 +38,8 @@ func (m *mockStorageDriver) IsConfigured() bool {
 }
 
 func (m *mockStorageDriver) Upload(ctx context.Context, relKey string, data []byte, contentType string) (string, string, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 	if m.uploadErr != nil {
 		return "", "", m.uploadErr
 	}
@@ -47,6 +51,8 @@ func (m *mockStorageDriver) Upload(ctx context.Context, relKey string, data []by
 }
 
 func (m *mockStorageDriver) Delete(ctx context.Context, finalKey string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 	if m.deleteErr != nil {
 		return m.deleteErr
 	}

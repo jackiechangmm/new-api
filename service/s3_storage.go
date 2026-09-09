@@ -15,7 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-const defaultS3CacheControl = "public, max-age=2592000, immutable"
+const defaultS3CacheControl = "public, max-age=31536000, immutable"
 
 var ErrStorageUnavailable = errors.New("对象存储未配置或不可用")
 
