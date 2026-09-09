@@ -108,7 +108,7 @@
 | M2 | 已实现并通过真实出图、会话消费归属验收 | M1 | 已确认本阶段可超过 1200 行 |
 | M3 | 云端图片身份及本地导入闭环 | M1 | 900–1200 行 |
 | M4 | ✅ 已完成：生成、粘贴、裁剪、分割统一上云 | M2、M3 | 900–1200 行 |
-| M5 | 云端工程 CRUD、导入和明确保存 | M4 | 1000–1200 行 |
+| M5 | ✅ 已完成：云端工程 CRUD、导入和明确保存 | M4 | 1000–1200 行 |
 | M6 | 连续编辑下可靠的自动保存 | M5 | 800–1100 行 |
 | M7 | 跨设备更新、冲突处置和云端删除 | M6 | 900–1200 行 |
 | M8 | 参考图编辑协议 | M4；完整体验依赖 M7 | 800–1100 行 |
@@ -271,16 +271,16 @@ M3 可与 M2 并行准备，M10 可独立提前；推荐按表中顺序串行验
 4. 保存失败保留内容；保存响应之前不能显示已保存。
 5. 两页基于同一 revision 保存，仅一个成功，另一页可另存或打开云端；删除后旧页保存不能复活。
 
-**自动验收**：目标 PostgreSQL 上的 CRUD、所有权、条件更新并发、删除后写入、图片引用及导入文档边界。
+**自动验收**：目标 PostgreSQL 上的 CRUD、所有权、条件更新并发、删除后写入、图片引用及文档边界。
 
-**M5 实施记录**：对应 Issue #23。
+**M5 实施记录**：对应 Issue #23，提交 `f38e42ed`。用户已完成多浏览器登录同一账号创建工程与跨浏览器读取验证，人工验收通过。
 - **服务端云端工程实体与租户隔离**：新增 `model.CanvasProject`（`canvas_projects` 表），包含 `id`, `user_id`, `title`, `revision`, `content`, `created_at`, `updated_at`。挂载 `/api/canvas/projects` RESTful 路由并接入 `middleware.UserAuth()`，所有写查严格绑定当前登录用户 `user_id`。
 - **CAS 条件更新乐观锁**：PUT 接口执行 `UPDATE canvas_projects SET ..., revision = revision + 1 WHERE id = ? AND user_id = ? AND revision = ?`。版本不匹配返回 `409 Conflict` 并带回服务端最新 revision；工程不存在或已删除返回 `404 Not Found`。
 - **包体上限与极简校验**：单次工程包体在控制器层限制不超过 5MB（超限返回 413），防范异常大包。
 - **前端纯内存运行时**：彻底剥离 `useCanvasStore` 的 `zustand/persist` 与 `localForage` 存储，正式工程由服务端 API 动态加载与持久化，关闭工程导入导出功能。
 - **10 秒无感自动保存 + 显式保存排队状态机**：实质内容变动标记 `isDirty = true` 并启动 10s 空闲倒计时；纯视口平移缩放不计入 dirty；提供顶部保存按钮及 `Ctrl/Cmd + S` 立即保存；传输中（In-flight）的新编辑受到排队保护不误标为已保存；`beforeunload` 安全拦截未保存离开。
 - **409 冲突模态阻断**：遇到版本冲突立即停止覆盖并弹窗阻断，支持“另存为新工程”或“放弃本地修改重新拉取”。
-- **自动化测试**：后端 HTTP 契约测试 `controller/canvas_project_test.go`（覆盖 CRUD、CAS 乐观锁、租户隔离、删除防复活及大包体限制）；前端端到端测试 `canvas/web/tests/m5.spec.ts`（覆盖即时创建与导航、未保存与显式/快捷键保存、纯视口不致脏、传输中编辑保护、409 模态处置及 IndexedDB canvas_store 彻底移除校验）。全部自动化测试通过。
+- **自动化测试**：后端 HTTP 契约测试 `controller/canvas_project_test.go`（覆盖 CRUD、CAS 乐观锁、租户隔离、删除防复活及大包体限制）；前端端到端测试 `canvas/web/tests/m5.spec.ts`（覆盖即时创建与导航、未保存与显式/快捷键保存、纯视口不致脏、传输中编辑保护、409 模态处置及 IndexedDB canvas_store 彻底移除校验）。全量 Playwright 与 Go 单元测试均已通过。
 
 ### M6：可靠自动保存
 
