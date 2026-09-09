@@ -4,7 +4,7 @@ import { Button, Modal, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { ModelPicker } from "@/components/model-picker";
 import { buildGenerationConfig } from "@/lib/canvas/canvas-generation-helpers";
-import { imageSettingsIssues } from "@/lib/canvas/image-models";
+import { auxiliaryTextIssues, DEFAULT_AUXILIARY_TEXT_MODEL, imageSettingsIssues } from "@/lib/canvas/image-models";
 import { canvasCapabilities } from "@/lib/canvas/canvas-capabilities";
 import { useEffectiveConfig } from "@/stores/use-config-store";
 import { canvasThemes } from "@/lib/canvas-theme";
@@ -50,8 +50,9 @@ export function CanvasNodePromptPanel({
     const globalConfig = useEffectiveConfig();
     const theme = canvasThemes[useThemeStore((state) => state.theme)];
     const mode = modeOverride ?? (node.type === CanvasNodeType.Image || node.type === CanvasNodeType.Config ? "image" : "text");
-    const config = buildGenerationConfig(globalConfig, node, "image");
-    const issues = imageSettingsIssues(config, config.models);
+    const isText = mode === "text";
+    const config = isText ? globalConfig : buildGenerationConfig(globalConfig, node, "image");
+    const issues = isText ? auxiliaryTextIssues(globalConfig.models, DEFAULT_AUXILIARY_TEXT_MODEL) : imageSettingsIssues(config, config.models);
     const [prompt, setPrompt] = useState(node.metadata?.composerContent ?? node.metadata?.prompt ?? "");
     const [expanded, setExpanded] = useState(false);
     useEffect(() => {
@@ -59,13 +60,17 @@ export function CanvasNodePromptPanel({
         // 切换节点时恢复输入，生成回写不覆盖仍在编辑的提示词。
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [node.id]);
-    if (!canvasCapabilities.generation || mode !== "image" || (node.type === CanvasNodeType.Image && node.metadata?.content)) return null;
+    if (!canvasCapabilities.generation) return null;
+    if (mode === "image" && node.type === CanvasNodeType.Image && node.metadata?.content) return null;
+    if (mode === "text" && !canvasCapabilities.auxiliaryText) return null;
+    if (mode !== "image" && mode !== "text") return null;
+    const placeholder = t(isText ? "canvas.promptPanel.editText" : "canvas.promptPanel.image");
     const updatePrompt = (value: string) => {
         setPrompt(value);
         onPromptChange(node.id, value);
     };
     const submit = () => {
-        if (prompt.trim() && !isRunning && !issues.length) onGenerate(node.id, "image", prompt.trim());
+        if (prompt.trim() && !isRunning && !issues.length) onGenerate(node.id, mode, prompt.trim());
     };
     return (
         <div
@@ -89,14 +94,25 @@ export function CanvasNodePromptPanel({
                 onSubmit={submit}
                 className="thin-scrollbar h-40 w-full resize-none rounded-md px-3 py-2 text-sm outline-none"
                 style={{ background: "transparent", color: theme.node.text }}
-                placeholder={t("canvas.promptPanel.image")}
+                placeholder={placeholder}
             />
             <div className="mt-2 flex min-w-0 flex-wrap items-center gap-2">
                 <Tooltip title={t("canvas.promptPanel.expandEditor")}>
                     <Button type="text" className="!h-8 !w-8 !p-0" icon={<Maximize2 className="size-4" />} onClick={() => setExpanded(true)} aria-label={t("canvas.promptPanel.expandEditor")} />
                 </Tooltip>
-                <ModelPicker config={config} value={config.model} onChange={(model) => onConfigChange(node.id, { model })} capability="image" className="max-w-[190px]" />
-                <CanvasImageSettingsPopover config={config} onConfigChange={(key, value) => onConfigChange(node.id, key === "count" ? { count: Number(value) } : { [key]: value })} onOpenChange={onImageSettingsOpenChange} />
+                {isText ? (
+                    <div
+                        className="flex h-8 items-center rounded-md border px-2.5 text-xs font-medium"
+                        style={{ borderColor: theme.toolbar.border, background: theme.toolbar.panel, color: theme.node.text }}
+                    >
+                        {DEFAULT_AUXILIARY_TEXT_MODEL}
+                    </div>
+                ) : (
+                    <>
+                        <ModelPicker config={config} value={config.model} onChange={(model) => onConfigChange(node.id, { model })} capability="image" className="max-w-[190px]" />
+                        <CanvasImageSettingsPopover config={config} onConfigChange={(key, value) => onConfigChange(node.id, key === "count" ? { count: Number(value) } : { [key]: value })} onOpenChange={onImageSettingsOpenChange} />
+                    </>
+                )}
                 <Button
                     type="primary"
                     className="!ml-auto !h-9 !w-9 !p-0"
@@ -108,7 +124,7 @@ export function CanvasNodePromptPanel({
                 />
             </div>
             <Modal title={t("canvas.promptPanel.editorTitle")} open={expanded} centered width={760} footer={null} onCancel={() => setExpanded(false)} destroyOnHidden>
-                <CanvasPromptChipInput value={prompt} references={mentionReferences} onChange={updatePrompt} className="thin-scrollbar h-[52dvh] w-full rounded-md border p-4 text-sm outline-none" placeholder={t("canvas.promptPanel.image")} />
+                <CanvasPromptChipInput value={prompt} references={mentionReferences} onChange={updatePrompt} className="thin-scrollbar h-[52dvh] w-full rounded-md border p-4 text-sm outline-none" placeholder={placeholder} />
             </Modal>
         </div>
     );

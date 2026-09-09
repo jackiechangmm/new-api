@@ -6,7 +6,7 @@ import { saveAs } from "file-saver";
 import { useTranslation } from "react-i18next";
 
 import { useImageGeneration } from "./hooks/use-image-generation";
-import { switchImageModel } from "@/lib/canvas/image-models";
+import { DEFAULT_AUXILIARY_TEXT_MODEL, switchImageModel } from "@/lib/canvas/image-models";
 import { canvasCapabilities, assertCanvasNodesAllowed } from "@/lib/canvas/canvas-capabilities";
 import { requestEdit } from "@/services/api/image";
 import { isVideoTaskFailed, storeGeneratedVideo, waitForVideoGenerationTask } from "@/services/api/video";
@@ -2232,7 +2232,7 @@ function InfiniteCanvasPage() {
                     { x: textNode.position.x + textNode.width + gap + configSpec.width / 2, y: centerY },
                     {
                         generationMode: "text",
-                        model: effectiveConfig.textModel || effectiveConfig.model || defaultConfig.textModel,
+                        model: DEFAULT_AUXILIARY_TEXT_MODEL,
                         count: 1,
                         composerContent: t("canvas.reverseComposer", { imageId: node.id, textId: textNode.id }),
                     },

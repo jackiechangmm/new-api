@@ -2,10 +2,10 @@ import { useCallback, useEffect, useRef, useState, type Dispatch, type RefObject
 import { App } from "antd";
 import { useTranslation } from "react-i18next";
 import { nanoid } from "nanoid";
-import { buildNodeGenerationContext, readReferenceImage } from "@/components/canvas/canvas-node-generation";
+import { buildNodeGenerationContext, buildNodeResponseMessages, hydrateNodeGenerationContext, readReferenceImage } from "@/components/canvas/canvas-node-generation";
 import { buildGenerationConfig } from "@/lib/canvas/canvas-generation-helpers";
-import { runCanvasImageGeneration } from "@/lib/canvas/image-generation";
-import { imageSettingsIssues } from "@/lib/canvas/image-models";
+import { runCanvasImageGeneration, runCanvasTextGeneration } from "@/lib/canvas/image-generation";
+import { auxiliaryTextIssues, DEFAULT_AUXILIARY_TEXT_MODEL, imageSettingsIssues } from "@/lib/canvas/image-models";
 import type { AiConfig } from "@/stores/use-config-store";
 import { CanvasNodeType, type CanvasConnection, type CanvasGenerationMode, type CanvasNodeData } from "@/types/canvas";
 import type { ReferenceImage } from "@/types/image";
@@ -137,25 +137,91 @@ export function useImageGeneration({ projectId, config, nodes, nodesRef, connect
         [config, connectionsRef, message, nodesRef, setConnections, setNodes, stop, t],
     );
 
+    const executeText = useCallback(
+        async (sourceId: string, prompt: string, retryTarget?: { targetId: string }) => {
+            stop(sourceId);
+            if (retryTarget?.targetId) stop(retryTarget.targetId);
+            const source = nodesRef.current.find((node) => node.id === sourceId);
+            if (!source) return;
+            const controller = new AbortController();
+            const run: Run = { controller, targetId: retryTarget?.targetId };
+            runs.current.set(sourceId, run);
+            setRunningIds((current) => {
+                const next = new Set(current).add(sourceId);
+                if (retryTarget?.targetId) next.add(retryTarget.targetId);
+                return next;
+            });
+            try {
+                const issues = auxiliaryTextIssues(config.models, DEFAULT_AUXILIARY_TEXT_MODEL);
+                if (issues.length) throw new Error(issues.join("\n"));
+
+                const isEditText = source.type === CanvasNodeType.Text && Boolean(source.metadata?.content);
+                const effectivePrompt = isEditText
+                    ? t("canvas.projectPage.editTextPrompt", { source: source.metadata?.content, prompt })
+                    : prompt;
+
+                const rawContext = buildNodeGenerationContext(sourceId, nodesRef.current, connectionsRef.current, effectivePrompt);
+                const context = await hydrateNodeGenerationContext(rawContext);
+                const messages = buildNodeResponseMessages(context);
+
+                await runCanvasTextGeneration({
+                    sourceId,
+                    prompt: retryTarget ? prompt || source.metadata?.prompt || "" : prompt,
+                    config: { ...config, model: DEFAULT_AUXILIARY_TEXT_MODEL },
+                    signal: controller.signal,
+                    retry: retryTarget,
+                    messages,
+                    getNodes: () => nodesRef.current,
+                    setNodes,
+                    addConnection: (fromNodeId, toNodeId) => setConnections((current) => [...current, { id: nanoid(), fromNodeId, toNodeId }]),
+                    onTarget: (targetId) => {
+                        run.targetId = targetId;
+                        setRunningIds((current) => new Set(current).add(targetId));
+                    },
+                });
+            } catch (error) {
+                if (!controller.signal.aborted && !(error instanceof Error && error.name === "AbortError")) {
+                    message.error(error instanceof Error ? error.message : t("canvas.projectPage.generationFailed"));
+                }
+            } finally {
+                if (runs.current.get(sourceId) === run) {
+                    runs.current.delete(sourceId);
+                    setRunningIds((current) => new Set([...current].filter((id) => id !== sourceId && id !== run.targetId)));
+                }
+            }
+        },
+        [config, connectionsRef, message, nodesRef, setConnections, setNodes, stop, t],
+    );
+
     const generate = useCallback(
         async (nodeId: string, mode: CanvasGenerationMode, prompt: string) => {
-            if (mode !== "image") {
-                message.error(t("integration.unavailable"));
+            if (mode === "image") {
+                await execute(nodeId, prompt);
                 return;
             }
-            await execute(nodeId, prompt);
+            if (mode === "text") {
+                await executeText(nodeId, prompt);
+                return;
+            }
+            message.error(t("integration.unavailable"));
         },
-        [execute, message, t],
+        [execute, executeText, message, t],
     );
     const retry = useCallback(
         async (node: CanvasNodeData, imageId?: string) => {
-            if (node.type !== CanvasNodeType.Image) {
-                message.error(t("integration.unavailable"));
+            if (node.type === CanvasNodeType.Image) {
+                await execute(node.id, node.metadata?.prompt || "", { imageId });
                 return;
             }
-            await execute(node.id, node.metadata?.prompt || "", { imageId });
+            if (node.type === CanvasNodeType.Text) {
+                const upstream = connectionsRef.current.find((c) => c.toNodeId === node.id);
+                const sourceId = upstream ? upstream.fromNodeId : node.id;
+                await executeText(sourceId, node.metadata?.prompt || "", { targetId: node.id });
+                return;
+            }
+            message.error(t("integration.unavailable"));
         },
-        [execute, message, t],
+        [connectionsRef, execute, executeText, message, t],
     );
     return { generate, retry, stop, runningIds };
 }

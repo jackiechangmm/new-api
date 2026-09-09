@@ -16,9 +16,8 @@ import { CanvasNodeType } from "@/types/canvas";
 
 const config = { ...defaultConfig, apiKey: "legacy-key", baseUrl: "https://invalid.example" };
 
-test("M8 开放图片编辑，仍拒绝辅助模型、插件与外部服务调用", async () => {
+test("M9 开放提示词修饰与图片反推（auxiliaryText），仍拒绝视频、音频、插件与外部服务调用", async () => {
     const requests = [
-        () => requestImageQuestion(config, [], () => {}),
         () => fetchImageModels(config),
         () => requestAudioGeneration(config, "prompt"),
         () => createVideoGenerationTask(config, "prompt"),
@@ -37,10 +36,12 @@ test("M8 开放图片编辑，仍拒绝辅助模型、插件与外部服务调�
     assert.throws(() => useConfigStore.getState().importChannelCredentials({ baseUrl: config.baseUrl, apiKey: config.apiKey }), /此功能尚未开放/);
 });
 
-test("保留图片和文本节点，拒绝视频、音频、插件和旧工程中的非图片生成模式", () => {
+test("保留图片和文本节点，放行文本生成模式，拒绝视频、音频、插件和其他生成模式", () => {
     const image = createCanvasNode(CanvasNodeType.Image, { x: 0, y: 0 });
     const text = createCanvasNode(CanvasNodeType.Text, { x: 0, y: 0 });
     assert.doesNotThrow(() => assertCanvasNodesAllowed([image, text]));
+    assert.doesNotThrow(() => assertCanvasNodesAllowed([{ ...image, metadata: { generationMode: "image" } }]));
+    assert.doesNotThrow(() => assertCanvasNodesAllowed([{ ...image, metadata: { generationMode: "text" } }]));
     for (const type of [CanvasNodeType.Video, CanvasNodeType.Audio, "legacy-plugin"]) {
         assert.throws(() => createCanvasNode(type, { x: 0, y: 0 }));
         assert.throws(() => assertCanvasNodesAllowed([{ ...image, type }]));

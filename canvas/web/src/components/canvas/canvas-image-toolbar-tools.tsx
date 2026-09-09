@@ -132,7 +132,7 @@ export const imageToolDefinitions: ImageToolDefinition[] = [
     },
 ];
 
-const enabledImageTools = new Set<ImageNodeActionToolId>(["copyPrompt", "replace", "resize", "crop", "split", "view"]);
+const enabledImageTools = new Set<ImageNodeActionToolId>(["copyPrompt", "reversePrompt", "replace", "resize", "crop", "split", "view"]);
 
 export const defaultImageQuickToolIds: ImageQuickToolId[] = [...defaultBaseToolIds, ...imageToolDefinitions.filter((tool) => tool.defaultVisible && enabledImageTools.has(tool.id)).map((tool) => tool.id)];
 

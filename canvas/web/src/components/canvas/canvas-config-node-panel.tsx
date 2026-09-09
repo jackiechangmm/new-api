@@ -3,7 +3,7 @@ import { Button, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { ModelPicker } from "@/components/model-picker";
 import { buildGenerationConfig } from "@/lib/canvas/canvas-generation-helpers";
-import { imageSettingsIssues } from "@/lib/canvas/image-models";
+import { auxiliaryTextIssues, DEFAULT_AUXILIARY_TEXT_MODEL, imageSettingsIssues } from "@/lib/canvas/image-models";
 import { canvasCapabilities } from "@/lib/canvas/canvas-capabilities";
 import { useEffectiveConfig } from "@/stores/use-config-store";
 import { canvasThemes } from "@/lib/canvas-theme";
@@ -23,9 +23,11 @@ type CanvasConfigNodePanelProps = {
 
 export function CanvasConfigNodePanel({ node, isRunning, inputSummary, onConfigChange, onGenerate, onStop, onComposerToggle }: CanvasConfigNodePanelProps) {
     const { t } = useTranslation();
-    const config = buildGenerationConfig(useEffectiveConfig(), node, "image");
+    const effectiveConfig = useEffectiveConfig();
+    const isText = node.metadata?.generationMode === "text";
+    const config = isText ? effectiveConfig : buildGenerationConfig(effectiveConfig, node, "image");
     const theme = canvasThemes[useThemeStore((state) => state.theme)];
-    const issues = imageSettingsIssues(config, config.models);
+    const issues = isText ? auxiliaryTextIssues(effectiveConfig.models, DEFAULT_AUXILIARY_TEXT_MODEL) : imageSettingsIssues(config, config.models);
     const hasPrompt = Boolean((node.metadata?.composerContent ?? node.metadata?.prompt ?? "").trim()) || inputSummary.textCount > 0;
     if (!canvasCapabilities.generation) return null;
     return (
@@ -45,8 +47,19 @@ export function CanvasConfigNodePanel({ node, isRunning, inputSummary, onConfigC
                 </div>
             ) : null}
             <div className="flex min-w-0 flex-wrap items-center gap-2" onMouseDown={(event) => event.stopPropagation()}>
-                <ModelPicker config={config} value={config.model} onChange={(model) => onConfigChange(node.id, { model })} capability="image" className="h-9 max-w-full" />
-                <CanvasImageSettingsPopover config={config} placement="topRight" onConfigChange={(key, value) => onConfigChange(node.id, key === "count" ? { count: Number(value) } : { [key]: value })} />
+                {isText ? (
+                    <div
+                        className="flex h-9 items-center rounded-md border px-3 text-xs font-medium"
+                        style={{ borderColor: theme.toolbar.border, background: theme.toolbar.panel, color: theme.node.text }}
+                    >
+                        {DEFAULT_AUXILIARY_TEXT_MODEL}
+                    </div>
+                ) : (
+                    <>
+                        <ModelPicker config={config} value={config.model} onChange={(model) => onConfigChange(node.id, { model })} capability="image" className="h-9 max-w-full" />
+                        <CanvasImageSettingsPopover config={config} placement="topRight" onConfigChange={(key, value) => onConfigChange(node.id, key === "count" ? { count: Number(value) } : { [key]: value })} />
+                    </>
+                )}
             </div>
             <Button
                 type="primary"

@@ -4,7 +4,7 @@ import { CanvasNodeType, type CanvasNodeData } from "@/types/canvas";
 export const canvasCapabilities = {
     generation: true,
     imageEditing: true,
-    auxiliaryText: false,
+    auxiliaryText: true,
     video: false,
     audio: false,
     plugins: false,
@@ -23,7 +23,7 @@ export function isCanvasNodeAllowed(type: string) {
 }
 
 export function assertCanvasNodesAllowed(nodes: CanvasNodeData[]) {
-    if (nodes.some((node) => !isCanvasNodeAllowed(node.type) || (node.metadata?.generationMode && node.metadata.generationMode !== "image"))) {
+    if (nodes.some((node) => !isCanvasNodeAllowed(node.type) || (node.metadata?.generationMode && node.metadata.generationMode !== "image" && node.metadata.generationMode !== "text"))) {
         throw new Error(i18n.t("integration.unsupportedProject"));
     }
 }

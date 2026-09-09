@@ -25,6 +25,24 @@ export type CanvasImageModel = {
     operations: { generation?: ImageOperation; edit?: ImageOperation };
 };
 
+export const DEFAULT_AUXILIARY_TEXT_MODEL = "gpt-5.6-terra";
+export const canvasAuxiliaryTextModels: readonly string[] = ["gpt-5.6-terra"];
+
+export function filterCanvasAuxiliaryTextModels(available: readonly string[]) {
+    return canvasAuxiliaryTextModels.filter((item) => available.includes(item));
+}
+
+export function resolveAuxiliaryTextModel(available: readonly string[]) {
+    return filterCanvasAuxiliaryTextModels(available)[0];
+}
+
+export function auxiliaryTextIssues(available: readonly string[], model = DEFAULT_AUXILIARY_TEXT_MODEL): string[] {
+    if (!available.includes(model)) {
+        return [i18n.t("integration.modelUnavailable", { model })];
+    }
+    return [];
+}
+
 export const defaultImageSettings: ImageSettings = {
     model: "gpt-image-2",
     resolution: "1k",

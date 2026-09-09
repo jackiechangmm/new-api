@@ -1,5 +1,5 @@
 import { requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
-import { buildCanvasImageEditRequest, buildCanvasImageRequest } from "@/lib/canvas/image-models";
+import { buildCanvasImageEditRequest, buildCanvasImageRequest, DEFAULT_AUXILIARY_TEXT_MODEL } from "@/lib/canvas/image-models";
 import { fetchCanvasModels, getCanvasAuthHeaders, getCanvasHost } from "@/services/host-auth";
 import { useUserStore } from "@/stores/use-user-store";
 import axios from "axios";
@@ -852,51 +852,117 @@ export async function requestEdit(config: AiConfig, prompt: string, references: 
     }
 }
 
-export async function requestImageQuestion(config: AiConfig, messages: AiTextMessage[], onDelta: (text: string) => void, options?: RequestOptions) {
+export async function requestImageQuestion(_config: AiConfig, messages: AiTextMessage[], onDelta: (text: string) => void, options?: RequestOptions): Promise<string> {
     requireCanvasCapability("auxiliaryText");
-    const requestConfig = resolveModelRequestConfig(config, config.model || config.textModel);
-    const script = resolveModelScript(config, config.model || config.textModel);
-    if (script) {
-        try {
-            const answer = await runModelPlugin<string>({
-                capability: "text",
-                script,
-                config: requestConfig,
-                messages: withSystemMessage(requestConfig, messages),
-                signal: options?.signal,
-                onDelta,
-            });
-            const text = String(answer ?? "").trim() || apiText("noContent");
-            if (text === apiText("noContent")) onDelta(text);
-            return text;
-        } catch (error) {
-            throw new Error(readAxiosError(error, apiText("requestFailed")));
-        }
+    options?.signal?.throwIfAborted();
+    const userId = useUserStore.getState().user?.id;
+    const models = await fetchCanvasModels(options?.signal);
+    if (!models.includes(DEFAULT_AUXILIARY_TEXT_MODEL)) {
+        throw new Error(i18n.t("integration.modelUnavailable", { model: DEFAULT_AUXILIARY_TEXT_MODEL }));
     }
+    const headers = await getCanvasAuthHeaders();
+    options?.signal?.throwIfAborted();
+    if (getCanvasHost().getUser()?.id !== userId) throw new Error(i18n.t("integration.sessionExpired"));
+
+    let response: Response;
     try {
-        if (requestConfig.apiFormat === "gemini") {
-            const answer = (await requestGeminiStreamingResponse(requestConfig, toGeminiBody(requestConfig, messages), onDelta, options)).content || apiText("noContent");
-            if (answer === apiText("noContent")) onDelta(answer);
-            return answer;
-        }
-        const answer =
-            (
-                await requestStreamingResponse(
-                    requestConfig,
-                    {
-                        model: requestConfig.model,
-                        input: toResponseInput(withSystemMessage(requestConfig, messages)),
-                        ...(requestConfig.reasoningEffort === "auto" ? {} : { reasoning: { effort: requestConfig.reasoningEffort } }),
-                    },
-                    onDelta,
-                    options,
-                )
-            ).content || apiText("noContent");
-        if (answer === apiText("noContent")) onDelta(answer);
-        return answer;
+        response = await fetch("/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                ...headers,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model: DEFAULT_AUXILIARY_TEXT_MODEL,
+                messages,
+                stream: true,
+            }),
+            signal: options?.signal,
+        });
     } catch (error) {
-        throw new Error(readAxiosError(error, apiText("requestFailed")));
+        options?.signal?.throwIfAborted();
+        if (error instanceof Error && error.name === "AbortError") throw error;
+        throw new Error(apiText("requestFailed"));
     }
+
+    if (!response.ok) {
+        let errorMsg = "";
+        try {
+            const errJson = await response.json();
+            errorMsg = errJson?.error?.message || errJson?.message || "";
+        } catch {
+            // ignore
+        }
+        if (!errorMsg) {
+            errorMsg = response.status === 402 ? apiText("rateLimited") : apiText("requestFailed");
+        }
+        throw new Error(errorMsg);
+    }
+
+    if (!response.body) {
+        throw new Error(apiText("noContent"));
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let accumulated = "";
+
+    try {
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop() ?? "";
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed || !trimmed.startsWith("data:")) continue;
+                const data = trimmed.slice(5).trim();
+                if (data === "[DONE]") continue;
+                try {
+                    const json = JSON.parse(data);
+                    const delta = json.choices?.[0]?.delta?.content;
+                    if (typeof delta === "string" && delta) {
+                        accumulated += delta;
+                        onDelta(accumulated);
+                    }
+                } catch {
+                    // ignore malformed chunk
+                }
+            }
+        }
+        if (buffer.trim().startsWith("data:")) {
+            const data = buffer.trim().slice(5).trim();
+            if (data && data !== "[DONE]") {
+                try {
+                    const json = JSON.parse(data);
+                    const delta = json.choices?.[0]?.delta?.content;
+                    if (typeof delta === "string" && delta) {
+                        accumulated += delta;
+                        onDelta(accumulated);
+                    }
+                } catch {
+                    // ignore
+                }
+            }
+        }
+    } catch (error) {
+        options?.signal?.throwIfAborted();
+        if (error instanceof Error && error.name === "AbortError") throw error;
+        throw new Error(apiText("requestFailed"));
+    } finally {
+        reader.releaseLock();
+    }
+
+    options?.signal?.throwIfAborted();
+    if (getCanvasHost().getUser()?.id !== userId || useUserStore.getState().user?.id !== userId) {
+        throw new Error(i18n.t("integration.sessionExpired"));
+    }
+
+    const result = accumulated.trim() || apiText("noContent");
+    if (result === apiText("noContent")) onDelta(result);
+    return result;
 }
 
 export async function fetchImageModels(config: Pick<AiConfig, "baseUrl" | "apiKey" | "apiFormat">) {

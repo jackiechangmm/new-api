@@ -4,7 +4,7 @@ import axios from "axios";
 import { defaultConfig } from "@/stores/use-config-store";
 import { useUserStore } from "@/stores/use-user-store";
 import { defaultImageEditSettings } from "@/lib/canvas/image-models";
-import { requestEdit, requestGeneration } from "@/services/api/image";
+import { requestEdit, requestGeneration, requestImageQuestion } from "@/services/api/image";
 
 test("生成通过宿主认证调用本站，一次请求保留全部返回图片", async () => {
     const fetchBefore = globalThis.fetch;
@@ -133,3 +133,113 @@ test("M8 编辑请求通过宿主认证调用 /api/canvas/images/edits，组装�
         useUserStore.setState({ user: null });
     }
 });
+
+test("M9 辅助文本调用通过宿主认证直连 /v1/chat/completions 流式输出，校验受控模型与 SSE 解析", async () => {
+    const fetchBefore = globalThis.fetch;
+    const windowBefore = globalThis.window;
+    let account = "909";
+    useUserStore.setState({ user: { id: account, username: "test-m9", displayName: "", avatarUrl: "" } });
+    globalThis.window = {
+        parent: {
+            newApiCanvasHost: {
+                getUser: () => ({ id: account }),
+                getAuthHeaders: async () => ({ Authorization: "Bearer session-token-m9" }),
+                subscribe: () => () => {},
+            },
+        },
+    } as unknown as Window & typeof globalThis;
+
+    let chatCalls = 0;
+    let postedBody: any = null;
+    let postedHeaders: any = null;
+
+    globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        const urlStr = String(url);
+        if (urlStr === "/api/user/models") {
+            return new Response(JSON.stringify({ success: true, data: ["gpt-5.6-terra", "gpt-image-2"] }));
+        }
+        if (urlStr === "/v1/chat/completions") {
+            chatCalls++;
+            postedHeaders = init?.headers;
+            postedBody = JSON.parse(String(init?.body || "{}"));
+
+            const sseStream = new ReadableStream({
+                start(controller) {
+                    const chunks = [
+                        'data: {"choices":[{"delta":{"content":"赛博"}}]}\n\n',
+                        'data: {"choices":[{"delta":{"content":"猫咪"}}]}\n\n',
+                        'data: {"choices":[{"delta":{"content":"特写"}}]}\n\n',
+                        "data: [DONE]\n\n",
+                    ];
+                    for (const chunk of chunks) {
+                        controller.enqueue(new TextEncoder().encode(chunk));
+                    }
+                    controller.close();
+                },
+            });
+            return new Response(sseStream, {
+                status: 200,
+                headers: { "Content-Type": "text/event-stream" },
+            });
+        }
+        return new Response("Not Found", { status: 404 });
+    }) as typeof fetch;
+
+    try {
+        const deltas: string[] = [];
+        const result = await requestImageQuestion(
+            defaultConfig,
+            [{ role: "user", content: "赛博猫咪" }],
+            (delta) => deltas.push(delta),
+        );
+        assert.equal(chatCalls, 1);
+        assert.equal(postedHeaders.Authorization, "Bearer session-token-m9");
+        assert.equal(postedBody.model, "gpt-5.6-terra");
+        assert.equal(postedBody.stream, true);
+        assert.deepEqual(postedBody.messages, [{ role: "user", content: "赛博猫咪" }]);
+        assert.deepEqual(deltas, ["赛博", "赛博猫咪", "赛博猫咪特写"]);
+        assert.equal(result, "赛博猫咪特写");
+
+        // 402 额度不足异常抛出
+        globalThis.fetch = (async (url: string | URL | Request) => {
+            if (String(url) === "/api/user/models") {
+                return new Response(JSON.stringify({ success: true, data: ["gpt-5.6-terra"] }));
+            }
+            if (String(url) === "/v1/chat/completions") {
+                return new Response(JSON.stringify({ error: { message: "用户额度不足" } }), { status: 402, headers: { "Content-Type": "application/json" } });
+            }
+            return new Response("Not Found", { status: 404 });
+        }) as typeof fetch;
+
+        await assert.rejects(
+            () => requestImageQuestion(defaultConfig, [{ role: "user", content: "test" }], () => {}),
+            /用户额度不足/,
+        );
+
+        // 模型未分配权限时拒绝
+        globalThis.fetch = (async (url: string | URL | Request) => {
+            if (String(url) === "/api/user/models") {
+                return new Response(JSON.stringify({ success: true, data: ["other-model"] }));
+            }
+            return new Response("Not Found", { status: 404 });
+        }) as typeof fetch;
+
+        await assert.rejects(
+            () => requestImageQuestion(defaultConfig, [{ role: "user", content: "test" }], () => {}),
+            /gpt-5.6-terra/,
+        );
+
+        // AbortSignal 中止测试
+        const abortCtrl = new AbortController();
+        abortCtrl.abort();
+        await assert.rejects(
+            () => requestImageQuestion(defaultConfig, [{ role: "user", content: "test" }], () => {}, { signal: abortCtrl.signal }),
+            { name: "AbortError" },
+        );
+    } finally {
+        globalThis.fetch = fetchBefore;
+        globalThis.window = windowBefore;
+        useUserStore.setState({ user: null });
+    }
+});
+

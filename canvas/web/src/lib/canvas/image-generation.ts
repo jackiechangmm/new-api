@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import i18n from "@/i18n";
 import type { AiConfig } from "@/stores/use-config-store";
-import { requestEdit, requestGeneration } from "@/services/api/image";
+import { requestEdit, requestGeneration, requestImageQuestion, type AiTextMessage } from "@/services/api/image";
 import { uploadImage } from "@/services/image-storage";
 import { buildCanvasImageEditRequest, buildCanvasImageRequest } from "./image-models";
 import { fitNodeSize } from "./canvas-node-size";
@@ -142,6 +142,141 @@ export async function runCanvasImageGeneration(
                         status: node.metadata.content ? ("success" as const) : ("error" as const),
                         errorDetails,
                         images: node.metadata.images?.map((image) => (image.status === "loading" ? { ...image, status: "error" as const, errorDetails } : image)),
+                    },
+                };
+            }),
+        );
+        throw error;
+    }
+}
+
+export type TextGenerationRun = {
+    sourceId: string;
+    prompt: string;
+    config: AiConfig;
+    signal: AbortSignal;
+    messages: AiTextMessage[];
+    getNodes: () => CanvasNodeData[];
+    setNodes: (update: (nodes: CanvasNodeData[]) => CanvasNodeData[]) => void;
+    addConnection: (sourceId: string, targetId: string) => void;
+    onTarget?: (targetId: string) => void;
+    retry?: { targetId?: string };
+};
+
+export async function runCanvasTextGeneration(
+    run: TextGenerationRun,
+    io: {
+        question?: (config: AiConfig, messages: AiTextMessage[], onDelta: (text: string) => void, options?: { signal?: AbortSignal }) => Promise<string>;
+    } = { question: requestImageQuestion },
+) {
+    const { config, signal, sourceId, prompt, messages, retry } = run;
+    signal.throwIfAborted();
+    const source = run.getNodes().find((node) => node.id === sourceId);
+    if (!source) throw new DOMException("Aborted", "AbortError");
+
+    const reuse = Boolean(retry?.targetId) || (source.type === CanvasNodeType.Text && !source.metadata?.content);
+    const targetId = retry?.targetId || (reuse ? sourceId : nanoid());
+    const generationId = nanoid();
+
+    const target: CanvasNodeData = {
+        id: targetId,
+        type: CanvasNodeType.Text,
+        title: prompt.slice(0, 32) || i18n.t("canvas.projectPage.canvasText"),
+        position: { x: source.position.x + source.width + 96, y: source.position.y },
+        width: 340,
+        height: 240,
+        metadata: {
+            prompt,
+            generationId,
+            status: "loading",
+            content: "",
+            fontSize: 14,
+        },
+    };
+
+    run.onTarget?.(targetId);
+    run.setNodes((nodes) => {
+        if (signal.aborted || !nodes.some((node) => node.id === sourceId)) return nodes;
+        const updated = nodes.map((node) => {
+            if (node.id === sourceId && sourceId !== targetId) {
+                return { ...node, metadata: { ...node.metadata, status: "loading" as const, errorDetails: undefined } };
+            }
+            if (node.id === targetId) {
+                return { ...node, metadata: { ...node.metadata, prompt, generationId, status: "loading" as const, content: "", errorDetails: undefined } };
+            }
+            return node;
+        });
+        return reuse ? updated : [...updated, target];
+    });
+    if (!reuse) run.addConnection(sourceId, targetId);
+
+    try {
+        const questionFn = io.question ?? requestImageQuestion;
+        let streamed = "";
+        const result = await questionFn(
+            config,
+            messages,
+            (delta) => {
+                streamed = delta;
+                if (signal.aborted) return;
+                run.setNodes((nodes) =>
+                    nodes.map((node) => {
+                        if (node.id !== targetId || node.metadata?.generationId !== generationId) return node;
+                        return {
+                            ...node,
+                            metadata: {
+                                ...node.metadata,
+                                content: delta,
+                            },
+                        };
+                    }),
+                );
+            },
+            { signal },
+        );
+        signal.throwIfAborted();
+        if (!run.getNodes().some((node) => node.id === targetId && node.metadata?.generationId === generationId)) {
+            throw new DOMException("Aborted", "AbortError");
+        }
+        const finalContent = result || streamed;
+        run.setNodes((nodes) =>
+            nodes.map((node) => {
+                if (signal.aborted) return node;
+                if (node.id === sourceId && sourceId !== targetId) {
+                    return { ...node, metadata: { ...node.metadata, status: "success" as const } };
+                }
+                if (node.id !== targetId || node.metadata?.generationId !== generationId) return node;
+                return {
+                    ...node,
+                    metadata: {
+                        ...node.metadata,
+                        generationId: undefined,
+                        status: "success" as const,
+                        content: finalContent,
+                        errorDetails: undefined,
+                    },
+                };
+            }),
+        );
+        return { targetId, content: finalContent };
+    } catch (error) {
+        if (signal.aborted || (error instanceof Error && error.name === "AbortError")) throw new DOMException("Aborted", "AbortError");
+        const errorDetails = error instanceof Error ? error.message : i18n.t("canvas.projectPage.generationFailed");
+        run.setNodes((nodes) =>
+            nodes.map((node) => {
+                if (signal.aborted || node.metadata?.generationId !== generationId) {
+                    if (node.id === sourceId && sourceId !== targetId && node.metadata?.status === "loading") {
+                        return { ...node, metadata: { ...node.metadata, status: "error" as const, errorDetails } };
+                    }
+                    return node;
+                }
+                return {
+                    ...node,
+                    metadata: {
+                        ...node.metadata,
+                        generationId: undefined,
+                        status: "error" as const,
+                        errorDetails,
                     },
                 };
             }),

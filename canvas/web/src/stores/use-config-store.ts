@@ -1,4 +1,4 @@
-import { defaultImageSettings, filterCanvasImageModels } from "@/lib/canvas/image-models";
+import { defaultImageSettings, DEFAULT_AUXILIARY_TEXT_MODEL, filterCanvasAuxiliaryTextModels, filterCanvasImageModels } from "@/lib/canvas/image-models";
 import { canvasCapabilities, requireCanvasCapability } from "@/lib/canvas/canvas-capabilities";
 import { useMemo } from "react";
 import { create } from "zustand";
@@ -104,7 +104,7 @@ export const defaultConfig: AiConfig = {
     model: defaultImageSettings.model,
     imageModel: defaultImageSettings.model,
     videoModel: "default::grok-imagine-video",
-    textModel: "default::gpt-5.5",
+    textModel: DEFAULT_AUXILIARY_TEXT_MODEL,
     audioModel: "default::gpt-4o-mini-tts",
     audioVoice: "alloy",
     audioFormat: "mp3",
@@ -198,6 +198,7 @@ export function resolveModelForCapability(config: AiConfig, currentModel: string
 }
 
 export function selectableModelsByCapability(config: AiConfig, capability?: ModelCapability) {
+    if (capability === "text") return filterCanvasAuxiliaryTextModels(config.models);
     return !capability || capability === "image" ? filterCanvasImageModels(config.models) : [];
 }
 
@@ -214,7 +215,13 @@ export const useConfigStore = create<ConfigStore>()(
     persist(
         (set, get) => ({
             availableModels: [],
-            setAvailableModels: (models) => set({ availableModels: filterCanvasImageModels(models) }),
+            setAvailableModels: (models) =>
+                set({
+                    availableModels: [
+                        ...filterCanvasImageModels(models),
+                        ...(canvasCapabilities.auxiliaryText ? filterCanvasAuxiliaryTextModels(models) : []),
+                    ],
+                }),
             config: defaultConfig,
             webdav: defaultWebdavSyncConfig,
             isConfigOpen: false,

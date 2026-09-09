@@ -1,6 +1,19 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildCanvasImageEditRequest, buildCanvasImageRequest, defaultImageEditSettings, defaultImageSettings, filterCanvasImageModels, imageSettingsIssues, resolveImageSettings, switchImageModel } from "../image-models";
+import {
+    auxiliaryTextIssues,
+    buildCanvasImageEditRequest,
+    buildCanvasImageRequest,
+    DEFAULT_AUXILIARY_TEXT_MODEL,
+    defaultImageEditSettings,
+    defaultImageSettings,
+    filterCanvasAuxiliaryTextModels,
+    filterCanvasImageModels,
+    imageSettingsIssues,
+    resolveAuxiliaryTextModel,
+    resolveImageSettings,
+    switchImageModel,
+} from "../image-models";
 
 test("受控模型交集与 image2 语义尺寸请求，不发送透明背景或旧渠道配置", () => {
     assert.deepEqual(filterCanvasImageModels(["gpt-image-2", "gpt-image-2", "nano-banana-2", "unknown"]), ["gpt-image-2"]);
@@ -96,3 +109,15 @@ test("M8 编辑操作受控校验：默认 auto 1k、支持 1~3 张参考图、�
     assert.equal(resolvedEdit.resolution, "1k");
     assert.equal(imageSettingsIssues(resolvedEdit, ["gpt-image-2"], "edit", 1).length, 0);
 });
+
+test("M9 辅助文本受控候选名单固定为 gpt-5.6-terra，支持权限交集与可用性探测", () => {
+    assert.equal(DEFAULT_AUXILIARY_TEXT_MODEL, "gpt-5.6-terra");
+    assert.deepEqual(filterCanvasAuxiliaryTextModels(["gpt-5.6-terra", "gpt-4o", "other"]), ["gpt-5.6-terra"]);
+    assert.deepEqual(filterCanvasAuxiliaryTextModels(["gpt-image-2"]), []);
+    assert.equal(resolveAuxiliaryTextModel(["gpt-5.6-terra", "gpt-image-2"]), "gpt-5.6-terra");
+    assert.equal(resolveAuxiliaryTextModel(["other-model"]), undefined);
+    assert.deepEqual(auxiliaryTextIssues(["gpt-5.6-terra"]), []);
+    assert.ok(auxiliaryTextIssues(["gpt-image-2"]).length > 0);
+    assert.ok(auxiliaryTextIssues([]).some((msg) => msg.includes("gpt-5.6-terra")));
+});
+

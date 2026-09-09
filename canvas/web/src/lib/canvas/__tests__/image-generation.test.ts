@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runCanvasImageGeneration } from "../image-generation";
+import { runCanvasImageGeneration, runCanvasTextGeneration } from "../image-generation";
 import { defaultConfig } from "@/stores/use-config-store";
 import { CanvasNodeType, type CanvasNodeData } from "@/types/canvas";
 
@@ -325,3 +325,185 @@ test("M8 编辑节点单图重试保留原有参考图 UUID 清单与 edit 类�
     assert.equal(nodes[0].metadata?.images?.[1].status, "success");
     assert.equal(nodes[0].metadata?.images?.[1].content, "https://example.com/out-2-new.png");
 });
+
+test("M9 文本生成向右派生文本节点、建立连线并流式打字输出内容", async () => {
+    let nodes: CanvasNodeData[] = [
+        {
+            id: "cfg-1",
+            type: CanvasNodeType.Config,
+            title: "反推提示词配置",
+            position: { x: 100, y: 100 },
+            width: 340,
+            height: 240,
+            metadata: { generationMode: "text" },
+        },
+    ];
+    const connections: Array<{ from: string; to: string }> = [];
+    let targetNodeId = "";
+
+    const running = runCanvasTextGeneration(
+        {
+            sourceId: "cfg-1",
+            prompt: "反推生图提示词",
+            config: { ...defaultConfig, models: ["gpt-5.6-terra"] },
+            signal: new AbortController().signal,
+            messages: [{ role: "user", content: "反推指令" }],
+            getNodes: () => nodes,
+            setNodes: (update) => {
+                nodes = update(nodes);
+            },
+            addConnection: (from, to) => {
+                connections.push({ from, to });
+            },
+            onTarget: (id) => {
+                targetNodeId = id;
+            },
+        },
+        {
+            question: async (_cfg, _msgs, onDelta) => {
+                onDelta("赛博");
+                onDelta("赛博猫咪");
+                onDelta("赛博猫咪，霓虹光影");
+                return "赛博猫咪，霓虹光影";
+            },
+        },
+    );
+
+    const result = await running;
+    assert.equal(result.content, "赛博猫咪，霓虹光影");
+    assert.equal(nodes.length, 2);
+    const targetNode = nodes.find((n) => n.id === targetNodeId);
+    assert.ok(targetNode);
+    assert.equal(targetNode.type, CanvasNodeType.Text);
+    assert.equal(targetNode.position.x, 100 + 340 + 96);
+    assert.equal(targetNode.position.y, 100);
+    assert.equal(targetNode.metadata?.status, "success");
+    assert.equal(targetNode.metadata?.content, "赛博猫咪，霓虹光影");
+    assert.deepEqual(connections, [{ from: "cfg-1", to: targetNodeId }]);
+});
+
+test("M9 文本流式生成中断（Cancel）保留已输出文字且不标记报错", async () => {
+    let nodes: CanvasNodeData[] = [
+        {
+            id: "txt-src",
+            type: CanvasNodeType.Text,
+            title: "源提示词",
+            position: { x: 50, y: 50 },
+            width: 340,
+            height: 240,
+            metadata: { content: "一只猫" },
+        },
+    ];
+    const controller = new AbortController();
+    let targetNodeId = "";
+
+    const running = runCanvasTextGeneration(
+        {
+            sourceId: "txt-src",
+            prompt: "扩充细节",
+            config: { ...defaultConfig, models: ["gpt-5.6-terra"] },
+            signal: controller.signal,
+            messages: [{ role: "user", content: "扩充细节" }],
+            getNodes: () => nodes,
+            setNodes: (update) => {
+                nodes = update(nodes);
+            },
+            addConnection: () => {},
+            onTarget: (id) => {
+                targetNodeId = id;
+            },
+        },
+        {
+            question: async (_cfg, _msgs, onDelta, options) => {
+                onDelta("一只赛博风格的猫");
+                controller.abort();
+                options?.signal?.throwIfAborted();
+                return "不会到达";
+            },
+        },
+    );
+
+    await assert.rejects(running, { name: "AbortError" });
+    const targetNode = nodes.find((n) => n.id === targetNodeId);
+    assert.ok(targetNode);
+    // 中断时保留了已流式写入的文本
+    assert.equal(targetNode.metadata?.content, "一只赛博风格的猫");
+    // 且未被错误态覆盖
+    assert.notEqual(targetNode.metadata?.status, "error");
+});
+
+test("M9 文本生成失败时将目标节点置为错误状态并记录错误详情，支持重试更新", async () => {
+    let nodes: CanvasNodeData[] = [
+        {
+            id: "cfg-fail",
+            type: CanvasNodeType.Config,
+            title: "配置节点",
+            position: { x: 0, y: 0 },
+            width: 340,
+            height: 240,
+            metadata: { generationMode: "text" },
+        },
+    ];
+    let targetNodeId = "";
+
+    await assert.rejects(
+        runCanvasTextGeneration(
+            {
+                sourceId: "cfg-fail",
+                prompt: "测试失败",
+                config: { ...defaultConfig, models: ["gpt-5.6-terra"] },
+                signal: new AbortController().signal,
+                messages: [{ role: "user", content: "fail" }],
+                getNodes: () => nodes,
+                setNodes: (update) => {
+                    nodes = update(nodes);
+                },
+                addConnection: () => {},
+                onTarget: (id) => {
+                    targetNodeId = id;
+                },
+            },
+            {
+                question: async () => {
+                    throw new Error("用户额度不足");
+                },
+            },
+        ),
+        /用户额度不足/,
+    );
+
+    let targetNode = nodes.find((n) => n.id === targetNodeId);
+    assert.ok(targetNode);
+    assert.equal(targetNode.metadata?.status, "error");
+    assert.equal(targetNode.metadata?.errorDetails, "用户额度不足");
+
+    // 重试直接复用 targetId 更新
+    await runCanvasTextGeneration(
+        {
+            sourceId: "cfg-fail",
+            prompt: "测试失败",
+            config: { ...defaultConfig, models: ["gpt-5.6-terra"] },
+            signal: new AbortController().signal,
+            messages: [{ role: "user", content: "retry-ok" }],
+            retry: { targetId: targetNodeId },
+            getNodes: () => nodes,
+            setNodes: (update) => {
+                nodes = update(nodes);
+            },
+            addConnection: () => {},
+        },
+        {
+            question: async (_cfg, _msgs, onDelta) => {
+                onDelta("重试成功的内容");
+                return "重试成功的内容";
+            },
+        },
+    );
+
+    targetNode = nodes.find((n) => n.id === targetNodeId);
+    assert.ok(targetNode);
+    assert.equal(targetNode.metadata?.status, "success");
+    assert.equal(targetNode.metadata?.content, "重试成功的内容");
+    assert.equal(targetNode.metadata?.errorDetails, undefined);
+});
+
