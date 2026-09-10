@@ -12,12 +12,22 @@ export type DigitalAssetTag = {
     updated_at: number;
 };
 
+export type DigitalAssetImage = {
+    id: string;
+    url: string;
+    width: number;
+    height: number;
+    mime_type: string;
+};
+
 export type DigitalAsset = {
     id: number;
     user_id: number;
-    asset_type: "text";
+    asset_type: "text" | "image";
     title: string;
     content: string;
+    image_id?: string;
+    image?: DigitalAssetImage;
     is_favorite: boolean;
     created_at: number;
     updated_at: number;
@@ -32,10 +42,11 @@ export type DigitalAssetListResponse = {
 };
 
 export type CreateDigitalAssetPayload = {
-    asset_type: "text";
+    asset_type: "text" | "image";
     title: string;
     content: string;
     tags: string[];
+    image_id?: string;
 };
 
 export async function fetchDigitalAssets(params: {
@@ -44,6 +55,7 @@ export async function fetchDigitalAssets(params: {
     search?: string;
     tagIds?: number[];
     favorite?: boolean;
+    assetType?: "text" | "image";
 }): Promise<DigitalAssetListResponse> {
     const headers = await getCanvasAuthHeaders();
     const searchParams = new URLSearchParams();
@@ -55,6 +67,9 @@ export async function fetchDigitalAssets(params: {
     }
     if (params.favorite !== undefined) {
         searchParams.set("favorite", String(params.favorite));
+    }
+    if (params.assetType) {
+        searchParams.set("asset_type", params.assetType);
     }
     if (params.tagIds && params.tagIds.length > 0) {
         for (const tagId of params.tagIds) {

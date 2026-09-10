@@ -2118,6 +2118,7 @@
     "Filter by tags": "タグで絞り込む",
     "Filter by task ID": "タスクIDでフィルター",
     "Filter by token name": "トークン名でフィルター",
+    "Filter by type": "タイプで絞り込み",
     "Filter by username": "ユーザー名でフィルター",
     "Filter by username, name or email...": "ユーザー名、名前またはメールアドレスでフィルター...",
     "Filter Dashboard Models": "ダッシュボードモデルをフィルタリング",

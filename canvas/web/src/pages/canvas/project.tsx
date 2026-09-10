@@ -2160,31 +2160,57 @@ function InfiniteCanvasPage() {
 
     const saveNodeAsset = useCallback(
         async (node: CanvasNodeData) => {
-            if (node.type !== CanvasNodeType.Text) {
+            if (node.type === CanvasNodeType.Text) {
+                const content = node.metadata?.content?.trim();
+                if (!content) return message.error(t("canvas.projectPage.noTextToSave"));
+                const nodeTitle = node.title?.trim();
+                const defaultTextTitle = t("canvas.node.text");
+                const isDefaultTitle = !nodeTitle || nodeTitle === defaultTextTitle || nodeTitle === "文本" || nodeTitle === "Text";
+                const rawTitle = isDefaultTitle ? content : nodeTitle;
+                const title = rawTitle.slice(0, 24) || t("canvas.projectPage.canvasText");
+                try {
+                    await createDigitalAsset({
+                        asset_type: "text",
+                        title,
+                        content,
+                        tags: ["画布"],
+                    });
+                    message.success(t("common.addedToAssets"));
+                    void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSETS_QUERY_KEY });
+                    void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSET_TAGS_QUERY_KEY });
+                } catch (err) {
+                    message.error(err instanceof Error ? err.message : t("common.saveFailed"));
+                }
                 return;
             }
-            const content = node.metadata?.content?.trim();
-            if (!content) return message.error(t("canvas.projectPage.noTextToSave"));
-            const nodeTitle = node.title?.trim();
-            const defaultTextTitle = t("canvas.node.text");
-            const isDefaultTitle = !nodeTitle || nodeTitle === defaultTextTitle || nodeTitle === "文本" || nodeTitle === "Text";
-            const rawTitle = isDefaultTitle ? content : nodeTitle;
-            const title = rawTitle.slice(0, 24) || t("canvas.projectPage.canvasText");
-            try {
-                await createDigitalAsset({
-                    asset_type: "text",
-                    title,
-                    content,
-                    tags: ["画布"],
-                });
-                message.success(t("common.addedToAssets"));
-                void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSETS_QUERY_KEY });
-                void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSET_TAGS_QUERY_KEY });
-            } catch (err) {
-                message.error(err instanceof Error ? err.message : t("common.saveFailed"));
+
+            if (node.type === CanvasNodeType.Image) {
+                const storageKey = typeof node.metadata?.storageKey === "string" ? node.metadata.storageKey.trim() : "";
+                const status = node.metadata?.status;
+                if (!storageKey || status === NODE_STATUS_LOADING || status === NODE_STATUS_ERROR) {
+                    message.warning(t("canvas.sidePanel.imageNotReady"));
+                    return;
+                }
+                const title = node.title?.trim() || t("canvas.node.image");
+                const content = node.metadata?.prompt || "";
+                try {
+                    await createDigitalAsset({
+                        asset_type: "image",
+                        image_id: storageKey,
+                        title,
+                        content,
+                        tags: ["画布"],
+                    });
+                    message.success(t("common.addedToAssets"));
+                    void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSETS_QUERY_KEY });
+                    void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSET_TAGS_QUERY_KEY });
+                } catch (err) {
+                    message.error(err instanceof Error ? err.message : t("common.saveFailed"));
+                }
+                return;
             }
         },
-        [message, t],
+        [message, t, queryClient],
     );
 
     const createImageReversePromptNodes = useCallback(

@@ -202,6 +202,76 @@ test("createDigitalAsset 正确发送 POST 载荷并返回资产", async () => {
     }
 });
 
+test("createDigitalAsset 正确发送图片资产 POST 载荷并返回资产", async () => {
+    const fetchBefore = globalThis.fetch;
+    const windowBefore = globalThis.window;
+    setupHostAuth();
+
+    let requestedUrl = "";
+    let requestedMethod = "";
+    let requestedBody = "";
+
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        requestedUrl = String(input);
+        requestedMethod = init?.method || "GET";
+        requestedBody = String(init?.body || "");
+        return new Response(
+            JSON.stringify({
+                success: true,
+                message: "",
+                data: {
+                    id: 103,
+                    user_id: 1,
+                    asset_type: "image",
+                    title: "画布图片",
+                    content: "风景提示词",
+                    image_id: "img-storage-key-1",
+                    image: {
+                        id: "img-storage-key-1",
+                        url: "https://example.com/asset.png",
+                        width: 1024,
+                        height: 1024,
+                        mime_type: "image/png",
+                    },
+                    is_favorite: false,
+                    created_at: 1726000000,
+                    updated_at: 1726000000,
+                    tags: [{ id: 1, user_id: 1, name: "画布", created_at: 1726000000, updated_at: 1726000000 }],
+                },
+            }),
+            { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+    }) as typeof fetch;
+
+    try {
+        const asset = await createDigitalAsset({
+            asset_type: "image",
+            image_id: "img-storage-key-1",
+            title: "画布图片",
+            content: "风景提示词",
+            tags: ["画布"],
+        });
+
+        assert.equal(requestedUrl, "/api/digital-assets/");
+        assert.equal(requestedMethod, "POST");
+        const parsed = JSON.parse(requestedBody);
+        assert.deepEqual(parsed, {
+            asset_type: "image",
+            image_id: "img-storage-key-1",
+            title: "画布图片",
+            content: "风景提示词",
+            tags: ["画布"],
+        });
+        assert.equal(asset.id, 103);
+        assert.equal(asset.asset_type, "image");
+        assert.equal(asset.image?.url, "https://example.com/asset.png");
+    } finally {
+        globalThis.fetch = fetchBefore;
+        globalThis.window = windowBefore;
+        useUserStore.getState().clearSession();
+    }
+});
+
 test("deleteDigitalAsset 发起指定 ID 的 DELETE 请求", async () => {
     const fetchBefore = globalThis.fetch;
     const windowBefore = globalThis.window;

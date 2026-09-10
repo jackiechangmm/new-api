@@ -43,6 +43,7 @@ const domGlobals = [
   'HTMLButtonElement',
   'HTMLInputElement',
   'HTMLTextAreaElement',
+  'HTMLImageElement',
   'SVGElement',
   'Node',
   'Element',
@@ -256,6 +257,95 @@ test('favorites and all assets use independent list contracts while search only 
   assert.equal(patchCalls.length, 1)
   assert.equal(patchCalls[0]?.url, '/api/digital-assets/7/favorite')
   assert.deepEqual(patchCalls[0]?.data, { is_favorite: false })
+
+  await act(async () => rendered.root.unmount())
+  rendered.queryClient.clear()
+})
+
+test('type pills filter assets by type and image asset displays thumbnail and dimensions', async () => {
+  const imageAsset = {
+    id: 8,
+    user_id: 1,
+    asset_type: 'image' as const,
+    title: 'Scenic painting',
+    content: 'A beautiful sunset over mountains',
+    image_id: 'img-100',
+    image: {
+      id: 'img-100',
+      url: 'https://example.com/sunset.png',
+      width: 1920,
+      height: 1080,
+      mime_type: 'image/png',
+    },
+    is_favorite: false,
+    created_at: 30,
+    updated_at: 30,
+    tags: [{ id: 4, user_id: 1, name: '风景', created_at: 30, updated_at: 30 }],
+  }
+
+  client.get = async (url, config) => {
+    getCalls.push({ url, params: config?.params })
+    if (url.endsWith('/tags')) {
+      return {
+        data: {
+          success: true,
+          message: '',
+          data: [...asset.tags, ...imageAsset.tags],
+        },
+      }
+    }
+    const requestedType = config?.params?.asset_type
+    const items =
+      requestedType === 'image'
+        ? [imageAsset]
+        : requestedType === 'text'
+          ? [asset]
+          : [asset, imageAsset]
+    return {
+      data: {
+        success: true,
+        message: '',
+        data: {
+          page: config?.params?.p ?? 1,
+          page_size: config?.params?.page_size,
+          total: items.length,
+          items,
+        },
+      },
+    }
+  }
+
+  const rendered = await renderPage()
+
+  const imagePill = [...rendered.container.querySelectorAll('button')].find(
+    (b) => b.textContent?.trim() === 'Image'
+  )
+  assert.ok(imagePill instanceof HTMLButtonElement)
+  await act(async () => imagePill.click())
+  await flushQueries(rendered.queryClient)
+
+  const imageFilterCalls = getCalls.filter(
+    (call) =>
+      call.url === '/api/digital-assets/' && call.params?.asset_type === 'image'
+  )
+  assert.ok(imageFilterCalls.length >= 1)
+
+  const imgElement = rendered.container.querySelector(
+    'img[src="https://example.com/sunset.png"]'
+  )
+  assert.ok(imgElement instanceof HTMLImageElement)
+
+  const openButton = rendered.container.querySelector(
+    '[aria-label="Open prompt Scenic painting"]'
+  )
+  assert.ok(openButton instanceof HTMLButtonElement)
+  await act(async () => openButton.click())
+
+  assert.match(document.body.textContent ?? '', /1920 × 1080/)
+  assert.match(
+    document.body.textContent ?? '',
+    /A beautiful sunset over mountains/
+  )
 
   await act(async () => rendered.root.unmount())
   rendered.queryClient.clear()

@@ -29,6 +29,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
 import type { DigitalAsset } from '../types'
 
@@ -41,11 +42,16 @@ type DigitalAssetCardProps = {
 
 export function DigitalAssetCard(props: DigitalAssetCardProps) {
   const { t } = useTranslation()
+  const isImage = props.asset.asset_type === 'image'
+  const imageUrl = props.asset.image?.url
 
   return (
     <Card
       size='sm'
-      className='hover:bg-muted/30 relative h-44 rounded-lg transition-colors'
+      className={cn(
+        'hover:bg-muted/30 relative flex flex-col rounded-lg transition-colors',
+        isImage ? 'h-72 overflow-hidden' : 'h-44'
+      )}
     >
       <button
         type='button'
@@ -53,6 +59,22 @@ export function DigitalAssetCard(props: DigitalAssetCardProps) {
         aria-label={t('Open prompt {{title}}', { title: props.asset.title })}
         onClick={() => props.onOpen(props.asset)}
       />
+      {isImage ? (
+        <div className='bg-muted pointer-events-none relative h-32 w-full shrink-0 overflow-hidden rounded-t-lg'>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={props.asset.title}
+              className='size-full object-cover'
+              loading='lazy'
+            />
+          ) : (
+            <div className='text-muted-foreground flex size-full items-center justify-center text-xs'>
+              {props.asset.title}
+            </div>
+          )}
+        </div>
+      ) : null}
       <CardHeader className='pointer-events-none relative z-1'>
         <CardTitle className='line-clamp-1 pr-1'>{props.asset.title}</CardTitle>
         <CardAction className='pointer-events-auto relative z-2'>
@@ -76,7 +98,12 @@ export function DigitalAssetCard(props: DigitalAssetCardProps) {
         </CardAction>
       </CardHeader>
       <CardContent className='pointer-events-none relative z-1 flex min-h-0 flex-1 flex-col gap-3'>
-        <p className='text-muted-foreground line-clamp-3 min-h-0 flex-1 text-left text-sm leading-5 whitespace-pre-wrap'>
+        <p
+          className={cn(
+            'text-muted-foreground min-h-0 flex-1 text-left text-sm leading-5 whitespace-pre-wrap',
+            isImage ? 'line-clamp-2' : 'line-clamp-3'
+          )}
+        >
           {props.asset.content}
         </p>
         <div className='flex min-h-5 flex-wrap gap-1 overflow-hidden'>

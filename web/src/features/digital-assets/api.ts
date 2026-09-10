@@ -39,6 +39,7 @@ export async function listDigitalAssets(params: {
   favorite?: boolean
   search?: string
   tagIds?: number[]
+  assetType?: 'text' | 'image'
 }): Promise<DigitalAssetList> {
   const response = await api.get<ApiResponse<DigitalAssetList>>(
     '/api/digital-assets/',
@@ -49,6 +50,7 @@ export async function listDigitalAssets(params: {
         favorite: params.favorite,
         search: params.search || undefined,
         tag_id: params.tagIds?.length ? params.tagIds : undefined,
+        asset_type: params.assetType || undefined,
       },
       paramsSerializer: { indexes: null },
     }

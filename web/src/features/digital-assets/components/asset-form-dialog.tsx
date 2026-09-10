@@ -63,8 +63,12 @@ function normalizeTag(name: string): string {
 
 export function AssetFormDialog(props: AssetFormDialogProps) {
   const { t } = useTranslation()
+  const isImage = props.asset?.asset_type === 'image'
   const [tagInput, setTagInput] = useState('')
-  const schema = useMemo(() => getDigitalAssetFormSchema(t), [t])
+  const schema = useMemo(
+    () => getDigitalAssetFormSchema(t, isImage),
+    [t, isImage]
+  )
   const form = useForm<DigitalAssetFormValues>({
     resolver: zodResolver(schema),
     defaultValues: { title: '', content: '', tags: [] },
@@ -156,11 +160,16 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
     }
   })
 
+  let dialogTitle = t('New prompt')
+  if (props.asset) {
+    dialogTitle = isImage ? t('Edit') : t('Edit prompt')
+  }
+
   return (
     <Dialog
       open={props.open}
       onOpenChange={props.onOpenChange}
-      title={props.asset ? t('Edit prompt') : t('New prompt')}
+      title={dialogTitle}
       contentClassName='sm:max-w-xl'
       bodyClassName='space-y-4'
       footer={
@@ -205,25 +214,38 @@ export function AssetFormDialog(props: AssetFormDialogProps) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name='content'
-            render={({ field }) => (
+          {isImage ? (
+            props.asset?.content ? (
               <FormItem>
                 <FormLabel>{t('Prompt content')}</FormLabel>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    rows={10}
-                    maxLength={100000}
-                    className='min-h-52 resize-y'
-                    placeholder={t('Enter the complete prompt')}
-                  />
-                </FormControl>
-                <FormMessage />
+                <div className='bg-muted/40 max-h-36 overflow-auto rounded-md border p-3'>
+                  <p className='text-muted-foreground text-sm leading-5 break-words whitespace-pre-wrap'>
+                    {props.asset.content}
+                  </p>
+                </div>
               </FormItem>
-            )}
-          />
+            ) : null
+          ) : (
+            <FormField
+              control={form.control}
+              name='content'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('Prompt content')}</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      rows={10}
+                      maxLength={100000}
+                      className='min-h-52 resize-y'
+                      placeholder={t('Enter the complete prompt')}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           <FormItem>
             <div className='flex items-center justify-between gap-3'>
               <FormLabel htmlFor='digital-asset-tag-input'>

@@ -90,12 +90,17 @@ export function AssetDetailDialog(props: AssetDetailDialogProps) {
             <Button
               type='button'
               variant='outline'
+              disabled={!asset.content}
               onClick={() => props.onDraw(asset)}
             >
               <Paintbrush />
               {t('Go draw')}
             </Button>
-            <Button type='button' onClick={() => props.onCopy(asset)}>
+            <Button
+              type='button'
+              disabled={!asset.content}
+              onClick={() => props.onCopy(asset)}
+            >
               <HugeiconsIcon icon={Copy01Icon} />
               {t('Copy prompt')}
             </Button>
@@ -105,18 +110,37 @@ export function AssetDetailDialog(props: AssetDetailDialogProps) {
     >
       {asset ? (
         <div className='space-y-4'>
-          <div className='flex flex-wrap gap-1.5'>
+          {asset.asset_type === 'image' && asset.image?.url ? (
+            <div className='bg-muted/20 flex max-h-[50vh] items-center justify-center overflow-hidden rounded-md border p-2'>
+              <img
+                src={asset.image.url}
+                alt={asset.title}
+                className='max-h-[46vh] max-w-full rounded object-contain'
+              />
+            </div>
+          ) : null}
+          <div className='flex flex-wrap items-center gap-1.5'>
             {asset.tags.map((tag) => (
               <Badge key={tag.id} variant='secondary'>
                 {tag.name}
               </Badge>
             ))}
+            {asset.asset_type === 'image' &&
+            asset.image &&
+            asset.image.width > 0 &&
+            asset.image.height > 0 ? (
+              <Badge variant='outline'>
+                {asset.image.width} × {asset.image.height}
+              </Badge>
+            ) : null}
           </div>
-          <div className='bg-muted/40 max-h-[50vh] overflow-auto rounded-md border p-4'>
-            <p className='text-sm leading-6 break-words whitespace-pre-wrap'>
-              {asset.content}
-            </p>
-          </div>
+          {asset.content ? (
+            <div className='bg-muted/40 max-h-[40vh] overflow-auto rounded-md border p-4'>
+              <p className='text-sm leading-6 break-words whitespace-pre-wrap'>
+                {asset.content}
+              </p>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </Dialog>

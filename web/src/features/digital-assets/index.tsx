@@ -56,7 +56,7 @@ import { AssetFormDialog } from './components/asset-form-dialog'
 import { AssetPagination } from './components/asset-pagination'
 import { TagManagerDialog } from './components/tag-manager-dialog'
 import type { DigitalAssetFormValues } from './lib/form'
-import type { DigitalAsset, DigitalAssetTag } from './types'
+import type { DigitalAsset, DigitalAssetPayload, DigitalAssetTag } from './types'
 
 const FAVORITES_PAGE_SIZE = 6
 const ALL_ASSETS_PAGE_SIZE = 12
@@ -145,6 +145,7 @@ export function DigitalAssets() {
   const navigate = useNavigate()
   const [favoritesPage, setFavoritesPage] = useState(1)
   const [allPage, setAllPage] = useState(1)
+  const [typeFilter, setTypeFilter] = useState<'all' | 'text' | 'image'>('all')
   const [search, setSearch] = useState('')
   const deferredSearch = useDeferredValue(search.trim())
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
@@ -156,12 +157,13 @@ export function DigitalAssets() {
   const [deletedTag, setDeletedTag] = useState<DigitalAssetTag | null>(null)
 
   const favoritesQuery = useQuery({
-    queryKey: [...queryRoot, 'list', 'favorites', favoritesPage],
+    queryKey: [...queryRoot, 'list', 'favorites', favoritesPage, typeFilter],
     queryFn: () =>
       listDigitalAssets({
         page: favoritesPage,
         pageSize: FAVORITES_PAGE_SIZE,
         favorite: true,
+        assetType: typeFilter === 'all' ? undefined : typeFilter,
       }),
   })
   const allAssetsQuery = useQuery({
@@ -172,6 +174,7 @@ export function DigitalAssets() {
       allPage,
       deferredSearch,
       selectedTagIds,
+      typeFilter,
     ],
     queryFn: () =>
       listDigitalAssets({
@@ -179,6 +182,7 @@ export function DigitalAssets() {
         pageSize: ALL_ASSETS_PAGE_SIZE,
         search: deferredSearch,
         tagIds: selectedTagIds,
+        assetType: typeFilter === 'all' ? undefined : typeFilter,
       }),
   })
   const tagsQuery = useQuery({
@@ -192,11 +196,12 @@ export function DigitalAssets() {
 
   const saveMutation = useMutation({
     mutationFn: async (values: DigitalAssetFormValues) => {
-      const payload = {
-        asset_type: 'text' as const,
+      const payload: DigitalAssetPayload = {
+        asset_type: formAsset ? formAsset.asset_type : 'text',
         title: values.title.trim(),
         content: values.content,
         tags: values.tags,
+        image_id: formAsset?.image_id || formAsset?.image?.id,
       }
       return formAsset
         ? updateDigitalAsset(formAsset.id, payload)
@@ -329,6 +334,53 @@ export function DigitalAssets() {
     <>
       <SectionPageLayout>
         <SectionPageLayout.Title>{t('Digital Assets')}</SectionPageLayout.Title>
+        <SectionPageLayout.Actions>
+          <div
+            className='bg-muted inline-flex items-center rounded-lg p-0.5 text-xs'
+            role='group'
+            aria-label={t('Filter by type')}
+          >
+            <Button
+              type='button'
+              size='xs'
+              variant={typeFilter === 'all' ? 'secondary' : 'ghost'}
+              className='rounded-md'
+              onClick={() => {
+                setTypeFilter('all')
+                setFavoritesPage(1)
+                setAllPage(1)
+              }}
+            >
+              {t('All')}
+            </Button>
+            <Button
+              type='button'
+              size='xs'
+              variant={typeFilter === 'text' ? 'secondary' : 'ghost'}
+              className='rounded-md'
+              onClick={() => {
+                setTypeFilter('text')
+                setFavoritesPage(1)
+                setAllPage(1)
+              }}
+            >
+              {t('Text')}
+            </Button>
+            <Button
+              type='button'
+              size='xs'
+              variant={typeFilter === 'image' ? 'secondary' : 'ghost'}
+              className='rounded-md'
+              onClick={() => {
+                setTypeFilter('image')
+                setFavoritesPage(1)
+                setAllPage(1)
+              }}
+            >
+              {t('Image')}
+            </Button>
+          </div>
+        </SectionPageLayout.Actions>
         <SectionPageLayout.Content>
           <div className='mx-auto max-w-6xl space-y-8 pb-4'>
             <div className='space-y-4'>
