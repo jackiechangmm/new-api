@@ -17,7 +17,8 @@ import { nanoid } from "nanoid";
 import { getDataUrlByteSize, readImageMeta } from "@/lib/image-utils";
 import { imageReferenceLabel } from "@/lib/image-reference-prompt";
 import { canvasThemes, type CanvasBackgroundMode } from "@/lib/canvas-theme";
-import { useAssetStore } from "@/stores/use-asset-store";
+import { createDigitalAsset, DIGITAL_ASSETS_QUERY_KEY, DIGITAL_ASSET_TAGS_QUERY_KEY } from "@/services/api/digital-assets";
+import { queryClient } from "@/lib/query-client";
 import { useThemeStore } from "@/stores/use-theme-store";
 import { cropDataUrl, splitDataUrl, upscaleDataUrl } from "@/lib/canvas/canvas-image-data";
 import { fitNodeSize } from "@/lib/canvas/canvas-node-size";
@@ -225,8 +226,6 @@ function InfiniteCanvasPage() {
     const effectiveConfig = useEffectiveConfig();
     const isAiConfigReady = useConfigStore((state) => state.isAiConfigReady);
     const openConfigDialog = useConfigStore((state) => state.openConfigDialog);
-    const addAsset = useAssetStore((state) => state.addAsset);
-    const cleanupAssetImages = useAssetStore((state) => state.cleanupImages);
     const hydrated = useCanvasStore((state) => state.hydrated);
     const loadProject = useCanvasStore((state) => state.loadProject);
     const createProject = useCanvasStore((state) => state.createProject);
@@ -339,12 +338,7 @@ function InfiniteCanvasPage() {
         [activeChatId, backgroundMode, chatSessions, showImageInfo],
     );
 
-    const cleanupCanvasFiles = useCallback(
-        (extra?: unknown) => {
-            cleanupAssetImages({ extra, history: historyRef.current, lastHistory: lastHistoryRef.current });
-        },
-        [cleanupAssetImages],
-    );
+
 
     const startGenerationRequest = useCallback((targetNodeId: string, originNodeId: string, runningId = originNodeId, controller = new AbortController()) => {
         const previous = generationRequestsRef.current.get(targetNodeId);
@@ -1052,9 +1046,8 @@ function InfiniteCanvasPage() {
             setReferencePickerNodeId((current) => (current && allIds.has(current) ? null : current));
             setExpandedBatchNodeIds((current) => new Set([...current].filter((nodeId) => !allIds.has(nodeId))));
             setContextMenu((current) => (current?.type === "node" && allIds.has(current.nodeId) ? null : current));
-            cleanupCanvasFiles({ projectId, nodes: nodesRef.current.filter((node) => !allIds.has(node.id)), chatSessions });
         },
-        [chatSessions, cleanupCanvasFiles, projectId],
+        [chatSessions, projectId],
     );
 
     const groupSelection = useCallback(() => {
@@ -1151,8 +1144,7 @@ function InfiniteCanvasPage() {
         setRunningNodeId(null);
         deselectCanvas();
         setClearConfirmOpen(false);
-        cleanupCanvasFiles({ projectId, nodes: [], chatSessions: [] });
-    }, [cleanupCanvasFiles, deselectCanvas, projectId]);
+    }, [deselectCanvas, projectId]);
 
     const duplicateNode = useCallback((nodeId: string) => {
         const source = nodesRef.current.find((node) => node.id === nodeId);
@@ -1347,9 +1339,8 @@ function InfiniteCanvasPage() {
 
     const deleteCurrentProject = useCallback(() => {
         deleteProjects([projectId]);
-        cleanupAssetImages();
         navigate("/canvas");
-    }, [cleanupAssetImages, deleteProjects, navigate, projectId]);
+    }, [deleteProjects, navigate, projectId]);
 
     const exportCurrentProject = useCallback(async () => {
         const project = useCanvasStore.getState().projects.find((item) => item.id === projectId);
@@ -2169,48 +2160,31 @@ function InfiniteCanvasPage() {
 
     const saveNodeAsset = useCallback(
         async (node: CanvasNodeData) => {
-            if (node.type === CanvasNodeType.Text) {
-                const content = node.metadata?.content?.trim();
-                if (!content) return message.error(t("canvas.projectPage.noTextToSave"));
-                addAsset({ kind: "text", title: node.metadata?.prompt?.slice(0, 24) || t("canvas.projectPage.canvasText"), coverUrl: "", tags: [], source: "Canvas", data: { content }, metadata: { source: "canvas", nodeId: node.id } });
-                message.success(t("common.addedToAssets"));
+            if (node.type !== CanvasNodeType.Text) {
                 return;
             }
-            if (node.type === CanvasNodeType.Video) {
-                if (!node.metadata?.content) return message.error(t("canvas.projectPage.noVideoToSave"));
-                addAsset({
-                    kind: "video",
-                    title: node.metadata?.prompt?.slice(0, 24) || t("canvas.projectPage.canvasVideo"),
-                    coverUrl: "",
-                    tags: [],
-                    source: "Canvas",
-                    data: { url: node.metadata.content, storageKey: node.metadata.storageKey, width: node.width, height: node.height, bytes: node.metadata.bytes || 0, mimeType: node.metadata.mimeType || "video/mp4" },
-                    metadata: { source: "canvas", nodeId: node.id, prompt: node.metadata?.prompt },
+            const content = node.metadata?.content?.trim();
+            if (!content) return message.error(t("canvas.projectPage.noTextToSave"));
+            const nodeTitle = node.title?.trim();
+            const defaultTextTitle = t("canvas.node.text");
+            const isDefaultTitle = !nodeTitle || nodeTitle === defaultTextTitle || nodeTitle === "文本" || nodeTitle === "Text";
+            const rawTitle = isDefaultTitle ? content : nodeTitle;
+            const title = rawTitle.slice(0, 24) || t("canvas.projectPage.canvasText");
+            try {
+                await createDigitalAsset({
+                    asset_type: "text",
+                    title,
+                    content,
+                    tags: ["画布"],
                 });
                 message.success(t("common.addedToAssets"));
-                return;
+                void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSETS_QUERY_KEY });
+                void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSET_TAGS_QUERY_KEY });
+            } catch (err) {
+                message.error(err instanceof Error ? err.message : t("common.saveFailed"));
             }
-            if (!node.metadata?.content) return message.error(t("canvas.projectPage.noImageToSave"));
-            const dataUrl = node.metadata.storageKey ? "" : node.metadata.content;
-            addAsset({
-                kind: "image",
-                title: node.metadata?.prompt?.slice(0, 24) || t("canvas.projectPage.canvasImage"),
-                coverUrl: node.metadata.content,
-                tags: [],
-                source: "Canvas",
-                data: {
-                    dataUrl,
-                    storageKey: node.metadata.storageKey,
-                    width: node.metadata.naturalWidth || node.width,
-                    height: node.metadata.naturalHeight || node.height,
-                    bytes: node.metadata.bytes || getDataUrlByteSize(dataUrl),
-                    mimeType: node.metadata.mimeType || "image/png",
-                },
-                metadata: { source: "canvas", nodeId: node.id, prompt: node.metadata?.prompt },
-            });
-            message.success(t("common.addedToAssets"));
         },
-        [addAsset, message, t],
+        [message, t],
     );
 
     const createImageReversePromptNodes = useCallback(

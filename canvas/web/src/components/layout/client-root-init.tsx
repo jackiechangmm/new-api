@@ -6,7 +6,6 @@ import { getCanvasHost, fetchCanvasModels } from "@/services/host-auth";
 import { useConfigStore } from "@/stores/use-config-store";
 import { useUserStore } from "@/stores/use-user-store";
 import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
-import { useAssetStore } from "@/stores/use-asset-store";
 
 let initialization: Promise<void> | undefined;
 
@@ -36,14 +35,11 @@ export function ClientRootInit({ children }: { children: ReactNode }) {
                 const models = await fetchCanvasModels();
                 if (host.getUser()?.id !== user.id) throw new Error(t("integration.sessionExpired"));
                 useConfigStore.getState().setAvailableModels(models);
-                await Promise.all([
-                    useCanvasStore.getState().fetchProjects().catch((err) => {
-                        console.error("Failed to fetch canvas projects:", err);
-                    }),
-                    useAssetStore.persist.rehydrate(),
-                ]);
+                await useCanvasStore.getState().fetchProjects().catch((err) => {
+                    console.error("Failed to fetch canvas projects:", err);
+                });
                 useCanvasStore.setState({ hydrated: true });
-                if (!useCanvasStore.getState().hydrated || !useAssetStore.getState().hydrated) throw new Error(t("integration.storageFailed"));
+                if (!useCanvasStore.getState().hydrated) throw new Error(t("integration.storageFailed"));
             })().catch((reason) => {
                 initialization = undefined;
                 throw reason;

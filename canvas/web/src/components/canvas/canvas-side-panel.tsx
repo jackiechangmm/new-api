@@ -1,7 +1,7 @@
 import { canvasCapabilities } from "@/lib/canvas/canvas-capabilities";
-import { memo, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { App, Empty, Input, Popconfirm, Select, Spin, Tag } from "antd";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BookOpen, Check, ChevronRight, Download, Eye, FileText, Image as ImageIcon, ListChecks, Music2, Plus, Search, Settings2, Square, Trash2, Type, Video } from "lucide-react";
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
@@ -12,9 +12,17 @@ import { getNodeDefinition } from "@/lib/canvas/node-registry";
 import { cn } from "@/lib/utils";
 import { PromptDetailDialog } from "@/pages/prompts/components/prompt-detail-dialog";
 import { BULULU_FEATURED_CATEGORY, BULULU_FEATURED_SOURCE_ID, FEATURED_PROMPTS_QUERY_KEY, fetchSourcePrompts, type Prompt } from "@/services/api/prompts";
+import {
+    deleteDigitalAsset,
+    fetchDigitalAssets,
+    fetchDigitalAssetTags,
+    DIGITAL_ASSETS_QUERY_KEY,
+    DIGITAL_ASSET_TAGS_QUERY_KEY,
+    type DigitalAsset,
+} from "@/services/api/digital-assets";
 import { uploadMediaFile } from "@/services/file-storage";
 import { uploadImage } from "@/services/image-storage";
-import { useAssetStore, type Asset, type AssetKind } from "@/stores/use-asset-store";
+import { useUserStore } from "@/stores/use-user-store";
 import { CANVAS_SIDE_PANEL_MAX_WIDTH, CANVAS_SIDE_PANEL_MIN_WIDTH, CANVAS_SIDE_PANEL_MOTION_MS, useCanvasSidePanelStore } from "@/stores/use-canvas-side-panel-store";
 import { useThemeStore } from "@/stores/use-theme-store";
 import { CanvasNodeType, type CanvasNodeData } from "@/types/canvas";
@@ -294,40 +302,60 @@ function CheckMark({ checked, theme }: { checked: boolean; theme: CanvasTheme })
 }
 
 // ---------------------------------------------------------------------------
-// Assets tab: collapsible type groups, tag filtering, and click-to-insert.
+// Assets tab: text digital assets, tag filtering, and click-to-insert.
 // ---------------------------------------------------------------------------
-
-const ASSET_GROUPS: { kind: AssetKind; icon: typeof Square }[] = [
-    { kind: "image", icon: ImageIcon },
-    { kind: "text", icon: FileText },
-];
-
-function buildInsertPayload(asset: Asset): InsertAssetPayload {
-    if (asset.kind === "text") return { kind: "text", content: asset.data.content, title: asset.title };
-    if (asset.kind === "video") return { kind: "video", url: asset.data.url, storageKey: asset.data.storageKey, title: asset.title, width: asset.data.width, height: asset.data.height };
-    return { kind: "image", dataUrl: asset.data.dataUrl, storageKey: asset.data.storageKey, title: asset.title };
-}
 
 const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onInsert: (payload: InsertAssetPayload) => void; theme: CanvasTheme }) {
     const { message } = App.useApp();
     const { t } = useTranslation();
-    const assets = useAssetStore((state) => state.assets);
-    const addAsset = useAssetStore((state) => state.addAsset);
-    const removeAsset = useAssetStore((state) => state.removeAsset);
+    const queryClient = useQueryClient();
+    const userId = useUserStore((state) => state.user?.id);
+
     const [keyword, setKeyword] = useState("");
-    const [tagFilter, setTagFilter] = useState<string>("all");
-    const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [selectedTagId, setSelectedTagId] = useState<number | null>(null);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const allTags = useMemo(() => Array.from(new Set(assets.flatMap((asset) => asset.tags || []))).slice(0, 20), [assets]);
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            setDebouncedSearch(keyword.trim());
+        }, 300);
+        return () => window.clearTimeout(timer);
+    }, [keyword]);
 
-    const filtered = useMemo(() => {
-        const query = keyword.trim().toLowerCase();
-        return assets.filter((asset) => (tagFilter === "all" || (asset.tags || []).includes(tagFilter)) && (!query || [asset.title, ...(asset.tags || [])].join(" ").toLowerCase().includes(query)));
-    }, [assets, keyword, tagFilter]);
+    const tagsQuery = useQuery({
+        queryKey: [...DIGITAL_ASSET_TAGS_QUERY_KEY, userId],
+        queryFn: fetchDigitalAssetTags,
+        enabled: Boolean(userId),
+        staleTime: 60 * 1000,
+    });
+    const allTags = tagsQuery.data || [];
 
-    const groups = useMemo(() => ASSET_GROUPS.map((group) => ({ ...group, items: filtered.filter((asset) => asset.kind === group.kind) })).filter((group) => group.items.length > 0), [filtered]);
+    const assetsQuery = useQuery({
+        queryKey: [...DIGITAL_ASSETS_QUERY_KEY, userId, debouncedSearch, selectedTagId],
+        queryFn: () =>
+            fetchDigitalAssets({
+                search: debouncedSearch || undefined,
+                tagIds: selectedTagId ? [selectedTagId] : undefined,
+                page: 1,
+                pageSize: 50,
+            }),
+        enabled: Boolean(userId),
+        staleTime: 30 * 1000,
+    });
+    const items = assetsQuery.data?.items || [];
+
+    const handleDelete = async (id: number) => {
+        try {
+            await deleteDigitalAsset(id);
+            message.success(t("canvas.sidePanel.assetRemoved"));
+            void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSETS_QUERY_KEY });
+            void queryClient.invalidateQueries({ queryKey: DIGITAL_ASSET_TAGS_QUERY_KEY });
+        } catch (error) {
+            message.error(error instanceof Error ? error.message : t("common.failed"));
+        }
+    };
 
     const handleFiles = async (fileList: FileList | null) => {
         const files = Array.from(fileList || []).filter((file) => file.type.startsWith("image/"));
@@ -338,12 +366,10 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
         try {
             for (const file of files) {
                 if (file.type.startsWith("image/")) {
-                    const image = await uploadImage(file);
-                    addAsset({ kind: "image", title: file.name || t("assets.kinds.image"), coverUrl: image.url, tags: [], data: { dataUrl: image.url, storageKey: image.storageKey, width: image.width, height: image.height, bytes: image.bytes, mimeType: image.mimeType } });
+                    await uploadImage(file);
                     added += 1;
                 } else if (file.type.startsWith("video/")) {
-                    const media = await uploadMediaFile(file, "video");
-                    addAsset({ kind: "video", title: file.name || t("assets.kinds.video"), coverUrl: "", tags: [], data: { url: media.url, storageKey: media.storageKey, width: media.width || 0, height: media.height || 0, bytes: media.bytes, mimeType: media.mimeType } });
+                    await uploadMediaFile(file, "video");
                     added += 1;
                 }
             }
@@ -363,57 +389,45 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
         <div className="flex h-full flex-col">
             <div className="flex items-center gap-2 px-3 pb-2 pt-1">
                 <Input size="small" allowClear prefix={<Search className="size-3.5 text-stone-400" />} placeholder={t("canvas.sidePanel.searchAssets")} value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-                <button
-                    type="button"
-                    disabled={uploading}
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/10"
-                    style={{ color: theme.node.text }}
-                >
-                    <Plus className="size-3.5" />
-                    {t("canvas.sidePanel.add")}
-                </button>
+                {/* 本地图片上传「+」按钮在 M11 隐藏，结构保留供 M12 复用 */}
+                {false && (
+                    <button
+                        type="button"
+                        disabled={uploading}
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/10"
+                        style={{ color: theme.node.text }}
+                    >
+                        <Plus className="size-3.5" />
+                        {t("canvas.sidePanel.add")}
+                    </button>
+                )}
                 <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => void handleFiles(e.target.files)} />
             </div>
             {allTags.length ? (
                 <div className="flex flex-wrap gap-1.5 px-3 pb-2">
-                    <Tag.CheckableTag checked={tagFilter === "all"} className={cn("prompt-filter-tag", tagFilter === "all" && "is-active")} onChange={() => setTagFilter("all")}>
+                    <Tag.CheckableTag checked={selectedTagId === null} className={cn("prompt-filter-tag", selectedTagId === null && "is-active")} onChange={() => setSelectedTagId(null)}>
                         {t("common.all")}
                     </Tag.CheckableTag>
                     {allTags.map((tag) => (
-                        <Tag.CheckableTag key={tag} checked={tagFilter === tag} className={cn("prompt-filter-tag", tagFilter === tag && "is-active")} onChange={() => setTagFilter((prev) => (prev === tag ? "all" : tag))}>
-                            {tag}
+                        <Tag.CheckableTag key={tag.id} checked={selectedTagId === tag.id} className={cn("prompt-filter-tag", selectedTagId === tag.id && "is-active")} onChange={() => setSelectedTagId((prev) => (prev === tag.id ? null : tag.id))}>
+                            {tag.name}
                         </Tag.CheckableTag>
                     ))}
                 </div>
             ) : null}
             <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-3">
-                {groups.length ? (
-                    <div className="space-y-1">
-                        {groups.map((group) => {
-                            const isCollapsed = collapsed[group.kind];
-                            return (
-                                <div key={group.kind}>
-                                    <button
-                                        type="button"
-                                        onClick={() => setCollapsed((prev) => ({ ...prev, [group.kind]: !prev[group.kind] }))}
-                                        className="flex w-full items-center gap-1.5 rounded-md px-1.5 py-1.5 text-left text-xs font-semibold opacity-75 transition hover:opacity-100"
-                                    >
-                                        <ChevronRight className={cn("size-3.5 transition-transform", !isCollapsed && "rotate-90")} />
-                                        <group.icon className="size-3.5" />
-                                        <span>{t(`assets.kinds.${group.kind}`)}</span>
-                                        <span className="opacity-50">{group.items.length}</span>
-                                    </button>
-                                    {isCollapsed ? null : (
-                                        <div className="grid grid-cols-2 gap-2 px-1 pb-2 pt-1">
-                                            {group.items.map((asset) => (
-                                                <AssetCard key={asset.id} asset={asset} theme={theme} onInsert={() => onInsert(buildInsertPayload(asset))} onRemove={() => (removeAsset(asset.id), message.success(t("canvas.sidePanel.assetRemoved")))} />
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
+                {items.length ? (
+                    <div className="grid grid-cols-2 gap-2 px-1 pb-2 pt-1">
+                        {items.map((asset) => (
+                            <DigitalAssetCard
+                                key={asset.id}
+                                asset={asset}
+                                theme={theme}
+                                onInsert={() => onInsert({ kind: "text", content: asset.content, title: asset.title })}
+                                onRemove={() => void handleDelete(asset.id)}
+                            />
+                        ))}
                     </div>
                 ) : (
                     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t("canvas.sidePanel.noAssets")} className="pt-16" />
@@ -423,17 +437,39 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
     );
 });
 
-function AssetCard({ asset, theme, onInsert, onRemove }: { asset: Asset; theme: CanvasTheme; onInsert: () => void; onRemove: () => void }) {
+function DigitalAssetCard({ asset, theme, onInsert, onRemove }: { asset: DigitalAsset; theme: CanvasTheme; onInsert: () => void; onRemove: () => void }) {
     const { t } = useTranslation();
     return (
-        <div className="group relative aspect-square overflow-hidden rounded-xl border transition duration-200 hover:-translate-y-0.5 hover:shadow-lg" style={{ borderColor: theme.node.stroke, background: theme.node.panel }}>
-            <AssetCover asset={asset} />
-            <div className="absolute inset-0 flex items-center justify-center gap-2.5 opacity-0 transition duration-200 group-hover:opacity-100">
+        <div
+            className="group relative aspect-square overflow-hidden rounded-xl border p-2.5 transition duration-200 hover:-translate-y-0.5 hover:shadow-lg flex flex-col justify-between"
+            style={{ borderColor: theme.node.stroke, background: theme.node.panel }}
+        >
+            <div className="flex-1 overflow-hidden pointer-events-none">
+                {asset.title ? (
+                    <div className="text-[11px] font-semibold text-stone-700 dark:text-stone-200 truncate mb-1" title={asset.title}>
+                        {asset.title}
+                    </div>
+                ) : null}
+                <div className="text-[11px] leading-snug text-stone-500 dark:text-stone-400 overflow-hidden whitespace-pre-wrap break-words line-clamp-4">
+                    {asset.content}
+                </div>
+            </div>
+            {asset.tags && asset.tags.length > 0 ? (
+                <div className="flex flex-wrap gap-1 mt-1 overflow-hidden max-h-4 pointer-events-none">
+                    {asset.tags.map((tag) => (
+                        <span key={tag.id} className="text-[9px] px-1 py-0.2 rounded bg-stone-100 text-stone-600 dark:bg-stone-800 dark:text-stone-300">
+                            {tag.name}
+                        </span>
+                    ))}
+                </div>
+            ) : null}
+            <div className="absolute inset-0 flex items-center justify-center gap-2.5 bg-black/10 backdrop-blur-[1px] opacity-0 transition duration-200 group-hover:opacity-100">
                 <button
                     type="button"
                     onClick={onInsert}
                     className="grid size-8 place-items-center rounded-full bg-white/90 text-stone-700 shadow-sm backdrop-blur transition hover:bg-white hover:text-stone-900 dark:bg-black/60 dark:text-stone-100 dark:hover:bg-black/80"
                     aria-label={t("canvas.sidePanel.inserted")}
+                    title={t("canvas.sidePanel.inserted")}
                 >
                     <Plus className="size-4" />
                 </button>
@@ -442,6 +478,7 @@ function AssetCard({ asset, theme, onInsert, onRemove }: { asset: Asset; theme: 
                         type="button"
                         className="grid size-8 place-items-center rounded-full bg-white/90 text-stone-700 shadow-sm backdrop-blur transition hover:bg-white hover:text-red-500 dark:bg-black/60 dark:text-stone-100 dark:hover:bg-black/80 dark:hover:text-red-400"
                         aria-label={t("canvas.sidePanel.removeAsset")}
+                        title={t("canvas.sidePanel.removeAsset")}
                     >
                         <Trash2 className="size-4" />
                     </button>
@@ -449,15 +486,6 @@ function AssetCard({ asset, theme, onInsert, onRemove }: { asset: Asset; theme: 
             </div>
         </div>
     );
-}
-
-function AssetCover({ asset }: { asset: Asset }) {
-    if (asset.kind === "text") return <div className="size-full overflow-hidden whitespace-pre-wrap break-words p-2.5 text-[11px] leading-snug opacity-80">{asset.data.content}</div>;
-    if (asset.kind === "video") {
-        if (asset.coverUrl) return <img src={asset.coverUrl} alt="" className="size-full object-cover transition duration-300 group-hover:scale-[1.04]" />;
-        return <video src={`${asset.data.url}#t=0.1`} muted playsInline preload="metadata" className="size-full object-cover transition duration-300 group-hover:scale-[1.04]" />;
-    }
-    return <img src={asset.coverUrl || asset.data.dataUrl} alt="" className="size-full object-cover transition duration-300 group-hover:scale-[1.04]" />;
 }
 
 // ---------------------------------------------------------------------------
