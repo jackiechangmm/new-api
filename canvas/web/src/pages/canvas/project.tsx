@@ -207,6 +207,7 @@ function InfiniteCanvasPage() {
     const historyPausedRef = useRef(false);
     const didInitialCenterRef = useRef(false);
     const rafRef = useRef<number | null>(null);
+    const pendingResizeRef = useRef<{ nodeId: string; width: number; height: number; position?: Position } | null>(null);
     const nodeDraggingRef = useRef(false);
     const dragRef = useRef<{
         isDraggingNode: boolean;
@@ -2017,13 +2018,34 @@ function InfiniteCanvasPage() {
     );
 
     const handleNodeResize = useCallback((nodeId: string, width: number, height: number, position?: Position) => {
-        setNodes((prev) => prev.map((node) => (node.id === nodeId ? { ...node, width, height, position: position || node.position } : node)));
+        pendingResizeRef.current = { nodeId, width, height, position };
+        if (rafRef.current) return;
+        rafRef.current = requestAnimationFrame(() => {
+            rafRef.current = null;
+            const pending = pendingResizeRef.current;
+            if (!pending) return;
+            setNodes((prev) => prev.map((node) => (node.id === pending.nodeId ? { ...node, width: pending.width, height: pending.height, position: pending.position || node.position } : node)));
+        });
     }, []);
 
     const handleNodeResizeStart = useCallback(() => {
+        historyPausedRef.current = true;
         setIsNodeResizing(true);
     }, []);
-    const handleNodeResizeEnd = useCallback(() => setIsNodeResizing(false), []);
+
+    const handleNodeResizeEnd = useCallback(() => {
+        if (rafRef.current) {
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+        }
+        const pending = pendingResizeRef.current;
+        pendingResizeRef.current = null;
+        historyPausedRef.current = false;
+        setIsNodeResizing(false);
+        if (pending) {
+            setNodes((prev) => prev.map((node) => (node.id === pending.nodeId ? { ...node, width: pending.width, height: pending.height, position: pending.position || node.position } : node)));
+        }
+    }, []);
 
     const toggleNodeFreeResize = useCallback((nodeId: string) => {
         setNodes((prev) =>
