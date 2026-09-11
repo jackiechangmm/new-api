@@ -29,6 +29,7 @@ export type DigitalAssetImage = {
   url: string
   width: number
   height: number
+  bytes?: number
   mime_type: string
 }
 
@@ -51,7 +52,7 @@ export type DigitalAssetPayload = {
   title: string
   content: string
   tags: string[]
-  image_id?: string
+  image_id?: string | null
 }
 
 export type DigitalAssetList = {

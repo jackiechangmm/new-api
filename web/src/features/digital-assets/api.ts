@@ -21,6 +21,7 @@ import { api } from '@/lib/api'
 import type {
   ApiResponse,
   DigitalAsset,
+  DigitalAssetImage,
   DigitalAssetList,
   DigitalAssetPayload,
   DigitalAssetTag,
@@ -109,4 +110,16 @@ export async function deleteDigitalAsset(id: number): Promise<void> {
     `/api/digital-assets/${id}`
   )
   unwrap(response.data)
+}
+
+export async function uploadAssetImage(
+  file: File
+): Promise<DigitalAssetImage> {
+  const formData = new FormData()
+  formData.append('file', file)
+  const response = await api.post<ApiResponse<DigitalAssetImage>>(
+    '/api/images',
+    formData
+  )
+  return unwrap(response.data)
 }

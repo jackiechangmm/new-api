@@ -33,12 +33,14 @@ import { toast } from 'sonner'
 import { SectionPageLayout } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Input } from '@/components/ui/input'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 import {
   createDigitalAsset,
@@ -66,6 +68,14 @@ function mutationErrorMessage(error: unknown, fallback: string): string {
   return error instanceof Error && error.message ? error.message : fallback
 }
 
+function useGalleryColumnCount(): number {
+  const isXl = useMediaQuery('(min-width: 1280px)')
+  const isSm = useMediaQuery('(min-width: 640px)')
+  if (isXl) return 3
+  if (isSm) return 2
+  return 1
+}
+
 type AssetSectionProps = {
   title: string
   assets: DigitalAsset[]
@@ -81,6 +91,7 @@ type AssetSectionProps = {
 
 function AssetSection(props: AssetSectionProps) {
   const { t } = useTranslation()
+  const columnCount = useGalleryColumnCount()
   let content
 
   if (props.loading) {
@@ -114,16 +125,28 @@ function AssetSection(props: AssetSectionProps) {
       </div>
     )
   } else {
+    const columns = Array.from(
+      { length: columnCount },
+      () => [] as DigitalAsset[]
+    )
+    props.assets.forEach((asset, index) => {
+      columns[index % columnCount].push(asset)
+    })
+
     content = (
-      <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3'>
-        {props.assets.map((asset) => (
-          <DigitalAssetCard
-            key={asset.id}
-            asset={asset}
-            favoritePending={props.favoritePending}
-            onOpen={props.onOpen}
-            onFavorite={props.onFavorite}
-          />
+      <div className='flex items-start gap-3'>
+        {columns.map((colAssets, colIndex) => (
+          <div key={colIndex} className='flex min-w-0 flex-1 flex-col gap-3'>
+            {colAssets.map((asset) => (
+              <DigitalAssetCard
+                key={asset.id}
+                asset={asset}
+                favoritePending={props.favoritePending}
+                onOpen={props.onOpen}
+                onFavorite={props.onFavorite}
+              />
+            ))}
+          </div>
         ))}
       </div>
     )
@@ -145,7 +168,7 @@ export function DigitalAssets() {
   const navigate = useNavigate()
   const [favoritesPage, setFavoritesPage] = useState(1)
   const [allPage, setAllPage] = useState(1)
-  const [typeFilter, setTypeFilter] = useState<'all' | 'text' | 'image'>('all')
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
   const [search, setSearch] = useState('')
   const deferredSearch = useDeferredValue(search.trim())
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
@@ -156,14 +179,20 @@ export function DigitalAssets() {
   const [tagManagerOpen, setTagManagerOpen] = useState(false)
   const [deletedTag, setDeletedTag] = useState<DigitalAssetTag | null>(null)
 
+  const allAssetType =
+    selectedTypes.includes('text') && !selectedTypes.includes('image')
+      ? 'text'
+      : selectedTypes.includes('image') && !selectedTypes.includes('text')
+        ? 'image'
+        : undefined
+
   const favoritesQuery = useQuery({
-    queryKey: [...queryRoot, 'list', 'favorites', favoritesPage, typeFilter],
+    queryKey: [...queryRoot, 'list', 'favorites', favoritesPage],
     queryFn: () =>
       listDigitalAssets({
         page: favoritesPage,
         pageSize: FAVORITES_PAGE_SIZE,
         favorite: true,
-        assetType: typeFilter === 'all' ? undefined : typeFilter,
       }),
   })
   const allAssetsQuery = useQuery({
@@ -174,7 +203,7 @@ export function DigitalAssets() {
       allPage,
       deferredSearch,
       selectedTagIds,
-      typeFilter,
+      allAssetType,
     ],
     queryFn: () =>
       listDigitalAssets({
@@ -182,7 +211,7 @@ export function DigitalAssets() {
         pageSize: ALL_ASSETS_PAGE_SIZE,
         search: deferredSearch,
         tagIds: selectedTagIds,
-        assetType: typeFilter === 'all' ? undefined : typeFilter,
+        assetType: allAssetType,
       }),
   })
   const tagsQuery = useQuery({
@@ -196,12 +225,13 @@ export function DigitalAssets() {
 
   const saveMutation = useMutation({
     mutationFn: async (values: DigitalAssetFormValues) => {
+      const assetType = formAsset ? formAsset.asset_type : values.asset_type
       const payload: DigitalAssetPayload = {
-        asset_type: formAsset ? formAsset.asset_type : 'text',
+        asset_type: assetType,
         title: values.title.trim(),
-        content: values.content,
+        content: assetType === 'image' ? '' : values.content,
         tags: values.tags,
-        image_id: formAsset?.image_id || formAsset?.image?.id,
+        image_id: values.image_id ? values.image_id.trim() : null,
       }
       return formAsset
         ? updateDigitalAsset(formAsset.id, payload)
@@ -215,10 +245,10 @@ export function DigitalAssets() {
         refreshAssetLists(),
         queryClient.invalidateQueries({ queryKey: [...queryRoot, 'tags'] }),
       ])
-      toast.success(t('Prompt saved'))
+      toast.success(t('Asset saved'))
     },
     onError: (error) => {
-      toast.error(mutationErrorMessage(error, t('Failed to save prompt')))
+      toast.error(mutationErrorMessage(error, t('Failed to save asset')))
     },
   })
 
@@ -258,10 +288,10 @@ export function DigitalAssets() {
         setFavoritesPage((page) => page - 1)
       }
       await refreshAssetLists()
-      toast.success(t('Prompt deleted'))
+      toast.success(t('Asset deleted'))
     },
     onError: (error) => {
-      toast.error(mutationErrorMessage(error, t('Failed to delete prompt')))
+      toast.error(mutationErrorMessage(error, t('Failed to delete asset')))
     },
   })
 
@@ -321,6 +351,16 @@ export function DigitalAssets() {
     }
   }
 
+  const copyImageLink = async (asset: DigitalAsset) => {
+    if (!asset.image?.url) return
+    try {
+      await navigator.clipboard.writeText(asset.image.url)
+      toast.success(t('Image link copied'))
+    } catch {
+      toast.error(t('Failed to copy image link'))
+    }
+  }
+
   const toggleTag = (tagId: number) => {
     setAllPage(1)
     setSelectedTagIds((current) =>
@@ -330,57 +370,19 @@ export function DigitalAssets() {
     )
   }
 
+  const toggleType = (type: 'text' | 'image') => {
+    setAllPage(1)
+    setSelectedTypes((current) =>
+      current.includes(type)
+        ? current.filter((t) => t !== type)
+        : [...current, type]
+    )
+  }
+
   return (
     <>
       <SectionPageLayout>
         <SectionPageLayout.Title>{t('Digital Assets')}</SectionPageLayout.Title>
-        <SectionPageLayout.Actions>
-          <div
-            className='bg-muted inline-flex items-center rounded-lg p-0.5 text-xs'
-            role='group'
-            aria-label={t('Filter by type')}
-          >
-            <Button
-              type='button'
-              size='xs'
-              variant={typeFilter === 'all' ? 'secondary' : 'ghost'}
-              className='rounded-md'
-              onClick={() => {
-                setTypeFilter('all')
-                setFavoritesPage(1)
-                setAllPage(1)
-              }}
-            >
-              {t('All')}
-            </Button>
-            <Button
-              type='button'
-              size='xs'
-              variant={typeFilter === 'text' ? 'secondary' : 'ghost'}
-              className='rounded-md'
-              onClick={() => {
-                setTypeFilter('text')
-                setFavoritesPage(1)
-                setAllPage(1)
-              }}
-            >
-              {t('Text')}
-            </Button>
-            <Button
-              type='button'
-              size='xs'
-              variant={typeFilter === 'image' ? 'secondary' : 'ghost'}
-              className='rounded-md'
-              onClick={() => {
-                setTypeFilter('image')
-                setFavoritesPage(1)
-                setAllPage(1)
-              }}
-            >
-              {t('Image')}
-            </Button>
-          </div>
-        </SectionPageLayout.Actions>
         <SectionPageLayout.Content>
           <div className='mx-auto max-w-6xl space-y-8 pb-4'>
             <div className='space-y-4'>
@@ -389,7 +391,7 @@ export function DigitalAssets() {
                 assets={favoritesQuery.data?.items ?? []}
                 loading={favoritesQuery.isLoading}
                 error={favoritesQuery.isError}
-                emptyMessage={t('Favorite prompts will appear here.')}
+                emptyMessage={t('Favorite assets will appear here.')}
                 favoritePending={favoriteMutation.isPending}
                 onRetry={() => favoritesQuery.refetch()}
                 onOpen={setDetailAsset}
@@ -406,7 +408,7 @@ export function DigitalAssets() {
             <div className='space-y-4'>
               <div className='space-y-3'>
                 <h3 className='text-sm font-semibold'>{t('All Assets')}</h3>
-                <div className='grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto]'>
+                <div className='grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto]'>
                   <div className='relative'>
                     <HugeiconsIcon
                       icon={Search01Icon}
@@ -423,6 +425,28 @@ export function DigitalAssets() {
                       }}
                     />
                   </div>
+                  <ButtonGroup aria-label={t('Filter by type')}>
+                    <Button
+                      type='button'
+                      variant={
+                        selectedTypes.includes('text') ? 'default' : 'outline'
+                      }
+                      aria-pressed={selectedTypes.includes('text')}
+                      onClick={() => toggleType('text')}
+                    >
+                      {t('Prompt')}
+                    </Button>
+                    <Button
+                      type='button'
+                      variant={
+                        selectedTypes.includes('image') ? 'default' : 'outline'
+                      }
+                      aria-pressed={selectedTypes.includes('image')}
+                      onClick={() => toggleType('image')}
+                    >
+                      {t('Image')}
+                    </Button>
+                  </ButtonGroup>
                   <Popover>
                     <PopoverTrigger
                       render={
@@ -504,7 +528,7 @@ export function DigitalAssets() {
                   </Popover>
                   <Button type='button' onClick={openCreate}>
                     <HugeiconsIcon icon={Add01Icon} />
-                    {t('New prompt')}
+                    {t('New asset')}
                   </Button>
                 </div>
               </div>
@@ -582,6 +606,7 @@ export function DigitalAssets() {
           if (!open) setDetailAsset(null)
         }}
         onCopy={copyPrompt}
+        onCopyImageLink={copyImageLink}
         onEdit={openEdit}
         onFavorite={(asset) => favoriteMutation.mutate(asset)}
         onDraw={drawWithAsset}

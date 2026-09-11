@@ -192,16 +192,14 @@ func bindDigitalAssetWriteRequest(c *gin.Context) (*dto.DigitalAssetWriteRequest
 			common.ApiErrorMsg(c, "内容长度必须为 1 到 100000 个字符")
 			return nil, false
 		}
-		request.ImageId = nil
 	} else {
 		if utf8.RuneCountInString(request.Content) > dto.DigitalAssetMaxContentLength {
 			common.ApiErrorMsg(c, "内容长度不能超过 100000 个字符")
 			return nil, false
 		}
-		if request.ImageId == nil || strings.TrimSpace(*request.ImageId) == "" {
-			common.ApiErrorMsg(c, "图片资产必须指定图片")
-			return nil, false
-		}
+	}
+
+	if request.ImageId != nil && strings.TrimSpace(*request.ImageId) != "" {
 		trimmedImageId := strings.TrimSpace(*request.ImageId)
 		request.ImageId = &trimmedImageId
 		_, err := model.GetImageById(*request.ImageId)
@@ -213,6 +211,11 @@ func bindDigitalAssetWriteRequest(c *gin.Context) (*dto.DigitalAssetWriteRequest
 			common.ApiError(c, err)
 			return nil, false
 		}
+	} else if request.AssetType == model.DigitalAssetTypeImage {
+		common.ApiErrorMsg(c, "图片资产必须指定图片")
+		return nil, false
+	} else {
+		request.ImageId = nil
 	}
 	if len(request.Tags) > dto.DigitalAssetMaxTags {
 		common.ApiErrorMsg(c, "每个资产最多可使用 20 个标签")

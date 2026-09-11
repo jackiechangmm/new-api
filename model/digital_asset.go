@@ -160,10 +160,16 @@ func UpdateDigitalAsset(userId int, id int, assetType string, title string, cont
 			"content":    content,
 			"updated_at": now,
 		}
-		if assetType == DigitalAssetTypeImage && imageId != nil {
-			updates["image_id"] = *imageId
+		if assetType == DigitalAssetTypeImage {
+			if imageId != nil && *imageId != "" {
+				updates["image_id"] = *imageId
+			}
 		} else if assetType == DigitalAssetTypeText {
-			updates["image_id"] = nil
+			if imageId != nil && *imageId != "" {
+				updates["image_id"] = *imageId
+			} else {
+				updates["image_id"] = nil
+			}
 		}
 		if err := tx.Model(asset).Updates(updates).Error; err != nil {
 			return err

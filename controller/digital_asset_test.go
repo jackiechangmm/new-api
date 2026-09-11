@@ -200,6 +200,53 @@ func TestDigitalAssetHTTPContractAndUserIsolation(t *testing.T) {
 	imgStillExists, err := model.GetImageById("img-test-1")
 	require.NoError(t, err)
 	assert.NotNil(t, imgStillExists)
+
+	emptyContentImageAsset := performDigitalAssetRequest[model.DigitalAsset](t, router, http.MethodPost, "/api/digital-assets/", `{
+		"asset_type":"image",
+		"title":"纯图片资产",
+		"content":"",
+		"tags":["纯图"],
+		"image_id":"img-test-1"
+	}`, "1")
+	require.True(t, emptyContentImageAsset.Success)
+	assert.Equal(t, "", emptyContentImageAsset.Data.Content)
+	assert.Equal(t, "纯图片资产", emptyContentImageAsset.Data.Title)
+
+	textWithImage := performDigitalAssetRequest[model.DigitalAsset](t, router, http.MethodPost, "/api/digital-assets/", `{
+		"asset_type":"text",
+		"title":"带参考图提示词",
+		"content":"A cyberpunk cat portrait",
+		"tags":["赛博"],
+		"image_id":"img-test-1"
+	}`, "1")
+	require.True(t, textWithImage.Success)
+	assert.Equal(t, model.DigitalAssetTypeText, textWithImage.Data.AssetType)
+	require.NotNil(t, textWithImage.Data.ImageId)
+	assert.Equal(t, "img-test-1", *textWithImage.Data.ImageId)
+	require.NotNil(t, textWithImage.Data.Image)
+	assert.Equal(t, "https://example.com/img1.png", textWithImage.Data.Image.URL)
+
+	textUnbindImage := performDigitalAssetRequest[model.DigitalAsset](t, router, http.MethodPut, fmt.Sprintf("/api/digital-assets/%d", textWithImage.Data.Id), `{
+		"asset_type":"text",
+		"title":"解绑参考图后的提示词",
+		"content":"A cyberpunk cat portrait without image",
+		"tags":["赛博"]
+	}`, "1")
+	require.True(t, textUnbindImage.Success)
+	assert.Nil(t, textUnbindImage.Data.ImageId)
+	assert.Nil(t, textUnbindImage.Data.Image)
+
+	textRebindImage := performDigitalAssetRequest[model.DigitalAsset](t, router, http.MethodPut, fmt.Sprintf("/api/digital-assets/%d", textWithImage.Data.Id), `{
+		"asset_type":"text",
+		"title":"重新绑定参考图",
+		"content":"A cyberpunk cat portrait with rebind",
+		"tags":["赛博"],
+		"image_id":"img-test-1"
+	}`, "1")
+	require.True(t, textRebindImage.Success)
+	require.NotNil(t, textRebindImage.Data.ImageId)
+	assert.Equal(t, "img-test-1", *textRebindImage.Data.ImageId)
+	require.NotNil(t, textRebindImage.Data.Image)
 }
 
 func TestDigitalAssetHTTPRejectsUnsupportedAndOversizedInput(t *testing.T) {
@@ -234,6 +281,10 @@ func TestDigitalAssetHTTPRejectsUnsupportedAndOversizedInput(t *testing.T) {
 	nonexistentImage := performDigitalAssetRequest[any](t, router, http.MethodPost, "/api/digital-assets/", `{"asset_type":"image","title":"x","image_id":"no-such-image"}`, "1")
 	assert.False(t, nonexistentImage.Success)
 	assert.Contains(t, nonexistentImage.Message, "图片不存在")
+
+	textNonexistentImage := performDigitalAssetRequest[any](t, router, http.MethodPost, "/api/digital-assets/", `{"asset_type":"text","title":"带不存在图片的提示词","content":"valid content","image_id":"no-such-image"}`, "1")
+	assert.False(t, textNonexistentImage.Success)
+	assert.Contains(t, textNonexistentImage.Message, "图片不存在")
 
 	invalidTypeFilter := performDigitalAssetRequest[any](t, router, http.MethodGet, "/api/digital-assets/?asset_type=unknown", "", "1")
 	assert.False(t, invalidTypeFilter.Success)
