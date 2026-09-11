@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertTriangle, Images, Menu, PanelLeftClose, PanelLeftOpen, Plus, Redo2, Save, Trash2, Undo2 } from "lucide-react";
-import { Button, Dropdown, Modal, Tooltip } from "antd";
+import { Dropdown, Modal, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { UserStatusActions } from "@/components/layout/user-status-actions";
@@ -109,6 +109,20 @@ export function CanvasTopBar({
                         </button>
                     </Dropdown>
 
+                    <div className="flex items-center gap-1.5 pl-1">
+                        <button
+                            type="button"
+                            onClick={onProjects}
+                            className="cursor-pointer text-sm font-medium transition hover:underline"
+                            style={{ color: theme.node.muted }}
+                        >
+                            {t("canvas.library")}
+                        </button>
+                        <span className="select-none text-xs" style={{ color: theme.node.faint }}>
+                            /
+                        </span>
+                    </div>
+
                     <div ref={titleRef} className="flex min-w-0 items-center gap-2">
                         {isTitleEditing ? (
                             <input
@@ -138,16 +152,6 @@ export function CanvasTopBar({
 
                     <div className="flex items-center gap-2 pl-2">
                         <SaveStatusBadge saveStatus={saveStatus} onSave={onSave} />
-                        <Button
-                            size="small"
-                            type={saveStatus === "dirty" || saveStatus === "conflict_warning" ? "primary" : "default"}
-                            danger={saveStatus === "error"}
-                            loading={saveStatus === "saving"}
-                            onClick={onSave}
-                            className="text-xs"
-                        >
-                            {t("canvas.save")}
-                        </Button>
                     </div>
                 </div>
                 <div className="pointer-events-auto flex items-center gap-1.5">

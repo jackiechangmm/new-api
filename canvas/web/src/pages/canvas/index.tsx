@@ -5,9 +5,9 @@ import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
-import { useCanvasUiStore } from "@/stores/canvas/use-canvas-ui-store";
 import { CanvasDeleteProjectsDialog } from "@/components/canvas/canvas-delete-projects-dialog";
 import { CanvasProjectCard } from "@/components/canvas/canvas-project-card";
+import { UserStatusActions } from "@/components/layout/user-status-actions";
 import { hasAgentUrlBootstrap } from "@/lib/agent/agent-url-bootstrap";
 
 export default function CanvasPage() {
@@ -20,7 +20,6 @@ export default function CanvasPage() {
     const projects = useCanvasStore((state) => state.projects);
     const createProject = useCanvasStore((state) => state.createProject);
     const fetchProjects = useCanvasStore((state) => state.fetchProjects);
-    const setDeleteIds = useCanvasUiStore((state) => state.setDeleteProjectIds);
 
     useEffect(() => {
         void fetchProjects();
@@ -61,19 +60,16 @@ export default function CanvasPage() {
     if (hydrated && (mode === "new" || mode === "recent")) return <main className="flex h-full items-center justify-center bg-background text-sm text-stone-500">{t("canvas.opening")}</main>;
 
     return (
-        <main className="h-full overflow-auto bg-background text-stone-950 dark:text-stone-100">
+        <main className="relative h-full overflow-auto bg-background text-stone-950 dark:text-stone-100">
+            <div className="fixed right-6 top-6 z-20">
+                <UserStatusActions />
+            </div>
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-10">
                 <header className="flex flex-wrap items-end justify-between gap-4 border-b border-stone-200 pb-6 dark:border-stone-800">
                     <div>
-                        <p className="text-xs text-stone-500">{t("canvas.library")}</p>
-                        <h1 className="mt-3 text-3xl font-semibold">{t("canvas.title")}</h1>
+                        <h1 className="text-3xl font-semibold">{t("canvas.title")}</h1>
                     </div>
                     <div className="flex items-center gap-2">
-                        {projects.length ? (
-                            <Button disabled={!hydrated} onClick={() => setDeleteIds(projects.map((project) => project.id))}>
-                                {t("canvas.deleteAll")}
-                            </Button>
-                        ) : null}
                         <Button disabled={!hydrated || creating} loading={creating} type="primary" icon={<Plus className="size-4" />} onClick={createAndEnter}>
                             {t("canvas.create")}
                         </Button>

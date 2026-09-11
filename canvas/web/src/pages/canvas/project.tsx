@@ -1342,6 +1342,37 @@ function InfiniteCanvasPage() {
         navigate("/canvas");
     }, [deleteProjects, navigate, projectId]);
 
+    const handleBackToLibrary = useCallback(async () => {
+        if (checkHasInFlightTasks(nodesRef.current)) {
+            modal.confirm({
+                title: t("canvas.leaveConfirmTitle", t("canvas.projectPage.stopTitle")),
+                content: t("canvas.leaveTasksRunningWarning"),
+                okText: t("canvas.leaveConfirmOk"),
+                cancelText: t("canvas.stayOnPage"),
+                okButtonProps: { danger: true },
+                onOk: () => navigate("/canvas"),
+            });
+            return;
+        }
+
+        if (isDirtyRef.current) {
+            await executeSave();
+            if (isDirtyRef.current) {
+                modal.confirm({
+                    title: t("canvas.leaveConfirmTitle", t("canvas.saveFailed")),
+                    content: t("canvas.unsavedLeaveWarning"),
+                    okText: t("canvas.leaveConfirmOk"),
+                    cancelText: t("canvas.stayOnPage"),
+                    okButtonProps: { danger: true },
+                    onOk: () => navigate("/canvas"),
+                });
+                return;
+            }
+        }
+
+        navigate("/canvas");
+    }, [checkHasInFlightTasks, executeSave, modal, navigate, t]);
+
     const exportCurrentProject = useCallback(async () => {
         const project = useCanvasStore.getState().projects.find((item) => item.id === projectId);
         if (!project) return message.error(t("canvas.projectPage.notFound"));
@@ -2902,7 +2933,7 @@ function InfiniteCanvasPage() {
                     canUndo={historyState.canUndo}
                     canRedo={historyState.canRedo}
                     onHome={() => navigate("/")}
-                    onProjects={() => navigate("/canvas")}
+                    onProjects={handleBackToLibrary}
                     onCreateProject={createAndOpenProject}
                     onDeleteProject={deleteCurrentProject}
                     onExportProject={exportCurrentProject}
